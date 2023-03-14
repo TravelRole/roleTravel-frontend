@@ -7,6 +7,7 @@ import Allplan from "../features/Role/Allplan";
 import Schedule from "../features/Role/Schedule";
 import Reservation from "../features/Role/Reservation";
 import Account from "../features/Role/Account";
+import Essentials from "../features/Role/Essentials";
 
 const TeamSpaceBox = styled.div`
   display: flex;
@@ -26,8 +27,7 @@ const SpaceContainer = styled.div`
 function TeamSpace({ Auth }) {
   const navigate = useNavigate();
 
-  const url = useParams()
-  console.log(url)
+  const {role} = useParams()
 
   useEffect(() => {
     if (Auth) {
@@ -49,7 +49,8 @@ function TeamSpace({ Auth }) {
             schedule: <Schedule />,
             reservation: <Reservation />,
             account: <Account />,
-          }[url.role]
+            essentials:<Essentials/>
+          }[role]
         }
         </SpaceContainer>
       </TeamSpaceBox>

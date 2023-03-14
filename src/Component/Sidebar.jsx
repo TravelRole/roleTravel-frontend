@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
-import { useState } from "react";
+
 const SidebarContainer = styled.div`
   display: flex;
   width: 200px;
@@ -43,24 +43,33 @@ const SideBarTab = [
   },
 ];
 
-function Sidebar({ setRole }) {
-  const url = useParams();
-  console.log(url.Spacenumber, url.UserId);
+function Sidebar() {
 
-  const [num, setNum] = useState(0);
+  const {UserId , Spacenumber } = useParams();
+
   return (
     <>
       <SidebarContainer>
         <Ul>
           {SideBarTab.map((item, index) => {
             return (
-              <Link key={index} to={`/${url.UserId}/${url.Spacenumber}/${item.path}`}>
-                <Li >{item.pathname}</Li>
+              <Link
+                key={index}
+                to={`/${UserId}/${Spacenumber}/${item.path}`}
+              >
+                <Li>{item.pathname}</Li>
               </Link>
             );
           })}
+          <Li>
+            <Link to={`/${UserId}/${Spacenumber}/essentials`}>
+              준비물
+            </Link>
+          </Li>
+          <Li>
+            <Link to={`/${UserId}`}>여행목록 돌아가기</Link>
+          </Li>
         </Ul>
-        <div>여행목록으로 돌아가기</div>
       </SidebarContainer>
     </>
   );
