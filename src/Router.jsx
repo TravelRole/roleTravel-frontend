@@ -8,7 +8,7 @@ import Sign from "./features/Sign/Sign";
 const routers = [
   {
     id: 0,
-    path: "/",
+    path: "/landing",
     label: "Home",
     element: <Landing />,
     withAuth: false,
