@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 import { Routes } from "react-router-dom";
 import Landing from "./features/Landing/Landing";
 import Login from "./features/Login/Login";
+import SearchIdPw from "./features/SearchIDPW/SearchIdPw";
 import Sign from "./features/Sign/Sign";
 
 const routers = [
@@ -26,6 +27,13 @@ const routers = [
     label: "Sign",
     element: <Sign />,
     withAuth: true,
+  },
+  {
+    id: 3,
+    path: "/searchIdPw",
+    label: "SearchIdPw",
+    element: <SearchIdPw />,
+    withAuth: false,
   },
 ];
 
