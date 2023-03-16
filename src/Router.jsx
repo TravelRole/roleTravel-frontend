@@ -61,6 +61,13 @@ const routers = [
     element: <SearchIdPw />,
     withAuth: false,
   },
+  {
+    id: 7,
+    path: "/:UserId/:Spacenumber/:role/:subRole",
+    label: "TeamSpace",
+    element: <TeamSpace Auth={false} />,
+    withAuth: true,
+  },
 ];
 
 const Router = () => {
