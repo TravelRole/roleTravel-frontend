@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
-import RadioButton from "../../../components/RadioButton";
+import RadioButton from "../../../../components/RadioButton";
 
 const SearchAuthTabWrap = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ const SearchAuthTabWrap = styled.div`
   }
 `;
 
-const SearchAuthTab = ({ setSearchAuth }) => {
+const SearchAuthTab = ({ setSearchAuth, searchAuth }) => {
   return (
     <SearchAuthTabWrap>
       <div>
@@ -23,6 +23,7 @@ const SearchAuthTab = ({ setSearchAuth }) => {
           onChange={(e) => {
             setSearchAuth(e.target.id);
           }}
+          checked={searchAuth === "email-search"}
         />
         <label htmlFor="email-search">이메일 인증</label>
       </div>

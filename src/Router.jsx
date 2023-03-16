@@ -6,10 +6,10 @@ import Login from "./features/Login/Login";
 import SearchIdPw from "./features/SearchIDPW/SearchIdPw";
 import Sign from "./features/Sign/Sign";
 import { BrowserRouter } from "react-router-dom";
-import TeamSpace from "./Component/TeamSpace"
 import NotFound from "./features/NotFound/Notfound";
 import SpaceList from "./features/SpaceList/SpaceList";
 import Authorization from "./features/Authorization/Authorization";
+import TeamSpace from "./features/layout/TeamSpace";
 
 const routers = [
   {
