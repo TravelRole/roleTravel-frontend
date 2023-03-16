@@ -3,6 +3,7 @@ import { Route, RouterProvider } from "react-router-dom";
 import { Routes } from "react-router-dom";
 import Landing from "./features/Landing/Landing";
 import Login from "./features/Login/Login";
+import SearchIdPw from "./features/SearchIDPW/SearchIdPw";
 import Sign from "./features/Sign/Sign";
 import { BrowserRouter } from "react-router-dom";
 import TeamSpace from "./Component/TeamSpace"
@@ -53,19 +54,22 @@ const routers = [
     element: <NotFound />,
     withAuth: true,
   },
+  {
+    id: 6,
+    path: "/searchIdPw",
+    label: "SearchIdPw",
+    element: <SearchIdPw />,
+    withAuth: false,
+  },
 ];
 
 const Router = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        {routers.map((item) => {
-          return (
-            <Route key={item.id} path={item.path} element={item.element} />
-          );
-        })}
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      {routers.map((item) => (
+        <Route key={item.id} path={item.path} element={item.element} />
+      ))}
+    </Routes>
   );
 };
 
