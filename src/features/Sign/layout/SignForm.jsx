@@ -1,25 +1,15 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import RadioButton from "../../../components/RadioButton";
+import SignCheckBox from "./SignCheckBox";
+import SignInput from "./SignInput";
 
 // 중복 컴포넌트
 const InfoButton = styled.button`
   border: 1px solid #ddd;
   background-color: #eee;
   cursor: pointer;
-`;
-
-const CheckBox = styled.input`
-  appearance: none;
-  border: 1px solid #ddd;
-  width: 1.5rem;
-  height: 1.5rem;
-
-  &:checked {
-    background-image: url("data:image/svg+xml,%3Csvg width='30' height='25' viewBox='0 0 30 25' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 13.2245L9.78751 22.6089C10.1572 23.0544 10.7783 23.0544 11.148 22.6089L28.25 2' stroke='%233884FD' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-size: 80% 80%;
-    background-position: 50%;
-    background-repeat: no-repeat;
-  }
 `;
 
 // 컨테이너 컴포넌트
@@ -46,30 +36,18 @@ const SignUserInfo = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-
-  input {
-    padding: 15px 20px;
-    border: 1px solid #ddd;
-    outline: none;
-  }
+  gap: 10px;
 
   .user-birth {
     width: 100%;
     gap: 10px;
     display: flex;
     justify-content: space-between;
-    input {
-      width: 33%;
-    }
   }
 
   .user-phone {
+    width: 100%;
     display: flex;
-
-    input {
-      width: 70%;
-    }
     button {
       width: 30%;
     }
@@ -77,10 +55,6 @@ const SignUserInfo = styled.div`
 
   .user-auth {
     display: flex;
-
-    input {
-      width: 50%;
-    }
 
     .auth-confirm {
       margin-right: 10px;
@@ -93,33 +67,8 @@ const SignUserInfo = styled.div`
   }
 `;
 
-const SignCheckBoxWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-
-  .all-check {
-    margin-bottom: 30px;
-  }
-
-  .each-check {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-`;
-
-const CheckWrap = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  label {
-    width: 95%;
-  }
-`;
-
 const SignRadioBoxWrap = styled.div`
-  margin-top: 50px;
+  margin-top: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -148,102 +97,157 @@ const RadioWrap = styled.div`
   }
 `;
 
+const initialMessage = {
+  name: "",
+  id: "",
+  pw: "",
+  confirmPw: "",
+  isNotError: false,
+};
+
 const SignForm = () => {
+  const [errorData, setErrorData] = useState(initialMessage);
+  const dispatch = useDispatch();
+
+  const onSubmit = useCallback((e) => {
+    e.preventDefault();
+    // dispatch(join)
+  }, []);
+
+  // 포커싱이 사라질 때 유효성 검사를 시작함
+  // 1. 빈 값일 경우에 "* 필수 정보입니다."
+  // 2. 비밀번호 - 검사에 어긋난 값 입력 시 "사용 불가 (안전도 등급 매우 약함)"
+  //           - 검사에 유효한 값 입력 시  "사용 가능 (안전도 등급 높음)"
+
   return (
-    <SignFormWrap>
+    <SignFormWrap autoComplete="off" onSubmit={onSubmit}>
       <SignUserInfo>
-        <input type="text" placeholder="* 이름(실명)" required />
-        <div className="user-birth">
-          <input type="text" placeholder="* 생년월일/YYYY" required />
-          <input type="text" placeholder="* MM" required />
-          <input type="text" placeholder="* DD" required />
-        </div>
-        <input type="text" placeholder="* 아이디" required />
-        <input
-          type="password"
-          placeholder="* 비밀번호 (8~16자의 영문, 숫자, 특수기호)"
+        <SignInput
+          inputProps={{
+            type: "text",
+            placeholder: "* 이름(실명)",
+            width: "100%",
+          }}
+          id={"name"}
+          errorData={errorData}
+          setErrorData={setErrorData}
         />
-        <input type="email" placeholder="* 이메일" required />
+
+        <div className="user-birth">
+          <SignInput
+            inputProps={{
+              type: "text",
+              placeholder: "* 생년월일/YYYY",
+              width: "33%",
+            }}
+            id={"y"}
+            errorData={errorData}
+            setErrorData={setErrorData}
+          />
+          <SignInput
+            inputProps={{
+              type: "text",
+              placeholder: "* MM",
+              width: "33%",
+            }}
+            id={"m"}
+            errorData={errorData}
+            setErrorData={setErrorData}
+          />
+          <SignInput
+            inputProps={{
+              type: "text",
+              placeholder: "* DD",
+              width: "33%",
+            }}
+            id={"d"}
+            errorData={errorData}
+            setErrorData={setErrorData}
+          />
+        </div>
+        <SignInput
+          inputProps={{
+            type: "text",
+            placeholder: "* 아이디",
+            width: "100%",
+          }}
+          id={"id"}
+          errorData={errorData}
+          setErrorData={setErrorData}
+        />
+        <SignInput
+          inputProps={{
+            type: "password",
+            placeholder: "* 비밀번호 (8~16자의 영문, 숫자, 특수기호)",
+            width: "100%",
+          }}
+          id={"pw"}
+          errorData={errorData}
+          setErrorData={setErrorData}
+        />
+        <SignInput
+          inputProps={{
+            type: "email",
+            placeholder: "* 이메일",
+            width: "100%",
+          }}
+          id={"email"}
+          errorData={errorData}
+          setErrorData={setErrorData}
+        />
+
         <div className="user-phone">
-          <input type="text" placeholder="* 휴대폰 번호" required />
+          <SignInput
+            inputProps={{
+              type: "text",
+              placeholder: "* 휴대폰 번호",
+              width: "70%",
+            }}
+            id={"phoneNumber"}
+            errorData={errorData}
+            setErrorData={setErrorData}
+          />
           <InfoButton>인증번호 전송</InfoButton>
         </div>
         <div className="user-auth">
-          <input type="text" placeholder="* 인증번호 입력" required />
+          <SignInput
+            inputProps={{
+              type: "text",
+              placeholder: "* 인증번호 입력",
+              width: "50%",
+            }}
+            id={"authNumber"}
+            errorData={errorData}
+            setErrorData={setErrorData}
+          />
           <InfoButton className="auth-confirm">확인</InfoButton>
           <InfoButton className="auth-resend">재전송</InfoButton>
         </div>
       </SignUserInfo>
 
-      <SignCheckBoxWrap>
-        <div className="all-check">
-          <CheckWrap>
-            <label htmlFor="all-checkbox">
-              필수동의 항목 및 개인정보 수집 및 이용 동의(선택), 광고성 정보
-              수신(선택) 에 모두 동의합니다.
-            </label>
-            <CheckBox type="checkbox" id="all-checkbox" />
-          </CheckWrap>
-        </div>
+      {/* check box section */}
+      <SignCheckBox />
+      <SignRadioBoxWrap>
+        <p>
+          <span>*</span> 개인정보 유효기간 선택
+        </p>
 
-        <div className="each-check">
-          <CheckWrap>
-            <label htmlFor="check1">
-              <span>[필수]</span> 이용 약관 동의
-            </label>
-            <CheckBox type="checkbox" id="check1" required />
-          </CheckWrap>
-          <CheckWrap>
-            <label htmlFor="check2">
-              <span>[필수]</span> 개인정보 수집 및 이용 동의
-            </label>
-            <CheckBox type="checkbox" id="check2" required />
-          </CheckWrap>
-          <CheckWrap>
-            <label htmlFor="check3">[선택] 광고성 정보 이메일 수신 동의</label>
-            <CheckBox type="checkbox" id="check3" required />
-          </CheckWrap>
-          <CheckWrap>
-            <label htmlFor="check4">[선택] 광고성 정보 SMS 수신 동의</label>
-            <CheckBox type="checkbox" id="check4" required />
-          </CheckWrap>
+        <div className="radio-container">
+          <RadioWrap>
+            <RadioButton id="radio1" name="userInfoCheck" value="oneYear" />
+            <label htmlFor="radio1">1년</label>
+          </RadioWrap>
+          <RadioWrap>
+            <RadioButton id="radio2" name="userInfoCheck" value="threeYear" />
+            <label htmlFor="radio2">3년</label>
+          </RadioWrap>
+          <RadioWrap>
+            <RadioButton id="radio3" name="userInfoCheck" value="infoQuit" />
+            <label htmlFor="radio3">회원탈퇴시</label>
+          </RadioWrap>
         </div>
-        <SignRadioBoxWrap>
-          <p>
-            <span>*</span> 개인정보 유효기간 선택
-          </p>
+      </SignRadioBoxWrap>
 
-          <div className="radio-container">
-            <RadioWrap>
-              <input
-                type="radio"
-                id="radio1"
-                name="userInfoCheck"
-                value="oneYear"
-              />
-              <label htmlFor="radio1">1년</label>
-            </RadioWrap>
-            <RadioWrap>
-              <input
-                type="radio"
-                id="radio2"
-                name="userInfoCheck"
-                value="threeYear"
-              />
-              <label htmlFor="radio2">3년</label>
-            </RadioWrap>
-            <RadioWrap>
-              <input
-                type="radio"
-                id="radio3"
-                name="userInfoCheck"
-                value="infoQuit"
-              />
-              <label htmlFor="radio3">회원탈퇴시</label>
-            </RadioWrap>
-          </div>
-        </SignRadioBoxWrap>
-      </SignCheckBoxWrap>
       <button type="submit" className="sign-confirm-btn">
         가입하기
       </button>
