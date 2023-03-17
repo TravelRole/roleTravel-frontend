@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Button from "../../components/Button";
 
 const LoginWrap = styled.div`
   height: 100vh;
@@ -61,17 +62,6 @@ const LoginHeader = styled.div`
       font-weight: lighter;
     }
   }
-  button {
-    width: 100%;
-    padding: 10px 0;
-    color: #fff;
-    background-color: #3884fd;
-    font-size: 0.9rem;
-    font-weight: lighter;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
 `;
 
 const LoginContent = styled.div`
@@ -91,16 +81,6 @@ const LoginContent = styled.div`
       padding: 18px 30px;
       border: 1px solid #ddd;
       outline: none;
-    }
-    button {
-      width: 60%;
-      padding: 10px 0;
-      margin-top: 20px;
-      border: none;
-      background-color: black;
-      color: #fff;
-      border-radius: 5px;
-      cursor: pointer;
     }
   }
 
@@ -138,14 +118,18 @@ const Login = () => {
               로그인하세요.
             </dd>
           </dl>
-          <button>Sign in with Google</button>
+          <Button color="#3884fd" size="full">
+            Sign in with Google
+          </Button>
         </LoginHeader>
         <p>또는</p>
         <LoginContent>
           <form>
             <input type="text" placeholder="아이디를 입력해주세요." />
             <input type="password" placeholder="비밀번호를 입력해주세요." />
-            <button type="submit">기존 회원 로그인</button>
+            <Button type="submit" color="#000" size="large">
+              기존 회원 로그인
+            </Button>
           </form>
           <ul>
             <li>

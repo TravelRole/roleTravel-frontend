@@ -2,30 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Container } from "../../components/Container";
-
-const Header = styled.header`
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 30px;
-
-  h1 {
-    font-size: 1.7rem;
-    font-weight: bold;
-  }
-  div {
-    button {
-      padding: 10px 20px;
-      border-radius: 10px;
-      border: none;
-      background-color: #3884fd;
-      color: #fff;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-  }
-`;
+import Header from "../layout/Header";
 
 const BannerWrap = styled.section`
   background-color: #3884fd;
@@ -75,15 +52,7 @@ const Landing = () => {
   const navigate = useNavigate();
   return (
     <>
-      <Header>
-        <Container flex alignCenter justifySpace>
-          <h1>로고</h1>
-          <div>
-            <button onClick={() => navigate("/login")}>Login/Join</button>
-            {/* login 시에 보일 프로필 (프로필 클릭시 드롭앤다운으로 정보관리, 로그아웃 보이도록함.) */}
-          </div>
-        </Container>
-      </Header>
+      <Header />
       <BannerWrap>
         <Container>
           <div>

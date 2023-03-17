@@ -63,14 +63,7 @@ const SearchPw = () => {
           setSearchEmailData={setSearchEmailData}
           setSearchPhoneData={setSearchPhoneData}
         />
-        <Button
-          type="submit"
-          width={"30%"}
-          border={"none"}
-          color={"#3884fd"}
-          fontColor={"#fff"}
-          margin={"0 auto"}
-        >
+        <Button type="submit" size="medium" color={"#3884fd"} margin={"0 auto"}>
           비밀번호 찾기
         </Button>
       </form>

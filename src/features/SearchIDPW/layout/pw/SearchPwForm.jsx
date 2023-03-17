@@ -184,13 +184,7 @@ const SearchPwForm = ({
                   value={currentData.email}
                   onChange={onChangeInput}
                 />
-                <Button
-                  type="button"
-                  border={"none"}
-                  color={"#ddd"}
-                  fontColor={"#555"}
-                  onClick={getAuthNumber}
-                >
+                <Button type="button" color="#ddd" onClick={getAuthNumber}>
                   인증번호 전송
                 </Button>
               </InputBox>

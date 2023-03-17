@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import Button from "../../../components/Button";
 import RadioButton from "../../../components/RadioButton";
 import SignCheckBox from "./SignCheckBox";
 import SignInput from "./SignInput";
@@ -20,16 +21,6 @@ const SignFormWrap = styled.form`
   flex-direction: column;
   gap: 30px;
   width: 100%;
-
-  .sign-confirm-btn {
-    padding: 20px 0;
-    font-size: 1.3rem;
-    border: none;
-    background-color: #3884fd;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-  }
 `;
 
 const SignUserInfo = styled.div`
@@ -248,9 +239,9 @@ const SignForm = () => {
         </div>
       </SignRadioBoxWrap>
 
-      <button type="submit" className="sign-confirm-btn">
+      <Button type="submit" size="full" color="#3884fd">
         가입하기
-      </button>
+      </Button>
     </SignFormWrap>
   );
 };

@@ -74,14 +74,7 @@ const SearchId = () => {
             setSearchEmailData={setSearchEmailData}
             setSearchPhoneData={setSearchPhoneData}
           />
-          <Button
-            type="submit"
-            width={"30%"}
-            border={"none"}
-            color={"#3884fd"}
-            fontColor={"#fff"}
-            margin={"0 auto"}
-          >
+          <Button type="submit" size="medium" margin="0 auto" color="#3884fd">
             아이디 찾기
           </Button>
         </form>
