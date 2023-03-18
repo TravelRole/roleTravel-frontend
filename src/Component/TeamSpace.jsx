@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import Leader from "../features/Role/Leader";
 import Allplan from "../features/Role/Allplan";
-import Schedule from "../features/Role//Schedule/Schedule";
 import Reservation from "../features/Role/Reservation";
 import Account from "../features/Role/Account";
 import Essentials from "../features/Role/Essentials";
+import Schedule from "../features/Role/Schedule/Schedule"
 
 const TeamSpaceBox = styled.div`
   display: flex;

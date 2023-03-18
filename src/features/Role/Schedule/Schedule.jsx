@@ -1,13 +1,6 @@
 import { useState } from "react";
+import Owner from "./Owner/Owner";
 
-// AIzaSyBXXkjAR0duRfDCQN3Lil459ky2Ws1V248
-function Owner() {
-  return (
-    <>
-      <div>Owner page</div>
-    </>
-  );
-}
 
 function Guest() {
   return (
