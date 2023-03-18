@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
+import Icons from "../assets/icon/icon";
 
 const SidebarContainer = styled.div`
   display: flex;
@@ -43,13 +44,12 @@ const Li = styled.li`
   }
 
   @media (max-width: 800px) {
-    color: red;
     width: 100%;
   }
 `;
-const Icon = styled.div`
+const IconBox = styled.div`
   display: flex;
-  padding-right: 0.75rem;
+  padding-right: 1rem;
 `;
 
 const List = styled.span`
@@ -100,7 +100,9 @@ function Sidebar() {
                   onClick={() => setActive(index)}
                   actived={active === index ? true : false}
                 >
-                  <Icon>🌈</Icon>
+                  <IconBox>
+                    <Icons.TfiPencilAlt />
+                  </IconBox>
                   <List>{item.pathname}</List>
                 </Li>
               </Link>
@@ -108,7 +110,12 @@ function Sidebar() {
           })}
 
           <Link to={`/${UserId}`}>
-            <Li>여행목록 돌아가기</Li>
+            <Li>
+              <IconBox>
+                <Icons.TfiPencilAlt />
+              </IconBox>
+              <List>여행목록 돌아가기</List>
+            </Li>
           </Link>
         </Ul>
       </SidebarContainer>
