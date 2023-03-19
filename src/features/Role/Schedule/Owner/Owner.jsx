@@ -1,50 +1,98 @@
-import React from "react";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import React, { useState } from "react";
+import {
+  GoogleMap,
+  StandaloneSearchBox,
+  useLoadScript,
+} from "@react-google-maps/api";
 
 const containerStyle = {
   width: "1000px",
   height: "700px",
+  padding: "5px",
+  boxSizing: "border-box",
 };
 
 const center = {
   lat: 37.49600571224722,
   lng: 126.9544510542145,
 };
+const options = {
+  disableDefaultUI: true, // 구글맵 내부의 지도, 위성 버튼을 감춘다.
+};
+const libraries = ["places"];
 
-function Owner() {
-  const { isLoaded } = useJsApiLoader({
+function Owner({ onSearch }) {
+  const { isLoaded } = useLoadScript({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyBXXkjAR0duRfDCQN3Lil459ky2Ws1V248",
+    libraries: libraries,
+    language: "ko",
   });
 
-  const [map, setMap] = React.useState(null);
+  const [searchBox, setSearchBox] = useState(null);
+  const [place, setPlace] = useState([]);
+  const onPlacesChanged = () => {
+    const places = searchBox.getPlaces();
+    setPlace(places);
+  };
+  const onSBLoad = (ref) => {
+    setSearchBox(ref);
+  };
 
-  const onLoad = React.useCallback(function callback(map) {
-    // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
-
-    setMap(map);
-  }, []);
-
-  const onUnmount = React.useCallback(function callback(map) {
-    setMap(null);
-  }, []);
-
-  return isLoaded ? (
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      center={center}
-      zoom={5}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-    >
-      {/* Child components, such as markers, info windows, etc. */}
-      <></>
-    </GoogleMap>
-  ) : (
-    <></>
+  return (
+    <>
+      {isLoaded ? (
+        <>
+        <div style={{display:"flex" ,flexDirection:"row"}}>
+            <div>
+            {place.map((item) => (
+              <div>
+                {item.name}
+                {JSON.stringify(item.geometry.location)}
+              </div>
+            ))}
+            </div>
+          
+          <div>
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={18}
+              options={options}
+            >
+              <StandaloneSearchBox
+                onPlacesChanged={onPlacesChanged}
+                onLoad={onSBLoad}
+              >
+                <input
+                  type="text"
+                  placeholder="장소를 검색해보세요"
+                  style={{
+                    boxSizing: `border-box`,
+                    border: `1px solid transparent`,
+                    width: `240px`,
+                    height: `32px`,
+                    padding: `0 12px`,
+                    borderRadius: `3px`,
+                    boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+                    fontSize: `14px`,
+                    outline: `none`,
+                    textOverflow: `ellipses`,
+                    position: "absolute",
+                    left: "15%",
+                    marginLeft: "-120px",
+                  }}
+                />
+              </StandaloneSearchBox>
+            </GoogleMap>
+          </div>
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }
 
-export default Owner;
+export default React.memo(Owner);

@@ -22,6 +22,7 @@ const SpaceContainer = styled.div`
   height: 100vh;
   border: 1px solid black;
   flex-direction: column;
+  overflow: scroll;
 `;
 
 function TeamSpace({ Auth }) {
