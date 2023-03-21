@@ -8,7 +8,7 @@ function Schedule() {
 
   return (
     <>
-      <div>Schedule page</div>
+      <div>{Mode === true ? "Owner page" : "Guest page" }</div>
       <button onClick={() => setMode((item) => !item)}>버튼</button>
       {
         {
