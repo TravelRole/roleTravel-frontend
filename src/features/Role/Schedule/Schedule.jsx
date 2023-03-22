@@ -8,8 +8,8 @@ function Schedule() {
 
   return (
     <>
-      <div>{Mode === true ? "Owner page" : "Guest page" }</div>
-      <button onClick={() => setMode((item) => !item)}>버튼</button>
+      {/* <div>{Mode === true ? "Owner page" : "Guest page" }</div>
+      <button onClick={() => setMode((item) => !item)}>버튼</button> */}
       {
         {
           true: <Owner />,
