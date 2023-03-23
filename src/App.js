@@ -1,6 +1,7 @@
 import React from "react";
 import Router from "./Router";
 import { createGlobalStyle } from "styled-components";
+import "react-datepicker/dist/react-datepicker.css";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,

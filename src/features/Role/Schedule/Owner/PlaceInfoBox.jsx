@@ -20,7 +20,12 @@ const PhoneNumber = styled.div`
   margin-bottom: 5px;
 `;
 
-const ImagesSlide = styled.div``;
+const ImagesSlide = styled.div`
+
+img{
+  transition : 0.3s;
+}
+`;
 
 function PlaceInfoBox({ place, onPlaceMarking }) {
   console.log(place);

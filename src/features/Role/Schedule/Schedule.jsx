@@ -3,19 +3,19 @@ import Owner from "./Owner/Owner";
 import Guest from "./Guest/Guest";
 
 
+
 function Schedule() {
   const [Mode, setMode] = useState(true);
 
   return (
     <>
-      {/* <div>{Mode === true ? "Owner page" : "Guest page" }</div>
-      <button onClick={() => setMode((item) => !item)}>버튼</button> */}
-      {
+      {/* {
         {
           true: <Owner />,
           false: <Guest />,
         }[Mode]
-      }
+      } */}
+      <Owner />
     </>
   );
 }
