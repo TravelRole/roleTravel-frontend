@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
+import Notimages from "../../../../assets/images/NotFound404.png"
 
 const PlaceInfoContainer = styled.div`
   padding: 1rem;
@@ -53,8 +54,8 @@ function PlaceInfoBox({ place, onPlaceMarking }) {
           <PhoneNumber>{formatted_phone_number}</PhoneNumber>
           <ImagesSlide>
             <img
-              src={photos ? photos[slideIndex].getUrl() : ""}
-              style={{ width: "80%" }}
+              src={photos.length > 1 ? photos[slideIndex].getUrl() : Notimages}
+              style={{ width: "80%" ,border:"1px solid black" }}
               alt="NoImages"
             ></img>
           </ImagesSlide>

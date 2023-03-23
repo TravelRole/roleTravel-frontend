@@ -21,8 +21,10 @@ const PhoneNumber = styled.div`
 
 function WantedPlace({ place, index, setCenter, showAddModal }) {
   const { name, formatted_address, formatted_phone_number, geometry } = place;
-  const lat = geometry.location.lat();
-  const lng = geometry.location.lng();
+  // const lat = geometry.location.lat();
+  // const lng = geometry.location.lng();
+  const lat = geometry.lat
+  const lng = geometry.lng
   console.log(index);
   return (
     <>

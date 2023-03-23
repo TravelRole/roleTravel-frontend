@@ -53,6 +53,10 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+.App{
+  width:100%;
+  height:100vh;
+}
 `;
 
 function App() {

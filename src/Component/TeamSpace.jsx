@@ -12,33 +12,20 @@ import Schedule from "../features/Role/Schedule/Schedule";
 const TeamSpaceBox = styled.div`
   display: flex;
   flex-direction: row;
-  width:100%
-  height: 100vh;
+  width:100%;
+  height: 100%;
   align-items: center;
+  position:fixed;
  
 `;
 
 const SpaceContainer = styled.div`
   display: flex;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   flex-direction: column;
- 
-  border : 5px solid blue;
-  &::-webkit-scrollbar-button {
-    width: 0;
-    height: 0;
-  }
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 3px;
-    background-color: #cdcdf4;
-  }
+  position: relative;
+  border: 5px solid blue;
 `;
 
 function TeamSpace({ Auth }) {

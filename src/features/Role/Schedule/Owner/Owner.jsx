@@ -17,8 +17,11 @@ const Wrapper = styled.div`
   height: 100%;
   flex-direction: column;
   border: 5px solid aqua;
-  position: relative;
-  overflow: hidden scroll;
+  position: absolute;
+  /* overflow: hidden scroll; */
+  overflow: ${(props) =>
+    props.isAddModal ? "hidden hidden" : "hidden scroll"};
+
   &::-webkit-scrollbar-button {
     width: 0;
     height: 0;
@@ -39,16 +42,15 @@ const OwnerWrapper = styled.div`
   flex-direction: row;
   width: 100%;
   height: 700px;
-  border: 10px solid black;
+  /* height: 100%; */
+  /* border: 5px solid black; */
   margin-bottom: 0;
-  position: relative;
 `;
 
 const PlaceListBox = styled.div`
-  width: 30%;
-  height:100%;
-  /* border-bottom: 1px solid gray; */
-  border:1px solid black;
+  width: 22%;
+  /* height: 100%; */
+  height: 700px;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
   overflow: scroll;
 
@@ -68,12 +70,10 @@ const PlaceListBox = styled.div`
   }
 `;
 
-const WantPlaceInfoBox = styled(PlaceListBox)`
-  width: 30%;
-`;
+const WantPlaceInfoBox = styled(PlaceListBox)``;
 
 const GoogleMapBox = styled.div`
-  width: 70%;
+  width: 56%;
   height: 100%;
   /* border: 1px solid black; */
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
@@ -81,6 +81,7 @@ const GoogleMapBox = styled.div`
 
 const ScheduleContainer = styled.div`
   border: 5px solid pink;
+  /* height:1000px; */
 `;
 
 const containerStyle = {
@@ -94,6 +95,25 @@ const options = {
   mapTypeControl: false, // 구글맵 내부의 지도, 위성 버튼을 감춘다.
   ZoomControl: true,
 };
+
+const NearSpaceData = [
+  {
+    name: "아쯔다무라",
+    formatted_address: "해운대 473-6",
+    formatted_phone_number: "010-8558-0728",
+    photos: ["없음"],
+    website: "www.naver.com",
+    geometry: { lat: 35.19444383571, lng: 129.11940758542 },
+  },
+  {
+    name: "제주거리",
+    formatted_address: "제주 473-6",
+    formatted_phone_number: "010-8558-0728",
+    photos: ["없음"],
+    website: "www.naver.com",
+    geometry: { lat: 33.4996213, lng: 126.5311884 },
+  },
+];
 
 const MarkerList = [];
 
@@ -109,7 +129,8 @@ function Owner() {
 
   // 주변검색창 및 검색 함수
   const [nearSearchBox, setnearSearchBox] = useState();
-  const [nearPlaces, setNearPlace] = useState([]);
+  // const [nearPlaces, setNearPlace] = useState([]);
+  const [nearPlaces, setNearPlace] = useState(NearSpaceData);
 
   const searchNearPlace = () => {
     const placesInfo = nearSearchBox.getPlaces();
@@ -169,10 +190,13 @@ function Owner() {
   // };
 
   const onPlaceMarking = (place) => {
+    console.log(place);
     if (place) {
       MarkerList.push(place);
-      const x = place.geometry.location.lat();
-      const y = place.geometry.location.lng();
+      // const x = place.geometry.location.lat();
+      // const y = place.geometry.location.lng();
+      const x = place.geometry.lat;
+      const y = place.geometry.lng;
       setCenter(x, y);
     } else {
       console.log("im placeMarking error");
@@ -218,7 +242,7 @@ function Owner() {
     <>
       {isLoaded ? (
         <>
-          <Wrapper>
+          <Wrapper isAddModal={isAddModal}>
             <OwnerWrapper>
               <PlaceListBox>
                 {nearPlaces.length === 0
@@ -244,7 +268,7 @@ function Owner() {
                   onLoad={(map) => (mapRef.current = map)}
                 >
                   {/* 주변 검색기능 */}
-                  <StandaloneSearchBox
+                  {/* <StandaloneSearchBox
                     onPlacesChanged={searchNearPlace}
                     onLoad={(ref) => setnearSearchBox(ref)}
                   >
@@ -266,7 +290,7 @@ function Owner() {
                         left: "15px",
                       }}
                     />
-                  </StandaloneSearchBox>
+                  </StandaloneSearchBox> */}
 
                   {/* 자동완성기능 */}
                   {/* <Autocomplete
@@ -308,19 +332,21 @@ function Owner() {
                             strokeWeight: 2,
                           }}
                           position={{
-                            lat: item.geometry.location.lat(),
-                            lng: item.geometry.location.lng(),
+                            // lat: item.geometry.location.lat(),
+                            // lng: item.geometry.location.lng(),
+                            lat: item.geometry.lat,
+                            lng: item.geometry.lng,
                           }}
                         />
                       );
                     })}
 
-                  <Marker
+                  {/* <Marker
                     icon={
                       "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
                     }
                     position={{ lat: 37.4953064, lng: 126.9551549 }}
-                  />
+                  /> */}
                 </GoogleMap>
               </GoogleMapBox>
 
@@ -342,19 +368,34 @@ function Owner() {
               </WantPlaceInfoBox>
             </OwnerWrapper>
             <ScheduleContainer>
-              일정관리<br/>
-              일정관리<br/>
-              일정관리<br/>
-              일정관리<br/>
-              일정관리<br/>
-              일정관리<br/>
-              일정관리<br/>
-              일정관리<br/>
-              일정관리<br/>
-              일정관리<br/>
-              일정관리<br/>
-              일정관리<br/>
-
+              일정관리
+              <br />
+              일정관리
+              <br />
+              일정관리
+              <br />
+              일정관리
+              <br />
+              일정관리
+              <br />
+              일정관리
+              <br />
+              일정관리
+              <br />
+              일정관리
+              <br />
+              일정관리
+              <br />
+              일정관리
+              <br />
+              일정관리
+              <br />
+              일정관리
+              <br />
+              일정관리
+              <br />
+              일정관리
+              <br />
             </ScheduleContainer>
             {isAddModal ? (
               <AddSpaceModal
