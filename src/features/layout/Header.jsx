@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import { Container } from "../../components/Container";
+import logo from "../../assets/images/logo.png";
 
 const HeaderWrap = styled.header`
   padding: 20px;
@@ -14,6 +15,10 @@ const HeaderWrap = styled.header`
     flex: 1;
     font-size: 1.7rem;
     font-weight: bold;
+    img {
+      width: 30%;
+      min-width: 100px;
+    }
   }
   div {
     display: flex;
@@ -27,7 +32,9 @@ const Header = () => {
   return (
     <HeaderWrap>
       <Container flex alignCenter justifySpace>
-        <h1>로고</h1>
+        <h1>
+          <img src={logo} alt="여행역할 로고" />
+        </h1>
         <div>
           <Button
             size="medium"

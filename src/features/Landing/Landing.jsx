@@ -69,6 +69,8 @@ const Landing = () => {
               </dd>
             </dl>
             {/* 여행 목록 페이지로 이동 (로그인 유무에 따라 로그인페이지로 이동 or 여행 목록페이지로 이동) */}
+            {/* userid 가 있다면, userid 의 여행 게획 리스트 페이지로 이동 */}
+            {/* userid 가 없다면, login 페이지로 이동함 */}
             <button>시작하기</button>
           </div>
         </Container>

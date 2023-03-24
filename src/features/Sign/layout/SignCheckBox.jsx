@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
 const SignCheckBoxWrap = styled.div`
@@ -46,56 +46,74 @@ const CheckBox = styled.input`
 
 const checkData = [
   {
-    id: 1,
+    id: "check1",
     span: `[필수] `,
     title: `이용 약관 동의`,
     isRequired: true,
   },
   {
-    id: 2,
+    id: "check2",
     span: `[필수] `,
     title: `개인정보 수집 및 이용 동의`,
     isRequired: true,
   },
   {
-    id: 3,
+    id: "check3",
     span: `[선택] `,
     title: `광고성 정보 이메일 수신 동의`,
     isRequired: false,
   },
   {
-    id: 4,
+    id: "check4",
     span: `[선택] `,
     title: `광고성 정보 SMS 수신 동의`,
     isRequired: false,
   },
 ];
 
-const SignCheckBox = () => {
+const SignCheckBox = ({ setFormData, formData }) => {
   // 체크된 아이템을 담을 배열
   const [checkItems, setCheckItems] = useState([]);
 
   const handleSingleCheck = useCallback(
-    (checked, id) => {
+    (e) => {
+      const { name, checked } = e.target;
       if (checked) {
-        setCheckItems((prev) => [...prev, id]);
+        setCheckItems((prev) => [...prev, name]);
+        setFormData({
+          ...formData,
+          check: { ...formData.check, [name]: checked },
+        });
       } else {
-        setCheckItems(checkItems.filter((item) => item !== id));
+        setCheckItems(checkItems.filter((item) => item !== name));
+        setFormData({
+          ...formData,
+          check: { ...formData.check, [name]: checked },
+        });
       }
     },
-    [checkItems]
+    [checkItems, formData, setFormData]
   );
 
-  const handleAllCheck = useCallback((e) => {
-    if (e.target.checked) {
-      const idArray = [];
-
-      checkData.forEach((data) => idArray.push(data.id));
-      setCheckItems(idArray);
-    } else {
-      setCheckItems([]);
-    }
-  }, []);
+  const handleAllCheck = useCallback(
+    (e) => {
+      if (e.target.checked) {
+        const idArray = [];
+        checkData.forEach((data) => {
+          formData.check[data.id] = true;
+          idArray.push(data.id);
+        });
+        setCheckItems(idArray);
+      } else {
+        setCheckItems([]);
+        setFormData({
+          ...formData,
+          check: { check1: false, check2: false, check3: false, check4: false },
+        });
+      }
+    },
+    [formData]
+  );
 
   return (
     <SignCheckBoxWrap>
@@ -118,18 +136,19 @@ const SignCheckBox = () => {
         {checkData.map((item) => (
           <CheckWrap
             key={item.id}
-            color={item.id === 1 || item.id === 2 ? "red" : "black"}
+            color={
+              item.id === "check1" || item.id === "check2" ? "red" : "black"
+            }
           >
-            <label htmlFor={`check${item.id}`}>
+            <label htmlFor={item.id}>
               <span>{item.span}</span>
               {item.title}
             </label>
             <CheckBox
               type="checkbox"
-              name={`check${item.id}`}
-              id={`check${item.id}`}
+              name={item.id}
               required={item.isRequired}
-              onChange={(e) => handleSingleCheck(e.target.checked, item.id)}
+              onChange={handleSingleCheck}
               checked={checkItems.includes(item.id) ? true : false}
             />
           </CheckWrap>

@@ -1,15 +1,9 @@
-import React, { useState } from "react";
+import React, { Children, useCallback, useState } from "react";
 import DatePicker from "react-datepicker";
 import styled from "styled-components";
 import Button from "../../../components/Button";
 
-const AddSpaceDialog = styled.dialog`
-  border: none;
-  padding: 50px;
-  &::backdrop {
-    background: rgba(107, 114, 128, 0.75);
-  }
-
+const AddModalWrap = styled.div`
   h3 {
     font-size: 1.4rem;
     font-weight: 600;
@@ -18,19 +12,16 @@ const AddSpaceDialog = styled.dialog`
   }
 
   form {
-    display: flex;
-    gap: 10px;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-end;
+    width: 100%;
     dl {
+      width: 100%;
       display: flex;
-      gap: 20px;
       align-items: center;
       dt {
-        flex: 1;
+        width: 20%;
       }
       dd {
+        width: 80%;
         input {
           padding: 10px 20px;
           width: 100%;
@@ -40,19 +31,36 @@ const AddSpaceDialog = styled.dialog`
           &::placeholder {
             font-size: 1rem;
           }
+          &.react-datepicker-ignore-onclickoutside {
+            cursor: pointer;
+            &:focus {
+              color: transparent;
+              text-shadow: 0 0 0 black;
+              outline: none;
+            }
+          }
         }
       }
     }
     button.submitBtn {
       margin-top: 20px;
+      float: right;
     }
   }
 `;
 
-const AddSpaceModal = ({ modalRef }) => {
-  const [startDate, setStartDate] = useState(new Date());
+const AddSpaceModal = ({ setIsAddModal }) => {
+  const [today, setToday] = useState(new Date());
+  const [tomorrow, setTomorrow] = useState(new Date(today));
+  const [currentTomorrow, setCurrentTomorrow] = useState(
+    tomorrow.setDate(today.getDate() + 1)
+  );
+  const [dateRange, setDateRange] = useState([today, currentTomorrow]);
+  const [startDate, endDate] = dateRange;
+  // useMemo 로 변경
+
   return (
-    <AddSpaceDialog id="modal" ref={modalRef}>
+    <AddModalWrap>
       <h3>새 여행 만들기</h3>
       <form action="">
         <dl>
@@ -73,9 +81,13 @@ const AddSpaceModal = ({ modalRef }) => {
           </dt>
           <dd>
             <DatePicker
-              showIcon
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
+              selectsRange={true}
+              startDate={startDate}
+              endDate={endDate}
+              dateFormat="yyyy년 MM월 dd일"
+              onChange={(update) => {
+                setDateRange(update);
+              }}
             />
           </dd>
         </dl>
@@ -91,6 +103,18 @@ const AddSpaceModal = ({ modalRef }) => {
             />
           </dd>
         </dl>
+        <dl>
+          <dt>
+            <label htmlFor="tripMember">총 인원 수</label>
+          </dt>
+          <dd>
+            <input
+              type="number"
+              id="tripMember"
+              placeholder="인원 수를 입력해주세요."
+            />
+          </dd>
+        </dl>
 
         <Button
           className="submitBtn"
@@ -101,7 +125,7 @@ const AddSpaceModal = ({ modalRef }) => {
           확인
         </Button>
       </form>
-    </AddSpaceDialog>
+    </AddModalWrap>
   );
 };
 

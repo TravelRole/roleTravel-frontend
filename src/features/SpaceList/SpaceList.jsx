@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { Container } from "../../components/Container";
@@ -9,17 +9,17 @@ import jejuImage from "../../assets/images/image1.jpg";
 import betImage from "../../assets/images/image2.jpg";
 import gangnenunImage from "../../assets/images/image3.jpg";
 import AddSpaceModal from "./layout/AddSpaceModal";
+import Modal from "../../components/Modal";
 
 const SpaceListContent = styled.section`
   padding: 50px 0;
-  ul {
+  .new-trip {
     display: flex;
     justify-content: right;
-    gap: 10px;
+    margin-bottom: 50px;
   }
 
   div {
-    margin-top: 50px;
     h2 {
       font-size: 1.5rem;
       font-weight: bold;
@@ -60,7 +60,14 @@ const planList = [
 
 function SpaceList({ Auth }) {
   const navigate = useNavigate();
-  const modalRef = useRef(null);
+  const [isAddModal, setIsAddModal] = useState(false);
+  const [today, setToday] = useState(new Date());
+  const [tomorrow, setTomorrow] = useState(new Date(today));
+  const [currentTomorrow, setCurrentTomorrow] = useState(
+    tomorrow.setDate(today.getDate() + 1)
+  );
+  const [dateRange, setDateRange] = useState([today, currentTomorrow]);
+  const [startDate, endDate] = dateRange;
 
   useEffect(() => {
     if (Auth) {
@@ -70,38 +77,25 @@ function SpaceList({ Auth }) {
     }
   }, []);
 
-  const showAddModal = useCallback(() => {
-    modalRef.current.showModal();
-  }, []);
+  const showAddModal = useCallback(() => setIsAddModal(true), []);
 
   return (
     <>
       <Header />
       <Container>
         <SpaceListContent>
-          <ul>
-            <li>
-              <Button
-                color="#3884fd"
-                border="none"
-                fontColor={"white"}
-                size="small"
-              >
-                초대코드 입력
-              </Button>
-            </li>
-            <li>
-              <Button
-                color="#3884fd"
-                border="none"
-                fontColor={"white"}
-                size="small"
-                onClick={showAddModal}
-              >
-                새 여행 만들기
-              </Button>
-            </li>
-          </ul>
+          <div className="new-trip">
+            <Button
+              color="#3884fd"
+              border="none"
+              fontColor={"white"}
+              size="small"
+              onClick={showAddModal}
+            >
+              새 여행 만들기
+            </Button>
+          </div>
+
           <div>
             <h2>여행 계획 목록</h2>
             {planList.map((plan) => (
@@ -110,7 +104,12 @@ function SpaceList({ Auth }) {
           </div>
         </SpaceListContent>
       </Container>
-      <AddSpaceModal modalRef={modalRef} />
+      {/* {isAddModal ? <AddSpaceModal setIsAddModal={setIsAddModal} /> : null} */}
+      {isAddModal ? (
+        <Modal setIsAddModal={setIsAddModal}>
+          <AddSpaceModal />
+        </Modal>
+      ) : null}
     </>
   );
 }

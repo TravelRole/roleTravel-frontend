@@ -1,9 +1,7 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
-
 const LoginWrap = styled.div`
   height: 100vh;
   display: flex;
@@ -107,6 +105,22 @@ const LoginContent = styled.div`
 `;
 
 const Login = () => {
+  const [userId, setUserId] = useState("");
+  const [userPw, setUserPw] = useState("");
+
+  const onChangeInput = useCallback((e) => {
+    const { name, value } = e.target;
+    if (name === "id") {
+      setUserId(value);
+      return;
+    }
+    setUserPw(value);
+  }, []);
+
+  const onLoginSubmit = useCallback((e) => {
+    e.preventDefault();
+  }, []);
+
   return (
     <LoginWrap>
       <LoginContainer>
@@ -124,9 +138,19 @@ const Login = () => {
         </LoginHeader>
         <p>또는</p>
         <LoginContent>
-          <form>
-            <input type="text" placeholder="아이디를 입력해주세요." />
-            <input type="password" placeholder="비밀번호를 입력해주세요." />
+          <form onSubmit={onLoginSubmit}>
+            <input
+              type="text"
+              name="id"
+              placeholder="아이디를 입력해주세요."
+              onChange={onChangeInput}
+            />
+            <input
+              type="password"
+              name="pw"
+              placeholder="비밀번호를 입력해주세요."
+              onChange={onChangeInput}
+            />
             <Button type="submit" color="#000" size="large">
               기존 회원 로그인
             </Button>

@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Button from "../../../components/Button";
 import RadioButton from "../../../components/RadioButton";
+import { setUser, signUp } from "../signSlice";
 import SignCheckBox from "./SignCheckBox";
 import SignInput from "./SignInput";
 
@@ -34,27 +35,6 @@ const SignUserInfo = styled.div`
     gap: 10px;
     display: flex;
     justify-content: space-between;
-  }
-
-  .user-phone {
-    width: 100%;
-    display: flex;
-    button {
-      width: 30%;
-    }
-  }
-
-  .user-auth {
-    display: flex;
-
-    .auth-confirm {
-      margin-right: 10px;
-      width: 20%;
-    }
-
-    .auth-resend {
-      width: 30%;
-    }
   }
 `;
 
@@ -89,21 +69,37 @@ const RadioWrap = styled.div`
 `;
 
 const initialMessage = {
-  name: "",
-  id: "",
-  pw: "",
+  userName: "",
+  userId: "",
+  password: "",
   confirmPw: "",
-  isNotError: false,
 };
 
 const SignForm = () => {
   const [errorData, setErrorData] = useState(initialMessage);
+  const [formData, setFormData] = useState({
+    userName: "",
+    year: "",
+    month: "",
+    day: "",
+    userId: "",
+    password: "",
+    email: "",
+    phoneNumber: "",
+    check: { check1: false, check2: false, check3: false, check4: false },
+    expiration: null,
+  });
+
   const dispatch = useDispatch();
 
-  const onSubmit = useCallback((e) => {
-    e.preventDefault();
-    // dispatch(join)
-  }, []);
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch(setUser(formData));
+      dispatch(signUp(formData));
+    },
+    [dispatch, formData]
+  );
 
   // 포커싱이 사라질 때 유효성 검사를 시작함
   // 1. 빈 값일 경우에 "* 필수 정보입니다."
@@ -119,9 +115,11 @@ const SignForm = () => {
             placeholder: "* 이름(실명)",
             width: "100%",
           }}
-          id={"name"}
+          name={"userName"}
           errorData={errorData}
           setErrorData={setErrorData}
+          setFormData={setFormData}
+          formData={formData}
         />
 
         <div className="user-birth">
@@ -131,9 +129,11 @@ const SignForm = () => {
               placeholder: "* 생년월일/YYYY",
               width: "33%",
             }}
-            id={"y"}
+            name={"year"}
             errorData={errorData}
             setErrorData={setErrorData}
+            setFormData={setFormData}
+            formData={formData}
           />
           <SignInput
             inputProps={{
@@ -141,9 +141,11 @@ const SignForm = () => {
               placeholder: "* MM",
               width: "33%",
             }}
-            id={"m"}
+            name={"month"}
             errorData={errorData}
             setErrorData={setErrorData}
+            setFormData={setFormData}
+            formData={formData}
           />
           <SignInput
             inputProps={{
@@ -151,9 +153,11 @@ const SignForm = () => {
               placeholder: "* DD",
               width: "33%",
             }}
-            id={"d"}
+            name={"day"}
             errorData={errorData}
             setErrorData={setErrorData}
+            setFormData={setFormData}
+            formData={formData}
           />
         </div>
         <SignInput
@@ -162,9 +166,11 @@ const SignForm = () => {
             placeholder: "* 아이디",
             width: "100%",
           }}
-          id={"id"}
+          name={"userId"}
           errorData={errorData}
           setErrorData={setErrorData}
+          setFormData={setFormData}
+          formData={formData}
         />
         <SignInput
           inputProps={{
@@ -172,52 +178,40 @@ const SignForm = () => {
             placeholder: "* 비밀번호 (8~16자의 영문, 숫자, 특수기호)",
             width: "100%",
           }}
-          id={"pw"}
+          name={"password"}
           errorData={errorData}
           setErrorData={setErrorData}
+          setFormData={setFormData}
+          formData={formData}
         />
         <SignInput
           inputProps={{
             type: "email",
             placeholder: "* 이메일",
-            width: "100%",
+            size: "100%",
           }}
-          id={"email"}
+          name={"email"}
           errorData={errorData}
           setErrorData={setErrorData}
+          setFormData={setFormData}
+          formData={formData}
         />
-
-        <div className="user-phone">
-          <SignInput
-            inputProps={{
-              type: "text",
-              placeholder: "* 휴대폰 번호",
-              width: "70%",
-            }}
-            id={"phoneNumber"}
-            errorData={errorData}
-            setErrorData={setErrorData}
-          />
-          <InfoButton>인증번호 전송</InfoButton>
-        </div>
-        <div className="user-auth">
-          <SignInput
-            inputProps={{
-              type: "text",
-              placeholder: "* 인증번호 입력",
-              width: "50%",
-            }}
-            id={"authNumber"}
-            errorData={errorData}
-            setErrorData={setErrorData}
-          />
-          <InfoButton className="auth-confirm">확인</InfoButton>
-          <InfoButton className="auth-resend">재전송</InfoButton>
-        </div>
+        <SignInput
+          inputProps={{
+            type: "text",
+            placeholder: "* 휴대폰 번호",
+            width: "100%",
+          }}
+          name={"phoneNumber"}
+          errorData={errorData}
+          setErrorData={setErrorData}
+          setFormData={setFormData}
+          formData={formData}
+        />
       </SignUserInfo>
 
       {/* check box section */}
-      <SignCheckBox />
+      <SignCheckBox setFormData={setFormData} formData={formData} />
       <SignRadioBoxWrap>
         <p>
           <span>*</span> 개인정보 유효기간 선택

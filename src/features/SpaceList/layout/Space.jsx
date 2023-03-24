@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../../components/Button";
 
@@ -6,6 +7,7 @@ const SpaceWrap = styled.div`
   display: flex;
   align-items: center;
   gap: 30px;
+  margin-bottom: 40px;
 `;
 
 const SpaceTitle = styled.dl`
@@ -41,6 +43,7 @@ const Space = ({
   location,
   members,
 }) => {
+  const navigate = useNavigate();
   return (
     <SpaceWrap>
       <SpaceTitle>
@@ -61,7 +64,11 @@ const Space = ({
           ))}
         </li>
         <li>
-          <Button size="small" color="#3884fd">
+          <Button
+            size="small"
+            color="#3884fd"
+            onClick={() => navigate(`/userid/${id}/allplan`)}
+          >
             팀 스페이스 입장
           </Button>
         </li>
