@@ -9,12 +9,6 @@ function Schedule() {
 
   return (
     <>
-      {/* {
-        {
-          true: <Owner />,
-          false: <Guest />,
-        }[Mode]
-      } */}
       <Owner />
     </>
   );

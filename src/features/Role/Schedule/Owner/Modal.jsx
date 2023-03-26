@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import DatePicker from "react-datepicker";
 import styled from "styled-components";
 import Button from "../../../../components/Button";
 
 const SuperContainer = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -22,7 +21,7 @@ const AddScheduleModal = styled.div`
   height: 400px;
 `;
 
-const AddScheduleBox = styled.div`
+const AddScheduleBox = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -42,25 +41,36 @@ const ButtonContainer = styled.div`
   gap: 5px;
 `;
 
-const InfoSpan = styled.div`
-  overflow: scroll;
-  &::-webkit-scrollbar-button {
-    width: 0;
-    height: 0;
-  }
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 3px;
-    background-color: #cdcdf4;
-  }
-`;
+const AddSpaceModal = ({
+  isAddModal,
+  setIsAddModal,
+  modalPlace,
+  AddScheduleList,
+}) => {
+  const AddSchedule = (e) => {
+    e.preventDefault();
+    const formdata = new FormData(e.currentTarget);
 
-const AddSpaceModal = ({ isAddModal, setIsAddModal, modalPlace }) => {
+    const Day = formdata.get("Day");
+    const time = formdata.get("time");
+    const placeName = formdata.get("placeName");
+    const placeAddress = formdata.get("placeAddress");
+    const reserve = formdata.get("reserve");
+    const WebsiteLink = formdata.get("WebsiteLink");
+    const Extra = formdata.get("Extra");
+    if (time === "") return alert("시간을 지정해주세요");
+    const ScheduleObj = {
+      Day,
+      time,
+      placeName,
+      placeAddress,
+      reserve,
+      WebsiteLink,
+      Extra,
+    };
+    AddScheduleList(ScheduleObj);
+    setIsAddModal(false);
+  };
   return (
     <>
       {isAddModal ? (
@@ -71,37 +81,79 @@ const AddSpaceModal = ({ isAddModal, setIsAddModal, modalPlace }) => {
           }}
         >
           <AddScheduleModal onClick={(e) => e.stopPropagation()}>
-            <AddScheduleBox onClick={(e) => e.stopPropagation()}>
+            <AddScheduleBox onSubmit={AddSchedule}>
               <h2>일정추가하기</h2>
-              <div>일정순서 : 1</div>
-              <div>장소이름 : {modalPlace.name} </div>
-              <div>장소주소 : {modalPlace.formatted_address}</div>
-              <div>시간 : AM 10:00</div>
-              <div>예약여부 : 예약필요</div>
-              <div>링크 : {modalPlace.website && modalPlace.website}</div>
-              <div>비고 : 오늘의 날씨</div>
-            </AddScheduleBox>
+              <div>
+                일정일차 :{" "}
+                <select name="Day">
+                  <option value="1">1일차</option>
+                  <option value="2">2일차</option>
+                  <option value="3">3일차</option>
+                </select>
+              </div>
+              <div>
+                시간 : <input type="time" name="time" />
+              </div>
+              <div>
+                장소 :{" "}
+                <input
+                  type="text"
+                  name="placeName"
+                  value={modalPlace.name}
+                  readonly
+                ></input>{" "}
+              </div>
+              <div>
+                장소주소 :{" "}
+                <input
+                  type="text"
+                  name="placeAddress"
+                  value={modalPlace.formatted_address}
+                  readonly
+                ></input>
+              </div>
 
-            <ButtonContainer onClick={(e) => e.stopPropagation()}>
-              <Button
-                type="submit"
-                color="#3884fd"
-                size="small"
-                onClick={() => setIsAddModal(false)}
-              >
-                취소
-              </Button>
-              <Button
-                type="submit"
-                color="#3884fd"
-                size="small"
-                onClick={() => console.log("im button")}
-              >
-                확인
-              </Button>
-            </ButtonContainer>
+              <div>
+                예약여부 :{" "}
+                <select name="reserve">
+                  <option value="예약불필요">예약불필요</option>
+                  <option value="예약필요">예약필요</option>
+                  <option value="예약완료">예약완료</option>
+                </select>
+              </div>
+              <div>
+                링크 :{" "}
+                <input
+                  type="text"
+                  name="WebsiteLink"
+                  value={modalPlace.website && modalPlace.website}
+                  readonly
+                ></input>
+              </div>
+              <div>
+                비고 :{" "}
+                <input
+                  type="text"
+                  name="Extra"
+                  style={{ width: "300px" }}
+                ></input>
+              </div>
+              <ButtonContainer onClick={(e) => e.stopPropagation()}>
+                <Button
+                  type="button"
+                  color="#3884fd"
+                  size="small"
+                  onClick={() => setIsAddModal(false)}
+                >
+                  취소
+                </Button>
+                <Button type="submit" color="#3884fd" size="small">
+                  확인
+                </Button>
+              </ButtonContainer>
+            </AddScheduleBox>
           </AddScheduleModal>
-    </SuperContainer>
+        </SuperContainer>
       ) : null}
     </>
   );

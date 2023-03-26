@@ -25,7 +25,6 @@ function WantedPlace({ place, index, setCenter, showAddModal }) {
   // const lng = geometry.location.lng();
   const lat = geometry.lat
   const lng = geometry.lng
-  console.log(index);
   return (
     <>
       <PlaceBox>

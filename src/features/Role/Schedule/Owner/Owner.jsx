@@ -10,6 +10,7 @@ import GoogleApi from "./MapApi";
 import PlaceInfoBox from "./PlaceInfoBox";
 import WantedPlace from "./WantedPlace";
 import AddSpaceModal from "./Modal";
+import ScheduleContainer from "./ScheduleContainer";
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,7 +19,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   border: 5px solid aqua;
   position: absolute;
-  /* overflow: hidden scroll; */
   overflow: ${(props) =>
     props.isAddModal ? "hidden hidden" : "hidden scroll"};
 
@@ -42,14 +42,12 @@ const OwnerWrapper = styled.div`
   flex-direction: row;
   width: 100%;
   height: 700px;
-  /* height: 100%; */
-  /* border: 5px solid black; */
+  border: 5px solid purple;
   margin-bottom: 0;
 `;
 
 const PlaceListBox = styled.div`
   width: 22%;
-  /* height: 100%; */
   height: 700px;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
   overflow: scroll;
@@ -77,11 +75,6 @@ const GoogleMapBox = styled.div`
   height: 100%;
   /* border: 1px solid black; */
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-`;
-
-const ScheduleContainer = styled.div`
-  border: 5px solid pink;
-  /* height:1000px; */
 `;
 
 const containerStyle = {
@@ -116,6 +109,7 @@ const NearSpaceData = [
 ];
 
 const MarkerList = [];
+const schedule = { 1: [], 2: [], 3: [] };
 
 function Owner() {
   // 구글 맵 라이브러리 로드하기
@@ -238,11 +232,28 @@ function Owner() {
     setIsAddModal((prev) => !prev);
   }, []);
 
+  // 스케쥴컨테이너 관련코드
+  const [schedulelist , setScheduleList] =useState(schedule)
+  
+  const AddScheduleList = (placeobj) => {
+    console.log(placeobj);
+    const day = placeobj.Day;
+    schedule[day].push(placeobj)
+    setScheduleList(schedule)
+  };
+
+  
+
   return (
     <>
       {isLoaded ? (
         <>
           <Wrapper isAddModal={isAddModal}>
+            <h1
+              style={{ fontSize: "25px", margin: "1rem", fontWeight: "bold" }}
+            >
+              일정
+            </h1>
             <OwnerWrapper>
               <PlaceListBox>
                 {nearPlaces.length === 0
@@ -260,15 +271,15 @@ function Owner() {
                     })}
               </PlaceListBox>
               <GoogleMapBox>
-                <GoogleMap
+                {/* <GoogleMap
                   mapContainerStyle={containerStyle}
                   center={center}
                   zoom={17}
                   options={options}
                   onLoad={(map) => (mapRef.current = map)}
-                >
-                  {/* 주변 검색기능 */}
-                  {/* <StandaloneSearchBox
+                > */}
+                {/* 주변 검색기능 */}
+                {/* <StandaloneSearchBox
                     onPlacesChanged={searchNearPlace}
                     onLoad={(ref) => setnearSearchBox(ref)}
                   >
@@ -292,8 +303,8 @@ function Owner() {
                     />
                   </StandaloneSearchBox> */}
 
-                  {/* 자동완성기능 */}
-                  {/* <Autocomplete
+                {/* 자동완성기능 */}
+                {/* <Autocomplete
                   onLoad={(autocomplete) => setSearchBox(autocomplete)}
                   onPlaceChanged={onPlaceMarking}
                 >
@@ -318,36 +329,36 @@ function Owner() {
                   />
                 </Autocomplete> */}
 
-                  {MarkerList.length !== 0 &&
-                    MarkerList.map((item, i) => {
-                      console.log(item);
-                      return (
-                        <Marker
-                          icon={{
-                            path: "M8 12l-4.7023 2.4721.898-5.236L.3916 5.5279l5.2574-.764L8 0l2.3511 4.764 5.2574.7639-3.8043 3.7082.898 5.236z",
-                            fillColor: "yellow",
-                            fillOpacity: 0.9,
-                            scale: 2,
-                            strokeColor: "gold",
-                            strokeWeight: 2,
-                          }}
-                          position={{
-                            // lat: item.geometry.location.lat(),
-                            // lng: item.geometry.location.lng(),
-                            lat: item.geometry.lat,
-                            lng: item.geometry.lng,
-                          }}
-                        />
-                      );
-                    })}
+                {MarkerList.length !== 0 &&
+                  MarkerList.map((item, i) => {
+                    console.log(item);
+                    return (
+                      <Marker
+                        icon={{
+                          path: "M8 12l-4.7023 2.4721.898-5.236L.3916 5.5279l5.2574-.764L8 0l2.3511 4.764 5.2574.7639-3.8043 3.7082.898 5.236z",
+                          fillColor: "yellow",
+                          fillOpacity: 0.9,
+                          scale: 2,
+                          strokeColor: "gold",
+                          strokeWeight: 2,
+                        }}
+                        position={{
+                          // lat: item.geometry.location.lat(),
+                          // lng: item.geometry.location.lng(),
+                          lat: item.geometry.lat,
+                          lng: item.geometry.lng,
+                        }}
+                      />
+                    );
+                  })}
 
-                  {/* <Marker
-                    icon={
-                      "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                    }
-                    position={{ lat: 37.4953064, lng: 126.9551549 }}
-                  /> */}
-                </GoogleMap>
+                <Marker
+                  icon={
+                    "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                  }
+                  position={{ lat: 37.4953064, lng: 126.9551549 }}
+                />
+                {/* </GoogleMap> */}
               </GoogleMapBox>
 
               <WantPlaceInfoBox>
@@ -367,41 +378,15 @@ function Owner() {
                 })}
               </WantPlaceInfoBox>
             </OwnerWrapper>
-            <ScheduleContainer>
-              일정관리
-              <br />
-              일정관리
-              <br />
-              일정관리
-              <br />
-              일정관리
-              <br />
-              일정관리
-              <br />
-              일정관리
-              <br />
-              일정관리
-              <br />
-              일정관리
-              <br />
-              일정관리
-              <br />
-              일정관리
-              <br />
-              일정관리
-              <br />
-              일정관리
-              <br />
-              일정관리
-              <br />
-              일정관리
-              <br />
-            </ScheduleContainer>
+
+            <ScheduleContainer schedulelist={schedulelist} />
+
             {isAddModal ? (
               <AddSpaceModal
                 modalPlace={modalPlace}
                 isAddModal={isAddModal}
                 setIsAddModal={setIsAddModal}
+                AddScheduleList={AddScheduleList}
               />
             ) : null}
           </Wrapper>
