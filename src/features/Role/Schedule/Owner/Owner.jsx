@@ -297,13 +297,13 @@ function Owner({setReserveList}) {
                     })}
               </PlaceListBox>
               <GoogleMapBox>
-                {/* <GoogleMap
+                <GoogleMap
                   mapContainerStyle={containerStyle}
                   center={center}
                   zoom={17}
                   options={options}
                   onLoad={(map) => (mapRef.current = map)}
-                > */}
+                >
                 {/* 주변 검색기능 */}
                 {/* <StandaloneSearchBox
                     onPlacesChanged={searchNearPlace}
@@ -384,7 +384,7 @@ function Owner({setReserveList}) {
                   }
                   position={{ lat: 37.4953064, lng: 126.9551549 }}
                 />
-                {/* </GoogleMap> */}
+                </GoogleMap>
               </GoogleMapBox>
 
               <WantPlaceInfoBox>
