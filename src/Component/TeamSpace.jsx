@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import Leader from "../features/Role/Leader";
 import Allplan from "../features/Role/Allplan";
-import Reservation from "../features/Role/Reservation";
+import Reservation from "../features/Role/Reservation/Reservation";
 import Account from "../features/Role/Account";
-import Essentials from "../features/Role/Essentials";
+import Essentials from "../features/Role/Essentials/Essentials";
 import Schedule from "../features/Role/Schedule/Schedule";
 
 const TeamSpaceBox = styled.div`
@@ -41,6 +41,8 @@ function TeamSpace({ Auth }) {
     }
   }, []);
 
+  const [reserveList , setReserveList] =useState([]) 
+
   return (
     <>
       <TeamSpaceBox>
@@ -50,8 +52,8 @@ function TeamSpace({ Auth }) {
             {
               allplan: <Allplan />,
               leader: <Leader />,
-              schedule: <Schedule />,
-              reservation: <Reservation />,
+              schedule: <Schedule setReserveList={setReserveList}/>,
+              reservation: <Reservation reserveList={reserveList}/>,
               account: <Account />,
               essentials: <Essentials />,
             }[role]

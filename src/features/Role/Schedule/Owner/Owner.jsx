@@ -106,12 +106,28 @@ const NearSpaceData = [
     website: "www.naver.com",
     geometry: { lat: 33.4996213, lng: 126.5311884 },
   },
+  {
+    name: "속초해수욕장",
+    formatted_address: "강원도 473-6",
+    formatted_phone_number: "010-8558-0728",
+    photos: ["없음"],
+    website: "www.naver.com",
+    geometry: { lat: 38.2070148, lng: 128.5918488 },
+  },
+  {
+    name: "여수",
+    formatted_address: "여수 473-6",
+    formatted_phone_number: "010-8558-0728",
+    photos: ["없음"],
+    website: "www.naver.com",
+    geometry: { lat: 34.7603737, lng: 127.6622221 },
+  },
 ];
 
-const MarkerList = [];
+// let MarkerList = [];
 const schedule = { 1: [], 2: [], 3: [] };
 
-function Owner() {
+function Owner({setReserveList}) {
   // 구글 맵 라이브러리 로드하기
   const { isLoaded } = GoogleApi.useJsApiLoader();
 
@@ -240,7 +256,17 @@ function Owner() {
     const day = placeobj.Day;
     schedule[day].push(placeobj)
     setScheduleList(schedule)
+    setReserveList(schedule)
   };
+
+  //DeletPlace 관련 및 마커 찍는 코드
+
+  const [MarkerList ,setMarkerList] = useState([]);
+
+  const DeletePlace = (place) => {
+    const NewMarker = MarkerList.filter((item)=> item.name !== place.name)
+    setMarkerList(NewMarker)
+  }
 
   
 
@@ -363,7 +389,7 @@ function Owner() {
 
               <WantPlaceInfoBox>
                 {MarkerList.map((place, i) => {
-                  console.log(place);
+
                   return (
                     <>
                       <WantedPlace
@@ -372,6 +398,7 @@ function Owner() {
                         index={i}
                         setCenter={setCenter}
                         showAddModal={showAddModal}
+                        DeletePlace={DeletePlace}
                       />
                     </>
                   );

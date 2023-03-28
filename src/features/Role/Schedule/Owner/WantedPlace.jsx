@@ -19,7 +19,7 @@ const PhoneNumber = styled.div`
   margin-bottom: 5px;
 `;
 
-function WantedPlace({ place, index, setCenter, showAddModal }) {
+function WantedPlace({ place, index, setCenter, showAddModal ,DeletePlace }) {
   const { name, formatted_address, formatted_phone_number, geometry } = place;
   // const lat = geometry.location.lat();
   // const lng = geometry.location.lng();
@@ -31,9 +31,9 @@ function WantedPlace({ place, index, setCenter, showAddModal }) {
         <PlaceName>{`${index + 1}. ${name}`}</PlaceName>
         <Address>{formatted_address}</Address>
         <PhoneNumber>{formatted_phone_number}</PhoneNumber>
-        <button>삭제하기</button>
+        <button onClick={()=>DeletePlace(place)}>삭제하기</button>
         <button onClick={() => setCenter(lat, lng)}>위치보기</button>
-        <button onClick={()=>showAddModal(place)}>추가하기</button>
+        <button onClick={()=>showAddModal(place)}>일정에 추가하기</button>
       </PlaceBox>
     </>
   );

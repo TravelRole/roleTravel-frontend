@@ -4,12 +4,12 @@ import Guest from "./Guest/Guest";
 
 
 
-function Schedule() {
+function Schedule({setReserveList}) {
   const [Mode, setMode] = useState(true);
 
   return (
     <>
-      <Owner />
+      <Owner setReserveList={setReserveList} />
     </>
   );
 }
