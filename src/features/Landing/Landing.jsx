@@ -1,5 +1,4 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Container } from "../../components/Container";
 import Header from "../layout/Header";
@@ -49,7 +48,6 @@ const Contents = styled.section`
 `;
 
 const Landing = () => {
-  const navigate = useNavigate();
   return (
     <>
       <Header />

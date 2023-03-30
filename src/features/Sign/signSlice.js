@@ -10,7 +10,10 @@ const initialState = {
 };
 
 export const signUp = createAsyncThunk("auth/signup", async (userData) => {
-  const response = await axios.post("/signup", userData);
+  const response = await axios.post(
+    "http://plactical.iptime.org:8089/auth/test",
+    userData
+  );
   return response.data;
 });
 

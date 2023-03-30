@@ -10,6 +10,7 @@ import NotFound from "./features/NotFound/Notfound";
 import SpaceList from "./features/SpaceList/SpaceList";
 import Authorization from "./features/Authorization/Authorization";
 import TeamSpace from "./features/layout/TeamSpace";
+import Social from "./features/Landing/Social";
 
 const routers = [
   {
@@ -60,6 +61,13 @@ const routers = [
     label: "SearchIdPw",
     element: <SearchIdPw />,
     withAuth: false,
+  },
+  {
+    id: 7,
+    path: "/landing/social",
+    label: "LandingSocial",
+    element: <Social />,
+    withAuth: true,
   },
 ];
 

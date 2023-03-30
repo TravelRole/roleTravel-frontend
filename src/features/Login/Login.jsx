@@ -1,7 +1,11 @@
 import React, { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
+import { getUserInfo } from "../Landing/userSlice";
+import { login, refreshTokenAsync } from "./authSlice";
 const LoginWrap = styled.div`
   height: 100vh;
   display: flex;
@@ -105,20 +109,38 @@ const LoginContent = styled.div`
 `;
 
 const Login = () => {
-  const [userId, setUserId] = useState("");
-  const [userPw, setUserPw] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const onChangeInput = useCallback((e) => {
-    const { name, value } = e.target;
-    if (name === "id") {
-      setUserId(value);
-      return;
-    }
-    setUserPw(value);
-  }, []);
+  const onChangeInput = useCallback(
+    (e) => {
+      const { name, value } = e.target;
+      if (name === "id") {
+        setFormData({ ...formData, email: value });
+        return;
+      }
+      setFormData({ ...formData, password: value });
+    },
+    [formData]
+  );
 
-  const onLoginSubmit = useCallback((e) => {
-    e.preventDefault();
+  const onLoginSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch(login(formData));
+    },
+    [dispatch, formData]
+  );
+
+  const onClickRefresh = useCallback(() => {
+    dispatch(refreshTokenAsync());
+  }, [dispatch]);
+
+  const onClickGoogle = useCallback(() => {
+    window.location.assign(`http://localhost:8080/oauth2/authorization/google`);
   }, []);
 
   return (
@@ -132,8 +154,16 @@ const Login = () => {
               로그인하세요.
             </dd>
           </dl>
-          <Button color="#3884fd" size="full">
+          <Button color="#3884fd" size="full" onClick={onClickGoogle}>
             Sign in with Google
+          </Button>
+          <Button
+            color="#3884fd"
+            size="full"
+            onClick={onClickRefresh}
+            margin={"10px 0"}
+          >
+            Refresh
           </Button>
         </LoginHeader>
         <p>또는</p>

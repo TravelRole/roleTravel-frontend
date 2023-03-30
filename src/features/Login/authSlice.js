@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { Cookies } from "react-cookie";
+import { useDispatch } from "react-redux";
+import Cookies from "universal-cookie";
+import tokenApi from "../../lib/customAPI";
+import { getUserInfo } from "../Landing/userSlice";
 
 const cookies = new Cookies();
-
-const API_URL = "http://localhost:8000/api/auth";
 
 const initialState = {
   user: null,
@@ -16,40 +17,49 @@ const initialState = {
 };
 
 //로그인
-export const loginAsync = createAsyncThunk(
-  "auth/login",
-  async ({ email, password }) => {
-    try {
-      const response = await axios.post(`${API_URL}/login`, {
-        email,
-        password,
-      });
-      const { accessToken, refreshToken, user } = response.data;
+export const login = createAsyncThunk("auth/login", async (userData) => {
+  await axios
+    .post("auth/login", userData, { withCredentials: true })
+    .then((res) => {
+      const { accessToken } = res.data;
 
-      cookies.set("refreshToken", refreshToken, { path: "/" });
+      // 로컬스토리지에 accessToken 저장
+      localStorage.setItem("accessToken", accessToken);
+      window.location.replace("/landing");
+      return accessToken;
+    });
+});
 
-      return { accessToken, user };
-    } catch (error) {
-      throw error.response.data;
-    }
+export const testAsync = createAsyncThunk("auth/test", async () => {
+  try {
+    const response = await tokenApi.get("test");
+
+    return response.data;
+  } catch (error) {
+    throw error;
   }
-);
+});
 
-//토큰 갱신
 export const refreshTokenAsync = createAsyncThunk(
   "auth/refreshToken",
-  async () => {
+  async ({ accessToken }) => {
     try {
-      const refreshToken = cookies.get("refreshToken");
+      const response = await axios.post(
+        "auth/refresh",
+        {
+          accessToken: accessToken,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
-      const response = await axios.post(`${API_URL}/refresh-token`, {
-        refreshToken,
-      });
-      const { accessToken } = response.data;
+      const newAccessToken = response.data.accessToken;
+      localStorage.setItem("accessToken", newAccessToken);
 
-      return accessToken;
+      return newAccessToken;
     } catch (error) {
-      throw error.response.data;
+      throw error;
     }
   }
 );
@@ -57,15 +67,11 @@ export const refreshTokenAsync = createAsyncThunk(
 //로그아웃
 export const logoutAsync = createAsyncThunk("auth/logout", async () => {
   try {
-    const refreshToken = cookies.get("refreshToken");
-
-    // cookie에서 refreshToken 삭제
-
-    cookies.remove("refreshToken", { path: "/" });
-
-    await axios.post(`${API_URL}/logout`, { refreshToken });
+    await tokenApi.get(`auth/logout`);
+    localStorage.removeItem("userId");
+    localStorage.removeItem("accessToken");
   } catch (error) {
-    throw error.response.data;
+    throw error;
   }
 });
 
@@ -75,18 +81,23 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(loginAsync.pending, (state) => {
+      .addCase(login.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(loginAsync.fulfilled, (state, action) => {
+      .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.accessToken = action.payload.accessToken;
-        state.user = action.payload.user;
+        state.accessToken = action.payload;
         state.isAuth = true;
       })
-      .addCase(loginAsync.rejected, (state, action) => {
+      .addCase(login.rejected, (state, action) => {
         state.isAuth = false;
         state.accessToken = null;
+        state.error = action.payload;
+      })
+      .addCase(refreshTokenAsync.fulfilled, (state, action) => {
+        state.accessToken = action.payload;
+      })
+      .addCase(refreshTokenAsync.rejected, (state, action) => {
         state.error = action.payload;
       })
       .addCase(logoutAsync.pending, (state) => {
@@ -97,55 +108,9 @@ const authSlice = createSlice({
         state.accessToken = null;
         state.user = null;
         state.isAuth = false;
-      })
-      .addCase(refreshTokenAsync.fulfilled, (state, action) => {
-        state.accessToken = action.payload;
-        state.isLoading = false;
-        state.isAuth = true;
-        state.error = null;
-      })
-      .addCase(refreshTokenAsync.rejected, (state, action) => {
-        state.accessToken = null;
-        state.isLoading = false;
-        state.error = action.payload;
+        window.location.replace("/login");
       });
   },
-});
-
-const api = axios.create({
-  baseURL: `api주소`,
-});
-
-api.interceptors.request.use(async (config) => {
-  //쿠키에서 accessToken 가져오기
-  const { accessToken, refreshToken } = cookies;
-  config.headers.Authorization = `Bearer ${accessToken}`;
-
-  try {
-    const response = await axios.get("/api/auth/validate", {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    return config;
-  } catch (error) {
-    if (error.response.status === 401) {
-      try {
-        const response = await axios.post("/api/auth/refresh", {
-          refreshToken,
-        });
-        const newAccessToken = response.data.accessToken;
-        cookies.set("accessToken", newAccessToken);
-
-        //이전 요청 재시도
-        config.headers.Authorization = `Bearer ${newAccessToken}`;
-        return config;
-      } catch (error) {
-        console.error("로그인이 필요합니다.");
-        throw error;
-      }
-    } else {
-      throw error;
-    }
-  }
 });
 
 export default authSlice.reducer;

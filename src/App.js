@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Router from "./Router";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
+import { useDispatch } from "react-redux";
+import { getUserInfo } from "./features/Landing/userSlice";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -58,6 +60,11 @@ dialog::backdrop{
 `;
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getUserInfo());
+  }, [dispatch]);
+
   return (
     <>
       <GlobalStyle />
