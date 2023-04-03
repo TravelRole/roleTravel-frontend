@@ -53,20 +53,8 @@ const checkData = [
   },
   {
     id: "check2",
-    span: `[필수] `,
-    title: `개인정보 수집 및 이용 동의`,
-    isRequired: true,
-  },
-  {
-    id: "check3",
     span: `[선택] `,
     title: `광고성 정보 이메일 수신 동의`,
-    isRequired: false,
-  },
-  {
-    id: "check4",
-    span: `[선택] `,
-    title: `광고성 정보 SMS 수신 동의`,
     isRequired: false,
   },
 ];
@@ -112,7 +100,7 @@ const SignCheckBox = ({ setFormData, formData }) => {
         });
       }
     },
-    [formData]
+    [formData, setFormData]
   );
 
   return (
@@ -136,9 +124,7 @@ const SignCheckBox = ({ setFormData, formData }) => {
         {checkData.map((item) => (
           <CheckWrap
             key={item.id}
-            color={
-              item.id === "check1" || item.id === "check2" ? "red" : "black"
-            }
+            color={item.id === "check1" ? "red" : "black"}
           >
             <label htmlFor={item.id}>
               <span>{item.span}</span>

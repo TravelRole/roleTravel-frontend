@@ -172,50 +172,12 @@ const SearchPwForm = ({
           </th>
         </tr>
         <tr>
-          <td>
-            {searchAuth === "email-search" ? "이메일 주소" : "휴대폰 번호"}
-          </td>
-          <th>
-            {searchAuth === "email-search" ? (
-              <InputBox>
-                <input
-                  type="email"
-                  id="email"
-                  value={currentData.email}
-                  onChange={onChangeInput}
-                />
-                <Button type="button" color="#ddd" onClick={getAuthNumber}>
-                  인증번호 전송
-                </Button>
-              </InputBox>
-            ) : (
-              <InputBox>
-                <input
-                  type="text"
-                  id="phone"
-                  value={currentData.phone}
-                  onChange={onChangeInput}
-                />
-                <Button
-                  type="button"
-                  border={"none"}
-                  color={"#ddd"}
-                  fontColor={"#555"}
-                  onClick={getAuthNumber}
-                >
-                  인증번호 전송
-                </Button>
-              </InputBox>
-            )}
-          </th>
-        </tr>
-        <tr>
-          <td>인증번호 입력</td>
+          <td>이메일주소</td>
           <th>
             <input
-              type="text"
-              id="authNumber"
-              value={currentData.authNum}
+              type="email"
+              id="email"
+              value={currentData.email}
               onChange={onChangeInput}
             />
           </th>

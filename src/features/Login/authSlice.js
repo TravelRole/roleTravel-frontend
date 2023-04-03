@@ -1,10 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import Cookies from "universal-cookie";
 import tokenApi from "../../lib/customAPI";
-import { getUserInfo } from "../Landing/userSlice";
 
 const cookies = new Cookies();
 
@@ -19,13 +17,13 @@ const initialState = {
 //로그인
 export const login = createAsyncThunk("auth/login", async (userData) => {
   await axios
+    // .post("auth/login", userData, { withCredentials: true })
     .post("auth/login", userData, { withCredentials: true })
     .then((res) => {
       const { accessToken } = res.data;
 
       // 로컬스토리지에 accessToken 저장
       localStorage.setItem("accessToken", accessToken);
-      window.location.replace("/landing");
       return accessToken;
     });
 });
@@ -51,6 +49,9 @@ export const refreshTokenAsync = createAsyncThunk(
         },
         {
           withCredentials: true,
+        },
+        {
+          XMLHttpRequest: true,
         }
       );
 
@@ -67,7 +68,7 @@ export const refreshTokenAsync = createAsyncThunk(
 //로그아웃
 export const logoutAsync = createAsyncThunk("auth/logout", async () => {
   try {
-    await tokenApi.get(`auth/logout`);
+    await tokenApi.post(`auth/logout`);
     localStorage.removeItem("userId");
     localStorage.removeItem("accessToken");
   } catch (error) {
@@ -88,11 +89,13 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.accessToken = action.payload;
         state.isAuth = true;
+        window.location.replace("/landing");
       })
       .addCase(login.rejected, (state, action) => {
         state.isAuth = false;
         state.accessToken = null;
         state.error = action.payload;
+        state.isLoading = false;
       })
       .addCase(refreshTokenAsync.fulfilled, (state, action) => {
         state.accessToken = action.payload;

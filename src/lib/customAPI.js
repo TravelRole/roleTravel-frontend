@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 
 const tokenApi = axios.create({
@@ -29,13 +28,16 @@ tokenApi.interceptors.response.use(
       if (localStorage.getItem("accessToken")) {
         await axios
           .post(
-            `http://localhost:8080/auth/refresh`,
+            `${process.env.REACT_APP_BASE_URL}auth/refresh`,
             {
               accessToken: localStorage.getItem("accessToken"),
             },
             {
               withCredentials: true,
               // 이렇게 보내보고 안된다면 쿠키에서 refreshToken 꺼내기
+            },
+            {
+              XMLHttpRequest: true,
             }
           )
           .then((res) => {

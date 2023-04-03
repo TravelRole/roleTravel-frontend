@@ -2,14 +2,19 @@ import React, { useCallback, useMemo, useRef } from "react";
 import styled from "styled-components";
 import { debounce } from "underscore";
 
-const ID_REGEX = new RegExp("^[a-z0-9_-]{5,20}$");
+const EMAIL_REGEX = new RegExp(
+  "^([0-9a-zA-Z_.-]+)@([0-9a-zA-Z_-]+)(.[0-9a-zA-Z_-]+){1,2}$"
+);
 const PW_REGEX = new RegExp("^[a-zA-Z0-9]{8,16}$");
 
 const ERROR_MSG = {
   required: "* 필수 정보입니다.",
-  invalidId: "5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.",
+  invalidId: "이메일 형식이 아닙니다.",
+  duplicateId: "이미 존재하는 이메일(아이디)입니다.",
+  confirmId: "사용 가능한 아이디입니다.",
   invalidPw: "사용 불가(안전도 등급 매우 약함)",
   confirmPw: "사용 가능(안전도 등급 높음)",
+  notSamePw: "비밀번호가 올바르지 않습니다.",
 };
 
 const InputWrap = styled.div`
@@ -64,8 +69,9 @@ const SignInput = ({
         result = "required";
       } else {
         switch (name) {
-          case "userId":
-            result = ID_REGEX.test(value) ? true : "invalidId";
+          case "email":
+            result = EMAIL_REGEX.test(value) ? true : "invalidId";
+            // 아이디 중복 검사 api 보류
             break;
           case "password":
             result = PW_REGEX.test(value) ? "confirmPw" : "invalidPw";
@@ -75,6 +81,12 @@ const SignInput = ({
               messageRef.current.style.color = "red";
             } // code 개선 필요..
 
+            break;
+          case "confirmPassword":
+            result =
+              formData.password === formData.confirmPassword
+                ? true
+                : "notSamePw";
             break;
           default:
             result = true;

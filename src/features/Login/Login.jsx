@@ -109,11 +109,8 @@ const LoginContent = styled.div`
 `;
 
 const Login = () => {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
   const [formData, setFormData] = useState({ email: "", password: "" });
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const onChangeInput = useCallback(
     (e) => {
@@ -135,12 +132,12 @@ const Login = () => {
     [dispatch, formData]
   );
 
-  const onClickRefresh = useCallback(() => {
-    dispatch(refreshTokenAsync());
-  }, [dispatch]);
+  // const onClickRefresh = useCallback(() => {
+  //   dispatch(refreshTokenAsync());
+  // }, [dispatch]);
 
   const onClickGoogle = useCallback(() => {
-    window.location.assign(`http://localhost:8080/oauth2/authorization/google`);
+    window.location.assign("http://localhost:8080/oauth2/authorization/google");
   }, []);
 
   return (
@@ -157,14 +154,14 @@ const Login = () => {
           <Button color="#3884fd" size="full" onClick={onClickGoogle}>
             Sign in with Google
           </Button>
-          <Button
+          {/* <Button
             color="#3884fd"
             size="full"
             onClick={onClickRefresh}
             margin={"10px 0"}
           >
             Refresh
-          </Button>
+          </Button> */}
         </LoginHeader>
         <p>또는</p>
         <LoginContent>

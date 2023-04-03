@@ -60,10 +60,10 @@ dialog::backdrop{
 `;
 
 function App() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getUserInfo());
-  }, [dispatch]);
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(getUserInfo());
+  // }, [dispatch]);
 
   return (
     <>
