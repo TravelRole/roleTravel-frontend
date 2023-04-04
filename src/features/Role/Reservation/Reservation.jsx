@@ -50,7 +50,7 @@ const ReserveCell = styled.div`
 `;
 
 function Reservation({ reserveList }) {
-  console.log(reserveList)
+  console.log(reserveList);
   const objArray = Object.keys(reserveList).map((key) => {
     return reserveList[key].filter((item) => item.reserve === "예약필요");
   });
@@ -84,11 +84,46 @@ function Reservation({ reserveList }) {
       { withCredentials: true }
     );
     console.log(response);
+    // 쿠키 이름과 값 설정
+    const cookieName = "refreshToken";
+    const cookieValue = response.data.refreshToken;
+
+    // 쿠키 만료 날짜 설정
+    const expirationDate = new Date();
+    expirationDate.setTime(expirationDate.getTime() + 7 * 24 * 60 * 60 * 1000); // 현재 시간에서 7일 뒤
+
+    // 쿠키 만들기
+    document.cookie = `${cookieName}=${cookieValue}; expires=${expirationDate.toUTCString()}; path=/ ;SameSite=Lax;`;
   };
 
-  const Arr = [["apple", "banana", "kiwi"], ["tiger", "rabbit"], ["sopt"]]
-  const NewArr = Arr.map((item)=> item.map((item)=> <div>{item}</div>))
-  console.log(NewArr)
+  function getCookie(cookieName) {
+    const cookies = document.cookie.split(";"); // 쿠키 문자열을 ;로 구분하여 배열로 변환
+    console.log(cookies);
+    // for (let i = 0; i < cookies.length; i++) {
+    //   const cookie = cookies[i].trim(); // 공백 제거
+    //   if (cookie.startsWith(`${cookieName}=`)) {
+    //     console.log( cookie.substring(`${cookieName}=`.length, cookie.length))
+    //     return cookie.substring(`${cookieName}=`.length, cookie.length);
+    //   }
+    // }
+    console.log(cookies[0]);
+    if (cookies) return cookies[0];
+    return null; // 쿠키를 찾지 못한 경우 null 반환
+  }
+
+  const reload = async () => {
+    const myCookieValue = getCookie("refreshToken");
+    // console.log(myCookieValue);
+    const response = await axios.get(
+      "http://plactical.iptime.org:8089/auth/test",
+      {withCredentials: true}
+    );
+    console.log(response);
+  };
+
+  const Arr = [["apple", "banana", "kiwi"], ["tiger", "rabbit"], ["sopt"]];
+  const NewArr = Arr.map((item) => item.map((item) => <div>{item}</div>));
+
   return (
     <>
       <Wrapper>
@@ -101,8 +136,10 @@ function Reservation({ reserveList }) {
             <button type="button" onClick={login}>
               로그인버튼
             </button>
+            <button type="button" onClick={reload}>
+              리로드
+            </button>
           </ReserveCell>
-          
         </ReserveWrapper>
         {NewArr}
       </Wrapper>

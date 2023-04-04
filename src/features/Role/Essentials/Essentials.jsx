@@ -29,7 +29,11 @@ const Wrapper = styled.div`
 function Essentials() {
   return (
     <>
-      <Wrapper></Wrapper>
+      <Wrapper>
+        <h1 style={{ fontSize: "25px", margin: "1rem", fontWeight: "bold" }}>
+          준비물 : 개인스페이스
+        </h1>
+      </Wrapper>
     </>
   );
 }
