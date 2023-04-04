@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Button from "../../../../components/Button";
+import { getUserId } from "../../searchSlice";
 import SearchIdForm from "./SearchIdForm";
 
 const SearchIdWrap = styled.section`
@@ -21,24 +23,19 @@ const SearchIdWrap = styled.section`
   }
 `;
 
-// 유효성 검사
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const phoneRegex = /^01([0|1|6|7|8|9])(?:\d{3}|\d{4})\d{4}$/;
-
 const SearchId = () => {
+  const dispatch = useDispatch();
   const [searchEmailData, setSearchEmailData] = useState({
     name: "",
-    email: "",
+    birth: "",
   });
 
   const onSearchSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      if (emailRegex.test(searchEmailData.email)) {
-        window.alert("찾으시는 아이디는 ''입니다.");
-      }
+      dispatch(getUserId(searchEmailData));
     },
-    [searchEmailData]
+    [dispatch, searchEmailData]
   );
   return (
     <SearchIdWrap>

@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-  isLoading: false, // 로딩 여부
+  isSignLoading: false, // 회원가입 로딩 여부
   hasError: false, // 에러 여부
   errorMessage: "", // 에러 메세지가 있다면 에러 메세지 담을 곳
 };
@@ -20,17 +20,17 @@ const signSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(signUp.pending, (state) => {
-        state.loading = true;
+        state.isSignLoading = true;
         state.hasError = false;
         state.errorMessage = "";
       })
       .addCase(signUp.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isSignLoading = false;
         state.hasError = false;
         state.errorMessage = "";
       })
       .addCase(signUp.rejected, (state, action) => {
-        state.loading = false;
+        state.isSignLoading = false;
         state.hasError = true;
         state.errorMessage = action.error.message;
       });

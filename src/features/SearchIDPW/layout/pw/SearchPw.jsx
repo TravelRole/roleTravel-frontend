@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Button from "../../../../components/Button";
+import { getUserPassword } from "../../searchSlice";
 import SearchPwForm from "./SearchPwForm";
 
 const SearchPwWrap = styled.section`
@@ -10,31 +12,26 @@ const SearchPwWrap = styled.section`
   }
 `;
 
-// 이메일 유효성 검사
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 const SearchPw = () => {
-  const [searchEmailData, setSearchEmailData] = useState({
-    id: "",
-    name: "",
+  const [searchPwData, setSearchPwData] = useState({
     email: "",
-    authNum: "",
+    name: "",
+    birth: "",
   });
+  const dispatch = useDispatch();
 
   const onSearchSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      if (emailRegex.test(searchEmailData.email)) {
-        window.alert("찾으시는 아이디는 ''입니다.");
-      }
+      dispatch(getUserPassword(searchPwData));
     },
-    [searchEmailData.email]
+    [dispatch, searchPwData]
   );
 
   return (
     <SearchPwWrap>
       <form onSubmit={onSearchSubmit}>
-        <SearchPwForm setSearchEmailData={setSearchEmailData} />
+        <SearchPwForm setSearchPwData={setSearchPwData} />
         <Button type="submit" size="medium" color={"#3884fd"} margin={"0 auto"}>
           비밀번호 찾기
         </Button>

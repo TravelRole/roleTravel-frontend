@@ -75,7 +75,7 @@ function SpaceList({ Auth }) {
       navigate(`/login`);
       return;
     }
-  }, []);
+  }, [Auth, navigate]);
 
   const showAddModal = useCallback(() => setIsAddModal(true), []);
 

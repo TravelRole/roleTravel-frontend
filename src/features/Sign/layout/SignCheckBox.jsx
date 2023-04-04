@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 
 const SignCheckBoxWrap = styled.div`
@@ -46,13 +46,13 @@ const CheckBox = styled.input`
 
 const checkData = [
   {
-    id: "check1",
+    id: "termsUse",
     span: `[필수] `,
     title: `이용 약관 동의`,
     isRequired: true,
   },
   {
-    id: "check2",
+    id: "emailUse",
     span: `[선택] `,
     title: `광고성 정보 이메일 수신 동의`,
     isRequired: false,
@@ -96,7 +96,7 @@ const SignCheckBox = ({ setFormData, formData }) => {
         setCheckItems([]);
         setFormData({
           ...formData,
-          check: { check1: false, check2: false, check3: false, check4: false },
+          check: { termsUse: false, emailUse: false },
         });
       }
     },
@@ -124,7 +124,7 @@ const SignCheckBox = ({ setFormData, formData }) => {
         {checkData.map((item) => (
           <CheckWrap
             key={item.id}
-            color={item.id === "check1" ? "red" : "black"}
+            color={item.id === "termsUse" ? "red" : "black"}
           >
             <label htmlFor={item.id}>
               <span>{item.span}</span>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 
 const SearchIdFormTable = styled.table`
@@ -25,18 +25,34 @@ const SearchIdFormTable = styled.table`
   }
 `;
 
-// 유효성 검사
+// slash 자동 추가
+const addSlash = (value) => {
+  value = value.replace(/\//g, "");
+  const regex = /(\d{1,4})(\d{1,2})?(\d{1,2})?/;
+  const groups = value.match(regex);
+  if (groups) {
+    value = groups
+      .slice(1)
+      .filter((group) => !!group)
+      .join("/");
+  }
+  return value;
+};
 
 const SearchIdForm = ({ searchAuth, setSearchEmailData }) => {
+  const [birth, setBirth] = useState("");
   const onChangeInput = useCallback(
     (e) => {
-      switch (e.target.id) {
+      const { value, id } = e.target;
+      switch (id) {
         case "name":
-          setSearchEmailData((prev) => ({ ...prev, name: e.target.value }));
+          setSearchEmailData((prev) => ({ ...prev, name: value }));
           break;
 
-        case "email":
-          setSearchEmailData((prev) => ({ ...prev, email: e.target.value }));
+        case "birth":
+          const newValue = addSlash(value);
+          setBirth(newValue);
+          setSearchEmailData((prev) => ({ ...prev, birth: value }));
           break;
         default:
           return;
@@ -56,9 +72,14 @@ const SearchIdForm = ({ searchAuth, setSearchEmailData }) => {
           </th>
         </tr>
         <tr>
-          <td>이메일주소</td>
+          <td>생년월일</td>
           <th>
-            <input type="email" id="email" onChange={onChangeInput} />
+            <input
+              type="text"
+              id="birth"
+              onChange={onChangeInput}
+              value={birth}
+            />
           </th>
         </tr>
       </tbody>

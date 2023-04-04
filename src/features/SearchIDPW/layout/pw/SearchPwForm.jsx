@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
-import Button from "../../../../components/Button";
 
 const SearchPwFormTable = styled.table`
   margin: 30px 0;
@@ -26,160 +25,46 @@ const SearchPwFormTable = styled.table`
   }
 `;
 
-const InputBox = styled.div`
-  display: flex;
-  gap: 10px;
-  input {
-    flex: 1;
-  }
-  button {
-    flex: 0.5;
-  }
-`;
-
-const SearchPwForm = ({
-  searchAuth,
-  setSearchEmailData,
-  setSearchPhoneData,
-}) => {
-  const [currentData, setCurrentData] = useState({
-    id: "",
-    name: "",
-    email: "",
-    phone: "",
-    authNum: "",
-  });
-
-  useEffect(() => {
-    setCurrentData({ id: "", name: "", email: "", phone: "", authNum: "" });
-  }, [searchAuth]);
-
+const SearchPwForm = ({ setSearchPwData }) => {
   const onChangeInput = useCallback(
     (e) => {
-      switch (e.target.id) {
-        case "id":
-          setCurrentData((prev) => ({ ...prev, id: e.target.value }));
-          if (searchAuth === "email-search") {
-            setSearchEmailData((prev) => ({ ...prev, id: e.target.value }));
-            return;
-          } else {
-            setSearchPhoneData((prev) => ({ ...prev, id: e.target.value }));
-          }
+      const { name, value } = e.target;
+      switch (name) {
+        case "email":
+          setSearchPwData((prev) => ({ ...prev, email: value }));
           break;
         case "name":
-          setCurrentData((prev) => ({ ...prev, name: e.target.value }));
-          if (searchAuth === "email-search") {
-            setSearchEmailData((prev) => ({ ...prev, name: e.target.value }));
-            return;
-          } else {
-            setSearchPhoneData((prev) => ({ ...prev, name: e.target.value }));
-          }
+          setSearchPwData((prev) => ({ ...prev, name: value }));
           break;
-        case "authNumber":
-          setCurrentData((prev) => ({ ...prev, authNum: e.target.value }));
-          if (searchAuth === "email-search") {
-            setSearchEmailData((prev) => ({
-              ...prev,
-              authNum: e.target.value,
-            }));
-            return;
-          } else {
-            setSearchPhoneData((prev) => ({
-              ...prev,
-              authNum: e.target.value,
-            }));
-          }
-          break;
-        case "email":
-          setCurrentData((prev) => ({ ...prev, email: e.target.value }));
-          setSearchEmailData((prev) => ({ ...prev, email: e.target.value }));
-          break;
-        case "phone":
-          setCurrentData((prev) => ({ ...prev, phone: e.target.value }));
-          setSearchPhoneData((prev) => ({ ...prev, phone: e.target.value }));
+        case "birth":
+          setSearchPwData((prev) => ({ ...prev, birth: value }));
           break;
         default:
           return;
       }
     },
-    [searchAuth, setSearchEmailData, setSearchPhoneData]
+    [setSearchPwData]
   );
-  // 유효성 검사
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const phoneRegex = /^01([0|1|6|7|8|9])(?:\d{3}|\d{4})\d{4}$/;
-
-  // 임시로 윈도우 알림창으로 4자리 숫자를 발급 받을 수 있도록 함.
-  const getAuthNumber = useCallback(() => {
-    const randomAuthNub = Math.floor(1000 + Math.random() * 9000);
-    // 이메일 주소가 정확하게 쓰여졌다면 발급 받을 수 있도록 함.
-    // 유효성 검사를 실시함.
-    if (searchAuth === "email-search") {
-      if (currentData.email.length > 0) {
-        if (emailRegex.test(currentData.email)) {
-          window.alert(`이메일 인증 번호는 ${randomAuthNub} 입니다`);
-          return;
-        }
-        window.alert("이메일 형식이 아닙니다.");
-        return;
-      } else {
-        window.alert("이메일을 입력해주세요.");
-        return;
-      }
-    } else {
-      if (currentData.phone.length > 0) {
-        if (phoneRegex.test(currentData.phone)) {
-          window.alert(`휴대폰 인증 번호는 ${randomAuthNub} 입니다`);
-          return;
-        }
-        window.alert("휴대폰 번호 형식이 아닙니다.");
-        return;
-      } else {
-        window.alert("휴대폰 번호를 입력해주세요.");
-        return;
-      }
-    }
-  }, [
-    currentData.email,
-    currentData.phone,
-    emailRegex,
-    phoneRegex,
-    searchAuth,
-  ]);
 
   return (
     <SearchPwFormTable>
       <tbody>
         <tr>
-          <td>아이디</td>
+          <td>이메일</td>
           <th>
-            <input
-              type="text"
-              id="id"
-              value={currentData.id}
-              onChange={onChangeInput}
-            />
+            <input type="text" name="email" onChange={onChangeInput} />
           </th>
         </tr>
         <tr>
           <td>이름</td>
           <th>
-            <input
-              type="text"
-              id="name"
-              value={currentData.name}
-              onChange={onChangeInput}
-            />
+            <input type="text" name="name" onChange={onChangeInput} />
           </th>
         </tr>
         <tr>
-          <td>이메일주소</td>
+          <td>생년월일</td>
           <th>
-            <input
-              type="email"
-              id="email"
-              value={currentData.email}
-              onChange={onChangeInput}
-            />
+            <input type="text" name="birth" onChange={onChangeInput} />
           </th>
         </tr>
       </tbody>
