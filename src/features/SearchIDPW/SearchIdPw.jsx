@@ -1,18 +1,16 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
-import SearchId from "./layout/SearchId/SearchId";
-import SearchPw from "./layout/SearchPw";
+import SearchId from "./layout/id/SearchId";
+import SearchPw from "./layout/pw/SearchPw";
 
 const SearchWrap = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  padding: 0 20px;
 `;
 
 const SearchContainer = styled.div`
   width: 600px;
+  margin: 250px auto;
 
   ul {
     width: 100%;

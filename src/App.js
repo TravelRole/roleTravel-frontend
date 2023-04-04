@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Router from "./Router";
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
+import "react-datepicker/dist/react-datepicker.css";
+import { useDispatch } from "react-redux";
+import { getUserInfo } from "./features/Landing/userSlice";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -15,7 +18,7 @@ table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup,
 main, menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+time, mark, audio, video,input {
   margin: 0;
   padding: 0;
   border: 0;
@@ -51,9 +54,17 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+dialog::backdrop{
+  background: #eee;
+}
 `;
 
 function App() {
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(getUserInfo());
+  // }, [dispatch]);
+
   return (
     <>
       <GlobalStyle />

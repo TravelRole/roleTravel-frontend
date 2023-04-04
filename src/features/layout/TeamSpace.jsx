@@ -2,12 +2,12 @@ import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import Leader from "../features/Role/Leader";
-import Allplan from "../features/Role/Allplan";
-import Schedule from "../features/Role/Schedule";
-import Reservation from "../features/Role/Reservation";
-import Account from "../features/Role/Account";
-import Essentials from "../features/Role/Essentials";
+import Allplan from "../Role/Allplan";
+import Leader from "../Role/Leader";
+import Schedule from "../Role/Schedule";
+import Reservation from "../Role/Reservation";
+import Account from "../Role/Account";
+import Essentials from "../Role/Essentials";
 
 const TeamSpaceBox = styled.div`
   display: flex;
@@ -27,7 +27,7 @@ const SpaceContainer = styled.div`
 function TeamSpace({ Auth }) {
   const navigate = useNavigate();
 
-  const {role} = useParams()
+  const { role } = useParams();
 
   useEffect(() => {
     if (Auth) {
@@ -41,17 +41,17 @@ function TeamSpace({ Auth }) {
     <>
       <TeamSpaceBox>
         <Sidebar />
-        <SpaceContainer >
-        {
+        <SpaceContainer>
           {
-            allplan: <Allplan />,
-            leader: <Leader />,
-            schedule: <Schedule />,
-            reservation: <Reservation />,
-            account: <Account />,
-            essentials:<Essentials/>
-          }[role]
-        }
+            {
+              allplan: <Allplan />,
+              leader: <Leader />,
+              schedule: <Schedule />,
+              reservation: <Reservation />,
+              account: <Account />,
+              essentials: <Essentials />,
+            }[role]
+          }
         </SpaceContainer>
       </TeamSpaceBox>
     </>

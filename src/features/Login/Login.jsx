@@ -1,8 +1,11 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-
+import Button from "../../components/Button";
+import { getUserInfo } from "../Landing/userSlice";
+import { login, refreshTokenAsync } from "./authSlice";
 const LoginWrap = styled.div`
   height: 100vh;
   display: flex;
@@ -61,17 +64,6 @@ const LoginHeader = styled.div`
       font-weight: lighter;
     }
   }
-  button {
-    width: 100%;
-    padding: 10px 0;
-    color: #fff;
-    background-color: #3884fd;
-    font-size: 0.9rem;
-    font-weight: lighter;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
 `;
 
 const LoginContent = styled.div`
@@ -91,16 +83,6 @@ const LoginContent = styled.div`
       padding: 18px 30px;
       border: 1px solid #ddd;
       outline: none;
-    }
-    button {
-      width: 60%;
-      padding: 10px 0;
-      margin-top: 20px;
-      border: none;
-      background-color: black;
-      color: #fff;
-      border-radius: 5px;
-      cursor: pointer;
     }
   }
 
@@ -127,6 +109,37 @@ const LoginContent = styled.div`
 `;
 
 const Login = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const dispatch = useDispatch();
+
+  const onChangeInput = useCallback(
+    (e) => {
+      const { name, value } = e.target;
+      if (name === "id") {
+        setFormData({ ...formData, email: value });
+        return;
+      }
+      setFormData({ ...formData, password: value });
+    },
+    [formData]
+  );
+
+  const onLoginSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch(login(formData));
+    },
+    [dispatch, formData]
+  );
+
+  // const onClickRefresh = useCallback(() => {
+  //   dispatch(refreshTokenAsync());
+  // }, [dispatch]);
+
+  const onClickGoogle = useCallback(() => {
+    window.location.assign("http://localhost:8080/oauth2/authorization/google");
+  }, []);
+
   return (
     <LoginWrap>
       <LoginContainer>
@@ -138,14 +151,36 @@ const Login = () => {
               로그인하세요.
             </dd>
           </dl>
-          <button>Sign in with Google</button>
+          <Button color="#3884fd" size="full" onClick={onClickGoogle}>
+            Sign in with Google
+          </Button>
+          {/* <Button
+            color="#3884fd"
+            size="full"
+            onClick={onClickRefresh}
+            margin={"10px 0"}
+          >
+            Refresh
+          </Button> */}
         </LoginHeader>
         <p>또는</p>
         <LoginContent>
-          <form>
-            <input type="text" placeholder="아이디를 입력해주세요." />
-            <input type="password" placeholder="비밀번호를 입력해주세요." />
-            <button type="submit">기존 회원 로그인</button>
+          <form onSubmit={onLoginSubmit}>
+            <input
+              type="text"
+              name="id"
+              placeholder="아이디를 입력해주세요."
+              onChange={onChangeInput}
+            />
+            <input
+              type="password"
+              name="pw"
+              placeholder="비밀번호를 입력해주세요."
+              onChange={onChangeInput}
+            />
+            <Button type="submit" color="#000" size="large">
+              기존 회원 로그인
+            </Button>
           </form>
           <ul>
             <li>
