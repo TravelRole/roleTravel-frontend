@@ -1,31 +1,7 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Container } from "../../components/Container";
-
-const Header = styled.header`
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 30px;
-
-  h1 {
-    font-size: 1.7rem;
-    font-weight: bold;
-  }
-  div {
-    button {
-      padding: 10px 20px;
-      border-radius: 10px;
-      border: none;
-      background-color: #3884fd;
-      color: #fff;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-  }
-`;
+import Header from "../layout/Header";
 
 const BannerWrap = styled.section`
   background-color: #3884fd;
@@ -72,18 +48,9 @@ const Contents = styled.section`
 `;
 
 const Landing = () => {
-  const navigate = useNavigate();
   return (
     <>
-      <Header>
-        <Container flex alignCenter justifySpace>
-          <h1>로고</h1>
-          <div>
-            <button onClick={() => navigate("/login")}>Login/Join</button>
-            {/* login 시에 보일 프로필 (프로필 클릭시 드롭앤다운으로 정보관리, 로그아웃 보이도록함.) */}
-          </div>
-        </Container>
-      </Header>
+      <Header />
       <BannerWrap>
         <Container>
           <div>
@@ -100,6 +67,8 @@ const Landing = () => {
               </dd>
             </dl>
             {/* 여행 목록 페이지로 이동 (로그인 유무에 따라 로그인페이지로 이동 or 여행 목록페이지로 이동) */}
+            {/* userid 가 있다면, userid 의 여행 게획 리스트 페이지로 이동 */}
+            {/* userid 가 없다면, login 페이지로 이동함 */}
             <button>시작하기</button>
           </div>
         </Container>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
-import Icons from "../assets/icon/icon";
+import Icons from "../../assets/icon/icon";
 
 const SidebarContainer = styled.div`
   display: flex;

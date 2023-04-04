@@ -2,21 +2,20 @@ import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import Leader from "../features/Role/Leader";
-import Allplan from "../features/Role/Allplan";
-import Reservation from "../features/Role/Reservation/Reservation";
-import Account from "../features/Role/Account";
-import Essentials from "../features/Role/Essentials/Essentials";
-import Schedule from "../features/Role/Schedule/Schedule";
+import Leader from "../Role/Leader";
+import Allplan from "../Role/Allplan";
+import Reservation from "../Role/Reservation/Reservation";
+import Account from "../Role/Account";
+import Essentials from "../Role/Essentials/Essentials";
+import Schedule from "../Role/Schedule/Schedule";
 
 const TeamSpaceBox = styled.div`
   display: flex;
   flex-direction: row;
-  width:100%;
+  width: 100%;
   height: 100%;
   align-items: center;
-  position:fixed;
- 
+  position: fixed;
 `;
 
 const SpaceContainer = styled.div`
@@ -29,19 +28,19 @@ const SpaceContainer = styled.div`
 `;
 
 function TeamSpace({ Auth }) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const { role } = useParams();
 
-  useEffect(() => {
-    if (Auth) {
-      console.log(Auth);
-      navigate(`/login`);
-      return;
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (Auth) {
+  //     console.log(Auth);
+  //     navigate(`/login`);
+  //     return;
+  //   }
+  // }, []);
 
-  const [reserveList , setReserveList] =useState([]) 
+  const [reserveList, setReserveList] = useState([]);
 
   return (
     <>
@@ -52,8 +51,8 @@ function TeamSpace({ Auth }) {
             {
               allplan: <Allplan />,
               leader: <Leader />,
-              schedule: <Schedule setReserveList={setReserveList}/>,
-              reservation: <Reservation reserveList={reserveList}/>,
+              schedule: <Schedule setReserveList={setReserveList} />,
+              reservation: <Reservation reserveList={reserveList} />,
               account: <Account />,
               essentials: <Essentials />,
             }[role]

@@ -6,10 +6,11 @@ import Login from "./features/Login/Login";
 import SearchIdPw from "./features/SearchIDPW/SearchIdPw";
 import Sign from "./features/Sign/Sign";
 import { BrowserRouter } from "react-router-dom";
-import TeamSpace from "./Component/TeamSpace"
 import NotFound from "./features/NotFound/Notfound";
 import SpaceList from "./features/SpaceList/SpaceList";
 import Authorization from "./features/Authorization/Authorization";
+import TeamSpace from "./features/layout/TeamSpace";
+import Social from "./features/Landing/Social";
 
 const routers = [
   {
@@ -63,9 +64,9 @@ const routers = [
   },
   {
     id: 7,
-    path: "/:UserId/:Spacenumber/:role",
-    label: "TeamSpace",
-    element: <TeamSpace Auth={false} />,
+    path: "/landing/social",
+    label: "LandingSocial",
+    element: <Social />,
     withAuth: true,
   },
 ];

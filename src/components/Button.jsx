@@ -8,6 +8,7 @@ const sizeStyles = css`
       padding: 15px 0;
       font-size: 1rem;
     `}
+
   ${(props) =>
     props.size === "large" &&
     css`
@@ -15,6 +16,7 @@ const sizeStyles = css`
       padding: 15px 0;
       font-size: 0.9rem;
     `}
+
 ${(props) =>
     props.size === "medium" &&
     css`
@@ -22,6 +24,7 @@ ${(props) =>
       padding: 10px 0;
       font-size: 0.9rem;
     `}
+
 ${(props) =>
     props.size === "small" &&
     css`
@@ -33,11 +36,13 @@ ${(props) =>
 
 const colorStyles = css`
   ${(props) =>
-    props.color === "#3884fd" && css`
+    props.color === "#3884fd" &&
+    css`
       color: #fff;
       border: none;
       background-color: #3884fd;
     `}
+
   ${(props) =>
     props.color === "#ddd" &&
     css`
@@ -45,6 +50,7 @@ const colorStyles = css`
       border: none;
       background-color: #ddd;
     `}
+
     ${(props) =>
     props.color === "#fff" &&
     css`
@@ -52,6 +58,8 @@ const colorStyles = css`
       border: 1px solid #ddd;
       background-color: #fff;
     `}
+
+
     ${(props) =>
     props.color === "#000" &&
     css`
