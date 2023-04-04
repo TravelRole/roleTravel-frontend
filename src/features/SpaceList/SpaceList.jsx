@@ -10,6 +10,7 @@ import betImage from "../../assets/images/image2.jpg";
 import gangnenunImage from "../../assets/images/image3.jpg";
 import AddSpaceModal from "./layout/AddSpaceModal";
 import Modal from "../../components/Modal";
+import { useSelector } from "react-redux";
 
 const SpaceListContent = styled.section`
   padding: 50px 0;
@@ -58,7 +59,7 @@ const planList = [
   },
 ];
 
-function SpaceList({ Auth }) {
+function SpaceList() {
   const navigate = useNavigate();
   const [isAddModal, setIsAddModal] = useState(false);
   const [today, setToday] = useState(new Date());
@@ -69,13 +70,14 @@ function SpaceList({ Auth }) {
   const [dateRange, setDateRange] = useState([today, currentTomorrow]);
   const [startDate, endDate] = dateRange;
 
+  const { isAuth } = useSelector((state) => state.auth);
+
   useEffect(() => {
-    if (Auth) {
-      console.log(Auth);
+    if (!isAuth) {
       navigate(`/login`);
       return;
     }
-  }, [Auth, navigate]);
+  }, [isAuth, navigate]);
 
   const showAddModal = useCallback(() => setIsAddModal(true), []);
 

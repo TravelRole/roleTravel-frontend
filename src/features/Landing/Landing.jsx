@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Container } from "../../components/Container";
 import Header from "../layout/Header";
@@ -48,6 +49,7 @@ const Contents = styled.section`
 `;
 
 const Landing = () => {
+  const navigate = useNavigate();
   return (
     <>
       <Header />
@@ -69,7 +71,7 @@ const Landing = () => {
             {/* 여행 목록 페이지로 이동 (로그인 유무에 따라 로그인페이지로 이동 or 여행 목록페이지로 이동) */}
             {/* userid 가 있다면, userid 의 여행 게획 리스트 페이지로 이동 */}
             {/* userid 가 없다면, login 페이지로 이동함 */}
-            <button>시작하기</button>
+            <button onClick={() => navigate("/login")}>Login</button>
           </div>
         </Container>
       </BannerWrap>

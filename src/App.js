@@ -1,7 +1,9 @@
+import React, { useEffect } from "react";
 import Router from "./Router";
 import { createGlobalStyle } from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
-
+import { useDispatch } from "react-redux";
+import { getUserInfo } from "./features/Login/authSlice";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -53,7 +55,6 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-
 .App{
   width:100%;
   height:100vh;
@@ -63,7 +64,7 @@ table {
 function App() {
   // const dispatch = useDispatch();
   // useEffect(() => {
-  //   dispatch(getUserInfo());
+  //   if (localStorage.getItem("accessToken")) dispatch(getUserInfo());
   // }, [dispatch]);
 
   return (

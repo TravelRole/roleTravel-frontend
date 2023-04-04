@@ -1,14 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import Cookies from "universal-cookie";
+import { useNavigate } from "react-router-dom";
 import tokenApi from "../../lib/customAPI";
-
-const cookies = new Cookies();
+import dog from "../../assets/images/dog.jpeg";
 
 const initialState = {
   user: null,
-  isAuth: false,
+  isAuth: localStorage.getItem("accessToken") ? true : false,
   isLoading: false,
   error: null,
   accessToken: null,
@@ -16,16 +15,27 @@ const initialState = {
 
 //로그인
 export const login = createAsyncThunk("auth/login", async (userData) => {
-  await axios
-    // .post("auth/login", userData, { withCredentials: true })
-    .post("auth/login", userData, { withCredentials: true })
-    .then((res) => {
-      const { accessToken } = res.data;
+  const res = await axios.post("auth/login", userData, {
+    withCredentials: true,
+  });
 
-      // 로컬스토리지에 accessToken 저장
-      localStorage.setItem("accessToken", accessToken);
-      return accessToken;
-    });
+  const { accessToken } = res.data;
+
+  // 로컬스토리지에 accessToken 저장
+  localStorage.setItem("accessToken", accessToken);
+
+  return accessToken;
+});
+
+export const getUserInfo = createAsyncThunk("auth/userInfo", async () => {
+  const response = await tokenApi.get("api/basic-profile");
+  const { name, email, profile } = response.data;
+  const userInfo = {
+    name: name,
+    email: email,
+    profile: profile === null ? dog : profile,
+  };
+  return userInfo;
 });
 
 export const testAsync = createAsyncThunk("auth/test", async () => {
@@ -84,16 +94,28 @@ const authSlice = createSlice({
     builder
       .addCase(login.pending, (state) => {
         state.isLoading = true;
+        state.isAuth = false;
       })
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.accessToken = action.payload;
         state.isAuth = true;
-        window.location.replace("/landing");
       })
       .addCase(login.rejected, (state, action) => {
         state.isAuth = false;
         state.accessToken = null;
+        state.error = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(getUserInfo.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUserInfo.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+      })
+      .addCase(getUserInfo.rejected, (state, action) => {
+        state.user = null;
         state.error = action.payload;
         state.isLoading = false;
       })

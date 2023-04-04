@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -110,6 +111,8 @@ const LoginContent = styled.div`
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const { isAuth } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onChangeInput = useCallback(
@@ -132,13 +135,16 @@ const Login = () => {
     [dispatch, formData]
   );
 
-  // const onClickRefresh = useCallback(() => {
-  //   dispatch(refreshTokenAsync());
-  // }, [dispatch]);
-
   const onClickGoogle = useCallback(() => {
     window.location.assign("http://localhost:8080/oauth2/authorization/google");
   }, []);
+
+  useEffect(() => {
+    if (isAuth) {
+      // window.location.replace("/userid");
+      navigate("/userid");
+    }
+  }, [isAuth, navigate]);
 
   return (
     <LoginWrap>
@@ -154,14 +160,6 @@ const Login = () => {
           <Button color="#3884fd" size="full" onClick={onClickGoogle}>
             Sign in with Google
           </Button>
-          {/* <Button
-            color="#3884fd"
-            size="full"
-            onClick={onClickRefresh}
-            margin={"10px 0"}
-          >
-            Refresh
-          </Button> */}
         </LoginHeader>
         <p>또는</p>
         <LoginContent>

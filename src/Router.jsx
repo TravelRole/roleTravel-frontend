@@ -38,7 +38,8 @@ const routers = [
     id: 3,
     path: "/:UserId",
     label: "SpaceList",
-    element: <SpaceList Auth={false} />,
+    element: <SpaceList />,
+    // element: <SpaceList Auth={true} />,
     withAuth: true,
   },
   {
