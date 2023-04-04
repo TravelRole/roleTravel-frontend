@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
 import Router from "./Router";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
-import { useDispatch } from "react-redux";
-import { getUserInfo } from "./features/Landing/userSlice";
+
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -26,6 +24,7 @@ time, mark, audio, video,input {
   font: inherit;
   vertical-align: baseline;
   box-sizing: border-box;
+  text-decoration-line: none;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
@@ -54,8 +53,10 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-dialog::backdrop{
-  background: #eee;
+
+.App{
+  width:100%;
+  height:100vh;
 }
 `;
 

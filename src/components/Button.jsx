@@ -59,6 +59,7 @@ const colorStyles = css`
       background-color: #fff;
     `}
 
+
     ${(props) =>
     props.color === "#000" &&
     css`
