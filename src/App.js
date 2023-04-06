@@ -1,7 +1,7 @@
 import Router from "./Router";
 import { createGlobalStyle } from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
-
+import "./App.css"
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -37,6 +37,7 @@ footer, header, hgroup, main, menu, nav, section {
 }
 body {
   line-height: 1;
+  font-family: "Pretendard"
 }
 menu, ol, ul {
   list-style: none;
