@@ -136,7 +136,9 @@ const Login = () => {
   );
 
   const onClickGoogle = useCallback(() => {
-    window.location.assign("http://localhost:8080/oauth2/authorization/google");
+    window.location.assign(
+      `${process.env.REACT_APP_BASE_URL}/oauth2/authorization/google`
+    );
   }, []);
 
   useEffect(() => {
