@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { login } from "../Login/authSlice";
 
 const initialState = {
   isSignLoading: false, // 회원가입 로딩 여부
@@ -9,8 +11,30 @@ const initialState = {
 };
 
 export const signUp = createAsyncThunk("auth/signup", async (userData) => {
-  const response = await axios.post("auth/signup", userData);
-  return response.data;
+  try {
+    const { email, password } = userData;
+
+    const response = await axios.post("auth/signup", userData);
+    window.alert("회원가입이 완료되었습니다!");
+    if (response.status === 200) {
+      const loginResponse = await axios.post(
+        "auth/login",
+        { email: email, password: password },
+        {
+          withCredentials: true,
+        }
+      );
+      const { accessToken } = loginResponse.data;
+
+      // 로컬스토리지에 accessToken 저장
+      localStorage.setItem("accessToken", accessToken);
+    } else {
+      throw new Error("로그인에 실패하였습니다.");
+    }
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
 });
 
 const signSlice = createSlice({
@@ -28,11 +52,12 @@ const signSlice = createSlice({
         state.isSignLoading = false;
         state.hasError = false;
         state.errorMessage = "";
+        window.location.replace("/:userid");
       })
       .addCase(signUp.rejected, (state, action) => {
         state.isSignLoading = false;
         state.hasError = true;
-        state.errorMessage = action.error.message;
+        state.errorMessage = action.error;
       });
   },
 });

@@ -52,7 +52,6 @@ tokenApi.interceptors.response.use(
             ) {
               const cookies = new Cookies();
               localStorage.removeItem("accessToken");
-              localStorage.removeItem("userInfo");
               cookies.remove("refreshToken");
 
               if (!localStorage.getItem("accessToken")) {

@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Button from "../../../../components/Button";
-import { getUserPassword } from "../../searchSlice";
+import { searchUserPw } from "../../searchSlice";
 import SearchPwForm from "./SearchPwForm";
 
 const SearchPwWrap = styled.section`
@@ -23,7 +23,7 @@ const SearchPw = () => {
   const onSearchSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(getUserPassword(searchPwData));
+      dispatch(searchUserPw(searchPwData));
     },
     [dispatch, searchPwData]
   );

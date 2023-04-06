@@ -3,7 +3,7 @@ import Router from "./Router";
 import { createGlobalStyle } from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch } from "react-redux";
-import { getUserInfo } from "./features/Login/authSlice";
+import { getUserInfo } from "./features/Landing/userSlice";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -62,10 +62,10 @@ table {
 `;
 
 function App() {
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   if (localStorage.getItem("accessToken")) dispatch(getUserInfo());
-  // }, [dispatch]);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) dispatch(getUserInfo());
+  }, [dispatch]);
 
   return (
     <>

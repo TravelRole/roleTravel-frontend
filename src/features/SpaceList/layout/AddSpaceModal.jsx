@@ -2,6 +2,7 @@ import React, { Children, useCallback, useState } from "react";
 import DatePicker from "react-datepicker";
 import styled from "styled-components";
 import Button from "../../../components/Button";
+import SearchLocationInput from "./SearchLocationInput";
 
 const AddModalWrap = styled.div`
   h3 {
@@ -95,12 +96,15 @@ const AddSpaceModal = ({ setIsAddModal }) => {
           <dt>
             <label htmlFor="tripLocation">장소</label>
           </dt>
-          <dd>
+          {/* <dd>
             <input
               type="text"
               id="tripLocation"
               placeholder="여행 장소를 입력해주세요."
             />
+          </dd> */}
+          <dd>
+            <SearchLocationInput />
           </dd>
         </dl>
         <dl>

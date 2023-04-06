@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../../components/Button";
 import { signUp } from "../signSlice";
-import SignCheckBox from "./SignCheckBox";
 import SignInput from "./SignInput";
 
 // 컨테이너 컴포넌트
@@ -30,21 +30,44 @@ const SignUserInfo = styled.div`
   }
 `;
 
+const CheckBoxWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    input {
+      appearance: none;
+      border: 1px solid #ddd;
+      width: 1.5rem;
+      height: 1.5rem;
+      cursor: pointer;
+
+      &:checked {
+        background-image: url("data:image/svg+xml,%3Csvg width='30' height='25' viewBox='0 0 30 25' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 13.2245L9.78751 22.6089C10.1572 23.0544 10.7783 23.0544 11.148 22.6089L28.25 2' stroke='%233884FD' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-size: 80% 80%;
+        background-position: 50%;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+`;
+
 const SignForm = () => {
   const [errorData, setErrorData] = useState({
-    userName: "",
+    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
     birth: "",
   });
   const [formData, setFormData] = useState({
-    userName: "",
+    name: "",
     birth: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    check: { termsUse: true, emailUse: false },
   });
 
   const dispatch = useDispatch();
@@ -58,79 +81,77 @@ const SignForm = () => {
   );
 
   return (
-    <SignFormWrap autoComplete="off" onSubmit={onSubmit}>
-      {/* input */}
-      <SignUserInfo>
-        <SignInput
-          inputProps={{
-            type: "text",
-            placeholder: "이름(실명)을 입력해주세요.",
-            width: "100%",
-          }}
-          name={"userName"}
-          errorData={errorData}
-          setErrorData={setErrorData}
-          setFormData={setFormData}
-          formData={formData}
-        />
+    <>
+      <SignFormWrap autoComplete="off" onSubmit={onSubmit}>
+        {/* input */}
+        <SignUserInfo>
+          <SignInput
+            inputProps={{
+              type: "text",
+              placeholder: "이름(실명)을 입력해주세요.",
+              width: "100%",
+            }}
+            name={"name"}
+            errorData={errorData}
+            setErrorData={setErrorData}
+            setFormData={setFormData}
+            formData={formData}
+          />
 
-        <SignInput
-          inputProps={{
-            type: "email",
-            placeholder: "이메일(아이디)를 입력해주세요.",
-            width: "100%",
-          }}
-          name={"email"}
-          errorData={errorData}
-          setErrorData={setErrorData}
-          setFormData={setFormData}
-          formData={formData}
-        />
-        <SignInput
-          inputProps={{
-            type: "password",
-            placeholder: "비밀번호를 입력해주세요.",
-            width: "100%",
-          }}
-          name={"password"}
-          errorData={errorData}
-          setErrorData={setErrorData}
-          setFormData={setFormData}
-          formData={formData}
-        />
-        <SignInput
-          inputProps={{
-            type: "password",
-            placeholder: "비밀번호를 다시 입력해주세요.",
-            width: "100%",
-          }}
-          name={"confirmPassword"}
-          errorData={errorData}
-          setErrorData={setErrorData}
-          setFormData={setFormData}
-          formData={formData}
-        />
-        <SignInput
-          inputProps={{
-            type: "text",
-            placeholder: "생년월일을 입력해주세요. (YYYY/MM/DD)",
-            width: "100%",
-          }}
-          name={"birth"}
-          errorData={errorData}
-          setErrorData={setErrorData}
-          setFormData={setFormData}
-          formData={formData}
-        />
-      </SignUserInfo>
+          <SignInput
+            inputProps={{
+              type: "email",
+              placeholder: "이메일(아이디)를 입력해주세요.",
+              width: "100%",
+            }}
+            name={"email"}
+            errorData={errorData}
+            setErrorData={setErrorData}
+            setFormData={setFormData}
+            formData={formData}
+          />
+          <SignInput
+            inputProps={{
+              type: "password",
+              placeholder: "비밀번호를 입력해주세요.",
+              width: "100%",
+            }}
+            name={"password"}
+            errorData={errorData}
+            setErrorData={setErrorData}
+            setFormData={setFormData}
+            formData={formData}
+          />
+          <SignInput
+            inputProps={{
+              type: "text",
+              placeholder: "생년월일을 입력해주세요. (YYYY/MM/DD)",
+              width: "100%",
+            }}
+            name={"birth"}
+            errorData={errorData}
+            setErrorData={setErrorData}
+            setFormData={setFormData}
+            formData={formData}
+          />
+        </SignUserInfo>
 
-      {/* check box section */}
-      <SignCheckBox setFormData={setFormData} formData={formData} />
+        <CheckBoxWrap>
+          <div>
+            <input type="checkbox" name="termsUse" required={true} />
+            <label>[필수] 이용 약관 및 개인 정보 수집 동의</label>
+          </div>
+          <p>내용 보기</p>
+        </CheckBoxWrap>
 
-      <Button type="submit" size="full" color="#3884fd">
-        가입하기
-      </Button>
-    </SignFormWrap>
+        <Button type="submit" size="full" color="#3884fd">
+          가입하기
+        </Button>
+      </SignFormWrap>
+      <p>
+        이미 계정이 있으신가요?<Link to="/login">로그인</Link>
+      </p>
+    </>
   );
 };
 

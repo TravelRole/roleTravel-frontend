@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Button from "../../../../components/Button";
-import { getUserId } from "../../searchSlice";
+import { searchUserId } from "../../searchSlice";
 import SearchIdForm from "./SearchIdForm";
 
 const SearchIdWrap = styled.section`
@@ -33,7 +33,7 @@ const SearchId = () => {
   const onSearchSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(getUserId(searchEmailData));
+      dispatch(searchUserId(searchEmailData));
     },
     [dispatch, searchEmailData]
   );

@@ -10,16 +10,13 @@ import {
 const libraries = ["places"];
 
 const GoogleApi = {
-
   useJsApiLoader: () =>
     useJsApiLoader({
       id: "google-map-script",
-      googleMapsApiKey: "AIzaSyBXXkjAR0duRfDCQN3Lil459ky2Ws1V248",
+      googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
       libraries: libraries,
       language: "ko",
     }),
-
-    
 
   PlaceSerivec: (mapRef) => {
     const [placesService, setPlacesService] = useState(null);
@@ -36,7 +33,6 @@ const GoogleApi = {
 
     return placesService;
   },
-
 };
 
 export default GoogleApi;

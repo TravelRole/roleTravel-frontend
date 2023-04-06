@@ -8,7 +8,7 @@ const initialState = {
   error: null,
 };
 
-export const getUserId = createAsyncThunk("search/id", async (data) => {
+export const searchUserId = createAsyncThunk("search/id", async (data) => {
   try {
     const { name, birth } = data;
 
@@ -20,7 +20,7 @@ export const getUserId = createAsyncThunk("search/id", async (data) => {
   }
 });
 
-export const getUserPassword = createAsyncThunk("search/pw", async (data) => {
+export const searchUserPw = createAsyncThunk("search/pw", async (data) => {
   try {
     const { email, name, birth } = data;
 
@@ -36,23 +36,23 @@ const searchSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getUserId.fulfilled, (state, action) => {
+      .addCase(searchUserId.fulfilled, (state, action) => {
         state.userId = action.payload;
         state.isLoading = false;
         state.error = null;
         window.alert(`찾으시는 아이디는 ${action.payload} 입니다.`);
       })
-      .addCase(getUserId.rejected, (state, action) => {
+      .addCase(searchUserId.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
-      .addCase(getUserPassword.fulfilled, (state, action) => {
+      .addCase(searchUserPw.fulfilled, (state, action) => {
         state.userId = action.payload;
         state.isLoading = false;
         state.error = null;
         window.alert(`이메일로 임시 비밀번호를 전송했습니다.`);
       })
-      .addCase(getUserPassword.rejected, (state, action) => {
+      .addCase(searchUserPw.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
         window.alert(action.payload);

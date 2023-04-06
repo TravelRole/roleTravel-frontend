@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
+import useAddSlash from "../../../lib/useAddSlash";
 
 const InputWrap = styled.div`
   display: flex;
@@ -41,19 +42,6 @@ const ERROR_MSG = {
   invalidBirth: "생년월일이 올바르지 않습니다.",
 };
 
-const addSlash = (value) => {
-  value = value.replace(/\//g, "");
-  const regex = /(\d{1,4})(\d{1,2})?(\d{1,2})?/;
-  const groups = value.match(regex);
-  if (groups) {
-    value = groups
-      .slice(1)
-      .filter((group) => !!group)
-      .join("/");
-  }
-  return value;
-};
-
 const SignInput = ({
   errorData,
   setErrorData,
@@ -65,6 +53,7 @@ const SignInput = ({
   const inputRef = useRef(null);
   const messageRef = useRef(null);
   const [birth, setBirth] = useState("");
+  const addSlash = useAddSlash();
 
   const onChangeInput = useCallback(
     (e) => {
@@ -75,14 +64,19 @@ const SignInput = ({
       } else {
         result = true;
         switch (name) {
+          case "name":
+            setFormData((prev) => ({ ...prev, name: value }));
+            result = true;
+            break;
           case "email":
             if (EMAIL_REGEX.test(value)) {
               setFormData((prev) => ({ ...prev, email: value }));
               result = true;
-              return;
+            } else {
+              setFormData((prev) => ({ ...prev, email: "" }));
+              result = "invalidId";
             }
-            setFormData((prev) => ({ ...prev, email: "" }));
-            result = "invalidId";
+
             break;
           case "password":
             if (PW_REGEX.test(value)) {
@@ -96,21 +90,12 @@ const SignInput = ({
             }
 
             break;
-          case "confirmPassword":
-            if (formData.password === value) {
-              setFormData((prev) => ({ ...prev, confirmPassword: value }));
-              result = true;
-            } else {
-              setFormData((prev) => ({ ...prev, confirmPassword: "" }));
-              result = "notSamePw";
-            }
-
-            break;
           case "birth":
             const newValue = addSlash(value);
             setBirth(newValue);
-            if (BIRTHDAY_REGEX.test(value)) {
-              setFormData((prev) => ({ ...prev, birth: value }));
+            inputRef.current.value = newValue;
+            if (BIRTHDAY_REGEX.test(newValue)) {
+              setFormData((prev) => ({ ...prev, birth: newValue }));
               result = true;
             } else {
               setFormData((prev) => ({ ...prev, birth: "" }));
@@ -124,7 +109,7 @@ const SignInput = ({
       }
       setErrorData((prev) => ({ ...prev, [name]: result }));
     },
-    [formData, setErrorData, setFormData]
+    [addSlash, setErrorData, setFormData]
   );
 
   const checkRegex = useCallback(
@@ -158,26 +143,14 @@ const SignInput = ({
 
   return (
     <InputWrap {...inputProps}>
-      {name === "birth" ? (
-        <Input
-          ref={inputRef}
-          name={name}
-          required
-          onChange={onChangeInput}
-          onBlur={checkRegex}
-          value={birth}
-          {...inputProps}
-        />
-      ) : (
-        <Input
-          ref={inputRef}
-          name={name}
-          required
-          onChange={onChangeInput}
-          onBlur={checkRegex}
-          {...inputProps}
-        />
-      )}
+      <Input
+        ref={inputRef}
+        name={name}
+        required
+        onChange={onChangeInput}
+        onBlur={checkRegex}
+        {...inputProps}
+      />
 
       <Message ref={messageRef}>
         {errorData[name] && ERROR_MSG[errorData[name]]}

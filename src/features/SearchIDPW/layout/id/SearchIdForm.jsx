@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
+import useAddSlash from "../../../../lib/useAddSlash";
 
 const SearchIdFormTable = styled.table`
   margin: 30px 0;
@@ -25,22 +26,9 @@ const SearchIdFormTable = styled.table`
   }
 `;
 
-// slash 자동 추가
-const addSlash = (value) => {
-  value = value.replace(/\//g, "");
-  const regex = /(\d{1,4})(\d{1,2})?(\d{1,2})?/;
-  const groups = value.match(regex);
-  if (groups) {
-    value = groups
-      .slice(1)
-      .filter((group) => !!group)
-      .join("/");
-  }
-  return value;
-};
-
-const SearchIdForm = ({ searchAuth, setSearchEmailData }) => {
+const SearchIdForm = ({ setSearchEmailData }) => {
   const [birth, setBirth] = useState("");
+  const addSlash = useAddSlash();
   const onChangeInput = useCallback(
     (e) => {
       const { value, id } = e.target;
@@ -52,14 +40,14 @@ const SearchIdForm = ({ searchAuth, setSearchEmailData }) => {
         case "birth":
           const newValue = addSlash(value);
           setBirth(newValue);
-          setSearchEmailData((prev) => ({ ...prev, birth: value }));
+          setSearchEmailData((prev) => ({ ...prev, birth: newValue }));
           break;
         default:
           return;
       }
     },
 
-    [setSearchEmailData]
+    [addSlash, setSearchEmailData]
   );
 
   return (

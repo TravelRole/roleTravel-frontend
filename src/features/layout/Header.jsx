@@ -99,7 +99,7 @@ const ProfileMenu = styled.div`
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.user);
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();

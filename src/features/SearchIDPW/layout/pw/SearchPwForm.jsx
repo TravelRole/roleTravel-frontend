@@ -1,5 +1,6 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
+import useAddSlash from "../../../../lib/useAddSlash";
 
 const SearchPwFormTable = styled.table`
   margin: 30px 0;
@@ -26,6 +27,8 @@ const SearchPwFormTable = styled.table`
 `;
 
 const SearchPwForm = ({ setSearchPwData }) => {
+  const [birth, setBirth] = useState("");
+  const addSlash = useAddSlash();
   const onChangeInput = useCallback(
     (e) => {
       const { name, value } = e.target;
@@ -37,13 +40,15 @@ const SearchPwForm = ({ setSearchPwData }) => {
           setSearchPwData((prev) => ({ ...prev, name: value }));
           break;
         case "birth":
-          setSearchPwData((prev) => ({ ...prev, birth: value }));
+          const newValue = addSlash(value);
+          setBirth(newValue);
+          setSearchPwData((prev) => ({ ...prev, birth: newValue }));
           break;
         default:
           return;
       }
     },
-    [setSearchPwData]
+    [addSlash, setSearchPwData]
   );
 
   return (
@@ -64,7 +69,12 @@ const SearchPwForm = ({ setSearchPwData }) => {
         <tr>
           <td>생년월일</td>
           <th>
-            <input type="text" name="birth" onChange={onChangeInput} />
+            <input
+              type="text"
+              name="birth"
+              onChange={onChangeInput}
+              value={birth}
+            />
           </th>
         </tr>
       </tbody>
