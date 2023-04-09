@@ -1,36 +1,88 @@
-import { LoadScript } from "@react-google-maps/api";
-import { StandaloneSearchBox } from "@react-google-maps/api";
-import { Autocomplete } from "@react-google-maps/api";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 const SearchLocationInput = () => {
-  const libraries = ["places"];
-  const onPlaceChanged = (place) => {
-    console.log(place);
-    //   const selectedPlace =
-    //   console.log("selectedPlace: ", selectedPlace);
-    //   setPlace(selectedPlace);
-    //   const lat = place?.geometry?.location?.lat();
-    //   const lng = place?.geometry?.location?.lng();
+  const [placeList, setPlaceList] = useState([]);
 
-    //   console.log(lat, lng);
-  };
+  const onChangeInput = useCallback(async (e) => {
+    const { value } = e.target;
+    try {
+      const response = await axios.get(
+        `https://dapi.kakao.com/v2/local/search/keyword.json?query=${value}`,
+        {
+          headers: {
+            Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_REST_API_KEY}`,
+          },
+        }
+      );
+      // const results = response.data.documents.map((place) => ({
+      //   id: place.id,
+      //   name: place.place_name,
+      // }));
+      const results = response.data.documents;
+      console.log(results);
+      // setSuggestions(results);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
+  // const handleInputChange = async (e) => {
+  //   const value = e.target.value;
+  //   setQuery(value);
+  //   if (value.trim() === "") {
+  //     // setSuggestions([]);
+  //     return;
+  //   }
+
+  //   const handleSelectSuggestion = async (suggestion) => {
+  //     try {
+  //       const response = await axios.get(
+  //         `https://dapi.kakao.com/v2/local/search/keyword.json?query=${suggestion.name}&category_group_code=PO3`,
+  //         {
+  //           headers: {
+  //             Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_REST_API_KEY}`,
+  //           },
+  //         }
+  //       );
+  //       const results = response.data.documents.map((place) => ({
+  //         id: place.id,
+  //         name: place.place_name,
+  //         address: place.address_name,
+  //         lat: place.y,
+  //         lng: place.x,
+  //       }));
+  //       setPlaces(results);
+  //       setSuggestions([]);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  // onChange={handleInputChange}
+  // onClick={() => handleSelectSuggestion(suggestion)}
   return (
-    <LoadScript
-      googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API}
-      libraries={libraries}
-    >
-      <StandaloneSearchBox>
-        <Autocomplete onPlaceChanged={onPlaceChanged}>
-          <input
-            type="text"
-            id="tripLocation"
-            placeholder="여행 장소를 입력해주세요."
-          />
-        </Autocomplete>
-      </StandaloneSearchBox>
-    </LoadScript>
+    <div>
+      <div>
+        <input type="text" onChange={onChangeInput} />
+        {/* {suggestions.length > 0 && (
+          <ul>
+            {suggestions.map((suggestion) => (
+              <li key={suggestion.id}>{suggestion.name}</li>
+            ))}
+          </ul>
+        )} */}
+      </div>
+      {placeList.length > 0 && (
+        <ul>
+          {placeList.map((place) => (
+            <li key={place.id}>
+              <div>{place.name}</div>
+              <div>{place.address}</div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 };
 

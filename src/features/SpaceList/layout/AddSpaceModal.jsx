@@ -96,15 +96,13 @@ const AddSpaceModal = ({ setIsAddModal }) => {
           <dt>
             <label htmlFor="tripLocation">장소</label>
           </dt>
-          {/* <dd>
+          <dd>
             <input
               type="text"
-              id="tripLocation"
+              id="trip-place"
               placeholder="여행 장소를 입력해주세요."
             />
-          </dd> */}
-          <dd>
-            <SearchLocationInput />
+            {/* <SearchLocationInput /> */}
           </dd>
         </dl>
         <dl>

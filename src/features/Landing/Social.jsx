@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { getUserInfo } from "./userSlice";
+import { toast } from "react-toastify";
 
 const Social = () => {
   const dispatch = useDispatch();
@@ -9,6 +10,7 @@ const Social = () => {
   const accessToken = url.searchParams.get("accessToken");
   localStorage.setItem("accessToken", accessToken);
   dispatch(getUserInfo());
+
   if (accessToken) {
     window.location.replace("/userid");
   } else {

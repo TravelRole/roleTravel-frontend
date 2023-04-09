@@ -27,7 +27,7 @@ const Message = styled.p`
 const EMAIL_REGEX = new RegExp(
   "^([0-9a-zA-Z_.-]+)@([0-9a-zA-Z_-]+)(.[0-9a-zA-Z_-]+){1,2}$"
 );
-const PW_REGEX = new RegExp("^[a-zA-Z0-9]{8,16}$");
+const PW_REGEX = new RegExp("^[a-zA-Z0-9-_!]{8,16}$");
 const BIRTHDAY_REGEX = /^\d{4}\/\d{2}\/\d{2}$/;
 
 // 유효성 검사에 맞는 에러메세지 데이터들
@@ -52,7 +52,6 @@ const SignInput = ({
 }) => {
   const inputRef = useRef(null);
   const messageRef = useRef(null);
-  const [birth, setBirth] = useState("");
   const addSlash = useAddSlash();
 
   const onChangeInput = useCallback(
@@ -92,7 +91,6 @@ const SignInput = ({
             break;
           case "birth":
             const newValue = addSlash(value);
-            setBirth(newValue);
             inputRef.current.value = newValue;
             if (BIRTHDAY_REGEX.test(newValue)) {
               setFormData((prev) => ({ ...prev, birth: newValue }));

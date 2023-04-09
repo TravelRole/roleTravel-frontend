@@ -5,22 +5,17 @@ import { store } from "./app/store";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import axios from "axios";
-
-axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
-axios.defaults.withCredentials = true;
-
 
 const container = document.getElementById("root");
 const root = createRoot(container);
 
 root.render(
   // <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>
   // </React.StrictMode>
 );
 

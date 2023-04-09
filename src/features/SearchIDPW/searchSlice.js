@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { authApi } from "../../lib/customAPI";
 
 const initialState = {
   userId: null,
@@ -12,7 +12,7 @@ export const searchUserId = createAsyncThunk("search/id", async (data) => {
   try {
     const { name, birth } = data;
 
-    const res = await axios.post("auth/find-id", { name, birth });
+    const res = await authApi.post("auth/find-id", { name, birth });
     const { email } = res.data;
     return email;
   } catch (error) {
@@ -24,7 +24,7 @@ export const searchUserPw = createAsyncThunk("search/pw", async (data) => {
   try {
     const { email, name, birth } = data;
 
-    await axios.post("auth/new-password", { email, name, birth });
+    await authApi.post("auth/new-password", { email, name, birth });
   } catch (error) {
     return error;
   }

@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import tokenApi from "../../lib/customAPI";
+import tokenApi, { authApi } from "../../lib/customAPI";
+import { toast } from "react-toastify";
 
 const initialState = {
   isAuth: localStorage.getItem("accessToken") ? true : false,
@@ -12,7 +13,7 @@ const initialState = {
 
 //로그인
 export const login = createAsyncThunk("auth/login", async (userData) => {
-  const res = await axios.post("auth/login", userData, {
+  const res = await authApi.post("auth/login", userData, {
     withCredentials: true,
   });
 
@@ -45,6 +46,16 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuth = true;
+        toast.success("로그인이 되었습니다!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       })
       .addCase(login.rejected, (state, action) => {
         state.isAuth = false;
