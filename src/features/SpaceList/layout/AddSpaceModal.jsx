@@ -50,6 +50,34 @@ const AddModalWrap = styled.div`
   }
 `;
 
+function dateFormat(date) {
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
+  let hour = date.getHours();
+  let minute = date.getMinutes();
+  let second = date.getSeconds();
+
+  month = month >= 10 ? month : "0" + month;
+  day = day >= 10 ? day : "0" + day;
+  hour = hour >= 10 ? hour : "0" + hour;
+  minute = minute >= 10 ? minute : "0" + minute;
+  second = second >= 10 ? second : "0" + second;
+
+  return (
+    date.getFullYear() +
+    "-" +
+    month +
+    "-" +
+    day +
+    " " +
+    hour +
+    ":" +
+    minute +
+    ":" +
+    second
+  );
+}
+
 const AddSpaceModal = ({ setIsAddModal }) => {
   const [today, setToday] = useState(new Date());
   const [tomorrow, setTomorrow] = useState(new Date(today));
@@ -87,6 +115,7 @@ const AddSpaceModal = ({ setIsAddModal }) => {
               endDate={endDate}
               dateFormat="yyyy년 MM월 dd일"
               onChange={(update) => {
+                console.log(dateFormat(update[0]));
                 setDateRange(update);
               }}
             />
