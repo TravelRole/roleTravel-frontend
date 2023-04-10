@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { FcGoogle } from "react-icons/fc";
 import SignForm from "./layout/SignForm";
+import Header from "../layout/Header";
+import authBg from "../../assets/images/authBg.png";
 
 const SignWrap = styled.div`
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 100px 20px;
-  box-sizing: border-box;
+  height: calc(100vh - 100px);
+  background-image: url(authBg);
 `;
 const SignHeader = styled.div`
   display: flex;
@@ -19,69 +19,25 @@ const SignHeader = styled.div`
   h2 {
     font-size: 1.8rem;
   }
-  dl {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    dt {
-      font-size: 1.2rem;
-      font-weight: 400;
-    }
-    dd {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: 1px solid #eee;
-      text-align: center;
-      line-height: 2.4rem;
-      cursor: pointer;
-    }
-  }
 `;
 
-const SignContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-top: 1px solid #eee;
-  padding-top: 20px;
-  h2 {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-  }
-  .sign-text {
-    text-align: right;
-    width: 100%;
-    color: #888;
-    font-size: 0.8rem;
-    span {
-      color: red;
-      margin-right: 5px;
-    }
-  }
-`;
+const SignContainer = styled.div``;
 
 const Sign = () => {
   return (
-    <SignWrap>
-      <SignHeader>
-        <h2>여행계획 회원가입</h2>
-        <dl>
-          <dt>소셜로 간편하게 로그인하세요</dt>
-          <dd>
-            <FcGoogle />
-          </dd>
-        </dl>
-      </SignHeader>
-      <SignContent>
-        <h2>회원가입하고 다양한 혜택을 누리세요!</h2>
-        <p className="sign-text">
-          <span>*</span>필수 입력 정보
-        </p>
-        <SignForm />
-      </SignContent>
-    </SignWrap>
+    <>
+      <Header />
+      <SignWrap>
+        <SignContainer>
+          <SignHeader>
+            <h2>여행계획 회원가입</h2>
+            <p>기본 정보를 입력해주세요</p>
+          </SignHeader>
+
+          <SignForm />
+        </SignContainer>
+      </SignWrap>
+    </>
   );
 };
 

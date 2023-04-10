@@ -14,6 +14,7 @@ const HeaderWrap = styled.header`
   padding: 20px;
   display: flex;
   align-items: center;
+  height: 100px;
 
   h1 {
     img {
@@ -111,7 +112,11 @@ const Header = () => {
     setOpenMenu((prev) => !prev);
   }, []);
 
-  if (location.pathname === "/landing") {
+  if (
+    location.pathname === "/landing" ||
+    location.pathname === "/login" ||
+    location.pathname === "/sign"
+  ) {
     return (
       <HeaderWrap>
         <Container flex alignCenter>

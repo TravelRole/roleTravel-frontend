@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { getUserInfo } from "./features/Landing/userSlice";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import "./App.css";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -29,6 +30,7 @@ time, mark, audio, video,input {
   vertical-align: baseline;
   box-sizing: border-box;
   text-decoration-line: none;
+
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
@@ -41,6 +43,7 @@ footer, header, hgroup, main, menu, nav, section {
 }
 body {
   line-height: 1;
+  font-family: 'Pretendard';
 }
 menu, ol, ul {
   list-style: none;
