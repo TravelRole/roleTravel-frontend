@@ -3,6 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../Login/authSlice";
+import { authApi } from "../../lib/customAPI";
 
 const initialState = {
   isSignLoading: false, // 회원가입 로딩 여부
@@ -14,7 +15,7 @@ export const signUp = createAsyncThunk("auth/signup", async (userData) => {
   try {
     const { email, password } = userData;
 
-    const response = await axios.post("auth/signup", userData);
+    const response = await authApi.post("auth/signup", userData);
     window.alert("회원가입이 완료되었습니다!");
     if (response.status === 200) {
       const loginResponse = await axios.post(
