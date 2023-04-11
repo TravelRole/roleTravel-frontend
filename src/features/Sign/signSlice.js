@@ -18,7 +18,7 @@ export const signUp = createAsyncThunk("auth/signup", async (userData) => {
     const response = await authApi.post("auth/signup", userData);
     window.alert("회원가입이 완료되었습니다!");
     if (response.status === 200) {
-      const loginResponse = await axios.post(
+      const loginResponse = await authApi.post(
         "auth/login",
         { email: email, password: password },
         {

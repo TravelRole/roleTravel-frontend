@@ -139,26 +139,6 @@ const Login = () => {
     console.log(email, password);
   };
 
-  // const onChangeInput = useCallback(
-  //   (e) => {
-  //     const { name, value } = e.target;
-  //     if (name === "id") {
-  //       setFormData({ ...formData, email: value });
-  //       return;
-  //     }
-  //     setFormData({ ...formData, password: value });
-  //   },
-  //   [formData]
-  // );
-
-  // const onLoginSubmit = useCallback(
-  //   (e) => {
-  //     e.preventDefault();
-  //     dispatch(login(formData));
-  //   },
-  //   [dispatch, formData]
-  // );
-
   const onClickGoogle = useCallback(() => {
     window.location.assign(
       `${process.env.REACT_APP_BASE_URL}oauth2/authorization/google`
