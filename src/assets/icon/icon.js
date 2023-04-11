@@ -1,7 +1,8 @@
-import {TfiPencilAlt} from "react-icons/tfi"
-
+import { TfiPencilAlt } from "react-icons/tfi";
+import { HiOutlineX } from "react-icons/hi";
 const Icons = {
-    TfiPencilAlt
-}
+  TfiPencilAlt,
+  HiOutlineX,
+};
 
-export default Icons
+export default Icons;

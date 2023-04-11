@@ -11,26 +11,26 @@ import { useLocation } from "react-router-dom";
 import { HiUser, HiOutlineLogout } from "react-icons/hi";
 
 const HeaderWrap = styled.header`
-  padding: 20px;
+  padding: 2rem;
   display: flex;
   align-items: center;
-  height: 100px;
+  height: 10rem;
 
   h1 {
     img {
       width: 20%;
-      min-width: 100px;
+      min-width: 10rem;
     }
   }
 
   dl.header-profile {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 1rem;
     cursor: pointer;
     dt {
-      width: 30px;
-      height: 30px;
+      width: 3rem;
+      height: 3rem;
       border-radius: 50%;
       overflow: hidden;
       img {
@@ -43,13 +43,13 @@ const HeaderWrap = styled.header`
 
 const ProfileMenu = styled.div`
   position: absolute;
-  top: 50px;
+  top: 5rem;
   right: 0;
   z-index: 20;
   background-color: #fff;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  padding: 20px;
-  border-radius: 20px;
+  padding: 2rem;
+  border-radius: 2rem;
 
   dl.menu-profile {
     display: flex;

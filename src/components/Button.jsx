@@ -6,7 +6,9 @@ const sizeStyles = css`
     css`
       width: 100%;
       padding: 15px 0;
-      font-size: 1rem;
+      font-size: 1.6rem;
+      font-weight: 600;
+      border-radius: 0.8rem;
     `}
 
   ${(props) =>
@@ -78,6 +80,11 @@ const StyledButton = styled.button`
   padding: 15px 0;
   ${colorStyles};
   ${sizeStyles};
+
+  &:disabled {
+    background-color: #d9d9d9;
+    cursor: default;
+  }
 `;
 
 const Button = ({ children, size, ...props }) => {

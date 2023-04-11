@@ -25,12 +25,12 @@ time, mark, audio, video,input {
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
   font: inherit;
   vertical-align: baseline;
   box-sizing: border-box;
   text-decoration-line: none;
-
+  font-size: 62.5%;
+  letter-spacing: -0.02rem;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
@@ -41,9 +41,11 @@ footer, header, hgroup, main, menu, nav, section {
 *[hidden] {
     display: none;
 }
+
 body {
   line-height: 1;
   font-family: 'Pretendard';
+
 }
 menu, ol, ul {
   list-style: none;
