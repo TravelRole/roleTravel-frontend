@@ -23,7 +23,7 @@ const SearchIdWrap = styled.section`
   }
 `;
 
-const SearchId = () => {
+const SearchId = ({ value, index }) => {
   const dispatch = useDispatch();
   const [searchEmailData, setSearchEmailData] = useState({
     name: "",
@@ -38,19 +38,18 @@ const SearchId = () => {
     [dispatch, searchEmailData]
   );
   return (
-    <SearchIdWrap>
-      <dl>
-        <dt>회원정보 입력</dt>
-        <dd>가입 시 입력한 본인정보를 입력해주세요.</dd>
-      </dl>
-      <div>
-        <form onSubmit={onSearchSubmit}>
-          <SearchIdForm setSearchEmailData={setSearchEmailData} />
-          <Button type="submit" size="medium" margin="0 auto" color="#3884fd">
-            아이디 찾기
-          </Button>
-        </form>
-      </div>
+    <SearchIdWrap
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+    >
+      <form onSubmit={onSearchSubmit}>
+        <SearchIdForm setSearchEmailData={setSearchEmailData} />
+        <Button type="submit" size="full" margin="0 auto" color="blue">
+          아이디 찾기
+        </Button>
+      </form>
     </SearchIdWrap>
   );
 };

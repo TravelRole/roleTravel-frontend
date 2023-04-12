@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { authApi } from "../../lib/customAPI";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   userId: null,
@@ -40,7 +41,8 @@ const searchSlice = createSlice({
         state.userId = action.payload;
         state.isLoading = false;
         state.error = null;
-        window.alert(`찾으시는 아이디는 ${action.payload} 입니다.`);
+        const navigate = useNavigate();
+        navigate("/searchIdPw/idResult");
       })
       .addCase(searchUserId.rejected, (state, action) => {
         state.isLoading = false;

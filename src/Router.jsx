@@ -11,6 +11,7 @@ import Authorization from "./features/Authorization/Authorization";
 import TeamSpace from "./features/layout/TeamSpace";
 import Social from "./features/Landing/Social";
 import Login from "./features/Login/Login";
+import SearchIdResult from "./features/SearchIDPW/layout/id/SearchIdResult";
 
 const routers = [
   {
@@ -65,6 +66,13 @@ const routers = [
   },
   {
     id: 7,
+    path: "/searchIdPw/idResult",
+    label: "SearchIdResult",
+    element: <SearchIdResult />,
+    withAuth: false,
+  },
+  {
+    id: 8,
     path: "/landing/social",
     label: "LandingSocial",
     element: <Social />,

@@ -115,7 +115,8 @@ const Header = () => {
   if (
     location.pathname === "/landing" ||
     location.pathname === "/login" ||
-    location.pathname === "/sign"
+    location.pathname === "/sign" ||
+    location.pathname === "/searchIdPw"
   ) {
     return (
       <HeaderWrap>

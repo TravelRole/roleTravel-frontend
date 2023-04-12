@@ -31,6 +31,7 @@ time, mark, audio, video,input {
   text-decoration-line: none;
   font-size: 62.5%;
   letter-spacing: -0.02rem;
+  font-smooth: always;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,

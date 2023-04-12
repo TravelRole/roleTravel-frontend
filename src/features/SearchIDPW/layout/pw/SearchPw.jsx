@@ -12,7 +12,7 @@ const SearchPwWrap = styled.section`
   }
 `;
 
-const SearchPw = () => {
+const SearchPw = ({ value, index }) => {
   const [searchPwData, setSearchPwData] = useState({
     email: "",
     name: "",
@@ -29,10 +29,15 @@ const SearchPw = () => {
   );
 
   return (
-    <SearchPwWrap>
+    <SearchPwWrap
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+    >
       <form onSubmit={onSearchSubmit}>
         <SearchPwForm setSearchPwData={setSearchPwData} />
-        <Button type="submit" size="medium" color={"#3884fd"} margin={"0 auto"}>
+        <Button type="submit" size="full" color="blue" margin={"0 auto"}>
           비밀번호 찾기
         </Button>
       </form>

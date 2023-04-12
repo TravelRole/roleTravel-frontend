@@ -1,33 +1,29 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import styled from "styled-components";
 import useAddSlash from "../../../../lib/useAddSlash";
+import { TextField } from "@mui/material";
 
 const SearchPwFormTable = styled.table`
-  margin: 30px 0;
+  margin: 3rem 0;
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 10px;
-  tbody {
-    tr {
-      td {
-        width: 20%;
-      }
-      th {
-        width: 80%;
-        input {
-          width: 100%;
-          padding: 10px;
-          box-sizing: border-box;
-          border: 1px solid #ddd;
-          outline: none;
-        }
-      }
-    }
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  div.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+    border-radius: 0.8rem;
+  }
+  label {
+    font-size: 1.5rem;
+  }
+
+  input {
+    font-size: 1.6rem;
   }
 `;
 
 const SearchPwForm = ({ setSearchPwData }) => {
-  const [birth, setBirth] = useState("");
+  const inputRef = useRef(null);
   const addSlash = useAddSlash();
   const onChangeInput = useCallback(
     (e) => {
@@ -41,7 +37,7 @@ const SearchPwForm = ({ setSearchPwData }) => {
           break;
         case "birth":
           const newValue = addSlash(value);
-          setBirth(newValue);
+          inputRef.current.value = newValue;
           setSearchPwData((prev) => ({ ...prev, birth: newValue }));
           break;
         default:
@@ -53,31 +49,29 @@ const SearchPwForm = ({ setSearchPwData }) => {
 
   return (
     <SearchPwFormTable>
-      <tbody>
-        <tr>
-          <td>이메일</td>
-          <th>
-            <input type="text" name="email" onChange={onChangeInput} />
-          </th>
-        </tr>
-        <tr>
-          <td>이름</td>
-          <th>
-            <input type="text" name="name" onChange={onChangeInput} />
-          </th>
-        </tr>
-        <tr>
-          <td>생년월일</td>
-          <th>
-            <input
-              type="text"
-              name="birth"
-              onChange={onChangeInput}
-              value={birth}
-            />
-          </th>
-        </tr>
-      </tbody>
+      <TextField
+        label="이름"
+        name="name"
+        required
+        onChange={onChangeInput}
+        placeholder="이름을 입력해주세요."
+      />
+      <TextField
+        inputRef={inputRef}
+        label="생년월일"
+        name="birth"
+        required
+        onChange={onChangeInput}
+        placeholder="생년월일을 입력해주세요. (YYYY/MM/DD)"
+      />
+      <TextField
+        label="이메일(아이디)"
+        type="email"
+        name="password"
+        required
+        onChange={onChangeInput}
+        placeholder="이메일(아이디)를 입력해주세요."
+      />
     </SearchPwFormTable>
   );
 };

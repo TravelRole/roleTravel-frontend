@@ -109,6 +109,7 @@ const SignForm = () => {
     birth: "",
     email: "",
     password: "",
+    signUpDate: null,
   });
 
   const [check, setCheck] = useState(false);
@@ -122,6 +123,7 @@ const SignForm = () => {
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
+      setFormData((prev) => ({ ...prev, signUpDate: new Date() }));
       dispatch(signUp(formData));
     },
     [dispatch, formData]
