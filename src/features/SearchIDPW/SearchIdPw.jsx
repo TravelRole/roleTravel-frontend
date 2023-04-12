@@ -20,8 +20,8 @@ const SearchContainer = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  border-radius: 3rem;
-  padding: 6rem 9.5rem;
+  border-radius: 1.5rem;
+  padding: 6rem 6rem;
 
   dl {
     text-align: center;

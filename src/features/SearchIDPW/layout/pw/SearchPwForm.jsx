@@ -67,7 +67,7 @@ const SearchPwForm = ({ setSearchPwData }) => {
       <TextField
         label="이메일(아이디)"
         type="email"
-        name="password"
+        name="email"
         required
         onChange={onChangeInput}
         placeholder="이메일(아이디)를 입력해주세요."

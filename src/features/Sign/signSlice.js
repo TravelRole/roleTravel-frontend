@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../Login/authSlice";
 import { authApi } from "../../lib/customAPI";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const initialState = {
   signUpSuccess: false,
@@ -32,13 +32,11 @@ export const signUp = createAsyncThunk(
         );
         const { accessToken } = loginResponse.data;
         localStorage.setItem("accessToken", accessToken);
-        const navigate = useNavigate();
-        navigate("/:userid");
-        return { success: true };
-      } else {
-        return response.status;
+        window.location.assign("/:userid");
+        return thunkAPI.fulfillWithValue(true);
       }
     } catch (error) {
+      console.log(error);
       if (error.response && error.response.status === 400) {
         return thunkAPI.rejectWithValue("회원가입에 실패했습니다.");
       }

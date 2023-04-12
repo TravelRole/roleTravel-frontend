@@ -104,12 +104,17 @@ const SignForm = () => {
     birth: "",
   });
 
+  const date = new Date();
+
   const [formData, setFormData] = useState({
     name: "",
     birth: "",
     email: "",
     password: "",
-    signUpDate: null,
+    // createdAt: `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(
+    //   2,
+    //   "0"
+    // )}/${String(date.getDate()).padStart(2, "0")}`,
   });
 
   const [check, setCheck] = useState(false);
@@ -123,7 +128,6 @@ const SignForm = () => {
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      setFormData((prev) => ({ ...prev, signUpDate: new Date() }));
       dispatch(signUp(formData));
     },
     [dispatch, formData]

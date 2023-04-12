@@ -67,7 +67,7 @@ const IdResultContainer = styled.div`
 `;
 
 const SearchIdResult = () => {
-  const { userId } = useSelector((state) => state.search);
+  const { searchUserInfo } = useSelector((state) => state.search);
   const navigate = useNavigate();
   return (
     <SearchWrap>
@@ -82,8 +82,8 @@ const SearchIdResult = () => {
           <dd>입력한 정보와 일치된 아이디입니다.</dd>
         </dl>
         <dl className="idResult-content">
-          <dt>{userId}</dt>
-          <dd>(2023/03/14)</dd>
+          <dt>{searchUserInfo.email}</dt>
+          <dd>{searchUserInfo.createdAt}</dd>
         </dl>
         <div>
           <Button size="medium" color="blue" onClick={() => navigate("/login")}>

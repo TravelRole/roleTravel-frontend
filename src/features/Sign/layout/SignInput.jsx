@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { authApi } from "../../../lib/customAPI";
+import { em } from "polished";
 
 // 유효성검사
 const EMAIL_REGEX = new RegExp(
@@ -118,30 +119,31 @@ const SignInput = ({
   const checkRegex = useCallback(
     async (e) => {
       let result;
-
       if (e.target.name === "email" && formData.email.length > 0) {
         await authApi
           .post("auth/confirm-id", { email: formData.email })
           .then((res) => {
             if (res.data.isExist === true) {
+              setFormData((prev) => ({ ...prev, email: "" }));
               result = "duplicateId";
               return;
             }
+            setFormData((prev) => ({ ...prev, email: e.target.value }));
             result = "confirmId";
           })
           .catch((error) => {
             if (error.response.status === 400) {
+              setFormData((prev) => ({ ...prev, email: "" }));
               result = "invalidId";
-              return;
             }
           });
-        setSuccessData((prev) => ({ ...prev, [name]: result }));
+        setSuccessData((prev) => ({ ...prev, email: result }));
         setErrorData((prev) => ({ ...prev, email: result }));
         return;
       }
       return;
     },
-    [formData.email, name, setErrorData]
+    [formData.email, setErrorData, setFormData]
   );
 
   return (

@@ -85,6 +85,7 @@ function SpaceList() {
   }, [isAuth, navigate]);
 
   useEffect(() => {
+    console.log(signUpSuccess);
     if (signUpSuccess) {
       dispatch(getUserInfo());
       toast.success("Sign-up was successful!", {
