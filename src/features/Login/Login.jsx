@@ -213,12 +213,7 @@ const Login = () => {
               )}
             </FormControl>
 
-            <Button
-              type="submit"
-              color="#3884fd"
-              size="full"
-              borderRadius="10px"
-            >
+            <Button type="submit" color="blue" size="full">
               기존회원 로그인
             </Button>
           </form>

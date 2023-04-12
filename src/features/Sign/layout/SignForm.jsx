@@ -50,7 +50,7 @@ const CheckBoxWrap = styled.div`
   align-items: center;
   div {
     display: flex;
-    gap: 10px;
+    gap: 1rem;
     align-items: center;
 
     input {
@@ -224,7 +224,7 @@ const SignForm = () => {
           <p onClick={() => setOpenModal((prev) => !prev)}>내용 보기</p>
         </CheckBoxWrap>
 
-        <Button type="submit" size="full" color="#3884fd" disabled={formOk}>
+        <Button type="submit" size="full" color="blue" disabled={formOk}>
           가입하기
         </Button>
       </SignFormWrap>

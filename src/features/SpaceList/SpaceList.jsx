@@ -10,7 +10,10 @@ import betImage from "../../assets/images/image2.jpg";
 import gangnenunImage from "../../assets/images/image3.jpg";
 import AddSpaceModal from "./layout/AddSpaceModal";
 import Modal from "../../components/Modal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { resetSignUpSuccess } from "../Sign/signSlice";
+import { toast } from "react-toastify";
+import { getUserInfo } from "../Landing/userSlice";
 
 const SpaceListContent = styled.section`
   padding: 50px 0;
@@ -61,6 +64,7 @@ const planList = [
 
 function SpaceList() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isAddModal, setIsAddModal] = useState(false);
   const [today, setToday] = useState(new Date());
   const [tomorrow, setTomorrow] = useState(new Date(today));
@@ -71,6 +75,7 @@ function SpaceList() {
   const [startDate, endDate] = dateRange;
 
   const { isAuth } = useSelector((state) => state.auth);
+  const { signUpSuccess } = useSelector((state) => state.sign);
 
   useEffect(() => {
     if (!isAuth) {
@@ -78,6 +83,25 @@ function SpaceList() {
       return;
     }
   }, [isAuth, navigate]);
+
+  useEffect(() => {
+    if (signUpSuccess) {
+      dispatch(getUserInfo());
+      toast.success("Sign-up was successful!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
+      // Reset the success flag in the state
+      dispatch(resetSignUpSuccess());
+    }
+  }, [signUpSuccess, dispatch]);
 
   const showAddModal = useCallback(() => setIsAddModal(true), []);
 

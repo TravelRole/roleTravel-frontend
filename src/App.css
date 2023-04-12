@@ -1,1 +1,5 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css%27");
+
+.Toastify__toast-body div {
+  font-size: 1.6rem !important ;
+}

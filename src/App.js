@@ -88,6 +88,7 @@ function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
+        style={{ fontSize: "16px" }}
         theme="light"
       />
       <div className="App">
