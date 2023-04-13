@@ -1,11 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { login } from "../Login/authSlice";
 import { authApi } from "../../lib/customAPI";
 import { toast } from "react-toastify";
-import { Navigate, useNavigate } from "react-router-dom";
 
 const initialState = {
   signUpSuccess: false,
@@ -18,25 +14,21 @@ export const signUp = createAsyncThunk(
   "auth/signup",
   async (userData, thunkAPI) => {
     try {
-      const { email, password } = userData;
+      await authApi.post("auth/signup", userData);
+      return thunkAPI.fulfillWithValue(true);
+      // if (response.status === 200) {
+      //   const loginResponse = await authApi.post(
+      //     "auth/login",
+      //     { email: email, password: password },
+      //     {
+      //       withCredentials: true,
+      //     }
+      //   );
+      //   const { accessToken } = loginResponse.data;
+      //   localStorage.setItem("accessToken", accessToken);
 
-      const response = await authApi.post("auth/signup", userData);
-
-      if (response.status === 200) {
-        const loginResponse = await authApi.post(
-          "auth/login",
-          { email: email, password: password },
-          {
-            withCredentials: true,
-          }
-        );
-        const { accessToken } = loginResponse.data;
-        localStorage.setItem("accessToken", accessToken);
-        window.location.assign("/:userid");
-        return thunkAPI.fulfillWithValue(true);
-      }
+      // }
     } catch (error) {
-      console.log(error);
       if (error.response && error.response.status === 400) {
         return thunkAPI.rejectWithValue("회원가입에 실패했습니다.");
       }
@@ -48,11 +40,7 @@ export const signUp = createAsyncThunk(
 const signSlice = createSlice({
   name: "sign",
   initialState,
-  reducers: {
-    resetSignUpSuccess(state) {
-      state.signUpSuccess = false;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(signUp.pending, (state) => {
@@ -62,7 +50,7 @@ const signSlice = createSlice({
       .addCase(signUp.fulfilled, (state, action) => {
         state.isSignLoading = false;
         state.hasError = false;
-        state.signUpSuccess = action.payload.success;
+        state.signUpSuccess = action.payload;
       })
       .addCase(signUp.rejected, (state, action) => {
         state.isSignLoading = false;
@@ -81,7 +69,5 @@ const signSlice = createSlice({
       });
   },
 });
-
-export const { resetSignUpSuccess } = signSlice.actions;
 
 export default signSlice.reducer;

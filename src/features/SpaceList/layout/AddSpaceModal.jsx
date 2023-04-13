@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import styled from "styled-components";
 import Button from "../../../components/Button";
 import SearchLocationInput from "./SearchLocationInput";
+import { toast } from "react-toastify";
 
 const AddModalWrap = styled.div`
   h3 {
@@ -84,8 +85,32 @@ const AddSpaceModal = ({ setIsAddModal }) => {
   const [currentTomorrow, setCurrentTomorrow] = useState(
     tomorrow.setDate(today.getDate() + 1)
   );
-  const [dateRange, setDateRange] = useState([today, currentTomorrow]);
+
+  const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
+
+  const handleDateChange = (dates) => {
+    const [start, end] = dates;
+
+    // 선택한 기간이 8일 이상인 경우, 종료 날짜를 강제로 줄임
+    if (start && end && (end - start) / (1000 * 60 * 60 * 24) >= 8) {
+      const newEnd = new Date(start);
+      newEnd.setDate(newEnd.getDate() + 7);
+      setDateRange([start, newEnd]);
+      toast.warn("7일까지 선택 가능합니다.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else {
+      setDateRange(dates);
+    }
+  };
   // useMemo 로 변경
 
   return (
@@ -110,14 +135,14 @@ const AddSpaceModal = ({ setIsAddModal }) => {
           </dt>
           <dd>
             <DatePicker
+              placeholderText="여행 일자를 선택해주세요."
               selectsRange={true}
+              selected={startDate}
               startDate={startDate}
               endDate={endDate}
+              minDate={new Date()}
               dateFormat="yyyy년 MM월 dd일"
-              onChange={(update) => {
-                console.log(dateFormat(update[0]));
-                setDateRange(update);
-              }}
+              onChange={handleDateChange}
             />
           </dd>
         </dl>

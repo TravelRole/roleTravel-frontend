@@ -83,7 +83,7 @@ const SearchIdResult = () => {
         </dl>
         <dl className="idResult-content">
           <dt>{searchUserInfo.email}</dt>
-          <dd>{searchUserInfo.createdAt}</dd>
+          <dd>({searchUserInfo.createdAt})</dd>
         </dl>
         <div>
           <Button size="medium" color="blue" onClick={() => navigate("/login")}>

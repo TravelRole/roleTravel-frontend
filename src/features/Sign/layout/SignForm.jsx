@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../../components/Button";
 import { signUp } from "../signSlice";
 import SignInput from "./SignInput";
 import SignModal from "./SignModal";
+import { login } from "../../Login/authSlice";
 
 // 컨테이너 컴포넌트
 
@@ -111,10 +112,6 @@ const SignForm = () => {
     birth: "",
     email: "",
     password: "",
-    // createdAt: `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(
-    //   2,
-    //   "0"
-    // )}/${String(date.getDate()).padStart(2, "0")}`,
   });
 
   const [check, setCheck] = useState(false);
@@ -124,13 +121,25 @@ const SignForm = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(signUp(formData));
+      dispatch(signUp(formData)).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          dispatch(
+            login({ email: formData.email, password: formData.password })
+          ).then((res) => {
+            if (res.meta.requestStatus === "fulfilled") {
+              navigate("/:userid");
+              return;
+            }
+          });
+        }
+      });
     },
-    [dispatch, formData]
+    [dispatch, formData, navigate]
   );
 
   // formData의 데이터가 없거나, check가 안된 상황이라면 submit 버튼을 막아놓음.

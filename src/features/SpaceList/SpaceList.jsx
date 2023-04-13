@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { Container } from "../../components/Container";
 import Header from "../layout/Header";
@@ -11,7 +12,6 @@ import gangnenunImage from "../../assets/images/image3.jpg";
 import AddSpaceModal from "./layout/AddSpaceModal";
 import Modal from "../../components/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { resetSignUpSuccess } from "../Sign/signSlice";
 import { toast } from "react-toastify";
 import { getUserInfo } from "../Landing/userSlice";
 
@@ -65,30 +65,23 @@ const planList = [
 function SpaceList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const [isAddModal, setIsAddModal] = useState(false);
-  const [today, setToday] = useState(new Date());
-  const [tomorrow, setTomorrow] = useState(new Date(today));
-  const [currentTomorrow, setCurrentTomorrow] = useState(
-    tomorrow.setDate(today.getDate() + 1)
-  );
-  const [dateRange, setDateRange] = useState([today, currentTomorrow]);
-  const [startDate, endDate] = dateRange;
 
   const { isAuth } = useSelector((state) => state.auth);
   const { signUpSuccess } = useSelector((state) => state.sign);
 
   useEffect(() => {
-    if (!isAuth) {
+    // isAuth로 판단하는게 나은지, 의논해야함
+    if (!localStorage.getItem("accessToken")) {
       navigate(`/login`);
       return;
     }
   }, [isAuth, navigate]);
 
   useEffect(() => {
-    console.log(signUpSuccess);
-    if (signUpSuccess) {
-      dispatch(getUserInfo());
-      toast.success("Sign-up was successful!", {
+    if (location.state?.isGoogleSuccess) {
+      toast.success("구글 로그인이 되었습니다!", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: true,
@@ -96,11 +89,15 @@ function SpaceList() {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: "light",
       });
+      navigate(location.pathname, { state: { isGoogleSuccess: false } });
+    }
+  }, [location.pathname, location.state?.isGoogleSuccess, navigate]);
 
-      // Reset the success flag in the state
-      dispatch(resetSignUpSuccess());
+  useEffect(() => {
+    if (signUpSuccess) {
+      dispatch(getUserInfo());
     }
   }, [signUpSuccess, dispatch]);
 

@@ -136,7 +136,7 @@ const Login = () => {
     if (!password) return setError({ email: false, password: true });
     setError({ email: false, password: false });
 
-    console.log(email, password);
+    // dispatch(login(formData));
   };
 
   const onClickGoogle = useCallback(() => {

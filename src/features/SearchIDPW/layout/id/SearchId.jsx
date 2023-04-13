@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Button from "../../../../components/Button";
 import { searchUserId } from "../../searchSlice";
 import SearchIdForm from "./SearchIdForm";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const SearchIdWrap = styled.section`
   dl {
@@ -25,6 +26,7 @@ const SearchIdWrap = styled.section`
 
 const SearchId = ({ value, index }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [searchEmailData, setSearchEmailData] = useState({
     name: "",
     birth: "",
@@ -33,9 +35,14 @@ const SearchId = ({ value, index }) => {
   const onSearchSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(searchUserId(searchEmailData));
+      dispatch(searchUserId(searchEmailData)).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          navigate("/searchIdPw/idResult");
+          return;
+        }
+      });
     },
-    [dispatch, searchEmailData]
+    [dispatch, navigate, searchEmailData]
   );
   return (
     <SearchIdWrap
