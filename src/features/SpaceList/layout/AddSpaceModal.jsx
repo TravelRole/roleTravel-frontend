@@ -1,8 +1,7 @@
-import React, { Children, useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import DatePicker from "react-datepicker";
 import styled from "styled-components";
 import Button from "../../../components/Button";
-import SearchLocationInput from "./SearchLocationInput";
 import { toast } from "react-toastify";
 
 const AddModalWrap = styled.div`
@@ -51,40 +50,21 @@ const AddModalWrap = styled.div`
   }
 `;
 
-function dateFormat(date) {
-  let month = date.getMonth() + 1;
-  let day = date.getDate();
-  let hour = date.getHours();
-  let minute = date.getMinutes();
-  let second = date.getSeconds();
+function formatDate(date) {
+  const year = date?.getFullYear();
+  const month = ("0" + (date?.getMonth() + 1)).slice(-2); // 월은 0부터 시작하기 때문에 1을 더해줍니다.
+  const day = ("0" + date?.getDate()).slice(-2);
 
-  month = month >= 10 ? month : "0" + month;
-  day = day >= 10 ? day : "0" + day;
-  hour = hour >= 10 ? hour : "0" + hour;
-  minute = minute >= 10 ? minute : "0" + minute;
-  second = second >= 10 ? second : "0" + second;
-
-  return (
-    date.getFullYear() +
-    "-" +
-    month +
-    "-" +
-    day +
-    " " +
-    hour +
-    ":" +
-    minute +
-    ":" +
-    second
-  );
+  return `${year}/${month}/${day}`;
 }
 
 const AddSpaceModal = ({ setIsAddModal }) => {
-  const [today, setToday] = useState(new Date());
-  const [tomorrow, setTomorrow] = useState(new Date(today));
-  const [currentTomorrow, setCurrentTomorrow] = useState(
-    tomorrow.setDate(today.getDate() + 1)
-  );
+  const [formData, setFormData] = useState({
+    roomName: "",
+    travelStartDate: "",
+    travelEndDate: "",
+    location: "",
+  });
 
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
@@ -97,6 +77,13 @@ const AddSpaceModal = ({ setIsAddModal }) => {
       const newEnd = new Date(start);
       newEnd.setDate(newEnd.getDate() + 7);
       setDateRange([start, newEnd]);
+      const formatStart = formatDate(start);
+      const formatEnd = formatDate(newEnd);
+      setFormData((prev) => ({
+        ...prev,
+        travelStartDate: formatStart,
+        travelEndDate: formatEnd,
+      }));
       toast.warn("7일까지 선택 가능합니다.", {
         position: "top-center",
         autoClose: 3000,
@@ -109,14 +96,34 @@ const AddSpaceModal = ({ setIsAddModal }) => {
       });
     } else {
       setDateRange(dates);
+      const formatStart = formatDate(start);
+      const formatEnd = formatDate(end);
+      setFormData((prev) => ({
+        ...prev,
+        travelStartDate: formatStart,
+        travelEndDate: formatEnd,
+      }));
     }
   };
-  // useMemo 로 변경
+
+  const onChangeInput = useCallback((e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  }, []);
+
+  const onAddTravelSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      console.log(formData);
+    },
+    [formData]
+  );
 
   return (
     <AddModalWrap>
       <h3>새 여행 만들기</h3>
-      <form action="">
+      <form onSubmit={onAddTravelSubmit}>
         <dl>
           <dt>
             <label htmlFor="spaceName">여행 이름</label>
@@ -124,8 +131,9 @@ const AddSpaceModal = ({ setIsAddModal }) => {
           <dd>
             <input
               type="text"
-              id="spaceName"
+              name="roomName"
               placeholder="여행 이름을 입력해주세요."
+              onChange={onChangeInput}
             />
           </dd>
         </dl>
@@ -141,7 +149,7 @@ const AddSpaceModal = ({ setIsAddModal }) => {
               startDate={startDate}
               endDate={endDate}
               minDate={new Date()}
-              dateFormat="yyyy년 MM월 dd일"
+              dateFormat="yyyy/MM/dd"
               onChange={handleDateChange}
             />
           </dd>
@@ -153,13 +161,14 @@ const AddSpaceModal = ({ setIsAddModal }) => {
           <dd>
             <input
               type="text"
-              id="trip-place"
+              name="location"
               placeholder="여행 장소를 입력해주세요."
+              onChange={onChangeInput}
             />
             {/* <SearchLocationInput /> */}
           </dd>
         </dl>
-        <dl>
+        {/* <dl>
           <dt>
             <label htmlFor="tripMember">총 인원 수</label>
           </dt>
@@ -170,14 +179,9 @@ const AddSpaceModal = ({ setIsAddModal }) => {
               placeholder="인원 수를 입력해주세요."
             />
           </dd>
-        </dl>
+        </dl> */}
 
-        <Button
-          className="submitBtn"
-          type="submit"
-          color="#3884fd"
-          size="small"
-        >
+        <Button className="submitBtn" type="submit" color="blue" size="small">
           확인
         </Button>
       </form>

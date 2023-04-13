@@ -71,13 +71,13 @@ function SpaceList() {
   const { isAuth } = useSelector((state) => state.auth);
   const { signUpSuccess } = useSelector((state) => state.sign);
 
-  useEffect(() => {
-    // isAuth로 판단하는게 나은지, 의논해야함
-    if (!localStorage.getItem("accessToken")) {
-      navigate(`/login`);
-      return;
-    }
-  }, [isAuth, navigate]);
+  // useEffect(() => {
+  //   // isAuth로 판단하는게 나은지, 의논해야함
+  //   if (!localStorage.getItem("accessToken")) {
+  //     navigate(`/login`);
+  //     return;
+  //   }
+  // }, [isAuth, navigate]);
 
   useEffect(() => {
     if (location.state?.isGoogleSuccess) {

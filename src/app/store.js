@@ -5,8 +5,7 @@ import signReducer from "../features/Sign/signSlice";
 import authReducer from "../features/Login/authSlice";
 import userReducer from "../features/Landing/userSlice";
 import searchReducer from "../features/SearchIDPW/searchSlice";
-
-axios.defaults.baseURL = "api주소";
+import travelReducer from "../features/SpaceList/travelSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,5 +14,6 @@ export const store = configureStore({
     auth: authReducer,
     user: userReducer,
     search: searchReducer,
+    travel: travelReducer,
   },
 });
