@@ -13,6 +13,7 @@ const SuperContainer = styled.div`
   align-items: center;
   justify-content: center;
   background-color: rgba(1, 1, 1, 0.5);
+  z-index: 10;
 `;
 const AddScheduleModal = styled.div`
   position: relative;
@@ -71,6 +72,10 @@ const AddSpaceModal = ({
     AddScheduleList(ScheduleObj);
     setIsAddModal(false);
   };
+
+  console.log(modalPlace)
+
+
   return (
     <>
       {isAddModal ? (
@@ -99,7 +104,7 @@ const AddSpaceModal = ({
                 <input
                   type="text"
                   name="placeName"
-                  value={modalPlace.name}
+                  value={modalPlace.place_name}
                   readonly
                 ></input>{" "}
               </div>
@@ -108,8 +113,9 @@ const AddSpaceModal = ({
                 <input
                   type="text"
                   name="placeAddress"
-                  value={modalPlace.formatted_address}
+                  value={modalPlace.address_name}
                   readonly
+                  style={{width:"70%"}}
                 ></input>
               </div>
 
@@ -126,7 +132,7 @@ const AddSpaceModal = ({
                 <input
                   type="text"
                   name="WebsiteLink"
-                  value={modalPlace.website && modalPlace.website}
+                  value={modalPlace.place_url && modalPlace.place_url}
                   readonly
                 ></input>
               </div>

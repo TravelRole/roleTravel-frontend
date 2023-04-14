@@ -69,6 +69,7 @@ const DayTime = [
 ];
 
 function ScheduleContainer({ schedulelist }) {
+  console.log(schedulelist)
   for (const property in schedulelist) {
     schedulelist[property].sort((a, b) => {
       const Atime = a.time.split(":");
