@@ -12,6 +12,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { authApi } from "../../../lib/customAPI";
 
 // 유효성검사
 const EMAIL_REGEX = new RegExp(
@@ -118,7 +119,7 @@ const SignInput = ({
       let result;
 
       if (e.target.name === "email" && formData.email.length > 0) {
-        await axios
+        await authApi
           .post("auth/confirm-id", { email: formData.email })
           .then((res) => {
             if (res.data.isExist === true) {
@@ -128,12 +129,12 @@ const SignInput = ({
             result = "confirmId";
           })
           .catch((error) => {
-            if (error.response.status === 400) {
+            if (error.response?.status === 400) {
               result = "invalidId";
               return;
             }
           });
-
+        setSuccessData((prev) => ({ ...prev, email: result }));
         setErrorData((prev) => ({ ...prev, email: result }));
         return;
       }

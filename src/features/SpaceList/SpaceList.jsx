@@ -14,6 +14,8 @@ import Modal from "../../components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getUserInfo } from "../Landing/userSlice";
+import { getTravelList } from "./travelSlice";
+import { SyncLoader } from "react-spinners";
 
 const SpaceListContent = styled.section`
   padding: 50px 0;
@@ -70,14 +72,18 @@ function SpaceList() {
 
   const { isAuth } = useSelector((state) => state.auth);
   const { signUpSuccess } = useSelector((state) => state.sign);
+  const { currentTravelList, isTravelLoading } = useSelector(
+    (state) => state.travel
+  );
 
-  // useEffect(() => {
-  //   // isAuth로 판단하는게 나은지, 의논해야함
-  //   if (!localStorage.getItem("accessToken")) {
-  //     navigate(`/login`);
-  //     return;
-  //   }
-  // }, [isAuth, navigate]);
+  useEffect(() => {
+    // isAuth로 판단하는게 나은지, 의논해야함
+    if (!localStorage.getItem("accessToken")) {
+      navigate(`/login`);
+      return;
+    }
+    dispatch(getTravelList());
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     if (location.state?.isGoogleSuccess) {
@@ -122,16 +128,24 @@ function SpaceList() {
 
           <div>
             <h2>여행 계획 목록</h2>
-            {planList.map((plan) => (
-              <Space key={plan.id} {...plan} />
-            ))}
+            {isTravelLoading ? (
+              <SyncLoader color={"#3884fd"} />
+            ) : currentTravelList.length === 0 ? (
+              <p>여행 계획 리스트가 비었습니다.</p>
+            ) : (
+              <>
+                {currentTravelList?.map((travel) => (
+                  <Space key={travel.roomId} {...travel} />
+                ))}
+              </>
+            )}
           </div>
         </SpaceListContent>
       </Container>
       {/* {isAddModal ? <AddSpaceModal setIsAddModal={setIsAddModal} /> : null} */}
       {isAddModal ? (
         <Modal setIsAddModal={setIsAddModal}>
-          <AddSpaceModal />
+          <AddSpaceModal setIsAddModal={setIsAddModal} />
         </Modal>
       ) : null}
     </>

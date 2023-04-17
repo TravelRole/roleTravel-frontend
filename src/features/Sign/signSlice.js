@@ -16,18 +16,6 @@ export const signUp = createAsyncThunk(
     try {
       await authApi.post("auth/signup", userData);
       return thunkAPI.fulfillWithValue(true);
-      // if (response.status === 200) {
-      //   const loginResponse = await authApi.post(
-      //     "auth/login",
-      //     { email: email, password: password },
-      //     {
-      //       withCredentials: true,
-      //     }
-      //   );
-      //   const { accessToken } = loginResponse.data;
-      //   localStorage.setItem("accessToken", accessToken);
-
-      // }
     } catch (error) {
       if (error.response && error.response.status === 400) {
         return thunkAPI.rejectWithValue("회원가입에 실패했습니다.");

@@ -3,6 +3,8 @@ import DatePicker from "react-datepicker";
 import styled from "styled-components";
 import Button from "../../../components/Button";
 import { toast } from "react-toastify";
+import { addTravel, getTravelList } from "../travelSlice";
+import { useDispatch } from "react-redux";
 
 const AddModalWrap = styled.div`
   h3 {
@@ -59,6 +61,7 @@ function formatDate(date) {
 }
 
 const AddSpaceModal = ({ setIsAddModal }) => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     roomName: "",
     travelStartDate: "",
@@ -115,9 +118,16 @@ const AddSpaceModal = ({ setIsAddModal }) => {
   const onAddTravelSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      console.log(formData);
+      dispatch(addTravel(formData)).then((res) => {
+        console.log(res);
+        if (res.meta.requestStatus === "fulfilled") {
+          setIsAddModal(false);
+          dispatch(getTravelList());
+          return;
+        }
+      });
     },
-    [formData]
+    [dispatch, formData, setIsAddModal]
   );
 
   return (
