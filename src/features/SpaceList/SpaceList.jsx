@@ -70,11 +70,10 @@ function SpaceList() {
   const location = useLocation();
   const [isAddModal, setIsAddModal] = useState(false);
 
-  const { isAuth } = useSelector((state) => state.auth);
+  // const { isAuth } = useSelector((state) => state.auth);
   const { signUpSuccess } = useSelector((state) => state.sign);
-  const { currentTravelList, isTravelLoading } = useSelector(
-    (state) => state.travel
-  );
+  const { currentTravelingList, currentEndTravelList, isTravelLoading } =
+    useSelector((state) => state.travel);
 
   useEffect(() => {
     // isAuth로 판단하는게 나은지, 의논해야함
@@ -127,16 +126,30 @@ function SpaceList() {
           </div>
 
           <div>
-            <h2>여행 계획 목록</h2>
             {isTravelLoading ? (
               <SyncLoader color={"#3884fd"} />
-            ) : currentTravelList.length === 0 ? (
-              <p>여행 계획 리스트가 비었습니다.</p>
             ) : (
               <>
-                {currentTravelList?.map((travel) => (
-                  <Space key={travel.roomId} {...travel} />
-                ))}
+                <div>
+                  <h2>진행중인 계획 목록</h2>
+                  {currentTravelingList?.length === 0 ? (
+                    <p>진행중인 계획 리스트가 없습니다.</p>
+                  ) : (
+                    currentTravelingList?.map((list) => (
+                      <Space key={list.roomId} {...list} />
+                    ))
+                  )}
+                </div>
+                <div>
+                  <h2>완료된 계획 목록</h2>
+                  {currentEndTravelList?.length === 0 ? (
+                    <p>완료된 계획 리스트가 없습니다.</p>
+                  ) : (
+                    currentEndTravelList?.map((list) => (
+                      <Space key={list.roomId} {...list} />
+                    ))
+                  )}
+                </div>
               </>
             )}
           </div>
