@@ -1,36 +1,8 @@
 import { useState } from "react";
-import { Button, Container, Divider, Input, InputContainer, Label } from "./Styles";
+import { Button, Container, Content, Input, InputContainer, Label } from "./Styles";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const Content = styled.div`
-  &:nth-child(1){
-    margin-bottom: 40px;
-
-    & > p:nth-child(2) {
-      font-size: 16px;
-    }
-
-    & > p:nth-child(3) {
-      margin-top: 3px;
-      color: #3884FD;
-      font-size: 16px;
-    }
-  }
-
-  &:nth-child(2){
-    margin-bottom: 50px;
-    border: 1px solid black;
-    padding: 1rem 2rem;
-  }
-
-  &:nth-child(3) {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
-  }
-`
 
 const ChangePassword = () => {
   const navigate = useNavigate();
@@ -51,24 +23,26 @@ const ChangePassword = () => {
 
   return (
     <Container>
-      <Content>
+      <Content marginTop="-59px">
         <h1>비밀번호 변경</h1>
-        <p>비밀번호는 8~16자 영문, 숫자, 특수문자를 사용할 수 있습니다.</p>
-        <p>비밀번호는 주기적(최소 6개월)으로 변경해 주시기 바랍니다.</p>
+        <div width="76px">
+          <p>비밀번호는 8~16자 영문, 숫자, 특수문자를 사용할 수 있습니다.</p>
+          <p>비밀번호는 <span style={{ color: '#3884FD'}}>주기적(최소 6개월)</span>으로 변경해 주시기 바랍니다.</p>
+        </div>
       </Content>
       <Content>
         <InputContainer>
-          <Label width="100px">현재 비밀번호</Label>
-          <Input name="password" value={pw.password} onChange={changeHandler} />
+          {/* <Label width="100px">현재 비밀번호</Label> */}
+          <Input name="password" value={pw.password} onChange={changeHandler} placeholder="비밀번호" />
         </InputContainer>
         <InputContainer>
-          <Label width="100px">새로운 비밀번호</Label>
-          <Input name="confirm" value={pw.forConfirm} onChange={changeHandler} />
+          {/* <Label width="100px">새로운 비밀번호</Label> */}
+          <Input name="confirm" value={pw.forConfirm} onChange={changeHandler} placeholder="새로운 비밀번호" />
         </InputContainer>
       </Content>
       <Content>
-        <Button onClick={updateHandler}>수정하기</Button>
-        <Button onClick={() => navigate('/home')}>취소</Button>
+        <Button onClick={() => navigate('/home')} backgroundColor="#FAFAFA" color="black" border="1px solid #C4C4C4">취소</Button>
+        <Button onClick={updateHandler} backgroundColor="#3884FD" color="white" border="none">수정하기</Button>
       </Content>
     </Container>
   )
