@@ -6,6 +6,7 @@ import authReducer from "../features/Login/authSlice";
 import userReducer from "../features/Landing/userSlice";
 import searchReducer from "../features/SearchIDPW/searchSlice";
 import travelReducer from "../features/SpaceList/travelSlice";
+import loggedUserReducer from "../features/UserAccount/LoggedUserSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,5 +16,6 @@ export const store = configureStore({
     user: userReducer,
     search: searchReducer,
     travel: travelReducer,
+    loggedInUser: loggedUserReducer,
   },
 });

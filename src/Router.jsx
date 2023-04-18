@@ -13,6 +13,8 @@ import Social from "./features/Landing/Social";
 import Login from "./features/Login/Login";
 import SearchIdResult from "./features/SearchIDPW/layout/id/SearchIdResult";
 
+import UserAccount from "./features/UserAccount/UserAccount";
+
 const routers = [
   {
     id: 0,
@@ -76,6 +78,13 @@ const routers = [
     path: "/landing/social",
     label: "LandingSocial",
     element: <Social />,
+    withAuth: true,
+  },
+  {
+    id: 9,
+    path: "/account/:UserId/",
+    label: "UserAccount",
+    element: <UserAccount Auth={false} />,
     withAuth: true,
   },
 ];
