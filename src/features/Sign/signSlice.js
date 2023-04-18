@@ -1,17 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { authApi } from "../../lib/customAPI";
+import { toast } from "react-toastify";
 
 const initialState = {
+  signUpSuccess: false,
   isSignLoading: false, // 회원가입 로딩 여부
   hasError: false, // 에러 여부
   errorMessage: "", // 에러 메세지가 있다면 에러 메세지 담을 곳
 };
 
-export const signUp = createAsyncThunk("auth/signup", async (userData) => {
-  const response = await axios.post("auth/signup", userData);
-  return response.data;
-});
+export const signUp = createAsyncThunk(
+  "auth/signup",
+  async (userData, thunkAPI) => {
+    try {
+      await authApi.post("auth/signup", userData);
+      return thunkAPI.fulfillWithValue(true);
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        return thunkAPI.rejectWithValue("회원가입에 실패했습니다.");
+      }
+      return thunkAPI.rejectWithValue("네트워크가 불안정합니다.");
+    }
+  }
+);
 
 const signSlice = createSlice({
   name: "sign",
@@ -22,17 +34,26 @@ const signSlice = createSlice({
       .addCase(signUp.pending, (state) => {
         state.isSignLoading = true;
         state.hasError = false;
-        state.errorMessage = "";
       })
       .addCase(signUp.fulfilled, (state, action) => {
         state.isSignLoading = false;
         state.hasError = false;
-        state.errorMessage = "";
+        state.signUpSuccess = action.payload;
       })
       .addCase(signUp.rejected, (state, action) => {
         state.isSignLoading = false;
         state.hasError = true;
-        state.errorMessage = action.error.message;
+        toast.error(action.payload, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        // window.alert(action.payload);
       });
   },
 });

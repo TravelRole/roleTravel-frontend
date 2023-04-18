@@ -1,26 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import tokenApi from "../../lib/customAPI";
+import dog from "../../assets/images/dog.jpeg";
 
 const initialState = {
-  userInfo: null,
-  isAuth: false,
+  user: null,
   isLoading: false,
   error: null,
 };
 
-export const getUserInfo = createAsyncThunk("user/info", async () => {
-  try {
-    await tokenApi.get("info").then((res) => {
-      if (res.data) {
-        localStorage.setItem("userInfo", JSON.stringify(res.data));
-        return res.data;
-      }
-    });
-    return JSON.parse(localStorage.getItem("userInfo"));
-  } catch (error) {
-    throw error;
-  }
+export const getUserInfo = createAsyncThunk("auth/userInfo", async () => {
+  const response = await tokenApi.get("api/basic-profile");
+  const { name, email, profile } = response.data;
+  const userInfo = {
+    name: name,
+    email: email,
+    profile: profile === null ? dog : profile,
+  };
+  return userInfo;
 });
 
 const userSlice = createSlice({
@@ -29,16 +26,17 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(getUserInfo.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(getUserInfo.fulfilled, (state, action) => {
-        state.userInfo = action.payload;
         state.isLoading = false;
-        state.isAuth = true;
-        state.error = null;
+        state.user = action.payload;
       })
       .addCase(getUserInfo.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isAuth = false;
+        state.user = null;
         state.error = action.payload;
+        state.isLoading = false;
       });
   },
 });

@@ -2,16 +2,18 @@ import React from "react";
 import { Route, RouterProvider } from "react-router-dom";
 import { Routes } from "react-router-dom";
 import Landing from "./features/Landing/Landing";
-import Login from "./features/Login/Login";
 import SearchIdPw from "./features/SearchIDPW/SearchIdPw";
 import Sign from "./features/Sign/Sign";
 import { BrowserRouter } from "react-router-dom";
-import NotFound from "./features/NotFound/Notfound";
+import NotFound from "./features/NotFound/NotFound";
 import SpaceList from "./features/SpaceList/SpaceList";
 import Authorization from "./features/Authorization/Authorization";
 import TeamSpace from "./features/layout/TeamSpace";
 import Social from "./features/Landing/Social";
-import UserAccount from './features/UserAccount/UserAccount'
+import Login from "./features/Login/Login";
+import SearchIdResult from "./features/SearchIDPW/layout/id/SearchIdResult";
+
+import UserAccount from "./features/UserAccount/UserAccount";
 
 const routers = [
   {
@@ -39,7 +41,8 @@ const routers = [
     id: 3,
     path: "/:UserId",
     label: "SpaceList",
-    element: <SpaceList Auth={false} />,
+    element: <SpaceList />,
+    // element: <SpaceList Auth={true} />,
     withAuth: true,
   },
   {
@@ -65,13 +68,20 @@ const routers = [
   },
   {
     id: 7,
+    path: "/searchIdPw/idResult",
+    label: "SearchIdResult",
+    element: <SearchIdResult />,
+    withAuth: false,
+  },
+  {
+    id: 8,
     path: "/landing/social",
     label: "LandingSocial",
     element: <Social />,
     withAuth: true,
   },
   {
-    id: 8,
+    id: 9,
     path: "/account/:UserId/",
     label: "UserAccount",
     element: <UserAccount Auth={false} />,

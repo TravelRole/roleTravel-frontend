@@ -2,8 +2,9 @@ import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Button from "../../../../components/Button";
-import { getUserId } from "../../searchSlice";
+import { searchUserId } from "../../searchSlice";
 import SearchIdForm from "./SearchIdForm";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const SearchIdWrap = styled.section`
   dl {
@@ -23,8 +24,9 @@ const SearchIdWrap = styled.section`
   }
 `;
 
-const SearchId = () => {
+const SearchId = ({ value, index }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [searchEmailData, setSearchEmailData] = useState({
     name: "",
     birth: "",
@@ -33,24 +35,28 @@ const SearchId = () => {
   const onSearchSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(getUserId(searchEmailData));
+      dispatch(searchUserId(searchEmailData)).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          navigate("/searchIdPw/idResult");
+          return;
+        }
+      });
     },
-    [dispatch, searchEmailData]
+    [dispatch, navigate, searchEmailData]
   );
   return (
-    <SearchIdWrap>
-      <dl>
-        <dt>회원정보 입력</dt>
-        <dd>가입 시 입력한 본인정보를 입력해주세요.</dd>
-      </dl>
-      <div>
-        <form onSubmit={onSearchSubmit}>
-          <SearchIdForm setSearchEmailData={setSearchEmailData} />
-          <Button type="submit" size="medium" margin="0 auto" color="#3884fd">
-            아이디 찾기
-          </Button>
-        </form>
-      </div>
+    <SearchIdWrap
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+    >
+      <form onSubmit={onSearchSubmit}>
+        <SearchIdForm setSearchEmailData={setSearchEmailData} />
+        <Button type="submit" size="full" margin="0 auto" color="blue">
+          아이디 찾기
+        </Button>
+      </form>
     </SearchIdWrap>
   );
 };

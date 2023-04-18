@@ -2,86 +2,61 @@ import React from "react";
 import styled from "styled-components";
 import { FcGoogle } from "react-icons/fc";
 import SignForm from "./layout/SignForm";
+import Header from "../layout/Header";
+import authBg from "../../assets/images/authBg.png";
 
 const SignWrap = styled.div`
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 100px 20px;
-  box-sizing: border-box;
+  height: calc(100vh - 10rem);
+  background-image: url(${authBg});
+  background-size: cover cover;
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  padding-top: 2rem;
 `;
 const SignHeader = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 1rem;
   align-items: center;
-  padding-bottom: 20px;
+  padding-bottom: 2rem;
   h2 {
-    font-size: 1.8rem;
+    font-size: 3.2rem;
+    font-weight: 500;
+    color: #333;
   }
-  dl {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    dt {
-      font-size: 1.2rem;
-      font-weight: 400;
-    }
-    dd {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: 1px solid #eee;
-      text-align: center;
-      line-height: 2.4rem;
-      cursor: pointer;
-    }
+  p {
+    font-size: 1.9rem;
+    font-weight: 500;
+    color: #868686;
   }
 `;
 
-const SignContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-top: 1px solid #eee;
-  padding-top: 20px;
-  h2 {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-  }
-  .sign-text {
-    text-align: right;
-    width: 100%;
-    color: #888;
-    font-size: 0.8rem;
-    span {
-      color: red;
-      margin-right: 5px;
-    }
-  }
+const SignContainer = styled.div`
+  width: 100%;
+  max-width: 54rem;
+  padding: 6rem 9.3rem;
+  background-color: #fff;
+  box-shadow: 0rem 0.4rem 1rem 0.5rem #e6edf9;
+  border-radius: 3rem;
+  margin: 0 auto;
 `;
 
 const Sign = () => {
   return (
-    <SignWrap>
-      <SignHeader>
-        <h2>여행계획 회원가입</h2>
-        <dl>
-          <dt>소셜로 간편하게 로그인하세요</dt>
-          <dd>
-            <FcGoogle />
-          </dd>
-        </dl>
-      </SignHeader>
-      <SignContent>
-        <h2>회원가입하고 다양한 혜택을 누리세요!</h2>
-        <p className="sign-text">
-          <span>*</span>필수 입력 정보
-        </p>
-        <SignForm />
-      </SignContent>
-    </SignWrap>
+    <>
+      <Header />
+      <SignWrap>
+        <SignContainer>
+          <SignHeader>
+            <h2>회원가입</h2>
+            <p>기본 정보를 입력해주세요</p>
+          </SignHeader>
+
+          <SignForm />
+        </SignContainer>
+      </SignWrap>
+    </>
   );
 };
 

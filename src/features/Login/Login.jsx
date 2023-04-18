@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -6,6 +7,16 @@ import styled from "styled-components";
 import Button from "../../components/Button";
 import { getUserInfo } from "../Landing/userSlice";
 import { login, refreshTokenAsync } from "./authSlice";
+import {
+  FormControl,
+  FormHelperText,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  TextField,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 const LoginWrap = styled.div`
   height: 100vh;
   display: flex;
@@ -16,14 +27,12 @@ const LoginWrap = styled.div`
 
 const LoginContainer = styled.div`
   width: 450px;
-
   p {
     position: relative;
     margin: 50px 0;
     text-align: center;
     font-size: 0.8rem;
     color: #949494;
-
     &::before {
       content: "";
       position: absolute;
@@ -34,7 +43,6 @@ const LoginContainer = styled.div`
       height: 1px;
       background-color: #ddd;
     }
-
     &::after {
       content: "";
       position: absolute;
@@ -85,7 +93,6 @@ const LoginContent = styled.div`
       outline: none;
     }
   }
-
   ul {
     display: flex;
     align-items: center;
@@ -110,35 +117,40 @@ const LoginContent = styled.div`
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const { isAuth } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState({ email: false, password: false });
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const loginPayload = {};
+    const email = formData.get("email");
+    const password = formData.get("password");
+    if (!email) return setError({ email: true, password: false });
+    if (!password) return setError({ email: false, password: true });
+    setError({ email: false, password: false });
 
-  const onChangeInput = useCallback(
-    (e) => {
-      const { name, value } = e.target;
-      if (name === "id") {
-        setFormData({ ...formData, email: value });
-        return;
-      }
-      setFormData({ ...formData, password: value });
-    },
-    [formData]
-  );
-
-  const onLoginSubmit = useCallback(
-    (e) => {
-      e.preventDefault();
-      dispatch(login(formData));
-    },
-    [dispatch, formData]
-  );
-
-  // const onClickRefresh = useCallback(() => {
-  //   dispatch(refreshTokenAsync());
-  // }, [dispatch]);
+    // dispatch(login(formData));
+  };
 
   const onClickGoogle = useCallback(() => {
-    window.location.assign("http://localhost:8080/oauth2/authorization/google");
+    window.location.assign(
+      `${process.env.REACT_APP_BASE_URL}oauth2/authorization/google`
+    );
   }, []);
+
+  useEffect(() => {
+    if (isAuth) {
+      // window.location.replace("/userid");
+      navigate("/userid");
+    }
+  }, [isAuth, navigate]);
 
   return (
     <LoginWrap>
@@ -154,52 +166,57 @@ const Login = () => {
           <Button color="#3884fd" size="full" onClick={onClickGoogle}>
             Sign in with Google
           </Button>
-          {/* <Button
-            color="#3884fd"
-            size="full"
-            onClick={onClickRefresh}
-            margin={"10px 0"}
-          >
-            Refresh
-          </Button> */}
         </LoginHeader>
         <p>또는</p>
         <LoginContent>
-          <form onSubmit={onLoginSubmit}>
-            <input
-              type="text"
-              name="id"
-              placeholder="아이디를 입력해주세요."
-              onChange={onChangeInput}
+          <form onSubmit={handleSubmit}>
+            <TextField
+              id="outlined-search"
+              label={error.email ? "" : "이메일을 적어주세요"}
+              type="search"
+              fullWidth
+              error={error.email} // error 속성 추가
+              helperText={error.email ? "필수정보입니다" : ""} // helperText 속성 추가
+              name="email"
             />
-            <input
-              type="password"
-              name="pw"
-              placeholder="비밀번호를 입력해주세요."
-              onChange={onChangeInput}
-            />
-            <Button type="submit" color="#000" size="large">
-              기존 회원 로그인
+
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password
+              </InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-password"
+                type={showPassword ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+                name="password"
+                error={error.password}
+              />
+              {error.password && (
+                <FormHelperText
+                  error={error.password}
+                  id="outlined-weight-helper-text"
+                >
+                  필수정보입니다
+                </FormHelperText>
+              )}
+            </FormControl>
+
+            <Button type="submit" color="blue" size="full">
+              기존회원 로그인
             </Button>
           </form>
-          <ul>
-            <li>
-              <Link
-                to="/searchIdPw"
-                style={{ textDecoration: "none", color: "#666" }}
-              >
-                아이디 / 비밀번호 찾기
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/sign"
-                style={{ textDecoration: "none", color: "#666" }}
-              >
-                회원가입
-              </Link>
-            </li>
-          </ul>
         </LoginContent>
       </LoginContainer>
     </LoginWrap>
