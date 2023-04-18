@@ -20,7 +20,8 @@ const PhoneNumber = styled.div`
 `;
 
 function WantedPlace({ place, index, setCenter, showAddModal ,DeletePlace }) {
-  const { place_name, address_name, phone,place_url, x,y } = place;
+  console.log(place)
+  const { place_name, address_name, phone, place_url, x,y } = place;
   
   const lat = x
   const lng = y
@@ -29,6 +30,9 @@ function WantedPlace({ place, index, setCenter, showAddModal ,DeletePlace }) {
       <PlaceBox>
         <PlaceName>{`${index + 1}. ${place_name}`}</PlaceName>
         <Address>{address_name}</Address>
+        <a href={place_url} target="_blank" rel="noreferrer">
+            {place_url}
+          </a>
         <PhoneNumber>{phone}</PhoneNumber>
         <button onClick={()=>DeletePlace(place)}>삭제하기</button>
         <button onClick={() => setCenter(lng, lat)}>위치보기</button>

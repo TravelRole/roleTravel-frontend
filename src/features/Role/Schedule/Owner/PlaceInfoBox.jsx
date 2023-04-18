@@ -26,11 +26,10 @@ function PlaceInfoBox({ place, onPlaceMarking }) {
     <>
       {place ? (
         <PlaceInfoContainer>
-          <PlaceName>
-            <a href={place_url} target="_blank" rel="noreferrer">
-              {place_name}
-            </a>
-          </PlaceName>
+          <PlaceName>{place_name}</PlaceName>
+          <a href={place_url} target="_blank" rel="noreferrer">
+            {place_url}
+          </a>
           <Address>{address_name}</Address>
           <PhoneNumber>{phone}</PhoneNumber>
 

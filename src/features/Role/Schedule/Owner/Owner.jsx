@@ -121,30 +121,11 @@ const NearSpaceData = [
   },
 ];
 
-let MarkerList = [];
+
 const schedule = { 1: [], 2: [], 3: [] };
 
 function Owner({ setReserveList }) {
-  //지도 초기 중앙 값 및 검색 후 해당 장소로 이동하는 useState
-  const [lat, setlat] = useState(37.4953064);
-  const [lng, setlng] = useState(126.9551549);
-
-  const setCenter = (x, y) => {
-    setlat(x);
-    setlng(y);
-  };
-
-  const onPlaceMarking = (place) => {
-    console.log(place);
-    if (place) {
-      MarkerList.push(place);
-      const x = place.x;
-      const y = place.y;
-      setCenter(y, x);
-    } else {
-      console.log("im placeMarking error");
-    }
-  };
+  
 
   // 모달관련 코드
   const [isAddModal, setIsAddModal] = useState(false);
@@ -164,13 +145,36 @@ function Owner({ setReserveList }) {
     setReserveList(schedule);
   };
 
-  //DeletPlace 관련 및 마커 찍는 코드
 
+  
+
+  //지도 초기 중앙 값 및 검색 후 해당 장소로 이동하는 useState
+  const [lat, setlat] = useState(37.4953064);
+  const [lng, setlng] = useState(126.9551549);
+
+  const setCenter = (x, y) => {
+    setlat(x);
+    setlng(y);
+  };
+  
+  //가고 싶은 장소 추가 및 삭제
   const [MarkerList, setMarkerList] = useState([]);
 
+  const onPlaceMarking = (place) => {
+    if (place) {
+      MarkerList.push(place);
+      const x = place.x;
+      const y = place.y;
+      setCenter(y, x);
+    } else {
+      console.log("im placeMarking error");
+    }
+  };
+
   const DeletePlace = (place) => {
-    const NewMarker = MarkerList.filter((item) => item.name !== place.name);
+    const NewMarker = MarkerList.filter((item) => item.place_name !== place.place_name);
     setMarkerList(NewMarker);
+
   };
 
   // 카카오맵 관련
@@ -183,7 +187,8 @@ function Owner({ setReserveList }) {
     }
   };
 
-  const [info, setInfo] = useState();
+  // 위 가게 이름 뜨게 하기
+  // const [info, setInfo] = useState();
   const [markers, setMarkers] = useState([]);
   const [map, setMap] = useState();
 
@@ -245,7 +250,7 @@ function Owner({ setReserveList }) {
                   style={{ width: "100%", height: "100%" }}
                   onCreate={setMap}
                 >
-                  {markers.map((marker) => {
+                  {/* {markers.map((marker) => {
                     console.log(marker)
                     const position = {
                       lat: Number(marker.y),
@@ -264,7 +269,7 @@ function Owner({ setReserveList }) {
                         )}
                       </MapMarker>
                     );
-                  })}
+                  })} */}
                 </Map>
                 <SearchBox ref={inputRef} onKeyDown={handleKeyDown}></SearchBox>
               </GoogleMapBox>
