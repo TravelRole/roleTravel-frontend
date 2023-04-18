@@ -11,6 +11,7 @@ import SpaceList from "./features/SpaceList/SpaceList";
 import Authorization from "./features/Authorization/Authorization";
 import TeamSpace from "./features/layout/TeamSpace";
 import Social from "./features/Landing/Social";
+import UserAccount from './features/UserAccount/UserAccount'
 
 const routers = [
   {
@@ -67,6 +68,13 @@ const routers = [
     path: "/landing/social",
     label: "LandingSocial",
     element: <Social />,
+    withAuth: true,
+  },
+  {
+    id: 8,
+    path: "/account/:UserId/",
+    label: "UserAccount",
+    element: <UserAccount Auth={false} />,
     withAuth: true,
   },
 ];
