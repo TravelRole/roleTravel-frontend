@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { validation } from './validation';
+// import { validation } from './validation';
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Input, InputContainer, Content } from "./Styles";
 import { useDispatch } from "react-redux";
