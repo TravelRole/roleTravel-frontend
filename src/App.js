@@ -45,8 +45,7 @@ footer, header, hgroup, main, menu, nav, section {
 
 body {
   line-height: 1;
-  font-family: 'Pretendard';
-
+  font-family: "Pretendard"
 }
 menu, ol, ul {
   list-style: none;

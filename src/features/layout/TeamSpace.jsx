@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router";
 import Leader from "../Role/Leader";
 import Allplan from "../Role/Allplan";
 import Reservation from "../Role/Reservation/Reservation";
-import Account from "../Role/Account";
+import Account from "../Role/Account/Account";
 import Essentials from "../Role/Essentials/Essentials";
 import Schedule from "../Role/Schedule/Schedule";
 
@@ -16,15 +16,18 @@ const TeamSpaceBox = styled.div`
   height: 100%;
   align-items: center;
   position: fixed;
+  /* border: 5px solid blue; */
 `;
 
 const SpaceContainer = styled.div`
   display: flex;
+  /* padding: 1rem; */
   width: 100%;
   height: 100%;
   flex-direction: column;
   position: relative;
-  border: 5px solid blue;
+  background-color: #F5F5F5;
+  /* border: 5px solid blue; */
 `;
 
 function TeamSpace({ Auth }) {

@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import { useState } from "react";
-import Notimages from "../../../../assets/images/NotFound404.png"
 
 const PlaceInfoContainer = styled.div`
   padding: 1rem;
@@ -21,56 +19,20 @@ const PhoneNumber = styled.div`
   margin-bottom: 5px;
 `;
 
-const ImagesSlide = styled.div`
-
-img{
-  transition : 0.3s;
-}
-`;
-
 function PlaceInfoBox({ place, onPlaceMarking }) {
-  console.log(place);
-  const { name, formatted_address, formatted_phone_number, photos, website } =
-    place;
-
-  const [slideIndex, setSlideIndex] = useState(0);
-
-  const showDivs = (n) => {
-    if (slideIndex === 0 && n === -1) return setSlideIndex(photos.length - 1);
-    if (slideIndex === photos.length - 1 && n === 1) return setSlideIndex(0);
-    setSlideIndex(slideIndex + n);
-  };
+  const { place_name, address_name, phone, place_url } = place;
 
   return (
     <>
       {place ? (
         <PlaceInfoContainer>
-          <PlaceName>
-            <a href={website} target="_blank" rel="noreferrer">
-              {name}
-            </a>
-          </PlaceName>
-          <Address>{formatted_address}</Address>
-          <PhoneNumber>{formatted_phone_number}</PhoneNumber>
-          <ImagesSlide>
-            <img
-              src={photos.length > 1 ? photos[slideIndex].getUrl() : Notimages}
-              style={{ width: "80%" ,border:"1px solid black" }}
-              alt="NoImages"
-            ></img>
-          </ImagesSlide>
-          <button
-            class="w3-button w3-display-left w3-black"
-            onClick={() => showDivs(-1)}
-          >
-            &#10094;
-          </button>
-          <button
-            class="w3-button w3-display-right w3-black"
-            onClick={() => showDivs(1)}
-          >
-            &#10095;
-          </button>
+          <PlaceName>{place_name}</PlaceName>
+          <a href={place_url} target="_blank" rel="noreferrer">
+            {place_url}
+          </a>
+          <Address>{address_name}</Address>
+          <PhoneNumber>{phone}</PhoneNumber>
+
           <button onClick={() => onPlaceMarking(place)}>
             가고싶은 장소에 추가하기
           </button>

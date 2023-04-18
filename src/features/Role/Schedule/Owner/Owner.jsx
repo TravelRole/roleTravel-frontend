@@ -11,6 +11,7 @@ import PlaceInfoBox from "./PlaceInfoBox";
 import WantedPlace from "./WantedPlace";
 import AddSpaceModal from "./Modal";
 import ScheduleContainer from "./ScheduleContainer";
+import { Map, MapMarker } from "react-kakao-maps-sdk";
 
 const Wrapper = styled.div`
   display: flex;
@@ -71,23 +72,22 @@ const PlaceListBox = styled.div`
 const WantPlaceInfoBox = styled(PlaceListBox)``;
 
 const GoogleMapBox = styled.div`
+  position: relative;
   width: 56%;
   height: 100%;
-  /* border: 1px solid black; */
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 `;
 
-const containerStyle = {
-  width: "100%",
-  height: "100%",
-  padding: "5px",
-  boxSizing: "border-box",
-};
+const SearchBox = styled.input`
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 1;
+`;
 
-const options = {
-  mapTypeControl: false, // 구글맵 내부의 지도, 위성 버튼을 감춘다.
-  ZoomControl: true,
-};
+const MapMarkerWrapper = styled.div`
+  display: none;
+`;
 
 const NearSpaceData = [
   {
@@ -124,155 +124,104 @@ const NearSpaceData = [
   },
 ];
 
-// let MarkerList = [];
+let markerPoint = [];
 const schedule = { 1: [], 2: [], 3: [] };
 
-function Owner({setReserveList}) {
-  // 구글 맵 라이브러리 로드하기
-  const { isLoaded } = GoogleApi.useJsApiLoader();
-
-  // 구글 맵 로드시 mapRef에 담기
-  const mapRef = useRef();
-
-  //google map placesService 가져오기
-  const placesService = GoogleApi.PlaceSerivec(mapRef);
-
-  // 주변검색창 및 검색 함수
-  const [nearSearchBox, setnearSearchBox] = useState();
-  // const [nearPlaces, setNearPlace] = useState([]);
-  const [nearPlaces, setNearPlace] = useState(NearSpaceData);
-
-  const searchNearPlace = () => {
-    const placesInfo = nearSearchBox.getPlaces();
-    FindNearPlaceInfo(placesInfo);
-  };
-
-  const FindNearPlaceInfo = (placesArray) => {
-    const nearPlaceArr = [];
-    placesArray.forEach((item, i) => {
-      if (placesService) {
-        placesService.getDetails(
-          {
-            placeId: item.place_id,
-          },
-          (result, status) => {
-            if (status === "OK") {
-              nearPlaceArr.push(result);
-            } else return console.log(`im error ${i}`);
-          }
-        );
-      } else return console.log("noting");
-    });
-    setTimeout(() => {
-      console.log(nearPlaceArr);
-      setNearPlace(nearPlaceArr);
-    }, 1000);
-  };
-
-  //지도 초기 중앙 값 및 검색 후 해당 장소로 이동하는 useState
-  const [lat, setlat] = useState(37.4953064);
-  const [lng, setlng] = useState(126.9551549);
-
-  const center = {
-    lat: lat,
-    lng: lng,
-  };
-
-  const setCenter = (x, y) => {
-    setlat(x);
-    setlng(y);
-  };
-
-  //검색창 세팅 및 마커 찍는 함수 // 없어도 되는기능 현재
-  // const [searchBox, setSearchBox] = useState(null);
-
-  // const onPlaceMarking = () => {
-  //   if (searchBox !== null) {
-  //     const place = searchBox.getPlace();
-  //     MarkerList.push(place);
-  //     const x = place.geometry.location.lat();
-  //     const y = place.geometry.location.lng();
-  //     setlat(x);
-  //     setlng(y);
-  //   } else {
-  //     console.log("Autocomplete is not loaded yet!");
-  //   }
-  // };
-
-  const onPlaceMarking = (place) => {
-    console.log(place);
-    if (place) {
-      MarkerList.push(place);
-      // const x = place.geometry.location.lat();
-      // const y = place.geometry.location.lng();
-      const x = place.geometry.lat;
-      const y = place.geometry.lng;
-      setCenter(x, y);
-    } else {
-      console.log("im placeMarking error");
-    }
-  };
-
-  //GeoCorder
-  // const [address, setAddress] = useState();
-  // const [GeoService, setGeoService] = useState();
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     const geocoder = new window.google.maps.Geocoder();
-  //     setGeoService(geocoder);
-  //   }, 1000);
-  // }, [mapRef]);
-
-  // const geocodeAddress = (address) => {
-  //   GeoService.geocode({ address: address }, (results, status) => {
-  //     if (status === "OK") {
-  //       const lat = results[0].geometry.location.lat();
-  //       const lng = results[0].geometry.location.lng();
-  //       console.log(
-  //         `입력한 주소 ${address}의 위도는 ${lat}이고, 경도는 ${lng}입니다.`
-  //       );
-  //     } else {
-  //       console.log(
-  //         `Geocode was not successful for the following reason: ${status}`
-  //       );
-  //     }
-  //   });
-  // };
+function Owner({ setReserveList }) {
+  const [reRender, setreRender] = useState(true);
 
   // 모달관련 코드
   const [isAddModal, setIsAddModal] = useState(false);
   const [modalPlace, setModalPlace] = useState(null);
+
   const showAddModal = useCallback((place) => {
     setModalPlace(place);
     setIsAddModal((prev) => !prev);
   }, []);
 
   // 스케쥴컨테이너 관련코드
-  const [schedulelist , setScheduleList] =useState(schedule)
-  
+  const [schedulelist, setScheduleList] = useState(schedule);
+
   const AddScheduleList = (placeobj) => {
-    console.log(placeobj);
     const day = placeobj.Day;
-    schedule[day].push(placeobj)
-    setScheduleList(schedule)
-    setReserveList(schedule)
+    schedule[day].push(placeobj);
+    setScheduleList(schedule);
+    setReserveList(schedule);
   };
 
-  //DeletPlace 관련 및 마커 찍는 코드
+  //지도 초기 중앙 값 및 검색 후 해당 장소로 이동하는 useState
+  const [lat, setlat] = useState(37.4953064);
+  const [lng, setlng] = useState(126.9551549);
 
-  const [MarkerList ,setMarkerList] = useState([]);
+  const setCenter = (x, y) => {
+    setlat(x);
+    setlng(y);
+  };
 
+  //가고 싶은 장소 추가
+  const onPlaceMarking = (place) => {
+    if (place) {
+      markerPoint.push(place);
+      const x = place.x;
+      const y = place.y;
+      setCenter(y, x);
+    } else {
+      console.log("im placeMarking error");
+    }
+  };
+
+  //가고 싶은 장소 삭제
   const DeletePlace = (place) => {
-    const NewMarker = MarkerList.filter((item)=> item.name !== place.name)
-    setMarkerList(NewMarker)
-  }
+    markerPoint = markerPoint.filter(
+      (item) => item.place_name !== place.place_name
+    );
+    setreRender((prev) => !prev);
+  };
 
-  
+  // 카카오맵 관련
+  const { kakao } = window;
+  const inputRef = useRef(null);
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      addSearchResult(inputRef.current.value);
+    }
+  };
+
+  // 위 가게 이름 뜨게 하기
+  const [info, setInfo] = useState();
+  const [markers, setMarkers] = useState([]);
+  const [map, setMap] = useState();
+
+  let markersPoint = [];
+
+  const addSearchResult = (keyWord) => {
+    if (!map) return;
+
+    const ps = new kakao.maps.services.Places();
+
+    ps.keywordSearch(keyWord, (data, status, _pagination) => {
+      if (status === kakao.maps.services.Status.OK) {
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+        const bounds = new kakao.maps.LatLngBounds();
+        for (var i = 0; i < data.length; i++) {
+          // @ts-ignore
+          markersPoint.push(data[i]);
+          // @ts-ignore
+          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+        }
+        setMarkers(markersPoint);
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+        map.setBounds(bounds);
+      }
+    });
+  };
 
   return (
     <>
-      {isLoaded ? (
+      {true ? (
         <>
           <Wrapper isAddModal={isAddModal}>
             <h1
@@ -282,9 +231,9 @@ function Owner({setReserveList}) {
             </h1>
             <OwnerWrapper>
               <PlaceListBox>
-                {nearPlaces.length === 0
+                {markers.length === 0
                   ? "가고싶은 곳을 검색해보세요 😊"
-                  : nearPlaces.map((place, i) => {
+                  : markers.map((place, i) => {
                       return (
                         <>
                           <PlaceInfoBox
@@ -297,99 +246,39 @@ function Owner({setReserveList}) {
                     })}
               </PlaceListBox>
               <GoogleMapBox>
-                {/* <GoogleMap
-                  mapContainerStyle={containerStyle}
-                  center={center}
-                  zoom={17}
-                  options={options}
-                  onLoad={(map) => (mapRef.current = map)}
-                > */}
-                {/* 주변 검색기능 */}
-                {/* <StandaloneSearchBox
-                    onPlacesChanged={searchNearPlace}
-                    onLoad={(ref) => setnearSearchBox(ref)}
-                  >
-                    <input
-                      type="text"
-                      placeholder="장소 + 맛집&가볼만한 곳 을 검색하세요"
-                      style={{
-                        boxSizing: `border-box`,
-                        border: `1px solid transparent`,
-                        width: `300px`,
-                        height: `40px`,
-                        padding: `0 12px`,
-                        borderRadius: `3px`,
-                        boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-                        fontSize: `14px`,
-                        outline: `none`,
-                        textOverflow: `ellipses`,
-                        position: "absolute",
-                        left: "15px",
-                      }}
-                    />
-                  </StandaloneSearchBox> */}
-
-                {/* 자동완성기능 */}
-                {/* <Autocomplete
-                  onLoad={(autocomplete) => setSearchBox(autocomplete)}
-                  onPlaceChanged={onPlaceMarking}
+                <Map
+                  center={{ lat: lat, lng: lng }}
+                  style={{ width: "100%", height: "100%" }}
+                  onCreate={setMap}
                 >
-                  <input
-                    type="text"
-                    placeholder="가고싶은 곳을 입력하면 마커가 생성됩니다."
-                    style={{
-                      boxSizing: `border-box`,
-                      border: `1px solid transparent`,
-                      width: `300px`,
-                      height: `40px`,
-                      padding: `0 12px`,
-                      borderRadius: `3px`,
-                      boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-                      fontSize: `14px`,
-                      outline: `none`,
-                      textOverflow: `ellipses`,
-                      position: "absolute",
-                      right: "15px",
-                      marginLeft: "-120px",
-                    }}
-                  />
-                </Autocomplete> */}
-
-                {MarkerList.length !== 0 &&
-                  MarkerList.map((item, i) => {
-                    console.log(item);
+                  {markers.map((marker) => {
+                    console.log(marker);
+                    const position = {
+                      lat: Number(marker.y),
+                      lng: Number(marker.x),
+                    };
                     return (
-                      <Marker
-                        icon={{
-                          path: "M8 12l-4.7023 2.4721.898-5.236L.3916 5.5279l5.2574-.764L8 0l2.3511 4.764 5.2574.7639-3.8043 3.7082.898 5.236z",
-                          fillColor: "yellow",
-                          fillOpacity: 0.9,
-                          scale: 2,
-                          strokeColor: "gold",
-                          strokeWeight: 2,
-                        }}
-                        position={{
-                          // lat: item.geometry.location.lat(),
-                          // lng: item.geometry.location.lng(),
-                          lat: item.geometry.lat,
-                          lng: item.geometry.lng,
-                        }}
-                      />
+                      
+                        <MapMarker
+                          key={`marker-${position}-${position.lat},${position.lng}`}
+                          position={position}
+                          onClick={() => setInfo(marker)}
+                        >
+                          {info && info.place_name === marker.place_name && (
+                            <div style={{ color: "#000" }}>
+                              {marker.place_name}
+                            </div>
+                          )}
+                        </MapMarker>
+                      
                     );
                   })}
-
-                <Marker
-                  icon={
-                    "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                  }
-                  position={{ lat: 37.4953064, lng: 126.9551549 }}
-                />
-                {/* </GoogleMap> */}
+                </Map>
+                <SearchBox ref={inputRef} onKeyDown={handleKeyDown}></SearchBox>
               </GoogleMapBox>
 
               <WantPlaceInfoBox>
-                {MarkerList.map((place, i) => {
-
+                {markerPoint.map((place, i) => {
                   return (
                     <>
                       <WantedPlace

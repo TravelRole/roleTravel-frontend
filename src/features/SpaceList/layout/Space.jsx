@@ -67,7 +67,7 @@ const Space = ({
           <Button
             size="small"
             color="#3884fd"
-            onClick={() => navigate(`/userid/${roomId}/allplan`)}
+            onClick={() => navigate(`/${roomId}/allplan`)}
           >
             팀 스페이스 입장
           </Button>

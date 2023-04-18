@@ -44,14 +44,14 @@ function SpaceList() {
   const { currentTravelingList, currentEndTravelList, isTravelLoading } =
     useSelector((state) => state.travel);
 
-  useEffect(() => {
-    // isAuth로 판단하는게 나은지, 의논해야함
-    if (!localStorage.getItem("accessToken")) {
-      navigate(`/login`);
-      return;
-    }
-    dispatch(getTravelList());
-  }, [dispatch, navigate]);
+  // useEffect(() => {
+  //   // isAuth로 판단하는게 나은지, 의논해야함
+  //   if (!localStorage.getItem("accessToken")) {
+  //     navigate(`/login`);
+  //     return;
+  //   }
+  //   dispatch(getTravelList());
+  // }, [dispatch, navigate]);
 
   useEffect(() => {
     if (location.state?.isGoogleSuccess) {
