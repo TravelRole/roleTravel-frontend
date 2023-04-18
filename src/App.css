@@ -1,1 +1,86 @@
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css%27");
+
+.Toastify__toast-body div {
+  font-size: 1.6rem !important ;
+}
+
+/* date-picker 전체 부분 */
+
+.react-datepicker-popper {
+  width: 100% !important;
+  max-width: 40rem !important;
+}
+
+.react-datepicker {
+  width: 100% !important;
+}
+
+.react-datepicker__month-container {
+  width: 100% !important;
+  float: none !important;
+}
+
+/* date-picker 헤더 부분 */
+
+.react-datepicker__header {
+  background-color: #3884fd;
+  padding: 1.4rem 1.5rem;
+}
+
+.react-datepicker__current-month {
+  font-size: 1.5rem;
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 0.2rem;
+}
+
+.react-datepicker__day-names {
+  display: flex !important;
+  justify-content: space-between;
+  margin-top: 1.2rem;
+}
+
+.react-datepicker__day-name {
+  font-size: 1.4rem;
+  color: #fff;
+  font-weight: 300;
+}
+
+/* date-picker body 부분 */
+
+.react-datepicker__month {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.4rem 1.5rem;
+}
+
+.react-datepicker__week {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.react-datepicker__day {
+  flex: 1;
+  height: 5.1rem;
+  line-height: 5.1rem;
+  font-size: 1.6rem;
+  text-align: center;
+  width: fit-content;
+  margin: 0;
+  border-radius: 50% !important;
+}
+
+.react-datepicker__day--selected {
+  font-weight: normal;
+  background-color: #3884fd !important;
+}
+
+.react-datepicker__day--in-range {
+  background-color: #3884fd !important;
+}
+
+.react-datepicker__day--in-range:hover {
+  background-color: #3884fd !important;
+}

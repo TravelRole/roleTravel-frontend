@@ -1,11 +1,11 @@
 import { TfiPencilAlt } from "react-icons/tfi";
-
 import {
   HiChevronLeft,
   HiOutlineLink,
   HiOutlinePaperAirplane,
   HiOutlineTicket,
   HiOutlineCalculator,
+  HiOutlineX
 } from "react-icons/hi";
 
 import { RiCalendarCheckLine } from "react-icons/ri";
@@ -29,7 +29,8 @@ const Icons = {
   FaDoorOpen,
   FcGoogle,
   AiOutlineEyeInvisible,
-  AiOutlineEye
-};
+  AiOutlineEye,
+  HiOutlineX
+}
 
 export default Icons;

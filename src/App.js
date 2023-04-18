@@ -1,7 +1,12 @@
+import React, { useEffect } from "react";
 import Router from "./Router";
 import { createGlobalStyle } from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
-import "./App.css"
+import { useDispatch } from "react-redux";
+import { getUserInfo } from "./features/Landing/userSlice";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import "./App.css";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -20,11 +25,13 @@ time, mark, audio, video,input {
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
   font: inherit;
   vertical-align: baseline;
   box-sizing: border-box;
   text-decoration-line: none;
+  font-size: 62.5%;
+  letter-spacing: -0.02rem;
+  font-smooth: always;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
@@ -35,6 +42,7 @@ footer, header, hgroup, main, menu, nav, section {
 *[hidden] {
     display: none;
 }
+
 body {
   line-height: 1;
   font-family: "Pretendard"
@@ -54,7 +62,6 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-
 .App{
   width:100%;
   height:100vh;
@@ -62,14 +69,27 @@ table {
 `;
 
 function App() {
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(getUserInfo());
-  // }, [dispatch]);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) dispatch(getUserInfo());
+  }, [dispatch]);
 
   return (
     <>
       <GlobalStyle />
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        style={{ fontSize: "16px" }}
+        theme="light"
+      />
       <div className="App">
         <Router />
       </div>

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { Container } from "../../components/Container";
 import Header from "../layout/Header";
@@ -10,6 +11,11 @@ import betImage from "../../assets/images/image2.jpg";
 import gangnenunImage from "../../assets/images/image3.jpg";
 import AddSpaceModal from "./layout/AddSpaceModal";
 import Modal from "../../components/Modal";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { getUserInfo } from "../Landing/userSlice";
+import { getTravelList } from "./travelSlice";
+import { SyncLoader } from "react-spinners";
 
 const SpaceListContent = styled.section`
   padding: 50px 0;
@@ -18,7 +24,6 @@ const SpaceListContent = styled.section`
     justify-content: right;
     margin-bottom: 50px;
   }
-
   div {
     h2 {
       font-size: 1.5rem;
@@ -28,54 +33,47 @@ const SpaceListContent = styled.section`
   }
 `;
 
-const planList = [
-  {
-    id: 0,
-    title: "제주도 여행 가즈아",
-    image: jejuImage,
-    startDate: "2023-03-18",
-    lastDate: "2023-03-20",
-    location: "제주도",
-    members: ["유리", "철수", "짱구"],
-  },
-  {
-    id: 1,
-    title: "베트남으로 떠나요!",
-    image: betImage,
-    startDate: "2023-04-08",
-    lastDate: "2023-04-12",
-    location: "베트남 다낭",
-    members: ["맹구", "훈이", "진이", "동동이"],
-  },
-  {
-    id: 2,
-    title: "강릉에서 회만 먹는 여행",
-    image: gangnenunImage,
-    startDate: "2023-04-18",
-    lastDate: "2023-04-19",
-    location: "강원도 강릉시",
-    members: ["희선", "길동", "지선", "유림"],
-  },
-];
-
-function SpaceList({ Auth }) {
+function SpaceList() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
   const [isAddModal, setIsAddModal] = useState(false);
-  const [today, setToday] = useState(new Date());
-  const [tomorrow, setTomorrow] = useState(new Date(today));
-  const [currentTomorrow, setCurrentTomorrow] = useState(
-    tomorrow.setDate(today.getDate() + 1)
-  );
-  const [dateRange, setDateRange] = useState([today, currentTomorrow]);
-  const [startDate, endDate] = dateRange;
+
+  const { isAuth } = useSelector((state) => state.auth);
+  const { signUpSuccess } = useSelector((state) => state.sign);
+  const { currentTravelingList, currentEndTravelList, isTravelLoading } =
+    useSelector((state) => state.travel);
+
+  // useEffect(() => {
+  //   // isAuth로 판단하는게 나은지, 의논해야함
+  //   if (!localStorage.getItem("accessToken")) {
+  //     navigate(`/login`);
+  //     return;
+  //   }
+  //   dispatch(getTravelList());
+  // }, [dispatch, navigate]);
 
   useEffect(() => {
-    if (Auth) {
-      console.log(Auth);
-      navigate(`/login`);
-      return;
+    if (location.state?.isGoogleSuccess) {
+      toast.success("구글 로그인이 되었습니다!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      navigate(location.pathname, { state: { isGoogleSuccess: false } });
     }
-  }, [Auth, navigate]);
+  }, [location.pathname, location.state?.isGoogleSuccess, navigate]);
+
+  useEffect(() => {
+    if (signUpSuccess) {
+      dispatch(getUserInfo());
+    }
+  }, [signUpSuccess, dispatch]);
 
   const showAddModal = useCallback(() => setIsAddModal(true), []);
 
@@ -97,17 +95,38 @@ function SpaceList({ Auth }) {
           </div>
 
           <div>
-            <h2>여행 계획 목록</h2>
-            {planList.map((plan) => (
-              <Space key={plan.id} {...plan} />
-            ))}
+            {isTravelLoading ? (
+              <SyncLoader color={"#3884fd"} />
+            ) : (
+              <>
+                <div>
+                  <h2>진행중인 계획 목록</h2>
+                  {currentTravelingList?.length === 0 ? (
+                    <p>진행중인 계획 리스트가 없습니다.</p>
+                  ) : (
+                    currentTravelingList?.map((list) => (
+                      <Space key={list.roomId} {...list} />
+                    ))
+                  )}
+                </div>
+                <div>
+                  <h2>완료된 계획 목록</h2>
+                  {currentEndTravelList?.length === 0 ? (
+                    <p>완료된 계획 리스트가 없습니다.</p>
+                  ) : (
+                    currentEndTravelList?.map((list) => (
+                      <Space key={list.roomId} {...list} />
+                    ))
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </SpaceListContent>
       </Container>
-      {/* {isAddModal ? <AddSpaceModal setIsAddModal={setIsAddModal} /> : null} */}
       {isAddModal ? (
         <Modal setIsAddModal={setIsAddModal}>
-          <AddSpaceModal />
+          <AddSpaceModal setIsAddModal={setIsAddModal} />
         </Modal>
       ) : null}
     </>

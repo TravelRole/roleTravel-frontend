@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../../components/Button";
-
+import travelImage from "../../../assets/images/travelImage.jpeg";
 const SpaceWrap = styled.div`
   display: flex;
   align-items: center;
@@ -35,11 +35,11 @@ const SpaceContent = styled.ul`
 `;
 
 const Space = ({
-  id,
-  title,
+  roomId,
+  roomName,
   image,
   startDate,
-  lastDate,
+  endDate,
   location,
   members,
 }) => {
@@ -47,27 +47,27 @@ const Space = ({
   return (
     <SpaceWrap>
       <SpaceTitle>
-        <dt>{title}</dt>
+        <dt>{roomName}</dt>
         <dd>
-          <img src={image} alt={title} />
+          <img src={image ? image : travelImage} alt={roomName} />
         </dd>
       </SpaceTitle>
       <SpaceContent>
         <li>
-          일자 : {startDate} ~ {lastDate}
+          일자 : {startDate} ~ {endDate}
         </li>
         <li>장소 : {location}</li>
         <li>
           참여자 :
-          {members.map((member, index) => (
-            <span key={index}> {member}</span>
+          {members.map(({ name, profile }, index) => (
+            <span key={index}> {name}</span>
           ))}
         </li>
         <li>
           <Button
             size="small"
             color="#3884fd"
-            onClick={() => navigate(`/${id}/allplan`)}
+            onClick={() => navigate(`/${roomId}/allplan`)}
           >
             팀 스페이스 입장
           </Button>

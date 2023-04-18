@@ -1,6 +1,11 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
 
+export const authApi = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL,
+  withCredentials: true,
+});
+
 const tokenApi = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
 });
@@ -52,7 +57,6 @@ tokenApi.interceptors.response.use(
             ) {
               const cookies = new Cookies();
               localStorage.removeItem("accessToken");
-              localStorage.removeItem("userInfo");
               cookies.remove("refreshToken");
 
               if (!localStorage.getItem("accessToken")) {
