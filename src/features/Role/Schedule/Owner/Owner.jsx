@@ -246,6 +246,7 @@ function Owner({ setReserveList }) {
                   onCreate={setMap}
                 >
                   {markers.map((marker) => {
+                    console.log(marker)
                     const position = {
                       lat: Number(marker.y),
                       lng: Number(marker.x),

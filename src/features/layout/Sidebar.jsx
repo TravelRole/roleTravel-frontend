@@ -189,7 +189,7 @@ function Sidebar() {
   return (
     <>
       <SidebarContainer>
-        <BacktoList onClick={() => console.log("imfig")}>
+        <BacktoList>
           <Link to={`/${UserId}`}>
             <div>
               <div>
@@ -221,7 +221,7 @@ function Sidebar() {
         <Ul>
           {SideBarTab.map((item, index) => {
             return (
-              <Link key={index} to={`/${UserId}/${Spacenumber}/${item.path}`}>
+              <Link key={index} to={`/${Spacenumber}/${item.path}`}>
                 <Li
                   onClick={() => setActive(index)}
                   actived={active === index ? true : false}
@@ -240,7 +240,7 @@ function Sidebar() {
           <hr />
         </Category>
 
-        <Link to={`/${UserId}/${Spacenumber}/essentials`}>
+        <Link to={`/${Spacenumber}/essentials`}>
           <Li>
             <div className="icon">
               <Icons.SlBag />
