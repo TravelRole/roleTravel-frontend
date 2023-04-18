@@ -20,7 +20,6 @@ const PhoneNumber = styled.div`
 `;
 
 function WantedPlace({ place, index, setCenter, showAddModal ,DeletePlace }) {
-  console.log(place)
   const { place_name, address_name, phone, place_url, x,y } = place;
   
   const lat = x

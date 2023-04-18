@@ -13,7 +13,6 @@ import AddSpaceModal from "./Modal";
 import ScheduleContainer from "./ScheduleContainer";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 
-
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
@@ -86,6 +85,10 @@ const SearchBox = styled.input`
   z-index: 1;
 `;
 
+const MapMarkerWrapper = styled.div`
+  display: none;
+`;
+
 const NearSpaceData = [
   {
     name: "아쯔다무라",
@@ -121,15 +124,16 @@ const NearSpaceData = [
   },
 ];
 
-
+let markerPoint = [];
 const schedule = { 1: [], 2: [], 3: [] };
 
 function Owner({ setReserveList }) {
-  
+  const [reRender, setreRender] = useState(true);
 
   // 모달관련 코드
   const [isAddModal, setIsAddModal] = useState(false);
   const [modalPlace, setModalPlace] = useState(null);
+
   const showAddModal = useCallback((place) => {
     setModalPlace(place);
     setIsAddModal((prev) => !prev);
@@ -145,9 +149,6 @@ function Owner({ setReserveList }) {
     setReserveList(schedule);
   };
 
-
-  
-
   //지도 초기 중앙 값 및 검색 후 해당 장소로 이동하는 useState
   const [lat, setlat] = useState(37.4953064);
   const [lng, setlng] = useState(126.9551549);
@@ -156,13 +157,11 @@ function Owner({ setReserveList }) {
     setlat(x);
     setlng(y);
   };
-  
-  //가고 싶은 장소 추가 및 삭제
-  const [MarkerList, setMarkerList] = useState([]);
 
+  //가고 싶은 장소 추가
   const onPlaceMarking = (place) => {
     if (place) {
-      MarkerList.push(place);
+      markerPoint.push(place);
       const x = place.x;
       const y = place.y;
       setCenter(y, x);
@@ -171,10 +170,12 @@ function Owner({ setReserveList }) {
     }
   };
 
+  //가고 싶은 장소 삭제
   const DeletePlace = (place) => {
-    const NewMarker = MarkerList.filter((item) => item.place_name !== place.place_name);
-    setMarkerList(NewMarker);
-
+    markerPoint = markerPoint.filter(
+      (item) => item.place_name !== place.place_name
+    );
+    setreRender((prev) => !prev);
   };
 
   // 카카오맵 관련
@@ -188,7 +189,7 @@ function Owner({ setReserveList }) {
   };
 
   // 위 가게 이름 뜨게 하기
-  // const [info, setInfo] = useState();
+  const [info, setInfo] = useState();
   const [markers, setMarkers] = useState([]);
   const [map, setMap] = useState();
 
@@ -250,32 +251,34 @@ function Owner({ setReserveList }) {
                   style={{ width: "100%", height: "100%" }}
                   onCreate={setMap}
                 >
-                  {/* {markers.map((marker) => {
-                    console.log(marker)
+                  {markers.map((marker) => {
+                    console.log(marker);
                     const position = {
                       lat: Number(marker.y),
                       lng: Number(marker.x),
                     };
                     return (
-                      <MapMarker
-                        key={`marker-${position}-${position.lat},${position.lng}`}
-                        position={position}
-                        onClick={() => setInfo(marker)}
-                      >
-                        {info && info.place_name === marker.place_name && (
-                          <div style={{ color: "#000" }}>
-                            {marker.place_name}
-                          </div>
-                        )}
-                      </MapMarker>
+                      
+                        <MapMarker
+                          key={`marker-${position}-${position.lat},${position.lng}`}
+                          position={position}
+                          onClick={() => setInfo(marker)}
+                        >
+                          {info && info.place_name === marker.place_name && (
+                            <div style={{ color: "#000" }}>
+                              {marker.place_name}
+                            </div>
+                          )}
+                        </MapMarker>
+                      
                     );
-                  })} */}
+                  })}
                 </Map>
                 <SearchBox ref={inputRef} onKeyDown={handleKeyDown}></SearchBox>
               </GoogleMapBox>
 
               <WantPlaceInfoBox>
-                {MarkerList.map((place, i) => {
+                {markerPoint.map((place, i) => {
                   return (
                     <>
                       <WantedPlace

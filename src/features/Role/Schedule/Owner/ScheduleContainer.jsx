@@ -69,7 +69,7 @@ const DayTime = [
 ];
 
 function ScheduleContainer({ schedulelist }) {
-  console.log(schedulelist)
+
   for (const property in schedulelist) {
     schedulelist[property].sort((a, b) => {
       const Atime = a.time.split(":");
@@ -141,7 +141,7 @@ function ScheduleContainer({ schedulelist }) {
               <ColumnBox>{item.time}</ColumnBox>
               <ColumnBox>{item.reserve}</ColumnBox>
               <ColumnBox>미정</ColumnBox>
-              <ColumnBox>{item.WebsiteLink}</ColumnBox>
+              <ColumnBox><a href={item.WebsiteLink} target="_blank" rel="noreferrer">{item.WebsiteLink}</a></ColumnBox>
               <ColumnBox>{item.Extra}</ColumnBox>
             </ColumnContainer>
           );
