@@ -12,7 +12,6 @@ import TeamSpace from "./features/layout/TeamSpace";
 import Social from "./features/Landing/Social";
 import Login from "./features/Login/Login";
 import SearchIdResult from "./features/SearchIDPW/layout/id/SearchIdResult";
-
 import UserAccount from "./features/UserAccount/UserAccount";
 
 const routers = [
@@ -42,7 +41,6 @@ const routers = [
     path: "/:UserId",
     label: "SpaceList",
     element: <SpaceList />,
-    // element: <SpaceList Auth={true} />,
     withAuth: true,
   },
   {
