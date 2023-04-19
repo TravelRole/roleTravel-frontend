@@ -1,26 +1,53 @@
 import { useState } from "react";
-import styled from "styled-components";
-// import { validation } from './validation';
 import { useNavigate } from "react-router-dom";
-import { Button, Container, Input, InputContainer, Content } from "./Styles";
-import { useDispatch } from "react-redux";
+import { Container, InputContainer, Content } from "./Styles";
+// import { useDispatch } from "react-redux";
+import { TextField } from "@mui/material";
+import Button from "../../../components/Button";
+import { dateValidation, nameValidation } from './validation';
+import useAddSlash from '../../../lib/useAddSlash';
+import { useSelector } from "react-redux";
 
 const Info = () => {
+  const addSlash = useAddSlash();
   const navigate = useNavigate();
-  const [nickname, setNickname] = useState("");
-  const [date, setDate] = useState({ year: "", month: "", date: "" });
+  const [inputs, setInputs] = useState({ date: "", nickname: "" });
+  const [errors, setErrors] = useState({ date: "", nickname: "" });
+
+
+  let states = useSelector((state)=>{
+    return state
+  })
+  
+  console.log(states);
 
   const changeHandler = (e) => {
     const { value, name } = e.target;
-    if (name === "nickname") {
-      setNickname(value);
-    } else if (name === "year") {
-      setDate({ ...date, year: value });
-    } else if (name === "month") {
-      setDate({ ...date, month: value });
-    } else if (name === "date") {
-      setDate({ ...date, date: value });
+    
+    switch (name) {
+      case "nickname" :
+        const nameVal = nameValidation(value);
+        if (nameVal.success) {
+          setInputs({ ...inputs, nickname: value})
+          setErrors({ ...inputs, nickname: ''})
+        } else {
+          setErrors({ ...inputs, nickname: nameVal.error})
+        }
+        return;
+      case "date" :
+        const dateVal = dateValidation(value);
+        if (dateVal.success) {
+          setInputs({ ...inputs, date: value})
+          setErrors({ ...inputs, date: ''})
+        } else {
+          setErrors({ ...inputs, date: dateVal.error})
+        }
+        break;
+      case "id":
+      default:
+        setErrors({ ...inputs, nickname: ''})
     }
+
   };
 
   const updateHandler = () => {
@@ -28,7 +55,7 @@ const Info = () => {
   };
 
   return (
-    <Container>
+    <Container marginTop="0px">
       <Content>
         <h1>회원정보 수정</h1>
         <div width="46px">
@@ -37,43 +64,52 @@ const Info = () => {
       </Content>
       <Content>
         <InputContainer>
-          {/* <Label width="80px">아이디</Label> */}
-          <Input readOnly defaultValue={"asdf@adsf.com"} />
-        </InputContainer>
-        <InputContainer>
-          {/* <Label width="80px">이름 (별명)</Label> */}
-          <Input
-            name="nickname"
-            value={nickname}
+          <TextField
+            fullWidth
+            name="id"
+            value={"asdf@asdf.com"}
             onChange={changeHandler}
-            placeholder="닉네임"
+            InputProps={{
+              readOnly: true,
+            }}
+            helperText={" "}
           />
         </InputContainer>
         <InputContainer>
-          {/* <Label width="80px">생년월일</Label> */}
-          <Input
-            maxLength={4}
-            name="year"
-            value={date.year}
+          <TextField
+            fullWidth
+            name="nickname"
+            label="닉네임"
+            value={inputs.nickname}
             onChange={changeHandler}
-            placeholder="생년월일"
+            error={errors.nickname.length > 0}
+            helperText={errors.nickname ? errors.nickname : " "}
+          />
+        </InputContainer>
+        <InputContainer>
+          <TextField
+            fullWidth
+            name="date"
+            label="생년월일"
+            value={addSlash(inputs.date)}
+            onChange={changeHandler}
+            error={errors.date.length > 0}
+            helperText={errors.date ? errors.date : " "}
           />
         </InputContainer>
       </Content>
       <Content>
         <Button
+          size="small"
           onClick={() => navigate("/home")}
-          backgroundColor="#FAFAFA"
-          color="black"
-          border="1px solid #C4C4C4"
+          color="stroke"
         >
           취소
         </Button>
         <Button
+          size="small"
           onClick={updateHandler}
-          backgroundColor="#3884FD"
-          color="white"
-          border="none"
+          color="blue"
         >
           수정하기
         </Button>
