@@ -11,12 +11,9 @@ import Schedule from "../Role/Schedule/Schedule";
 
 const TeamSpaceBox = styled.div`
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
+  /* width: 100%; */
+  height: 100vh;
   align-items: center;
-  position: fixed;
-  /* border: 5px solid blue; */
 `;
 
 const SpaceContainer = styled.div`
@@ -26,7 +23,7 @@ const SpaceContainer = styled.div`
   height: 100%;
   flex-direction: column;
   position: relative;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   /* border: 5px solid blue; */
 `;
 

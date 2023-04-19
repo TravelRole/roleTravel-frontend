@@ -7,6 +7,7 @@ import { getUserInfo } from "./features/Landing/userSlice";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import "./App.css";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -25,13 +26,13 @@ time, mark, audio, video,input {
   margin: 0;
   padding: 0;
   border: 0;
-  font: inherit;
   vertical-align: baseline;
   box-sizing: border-box;
   text-decoration-line: none;
   font-size: 62.5%;
   letter-spacing: -0.02rem;
   font-smooth: always;
+  box-sizing: border-box;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
@@ -45,7 +46,7 @@ footer, header, hgroup, main, menu, nav, section {
 
 body {
   line-height: 1;
-  font-family: "Pretendard"
+  font-family: 'Pretendard Variable';
 }
 menu, ol, ul {
   list-style: none;
@@ -68,6 +69,62 @@ table {
 }
 `;
 
+// mui custom css 설정
+
+const theme = createTheme({
+  palette: {
+    error: {
+      main: "#FF334C",
+    },
+    primary: {
+      main: "#3884fd",
+    },
+  },
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: "0.8rem",
+        },
+        input: {
+          fontSize: "1.5rem",
+          borderRadius: "0.8rem",
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          fontSize: "1.5rem",
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          fontSize: "1.3rem",
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          "&:hover": {
+            background: "transparent",
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        input: {
+          fontSize: "1.5rem",
+        },
+      },
+    },
+  },
+});
+
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -87,12 +144,14 @@ function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        style={{ fontSize: "16px" }}
+        style={{ fontSize: "1.6rem" }}
         theme="light"
       />
-      <div className="App">
-        <Router />
-      </div>
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <Router />
+        </div>
+      </ThemeProvider>
     </>
   );
 }

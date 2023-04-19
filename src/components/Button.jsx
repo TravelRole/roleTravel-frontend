@@ -24,7 +24,6 @@ ${(props) =>
       width: 100%;
       max-width: 13rem;
       font-size: 1.6rem;
-      border-radius: 20px;
     `}
 `;
 
@@ -59,13 +58,7 @@ const StyledButton = styled.button`
   outline: none;
   width: ${(props) => props.width};
   margin: ${(props) => props.margin};
-<<<<<<< HEAD
-  border-radius: ${(props)=> props.borderRadius};
-  border :${(props)=> props.border};
-=======
-
   border-radius: 0.8rem;
->>>>>>> dev
   cursor: pointer;
   padding: 15px 0;
   ${colorStyles};
@@ -78,9 +71,8 @@ const StyledButton = styled.button`
 `;
 
 const Button = ({ children, size, ...props }) => {
-  
   return (
-    <StyledButton size={size} {...props} >
+    <StyledButton size={size} {...props}>
       {children}
     </StyledButton>
   );

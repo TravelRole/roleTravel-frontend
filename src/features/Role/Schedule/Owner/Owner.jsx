@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   flex-direction: column;
-  border: 5px solid aqua;
+  /* border: 5px solid aqua; */
   position: absolute;
   overflow: ${(props) =>
     props.isAddModal ? "hidden hidden" : "hidden scroll"};
@@ -258,19 +258,17 @@ function Owner({ setReserveList }) {
                       lng: Number(marker.x),
                     };
                     return (
-                      
-                        <MapMarker
-                          key={`marker-${position}-${position.lat},${position.lng}`}
-                          position={position}
-                          onClick={() => setInfo(marker)}
-                        >
-                          {info && info.place_name === marker.place_name && (
-                            <div style={{ color: "#000" }}>
-                              {marker.place_name}
-                            </div>
-                          )}
-                        </MapMarker>
-                      
+                      <MapMarker
+                        key={`marker-${position}-${position.lat},${position.lng}`}
+                        position={position}
+                        onClick={() => setInfo(marker)}
+                      >
+                        {info && info.place_name === marker.place_name && (
+                          <div style={{ color: "#000" }}>
+                            {marker.place_name}
+                          </div>
+                        )}
+                      </MapMarker>
                     );
                   })}
                 </Map>

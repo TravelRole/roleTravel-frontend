@@ -1,10 +1,15 @@
 import React, { useCallback, useState } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
 import styled from "styled-components";
 import Button from "../../../components/Button";
 import { toast } from "react-toastify";
 import { addTravel, getTravelList } from "../travelSlice";
 import { useDispatch } from "react-redux";
+import ko from "date-fns/locale/ko";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import CalendarHeader from "./CalendarHeader";
+
+registerLocale("ko", ko);
 
 const AddModalWrap = styled.div`
   h3 {
@@ -45,6 +50,7 @@ const AddModalWrap = styled.div`
         }
       }
     }
+
     button.submitBtn {
       margin-top: 20px;
       float: right;
@@ -72,7 +78,8 @@ const AddSpaceModal = ({ setIsAddModal }) => {
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
 
-  const handleDateChange = (dates) => {
+  const handleDateChange = useCallback((dates) => {
+    // react-datepicker에서는 range 옵션을 설정해놓으면, 처음 날짜와 마지막 날짜를 인자로 줌.
     const [start, end] = dates;
 
     // 선택한 기간이 8일 이상인 경우, 종료 날짜를 강제로 줄임
@@ -87,6 +94,7 @@ const AddSpaceModal = ({ setIsAddModal }) => {
         travelStartDate: formatStart,
         travelEndDate: formatEnd,
       }));
+      // 토스트를 사용해 7일까지 선택가능함을 사용자에게 알려줌.
       toast.warn("7일까지 선택 가능합니다.", {
         position: "top-center",
         autoClose: 3000,
@@ -97,7 +105,9 @@ const AddSpaceModal = ({ setIsAddModal }) => {
         progress: undefined,
         theme: "colored",
       });
+      return;
     } else {
+      // 만약 사용자가 8일 이상으로 날짜를 선택하지 않을 경우에는 날짜만 변환해서 데이터를 저장함.
       setDateRange(dates);
       const formatStart = formatDate(start);
       const formatEnd = formatDate(end);
@@ -107,7 +117,7 @@ const AddSpaceModal = ({ setIsAddModal }) => {
         travelEndDate: formatEnd,
       }));
     }
-  };
+  }, []);
 
   const onChangeInput = useCallback((e) => {
     const { name, value } = e.target;
@@ -119,7 +129,6 @@ const AddSpaceModal = ({ setIsAddModal }) => {
     (e) => {
       e.preventDefault();
       dispatch(addTravel(formData)).then((res) => {
-        console.log(res);
         if (res.meta.requestStatus === "fulfilled") {
           setIsAddModal(false);
           dispatch(getTravelList());
@@ -159,8 +168,16 @@ const AddSpaceModal = ({ setIsAddModal }) => {
               startDate={startDate}
               endDate={endDate}
               minDate={new Date()}
+              locale="ko"
               dateFormat="yyyy/MM/dd"
               onChange={handleDateChange}
+              renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
+                <CalendarHeader
+                  date={date}
+                  decreaseMonth={decreaseMonth}
+                  increaseMonth={increaseMonth}
+                />
+              )}
             />
           </dd>
         </dl>

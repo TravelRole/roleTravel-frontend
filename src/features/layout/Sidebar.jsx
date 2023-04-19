@@ -1,155 +1,191 @@
 import styled from "styled-components";
-import { Link, useParams } from "react-router-dom";
+import { Link, NavLink, useParams } from "react-router-dom";
 import { useState } from "react";
 import Icons from "../../assets/icon/icon";
 import ProfileImg from "../../assets/images/image1.jpg";
 
 const SidebarContainer = styled.nav`
-  display: flex;
-  flex-direction: column;
-  width: 20rem;
-  height: 100vh;
+  /* display: flex;
+  flex-direction: column; */
+  width: 34rem;
+  /* height: 100vh; */
   background-color: #ffffff;
-  box-shadow: 0 4px 20px 0px rgba(200, 214, 236 , 0.7);
-  transition: 0.9s;
-  padding: 1.375rem 1.875rem;
-  font-size: 1rem;
-  color: #9e9e9e;
-  z-index: 1;
+  box-shadow: 0 0.4rem 2rem 0px rgba(200, 214, 236, 0.7);
+  /* transition: 0.9s; */
+  padding: 3.2rem 3rem;
+  /* font-size: 1rem; */
+  /* color: #9e9e9e; */
+  /* z-index: 1; */
   /* @media (max-width: 800px) {
     width: 92px;
   } */
 `;
 
 const BacktoList = styled.div`
-  color: #9e9e9e;
-  height: 3rem;
-  display: flex;
-  align-items: center;
-
+  margin-bottom: 2.7rem;
   a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     text-decoration: none;
-    color: gray;
-    div {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+    color: #9e9e9e;
+    font-size: 1.4rem;
+    span {
+      color: #9e9e9e;
+      font-size: 1.4rem;
     }
   }
 `;
 
 const Profile = styled.div`
   width: 100%;
-  height: 15rem;
-  padding: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 3.7rem;
 
-  img {
-    width: 9rem;
-    height: 9rem;
+  .profile_img {
+    width: 14.5rem;
+    height: 14.5rem;
     border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   h1 {
-    color: black;
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-top: 1.3rem;
+    color: #4a4a4a;
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin-bottom: 0.7rem;
   }
-`;
 
-const InviteLink = styled.div`
-  margin: 0.5rem;
-  margin-left: 0.7rem;
-  font-size: 0.8rem;
+  p {
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: #acb1b9;
+    span {
+      width: 1.3rem;
+      height: 1.3rem;
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
 `;
 
 const Category = styled.div`
   width: 100%;
-  font-size: 0.9rem;
-  padding: 0.3rem;
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  hr {
-    width: 100%;
-    border: 1px solid gray;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #eeeded;
+  p {
+    font-size: 1.4rem;
+    color: #a9a9a9;
   }
 `;
 
-const SmallTitle = styled.div`
-  font-size: 0.9rem;
-  height: fit-content;
+const SideBarNavWrap = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const Ul = styled.ul`
-  /* height: 100%; */
-  display: flex;
+  gap: 3.5rem;
   flex-direction: column;
-`;
+  &.teamSpaceNav {
+    margin-bottom: 6.6rem;
+  }
 
-const Li = styled.li`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  margin-bottom: 1rem;
-  color: black;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  position: relative;
-
-  .icon {
+  a {
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin-right: 1rem;
-    background-color: ${(props) => (props.actived ? "#E3F0FF" : "#f5f5f5")};
-    border-radius: 50%;
-    width: 1.7rem;
-    height: 1.7rem;
-  }
+    gap: 1.5rem;
+    color: #636363;
+    font-size: 1.8rem;
+    transition: all 0.3s;
+    position: relative;
 
-  .yellowDot {
-    width: 0.3rem;
-    height: 0.3rem;
-    background-color: ${(props) => (props.actived ? "#FFC759" : "#f5f5f5")};
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 5px;
-  }
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background-color: #f5f5f5;
 
-  &:hover {
-    cursor: pointer;
-    .icon {
-      background-color: #e3f0ff;
+      svg {
+        font-size: 1.8rem;
+      }
     }
-    .yellowDot {
-      background-color: #ffc759;
-    }
-  }
 
-  @media (max-width: 800px) {
-    width: 100%;
+    &:hover {
+      color: #3884fd;
+      font-weight: bold;
+      span {
+        background-color: #e3f0ff;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        width: 0.5rem;
+        height: 0.5rem;
+        background-color: #ffc759;
+        border-radius: 50%;
+      }
+    }
+
+    &.active {
+      color: #3884fd;
+      font-weight: bold;
+      span {
+        background-color: #e3f0ff;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        width: 0.5rem;
+        height: 0.5rem;
+        background-color: #ffc759;
+        border-radius: 50%;
+      }
+    }
   }
 `;
 
 const Out = styled.div`
-  position: absolute;
-  bottom: 1.375rem;
-  li {
-    width: 100%;
-    margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 12rem;
+  a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.4rem;
+    color: #9e9e9e;
+    /* height: 2.4rem; */
+    span {
+      width: 2.4rem;
+      height: 2.4rem;
+      color: red;
 
-    .yellowDot {
-      display: none;
+      svg {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 `;
@@ -158,11 +194,12 @@ const List = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.8rem;
 `;
 
 const SideBarTab = [
   {
-    pathname: "모든여행계획",
+    pathname: "모든 여행계획",
     path: "allplan",
     icon: <Icons.SlPlane />,
   },
@@ -191,83 +228,77 @@ function Sidebar() {
       <SidebarContainer>
         <BacktoList>
           <Link to={`/${UserId}`}>
-            <div>
-              <div>
-                <Icons.HiChevronLeft />
-              </div>
-              목록으로돌아가기
-            </div>
+            <span>
+              <Icons.HiChevronLeft />
+            </span>
+            목록으로돌아가기
           </Link>
         </BacktoList>
 
         <Profile>
-          <div>
-            <img src={ProfileImg} alt="noimages"></img>
+          <div className="profile_img">
+            <img src={ProfileImg} alt="noimages" />
           </div>
           <h1>제주도 여행</h1>
-          <div>
-            <InviteLink>
-              <span>초대하기</span>
+          <p>
+            초대하기
+            <span>
               <Icons.HiOutlineLink />
-            </InviteLink>
-          </div>
+            </span>
+          </p>
         </Profile>
 
         <Category>
-          <SmallTitle>팀스페이스</SmallTitle>
-          <hr />
+          <p>팀 스페이스</p>
         </Category>
 
-        <Ul>
+        <SideBarNavWrap className="teamSpaceNav">
           {SideBarTab.map((item, index) => {
             return (
-              <Link key={index} to={`/${Spacenumber}/${item.path}`}>
-                <Li
-                  onClick={() => setActive(index)}
-                  actived={active === index ? true : false}
-                >
-                  <div className="icon">{item.icon}</div>
-                  <List>{item.pathname}</List>
-                  <div className="yellowDot"></div>
-                </Li>
-              </Link>
+              <NavLink
+                key={index}
+                to={`/${Spacenumber}/${item.path}`}
+                className={({ isActive, isPending }) =>
+                  isPending ? "pending" : isActive ? "active" : ""
+                }
+              >
+                <span>{item.icon}</span>
+                {item.pathname}
+              </NavLink>
             );
           })}
-        </Ul>
+        </SideBarNavWrap>
 
         <Category>
-          <SmallTitle>개인 스페이스</SmallTitle>
-          <hr />
+          <p>개인 스페이스</p>
         </Category>
 
-        <Link to={`/${Spacenumber}/essentials`}>
-          <Li>
-            <div className="icon">
+        <SideBarNavWrap>
+          <NavLink
+            to={`/${Spacenumber}/essentials`}
+            className={({ isActive, isPending }) =>
+              isPending ? "pending" : isActive ? "active" : ""
+            }
+          >
+            <span>
               <Icons.SlBag />
-            </div>
-            <List>준비물</List>
-            <div className="yellowDot"></div>
-          </Li>
-        </Link>
+            </span>
+            준비물
+          </NavLink>
+        </SideBarNavWrap>
 
         <Out>
           <Link>
-            <Li>
-              <div className="icon">
-                <Icons.FaDoorOpen color="red" />
-              </div>
-              <List>스페이스 삭제하기</List>
-              <div className="yellowDot"></div>
-            </Li>
+            <span>
+              <Icons.FaDoorOpen />
+            </span>
+            스페이스 삭제하기
           </Link>
           <Link>
-            <Li>
-              <div className="icon">
-                <Icons.FaDoorOpen color="red" />
-              </div>
-              <List>스페이스 나가기</List>
-              <div className="yellowDot"></div>
-            </Li>
+            <span>
+              <Icons.FaDoorOpen color="red" />
+            </span>
+            스페이스 탈퇴하기
           </Link>
         </Out>
       </SidebarContainer>
