@@ -2,10 +2,12 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
+  
   width: 100%;
   height: 100%;
-  flex-direction: column;
-  border: 5px solid aqua;
+  background-color: #f4f6fb;
+  /* border: 5px solid aqua; */
   overflow: ${(props) =>
     props.isAddModal ? "hidden hidden" : "hidden scroll"};
 
@@ -23,6 +25,12 @@ const Wrapper = styled.div`
     border-radius: 3px;
     background-color: #cdcdf4;
   }
+`;
+
+const PageHeader = styled.header`
+  margin: 8rem 0 0 8rem;
+  font-size: 3rem;
+  font-weight: 600;
 `;
 
 const ReserveWrapper = styled.div`
@@ -74,9 +82,7 @@ function Reservation({ reserveList }) {
   return (
     <>
       <Wrapper>
-        <h1 style={{ fontSize: "25px", margin: "1rem", fontWeight: "bold" }}>
-          예약
-        </h1>
+        <PageHeader>예약</PageHeader>
         <ReserveWrapper>{needResrveArr}</ReserveWrapper>
       </Wrapper>
     </>

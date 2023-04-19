@@ -5,13 +5,15 @@ import Icons from "../../assets/icon/icon";
 import ProfileImg from "../../assets/images/image1.jpg";
 
 const SidebarContainer = styled.nav`
-  width: 34rem;
+  width: 32rem;
   height: 100vh;
+
   background-color: #ffffff;
   box-shadow: 0 0.4rem 2rem 0px rgba(200, 214, 236, 0.7);
   padding: 3.2rem 3rem;
-  overflow: scroll;
 
+  overflow: scroll;
+  z-index: 1;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -172,7 +174,7 @@ const Out = styled.div`
     gap: 1rem;
     font-size: 1.4rem;
     color: #9e9e9e;
-
+    /* height: 2.4rem; */
     span {
       width: 2.4rem;
       height: 2.4rem;
@@ -184,6 +186,13 @@ const Out = styled.div`
       }
     }
   }
+`;
+
+const List = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
 `;
 
 const SideBarTab = [
@@ -211,6 +220,7 @@ const SideBarTab = [
 
 function Sidebar() {
   const { UserId, Spacenumber } = useParams();
+  const [active, setActive] = useState(0);
   return (
     <>
       <SidebarContainer>
@@ -284,7 +294,7 @@ function Sidebar() {
           </Link>
           <Link>
             <span>
-              <Icons.FaDoorOpen />
+              <Icons.FaDoorOpen color="red" />
             </span>
             스페이스 탈퇴하기
           </Link>

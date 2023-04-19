@@ -32,6 +32,7 @@ time, mark, audio, video,input {
   font-size: 62.5%;
   letter-spacing: -0.02rem;
   font-smooth: always;
+
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
@@ -45,7 +46,7 @@ footer, header, hgroup, main, menu, nav, section {
 
 body {
   line-height: 1;
-  font-family: "Pretendard"
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 }
 menu, ol, ul {
   list-style: none;
