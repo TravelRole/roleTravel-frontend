@@ -6,8 +6,12 @@ import { useDispatch } from "react-redux";
 import { getUserInfo } from "./features/Landing/userSlice";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import "./App.css";
 import { ThemeProvider, createTheme } from "@mui/material";
+import "./App.css";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { getTravelList } from "./features/SpaceList/travelSlice";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -128,7 +132,9 @@ const theme = createTheme({
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (localStorage.getItem("accessToken")) dispatch(getUserInfo());
+    if (localStorage.getItem("accessToken")) {
+      dispatch(getUserInfo());
+    }
   }, [dispatch]);
 
   return (

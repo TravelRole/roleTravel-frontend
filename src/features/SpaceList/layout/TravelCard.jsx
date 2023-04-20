@@ -1,0 +1,173 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import Button from "../../../components/Button";
+import travelImage from "../../../assets/images/travelImage.jpeg";
+import userImage from "../../../assets/images/userIcon.png";
+import { HiOutlineLocationMarker } from "react-icons/hi";
+const TravelCardWrap = styled.div`
+  min-width: 35rem;
+  min-height: 48rem;
+  background-color: #fff;
+  border-radius: 1.5rem;
+  overflow: hidden;
+`;
+
+const TravelCardHeader = styled.div`
+  width: 100%;
+  height: 28rem;
+  position: relative;
+  img.room_img {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const TravelCardLocation = styled.div`
+  position: absolute;
+  z-index: 10;
+  top: 2rem;
+  right: 2rem;
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  padding: 0.7rem 1rem;
+  background-color: rgba(244, 246, 251, 0.8);
+  border-radius: 0.8rem;
+  i {
+    width: 1.944rem;
+    height: 2rem;
+    color: #3884fd;
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  p {
+    color: #3884fd;
+    font-size: 1.8rem;
+  }
+`;
+
+const TravelCardUserIcon = styled.div`
+  position: absolute;
+  bottom: 2.3rem;
+  left: 2rem;
+  ul {
+    display: flex;
+    position: relative;
+    li {
+      position: absolute;
+      width: 4.6rem;
+      height: 4.6rem;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 0.3rem solid #f4f6fb;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+      &:first-child {
+        z-index: 10;
+      }
+      &:nth-child(2) {
+        z-index: 9;
+        left: 3.7rem;
+      }
+      &:nth-child(3) {
+        z-index: 8;
+        left: 7.4rem;
+      }
+      &:last-child {
+        z-index: 7;
+        left: 11.1rem;
+      }
+    }
+  }
+`;
+
+const TravelCardBody = styled.dl`
+  padding: 2rem 2rem;
+  margin-top: 1.4rem;
+  dl {
+    margin-bottom: 1.6rem;
+    dt {
+      min-height: 5.2rem;
+      width: 100%;
+      font-size: 2.2rem;
+      color: #333;
+      margin-bottom: 1.6rem;
+    }
+    dd {
+      font-size: 1.6rem;
+      color: #a7a7a7;
+    }
+  }
+`;
+
+const TravelCard = ({
+  roomId,
+  roomName,
+  image,
+  startDate,
+  endDate,
+  location,
+  members,
+}) => {
+  const navigate = useNavigate();
+  return (
+    <TravelCardWrap>
+      <TravelCardHeader>
+        <img
+          className="room_img"
+          src={image ? image : travelImage}
+          alt={roomName}
+        />
+        <TravelCardLocation>
+          <i>
+            <HiOutlineLocationMarker />
+          </i>
+          <p>{location}</p>
+        </TravelCardLocation>
+        <TravelCardUserIcon>
+          <ul>
+            {members.map((member, index) => (
+              <li key={index}>
+                <img
+                  src={member.profile === null ? userImage : member.profile}
+                  alt={member.name}
+                />
+              </li>
+            ))}
+            <li>
+              <img src={userImage} alt="임시" />
+            </li>
+            <li>
+              <img src={userImage} alt="임시" />
+            </li>
+            <li>
+              <img src={userImage} alt="임시" />
+            </li>
+          </ul>
+        </TravelCardUserIcon>
+      </TravelCardHeader>
+      <TravelCardBody>
+        <dl>
+          <dt>{roomName}</dt>
+          <dd>
+            {startDate} ~ {endDate}
+          </dd>
+        </dl>
+        <Button
+          size="full"
+          color="blue"
+          onClick={() => navigate(`/${roomId}/allplan`)}
+        >
+          팀 스페이스 입장
+        </Button>
+      </TravelCardBody>
+    </TravelCardWrap>
+  );
+};
+
+export default TravelCard;

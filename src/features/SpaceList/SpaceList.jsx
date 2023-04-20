@@ -1,39 +1,42 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { Container } from "../../components/Container";
 import Header from "../layout/Header";
-import Button from "../../components/Button";
-import Space from "./layout/Space";
-import jejuImage from "../../assets/images/image1.jpg";
-import betImage from "../../assets/images/image2.jpg";
-import gangnenunImage from "../../assets/images/image3.jpg";
 import AddSpaceModal from "./layout/AddSpaceModal";
 import Modal from "../../components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getUserInfo } from "../Landing/userSlice";
 import { getTravelList } from "./travelSlice";
-import { SyncLoader } from "react-spinners";
 import Traveling from "./layout/Traveling";
 import EndTravel from "./layout/EndTravel";
+import TravelListBg from "../../assets/images/travelListBg.png";
 
-const SpaceListContainer = styled.section`
-  width: 100%;
-  margin: 9rem auto;
+const SpaceListWrap = styled.main`
+  background-image: url(${TravelListBg});
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: contain;
+  overflow: auto;
+`;
+
+const SpaceListContainer = styled.div`
+  height: calc(100vh - 10rem);
+  padding-top: 9rem;
+  margin: 0 auto;
 `;
 
 const SpaceHeader = styled.div`
-  margin-bottom: 5.4rem;
+  margin-bottom: 6.4rem;
+  padding: 0 11.2rem;
   p {
     color: #a7a7a7;
     font-size: 2.4rem;
     font-weight: 400;
   }
 `;
-
-const SpaceContent = styled.div``;
 
 const TravelNavTabWrap = styled.div`
   width: 100%;
@@ -96,14 +99,14 @@ function SpaceList() {
     setCurrentNav(index);
   }, []);
 
-  // useEffect(() => {
-  //   // isAuth로 판단하는게 나은지, 의논해야함
-  //   if (!localStorage.getItem("accessToken")) {
-  //     navigate(`/login`);
-  //     return;
-  //   }
-  //   dispatch(getTravelList());
-  // }, [dispatch, navigate]);
+  useEffect(() => {
+    // isAuth로 판단하는게 나은지, 의논해야함
+    if (!localStorage.getItem("accessToken")) {
+      navigate(`/login`);
+      return;
+    }
+    dispatch(getTravelList());
+  }, [dispatch, navigate]);
 
   // 구글로 로그인했을 때 보이는 토스트
   useEffect(() => {
@@ -131,7 +134,7 @@ function SpaceList() {
   }, [signUpSuccess, dispatch]);
 
   return (
-    <>
+    <SpaceListWrap>
       <Header />
       <Container>
         <SpaceListContainer>
@@ -151,9 +154,8 @@ function SpaceList() {
             </TravelNavTabWrap>
             <p>팀 스페이스에서 역할에 맞게 여행 계획을 관리해보세요.</p>
           </SpaceHeader>
-          <SpaceContent>
-            {currentNav === 0 ? <Traveling /> : <EndTravel />}
-          </SpaceContent>
+          {/* //header */}
+          {currentNav === 0 ? <Traveling /> : <EndTravel />}
         </SpaceListContainer>
       </Container>
       {isAddModal ? (
@@ -161,7 +163,7 @@ function SpaceList() {
           <AddSpaceModal setIsAddModal={setIsAddModal} />
         </Modal>
       ) : null}
-    </>
+    </SpaceListWrap>
   );
 }
 
