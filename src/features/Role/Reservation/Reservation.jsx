@@ -6,6 +6,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import ReserveCellLayout from "./layout/ReserveCell";
+import BlankPanel from "./layout/BlankPanel";
 
 const Wrapper = styled.div`
   display: flex;
@@ -74,7 +75,7 @@ const DateBox = styled.div`
 const Day = styled.div`
   font-family: "Pretendard";
   font-size: 2.4rem;
-  color: rgba(83, 100, 127, 1); ;
+  color: rgba(83, 100, 127, 1);
 `;
 
 const Date = styled.div`
@@ -126,6 +127,9 @@ function Reservation({ reserveList }) {
     setValue(newValue);
   };
 
+  const isUndefined = reserveList[value];
+  console.log(isUndefined);
+
   const needResrve =
     reserveList[value] &&
     reserveList[value].filter((item) => item.reserve === "예약필요"); //예약이 필요한 객체들만 분류
@@ -144,6 +148,8 @@ function Reservation({ reserveList }) {
     doneResrve.map((element) => {
       return ReserveCellLayout(element);
     });
+
+  // console.log(needReserveCell, doneReserveCell);
 
   return (
     <>
@@ -175,16 +181,20 @@ function Reservation({ reserveList }) {
             <ReserveWrapper>
               {" "}
               <StyledTabPanel value={value}>
-                <InsidePanel>
-                  <ReserveListColumn>
-                    <header>예약필요</header>
-                    {needReserveCell}
-                  </ReserveListColumn>
-                  <ReserveListColumn>
-                    <header>예약완료</header>
-                    {doneReserveCell}
-                  </ReserveListColumn>
-                </InsidePanel>
+                {isUndefined === undefined || isUndefined.length === 0 ? (
+                  <BlankPanel />
+                ) : (
+                  <InsidePanel>
+                    <ReserveListColumn>
+                      <header>예약필요</header>
+                      {needReserveCell}
+                    </ReserveListColumn>
+                    <ReserveListColumn>
+                      <header>예약완료</header>
+                      {doneReserveCell}
+                    </ReserveListColumn>
+                  </InsidePanel>
+                )}
               </StyledTabPanel>
             </ReserveWrapper>
           </TabContext>

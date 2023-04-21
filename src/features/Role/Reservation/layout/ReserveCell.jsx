@@ -20,7 +20,7 @@ const ReserveCell = styled.div`
     flex-direction: column;
 
     a {
-        margin-left: 0.5rem;
+      margin-left: 0.5rem;
       font-size: 1.8rem;
       text-decoration: none;
     }
