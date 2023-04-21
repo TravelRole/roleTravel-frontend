@@ -29,7 +29,8 @@ time, mark, audio, video,input {
   vertical-align: baseline;
   box-sizing: border-box;
   text-decoration-line: none;
-  font-size: 62.5%;
+  /* font-size: 62.5%; */
+  font-size: 50%;
   letter-spacing: -0.02rem;
   font-smooth: always;
 
