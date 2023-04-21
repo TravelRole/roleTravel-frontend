@@ -5,6 +5,7 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import Icons from "../../../assets/icon/icon";
 
 const Wrapper = styled.div`
   display: flex;
@@ -68,6 +69,7 @@ const DateBox = styled.div`
   width: 100%;
   padding-left: 1.5rem;
   padding-bottom: 1.2rem;
+  padding-right: 5rem;
 `;
 
 const Day = styled.div`
@@ -83,7 +85,8 @@ const Date = styled.div`
 `;
 
 const StyledTabPanel = styled(TabPanel)`
-  padding: 7.4rem 8rem !important;
+  padding: 0 !important;
+  border: 5px solid blueviolet;
 `;
 const ReservationDay = [
   { CountDay: 1, Date: "4.17(월)" },
@@ -97,24 +100,94 @@ const ReservationDay = [
 
 const ReserveWrapper = styled.div`
   display: grid;
-  padding: 10px;
+  padding: 7.4rem 8rem !important;
   height: 100%;
-  grid-template-columns: repeat(4, 25%);
-  grid-auto-rows: 300px;
-  grid-gap: 2px;
 
-  @media (max-width: 800px) {
-    grid-template-columns: repeat(2, 50%);
+  border: 5px solid aqua;
+`;
+
+const InsidePanel = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  border: 5px solid palegreen;
+`;
+
+const ReserveListColumn = styled.div`
+  padding-right: 13rem;
+  /* border: 5px solid plum; */
+  & > header {
+    margin-bottom: 2.5rem;
+
+    font-size: 2.6rem;
+    font-weight: 600;
+    color: black;
   }
 `;
 
 const ReserveCell = styled.div`
-  border: 2px solid purple;
+  /* border: 2px solid purple; */
   display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  div {
-    margin-bottom: 1rem;
+  flex-direction: row;
+  justify-content: flex-start;
+  position: relative;
+  padding: 2.5rem;
+  border-radius: 1.6rem;
+  background-color: white;
+  box-shadow: 0px 5px 19px rgba(92, 119, 163, 0.1);
+  .checkBoxContainer {
+    margin-right: 1rem;
+  }
+  .ReserveDetail {
+    display: flex;
+    flex-direction: column;
+
+    & > .place_Name {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 2.5rem;
+      color: #333333;
+      font-weight: 700;
+      font-size: 1.8rem;
+      & > .placeCategory {
+        margin-left: 1.8rem;
+        padding: 0.5rem 1.5rem;
+        font-size: 1.6rem;
+        color: #3884fd;
+        background: #e1edff;
+        border-radius: 99px;
+      }
+    }
+
+    & > .bottomMarginSpan {
+      margin-bottom: 2.5rem;
+    }
+    & > span {
+      color: #8b8b8b;
+      font-weight: 500 !important;
+      font-size: 1.8rem;
+    }
+  }
+  .EditBtnContainer {
+    display: flex;
+    align-items: flex-end;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 0 1.2rem 2.5rem 0;
+
+    & > button {
+      display: flex;
+      flex-direction: row;
+      padding: 0.8rem 2rem;
+      border: none;
+      background: #3884fd;
+      border-radius: 8px;
+      color: white;
+
+      & > svg {
+        margin-right: 0.5rem;
+      }
+    }
   }
 `;
 
@@ -124,6 +197,8 @@ function Reservation({ reserveList }) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  console.log(reserveList)
 
   const objArray = Object.keys(reserveList).map((key) => {
     return reserveList[key].filter((item) => item.reserve === "예약필요");
@@ -162,7 +237,6 @@ function Reservation({ reserveList }) {
                 {ReservationDay.map((item, i) => {
                   return (
                     <Tab
-                      sx={{ marginRight: "5rem" }}
                       label={
                         <DateBox>
                           <Day>{item.CountDay}일차</Day>
@@ -175,16 +249,54 @@ function Reservation({ reserveList }) {
                 })}
               </StyledTabs>
             </StyledBox>
-            <StyledTabPanel value="1">Item One</StyledTabPanel>
-            <StyledTabPanel value="2">Item Two</StyledTabPanel>
-            <StyledTabPanel value="3">Item Three</StyledTabPanel>
-            <StyledTabPanel value="4">Item 4</StyledTabPanel>
-            <StyledTabPanel value="5">Item 5</StyledTabPanel>
-            <StyledTabPanel value="6">Item 6</StyledTabPanel>
-            <StyledTabPanel value="7">Item 7</StyledTabPanel>
+            <ReserveWrapper>
+              {" "}
+              <StyledTabPanel value="1">
+                <InsidePanel>
+                  <ReserveListColumn>
+                    <header>예약필요</header>
+                    <ReserveCell>
+                      <div className="checkBoxContainer">
+                        <input type="checkbox"></input>
+                      </div>
+                      <div className="ReserveDetail">
+                        <span className="place_Name">
+                          고내-광령 올레{" "}
+                          <div className="placeCategory">숙박</div>
+                        </span>
+                        <span>시간 : 10:00</span>
+                        <span>링크 : 없음</span>
+                        <span className="bottomMarginSpan">
+                          일정비고 : 없음
+                        </span>
+                        <span>금액 : 수정버튼을 눌러 작성해주세요.</span>
+                        <span className="bottomMarginSpan">
+                          결제 수단 : 수정버튼을 눌러 작성해주세요.
+                        </span>
+                        <span>예약 비고 : 수정버튼을 눌러 작성해주세요.</span>
+                      </div>
+                      <div className="EditBtnContainer">
+                        <button type="button">
+                          <Icons.TbPencilMinus size={17}/>
+                          수정
+                        </button>
+                      </div>
+                    </ReserveCell>
+                  </ReserveListColumn>
+                  <ReserveListColumn>
+                    <header>예약완료</header>
+                  </ReserveListColumn>
+                </InsidePanel>
+              </StyledTabPanel>
+              <StyledTabPanel value="2">Item Two</StyledTabPanel>
+              <StyledTabPanel value="3">Item Three</StyledTabPanel>
+              <StyledTabPanel value="4">Item 4</StyledTabPanel>
+              <StyledTabPanel value="5">Item 5</StyledTabPanel>
+              <StyledTabPanel value="6">Item 6</StyledTabPanel>
+              <StyledTabPanel value="7">Item 7</StyledTabPanel>
+            </ReserveWrapper>
           </TabContext>
         </Box>
-        <ReserveWrapper>{needResrveArr}</ReserveWrapper>
       </Wrapper>
     </>
   );

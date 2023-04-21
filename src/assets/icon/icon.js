@@ -16,6 +16,9 @@ import { FcGoogle } from "react-icons/fc";
 
 import { AiOutlineEyeInvisible , AiOutlineEye } from "react-icons/ai";
 
+import { TbPencilMinus } from "react-icons/tb";
+
+
 const Icons = {
   TfiPencilAlt,
   HiChevronLeft,
@@ -30,7 +33,8 @@ const Icons = {
   FcGoogle,
   AiOutlineEyeInvisible,
   AiOutlineEye,
-  HiOutlineX
+  HiOutlineX,
+  TbPencilMinus
 }
 
 export default Icons;
