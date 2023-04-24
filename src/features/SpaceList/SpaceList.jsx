@@ -88,7 +88,7 @@ function SpaceList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  const [isAddModal, setIsAddModal] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [currentNav, setCurrentNav] = useState(0);
   const { isAuth } = useSelector((state) => state.auth);
   const { signUpSuccess } = useSelector((state) => state.sign);
@@ -152,15 +152,23 @@ function SpaceList() {
               ))}
               <Indicator activeIndex={currentNav} />
             </TravelNavTabWrap>
-            <p>팀 스페이스에서 역할에 맞게 여행 계획을 관리해보세요.</p>
+            <p>
+              {currentNav === 0
+                ? "팀 스페이스에서 역할에 맞게 여행 계획을 관리해보세요."
+                : "여행이 끝나면 자동으로 완료된 계획으로 이동합니다:)"}
+            </p>
           </SpaceHeader>
           {/* //header */}
-          {currentNav === 0 ? <Traveling /> : <EndTravel />}
+          {currentNav === 0 ? (
+            <Traveling setIsOpenModal={setIsOpenModal} />
+          ) : (
+            <EndTravel />
+          )}
         </SpaceListContainer>
       </Container>
-      {isAddModal ? (
-        <Modal setIsAddModal={setIsAddModal}>
-          <AddSpaceModal setIsAddModal={setIsAddModal} />
+      {isOpenModal ? (
+        <Modal width="46rem" setIsOpenModal={setIsOpenModal}>
+          <AddSpaceModal setIsOpenModal={setIsOpenModal} />
         </Modal>
       ) : null}
     </SpaceListWrap>

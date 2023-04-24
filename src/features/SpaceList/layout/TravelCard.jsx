@@ -78,7 +78,7 @@ const TravelCardUserIcon = styled.div`
         z-index: 8;
         left: 7.4rem;
       }
-      &:last-child {
+      &:nth-child(4) {
         z-index: 7;
         left: 11.1rem;
       }
@@ -139,15 +139,6 @@ const TravelCard = ({
                 />
               </li>
             ))}
-            <li>
-              <img src={userImage} alt="임시" />
-            </li>
-            <li>
-              <img src={userImage} alt="임시" />
-            </li>
-            <li>
-              <img src={userImage} alt="임시" />
-            </li>
           </ul>
         </TravelCardUserIcon>
       </TravelCardHeader>

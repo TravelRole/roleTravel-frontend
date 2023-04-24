@@ -60,7 +60,7 @@ const StyledButton = styled.button`
   margin: ${(props) => props.margin};
   border-radius: 0.8rem;
   cursor: pointer;
-  padding: 15px 0;
+  padding: 1.5rem 0;
   ${colorStyles};
   ${sizeStyles};
 

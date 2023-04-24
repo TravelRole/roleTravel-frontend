@@ -8,14 +8,15 @@ import {
 import airPlan from "../../../assets/images/airplan.png";
 import addTravelImg from "../../../assets/images/addTravelImg.png";
 import { useSelector } from "react-redux";
-import TravelCard from "./TravelCard";
+import TravelSlider from "../../../lib/TravelSlider";
+import AddSpaceModal from "./AddSpaceModal";
 
-const TravelingWrap = styled.section`
+export const TravelListWrap = styled.section`
   width: 100%;
   position: relative;
 `;
 
-const TravelingContainer = styled.div`
+export const TravelListContainer = styled.div`
   padding: 0 11.2rem;
   display: flex;
   gap: 2.3rem;
@@ -71,19 +72,7 @@ const AddTravelCard = styled.div`
   }
 `;
 
-const TravelingSliderWrap = styled.div`
-  width: ${(currentLength) => `calc(${currentLength} * 35rem)`};
-  overflow: hidden;
-  position: relative;
-`;
-
-const TravelingSlider = styled.div`
-  display: flex;
-  gap: 2.3rem;
-  transition: transform 0.3s ease-in-out;
-`;
-
-const TravelingSliderBtn = styled.div`
+export const TravelListSliderButtons = styled.div`
   display: flex;
   button {
     position: absolute;
@@ -111,10 +100,19 @@ const TravelingSliderBtn = styled.div`
     &.travel-right-btn {
       right: 4.4rem;
     }
+    &:disabled {
+      background-color: rgba(255, 255, 255, 0.1);
+
+      svg {
+        font-size: 2rem;
+        color: rgba(255, 255, 255, 0.4);
+        stroke-width: 0.3rem;
+      }
+    }
   }
 `;
 
-const Traveling = () => {
+const Traveling = ({ setIsOpenModal }) => {
   const { currentTravelingList } = useSelector((state) => state.travel);
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -133,8 +131,8 @@ const Traveling = () => {
     [currentSlide, currentTravelingList.length]
   );
   return (
-    <TravelingWrap>
-      <TravelingContainer>
+    <TravelListWrap>
+      <TravelListContainer>
         <AddTravelCard>
           <dl>
             <dt></dt>
@@ -144,35 +142,37 @@ const Traveling = () => {
               시작해보세요!
             </dd>
           </dl>
-          <button>
+          <button onClick={() => setIsOpenModal((prev) => !prev)}>
             <HiPlus />
           </button>
         </AddTravelCard>
-        <TravelingSliderWrap currentLength={currentTravelingList.length}>
-          <TravelingSlider
-            style={{
-              transform: `translateX(-${currentSlide * (35 + 2.3)}rem)`,
-            }}
+        {/* custom Slider */}
+        <TravelSlider
+          travelData={currentTravelingList}
+          currentIndex={currentSlide}
+        />
+      </TravelListContainer>
+      {currentTravelingList.length > 2 && (
+        <TravelListSliderButtons>
+          <button
+            className="travel-left-btn"
+            name="left"
+            onClick={handleSlider}
+            disabled={currentSlide === 0}
           >
-            {currentTravelingList.map((travel) => (
-              <TravelCard key={travel.roomId} {...travel} />
-            ))}
-          </TravelingSlider>
-        </TravelingSliderWrap>
-      </TravelingContainer>
-      <TravelingSliderBtn>
-        <button className="travel-left-btn" name="left" onClick={handleSlider}>
-          <HiOutlineChevronLeft />
-        </button>
-        <button
-          className="travel-right-btn"
-          name="right"
-          onClick={handleSlider}
-        >
-          <HiOutlineChevronRight />
-        </button>
-      </TravelingSliderBtn>
-    </TravelingWrap>
+            <HiOutlineChevronLeft />
+          </button>
+          <button
+            className="travel-right-btn"
+            name="right"
+            onClick={handleSlider}
+            disabled={currentTravelingList.length === currentSlide + 1}
+          >
+            <HiOutlineChevronRight />
+          </button>
+        </TravelListSliderButtons>
+      )}
+    </TravelListWrap>
   );
 };
 

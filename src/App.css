@@ -1,6 +1,6 @@
 /* @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css%27"); */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable.css");
-
+@import url("https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700;800;900&display=swap");
 /* toast 폰트 사이즈 */
 
 .Toastify__toast {
@@ -30,6 +30,7 @@
 .react-datepicker-popper {
   width: 100% !important;
   max-width: 30rem !important;
+  z-index: 50;
 }
 
 .react-datepicker {

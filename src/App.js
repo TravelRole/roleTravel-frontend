@@ -126,6 +126,13 @@ const theme = createTheme({
         },
       },
     },
+    MuiInputAdornment: {
+      styleOverrides: {
+        root: {
+          fontSize: "1.2rem",
+        },
+      },
+    },
   },
 });
 
