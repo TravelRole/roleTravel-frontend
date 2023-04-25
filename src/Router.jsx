@@ -47,7 +47,7 @@ const routers = [
   },
   {
     id: 4,
-    path: "/:Spacenumber/:role",
+    path: "/:roomId/:role",
     label: "TeamSpace",
     element: <TeamSpace Auth={false} />,
     withAuth: true,

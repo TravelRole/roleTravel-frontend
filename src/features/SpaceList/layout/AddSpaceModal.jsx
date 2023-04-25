@@ -78,6 +78,7 @@ const AddSpaceModal = ({ setIsOpenModal }) => {
     travelStartDate: "",
     travelEndDate: "",
     location: "",
+    roomImage: Math.floor(Math.random() * (5 - 0) + 0),
   });
 
   const [dateRange, setDateRange] = useState([null, null]);
@@ -150,6 +151,7 @@ const AddSpaceModal = ({ setIsOpenModal }) => {
   const onAddTravelSubmit = useCallback(
     (e) => {
       e.preventDefault();
+      console.log(formData);
       dispatch(addTravel(formData)).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setIsOpenModal(false);
@@ -254,7 +256,9 @@ const AddSpaceModal = ({ setIsOpenModal }) => {
               type="button"
               color="stroke"
               size="small"
-              onClick={() => setIsOpenModal(false)}
+              onClick={() => {
+                setIsOpenModal(false);
+              }}
             >
               취소
             </Button>

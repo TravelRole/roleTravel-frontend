@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { Link, NavLink, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Icons from "../../assets/icon/icon";
 import ProfileImg from "../../assets/images/image1.jpg";
+import { useDispatch } from "react-redux";
+import { getInvitationCode } from "./invitationCodeSlice";
 
 const SidebarContainer = styled.nav`
   /* display: flex;
@@ -65,6 +67,7 @@ const Profile = styled.div`
   }
 
   p {
+    cursor: pointer;
     font-size: 1.4rem;
     display: flex;
     align-items: center;
@@ -221,8 +224,14 @@ const SideBarTab = [
 ];
 
 function Sidebar() {
-  const { UserId, Spacenumber } = useParams();
+  const { UserId, roomId } = useParams();
   const [active, setActive] = useState(0);
+  const dispatch = useDispatch();
+
+  const handleInvitationCode = useCallback(() => {
+    dispatch(getInvitationCode(roomId));
+  }, [roomId, dispatch]);
+
   return (
     <>
       <SidebarContainer>
@@ -240,7 +249,7 @@ function Sidebar() {
             <img src={ProfileImg} alt="noimages" />
           </div>
           <h1>제주도 여행</h1>
-          <p>
+          <p onClick={handleInvitationCode}>
             초대하기
             <span>
               <Icons.HiOutlineLink />
@@ -257,7 +266,7 @@ function Sidebar() {
             return (
               <NavLink
                 key={index}
-                to={`/${Spacenumber}/${item.path}`}
+                to={`/${roomId}/${item.path}`}
                 className={({ isActive, isPending }) =>
                   isPending ? "pending" : isActive ? "active" : ""
                 }
@@ -275,7 +284,7 @@ function Sidebar() {
 
         <SideBarNavWrap>
           <NavLink
-            to={`/${Spacenumber}/essentials`}
+            to={`/${roomId}/essentials`}
             className={({ isActive, isPending }) =>
               isPending ? "pending" : isActive ? "active" : ""
             }
