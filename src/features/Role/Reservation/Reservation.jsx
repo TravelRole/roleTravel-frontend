@@ -88,6 +88,10 @@ const StyledTabPanel = styled(TabPanel)`
   padding: 0 !important;
 `;
 
+const StyleTab = styled(Tab)`
+  margin-right: 2.6rem !important;
+`;
+
 const ReserveWrapper = styled.div`
   display: grid;
   padding: 3rem 5rem !important;
@@ -105,11 +109,27 @@ const ReserveListColumn = styled.div`
   background-color: #eef1f8;
   border-radius: 1.6rem;
   & > header {
+    display: flex;
+    align-items: center;
     margin-bottom: 2.5rem;
 
     font-size: 2.4rem;
     font-weight: 600;
     color: black;
+
+    .countList {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 4.3rem;
+      height: 2.9rem;
+
+      margin-left: 1rem;
+      padding: 0.5rem 1.6rem;
+      background: #ffffff;
+      border: 0.1rem solid #dadada;
+      border-radius: 9.9rem;
+    }
   }
 `;
 
@@ -126,7 +146,7 @@ const ReservationDay = [
 function Reservation({ reserveList }) {
   const [value, setValue] = useState("1");
 
-  const handleChange = (newValue) => {
+  const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
@@ -136,11 +156,11 @@ function Reservation({ reserveList }) {
   const needResrve =
     reserveList[value] &&
     reserveList[value].filter((item) => item.reserve === "예약필요");
-  
-  //예약이 완료된 객체들만 분류 
+
+  //예약이 완료된 객체들만 분류
   const doneResrve =
     reserveList[value] &&
-    reserveList[value].filter((item) => item.reserve === "예약완료"); 
+    reserveList[value].filter((item) => item.reserve === "예약완료");
 
   return (
     <>
@@ -156,7 +176,7 @@ function Reservation({ reserveList }) {
               >
                 {ReservationDay.map((item, i) => {
                   return (
-                    <Tab
+                    <StyleTab
                       label={
                         <DateBox>
                           <Day>{item.CountDay}일차</Day>
@@ -177,7 +197,9 @@ function Reservation({ reserveList }) {
                 ) : (
                   <InsidePanel>
                     <ReserveListColumn>
-                      <header>예약 예정</header>
+                      <header>
+                        예약 예정<span className="countList">4</span>
+                      </header>
                       {needResrve &&
                         needResrve.map((element) => (
                           <ReserveCellLayout
@@ -186,7 +208,9 @@ function Reservation({ reserveList }) {
                         ))}
                     </ReserveListColumn>
                     <ReserveListColumn>
-                      <header>최종 일정</header>
+                      <header>
+                        최종 일정<span className="countList">4</span>
+                      </header>
                       {doneResrve &&
                         doneResrve.map((element) => (
                           <ReserveCellLayout

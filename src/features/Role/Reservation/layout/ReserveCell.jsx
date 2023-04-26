@@ -50,19 +50,17 @@ const CellTitle = styled.div`
     margin-left: 2rem;
     cursor: pointer;
 
-    
-  &::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        right: -1rem;
-        transform: translateY(-50%);
-        width: 0.2rem;
-        height: 1.4rem;
-        background-color: #DADADA;
-      }
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -1rem;
+      transform: translateY(-50%);
+      width: 0.2rem;
+      height: 1.4rem;
+      background-color: #dadada;
+    }
   }
-
 
   div {
     display: flex;
@@ -82,16 +80,17 @@ const CellTitle = styled.div`
     background-color: white;
     position: absolute;
     right: 0;
-    padding: 0 2.4rem 0 0; 
+    padding: 0 2.4rem 0 0;
     cursor: pointer;
 
-    span, svg { 
+    span,
+    svg {
       font-size: 1.6rem;
       font-weight: 500;
       margin-right: 0.8rem;
-      color: #A7A7A7;
+      color: #a7a7a7;
     }
-    svg{
+    svg {
       margin: 0;
     }
   }
@@ -113,7 +112,7 @@ const CellDetail = styled.div`
       color: #585858;
       span {
         margin-right: 2rem;
-        font-weight: 500;
+        font-weight: 600;
         font-size: 1.6rem;
         color: #a7a7a7;
       }
@@ -139,7 +138,7 @@ const CellReserveDetail = styled.div`
 
       span {
         margin-right: 2rem;
-        font-weight: 500;
+        font-weight: 600;
         font-size: 1.6rem;
         color: #3884fd;
       }
@@ -151,15 +150,6 @@ const CellReserveDetail = styled.div`
     }
   }
 `;
-// & > .placeCategory {
-//   margin-left: 1.8rem;
-//   padding: 0.5rem 1.5rem;
-//   font-size: 1.6rem;
-//   font-weight: 700;
-//   color: #3884fd;
-//   background: #e1edff;
-//   border-radius: 99px;
-// }
 
 const ReserveCellLayout = ({ element }) => {
   // const elementObj = {
@@ -178,7 +168,9 @@ const ReserveCellLayout = ({ element }) => {
         <input type="checkbox" id="placeName" />
         <label htmlFor="placeName">{element.placeName}</label>
         <div>숙박</div>
-        <button><span>수정하기</span> <Icons.FaChevronRight /> </button>
+        <button>
+          <span>수정하기</span> <Icons.FaChevronRight />{" "}
+        </button>
       </CellTitle>
       <CellDetail>
         <ul>
@@ -202,7 +194,8 @@ const ReserveCellLayout = ({ element }) => {
             <span>결제수단</span>카드
           </li>
           <li className="note">
-            <span>비고</span>가든 트윈 조식포함 예약했어요. 이렇게 더 길어질수 있어요.
+            <span>비고</span>가든 트윈 조식포함 예약했어요. 이렇게 더 길어질수
+            있어요.
           </li>
         </ul>
       </CellReserveDetail>
