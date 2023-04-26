@@ -11,10 +11,10 @@ import {
 import { RiCalendarCheckLine } from "react-icons/ri";
 import { SlPlane, SlBag } from "react-icons/sl";
 
-import { FaDoorOpen } from "react-icons/fa";
+import { FaDoorOpen,FaChevronRight } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
-import { AiOutlineEyeInvisible , AiOutlineEye } from "react-icons/ai";
+import { AiOutlineEyeInvisible , AiOutlineEye ,AiOutlineExclamationCircle } from "react-icons/ai";
 
 import { TbPencilMinus } from "react-icons/tb";
 
@@ -34,7 +34,9 @@ const Icons = {
   AiOutlineEyeInvisible,
   AiOutlineEye,
   HiOutlineX,
-  TbPencilMinus
+  TbPencilMinus,
+  AiOutlineExclamationCircle,
+  FaChevronRight
 }
 
 export default Icons;

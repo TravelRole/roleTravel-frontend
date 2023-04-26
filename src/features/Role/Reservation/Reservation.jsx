@@ -37,13 +37,13 @@ const Wrapper = styled.div`
 `;
 
 const PageHeader = styled.header`
-  margin: 8rem 0 5.5rem 8rem;
+  margin: 7.8rem 0 6rem 5rem;
   font-size: 3rem;
   font-weight: 600;
 `;
 
 const StyledBox = styled(Box)`
-  padding-left: 8rem;
+  padding-left: 5rem;
 `;
 
 const StyledTabs = styled(TabList)`
@@ -67,14 +67,13 @@ const DateBox = styled.div`
   flex-direction: column;
   text-align: left;
   width: 100%;
-  padding-left: 1.5rem;
   padding-bottom: 1.2rem;
-  padding-right: 5rem;
+  padding-right: 7.5rem;
 `;
 
 const Day = styled.div`
   font-family: "Pretendard";
-  font-size: 2.4rem;
+  font-size: 2rem;
   color: rgba(83, 100, 127, 1);
 `;
 
@@ -85,26 +84,30 @@ const Date = styled.div`
 `;
 
 const StyledTabPanel = styled(TabPanel)`
+  margin-right: 2.6rem;
   padding: 0 !important;
 `;
 
 const ReserveWrapper = styled.div`
   display: grid;
-  padding: 7.4rem 8rem !important;
+  padding: 3rem 5rem !important;
   height: 100%;
 `;
 
 const InsidePanel = styled.div`
   display: grid;
+  gap: 1.6rem;
   grid-template-columns: repeat(2, 50%);
 `;
 
 const ReserveListColumn = styled.div`
-  padding-right: 13rem;
+  padding: 2.5rem;
+  background-color: #eef1f8;
+  border-radius: 1.6rem;
   & > header {
     margin-bottom: 2.5rem;
 
-    font-size: 2.6rem;
+    font-size: 2.4rem;
     font-weight: 600;
     color: black;
   }
@@ -123,33 +126,21 @@ const ReservationDay = [
 function Reservation({ reserveList }) {
   const [value, setValue] = useState("1");
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
     setValue(newValue);
   };
 
   const isUndefined = reserveList[value];
-  console.log(isUndefined);
 
+  //예약이 필요한 객체들만 분류
   const needResrve =
     reserveList[value] &&
-    reserveList[value].filter((item) => item.reserve === "예약필요"); //예약이 필요한 객체들만 분류
+    reserveList[value].filter((item) => item.reserve === "예약필요");
+  
+  //예약이 완료된 객체들만 분류 
   const doneResrve =
     reserveList[value] &&
-    reserveList[value].filter((item) => item.reserve === "예약완료"); //예약이 완료된 객체들만 분류
-
-  const needReserveCell =
-    needResrve &&
-    needResrve.map((element) => {
-      return ReserveCellLayout(element);
-    });
-
-  const doneReserveCell =
-    doneResrve &&
-    doneResrve.map((element) => {
-      return ReserveCellLayout(element);
-    });
-
-  // console.log(needReserveCell, doneReserveCell);
+    reserveList[value].filter((item) => item.reserve === "예약완료"); 
 
   return (
     <>
@@ -186,12 +177,22 @@ function Reservation({ reserveList }) {
                 ) : (
                   <InsidePanel>
                     <ReserveListColumn>
-                      <header>예약필요</header>
-                      {needReserveCell}
+                      <header>예약 예정</header>
+                      {needResrve &&
+                        needResrve.map((element) => (
+                          <ReserveCellLayout
+                            element={element}
+                          ></ReserveCellLayout>
+                        ))}
                     </ReserveListColumn>
                     <ReserveListColumn>
-                      <header>예약완료</header>
-                      {doneReserveCell}
+                      <header>최종 일정</header>
+                      {doneResrve &&
+                        doneResrve.map((element) => (
+                          <ReserveCellLayout
+                            element={element}
+                          ></ReserveCellLayout>
+                        ))}
                     </ReserveListColumn>
                   </InsidePanel>
                 )}

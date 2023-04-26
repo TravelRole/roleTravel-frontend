@@ -59,13 +59,9 @@ const StyledButton = styled.button`
   outline: none;
   width: ${(props) => props.width};
   margin: ${(props) => props.margin};
-<<<<<<< HEAD
   border-radius: ${(props)=> props.borderRadius};
   border :${(props)=> props.border};
-=======
-
   border-radius: 0.8rem;
->>>>>>> dev
   cursor: pointer;
   padding: 15px 0;
   ${colorStyles};
