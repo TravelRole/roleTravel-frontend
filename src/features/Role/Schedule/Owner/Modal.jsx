@@ -73,6 +73,8 @@ const AddSpaceModal = ({
       WebsiteLink,
       Extra,
     };
+
+    console.log(time)
     AddScheduleList(ScheduleObj);
     setIsAddModal(false);
   };

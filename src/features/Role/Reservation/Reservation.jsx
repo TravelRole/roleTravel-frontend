@@ -7,6 +7,7 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import ReserveCellLayout from "./layout/ReserveCell";
 import BlankPanel from "./layout/BlankPanel";
+import SmallBlank from "./layout/SmallBlank";
 
 const Wrapper = styled.div`
   display: flex;
@@ -48,7 +49,7 @@ const StyledBox = styled(Box)`
 
 const StyledTabs = styled(TabList)`
   position: relative;
-  top: 0.25rem;
+  top: 0.3rem;
 
   .MuiButtonBase-root {
     text-align: left;
@@ -108,6 +109,7 @@ const ReserveListColumn = styled.div`
   padding: 2.5rem;
   background-color: #eef1f8;
   border-radius: 1.6rem;
+  height: fit-content;
   & > header {
     display: flex;
     align-items: center;
@@ -200,23 +202,29 @@ function Reservation({ reserveList }) {
                       <header>
                         예약 예정<span className="countList">4</span>
                       </header>
-                      {needResrve &&
+                      {needResrve.length ? (
                         needResrve.map((element) => (
                           <ReserveCellLayout
                             element={element}
                           ></ReserveCellLayout>
-                        ))}
+                        ))
+                      ) : (
+                        <SmallBlank classify={"expected"}  />
+                      )}
                     </ReserveListColumn>
                     <ReserveListColumn>
                       <header>
                         최종 일정<span className="countList">4</span>
                       </header>
-                      {doneResrve &&
+                      {doneResrve.length ? (
                         doneResrve.map((element) => (
                           <ReserveCellLayout
                             element={element}
                           ></ReserveCellLayout>
-                        ))}
+                        ))
+                      ) : (
+                        <SmallBlank classify={"Done"} />
+                      )}
                     </ReserveListColumn>
                   </InsidePanel>
                 )}
