@@ -143,13 +143,19 @@ const InvitationLink = () => {
   useEffect(() => {
     dispatch(checkInvitationCode(invitationCode))
       .then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
+        if (res.payload.status === 200) {
           setIsOpenSelectRole(true);
+          return;
+        } else if (res.payload.response.status === 400) {
+          window.alert(res.payload.response.data.message);
+          navigate("/spaceList");
+        } else if (res.payload.response.status === 403) {
+          window.alert("로그인을 해주세요.");
+          navigate("/login");
         }
       })
       .catch((error) => {
         console.log(error);
-        navigate("/spaceList");
       });
   }, [dispatch, invitationCode, navigate]);
 

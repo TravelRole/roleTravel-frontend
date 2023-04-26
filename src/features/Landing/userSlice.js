@@ -25,9 +25,10 @@ export const checkInvitationCode = createAsyncThunk(
   "user/checkCode",
   async (inviteCode, thunkAPI) => {
     try {
-      await tokenApi.get(`api/check-room/${inviteCode}`);
+      const res = await tokenApi.get(`api/check-room/${inviteCode}`);
+      return res;
     } catch (error) {
-      return error;
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
