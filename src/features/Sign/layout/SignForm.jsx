@@ -131,7 +131,7 @@ const SignForm = () => {
             login({ email: formData.email, password: formData.password })
           ).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
-              navigate("/:userid");
+              navigate("/spaceList");
               return;
             }
           });

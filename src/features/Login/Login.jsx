@@ -181,7 +181,7 @@ const Login = () => {
     if (!email || !password) return alert("아이디와 패스워드를 적어주세요!");
     dispatch(login(loginPayload)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        navigate("/:userid");
+        navigate("/spaceList");
         dispatch(getUserInfo());
         dispatch(getTravelList());
         return;

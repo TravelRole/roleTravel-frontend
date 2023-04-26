@@ -82,6 +82,14 @@ const TravelCardUserIcon = styled.div`
         z-index: 7;
         left: 11.1rem;
       }
+      &.plus-members {
+        font-size: 1.8rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #d9d9d9;
+        color: #fff;
+      }
     }
   }
 `;
@@ -131,14 +139,28 @@ const TravelCard = ({
         </TravelCardLocation>
         <TravelCardUserIcon>
           <ul>
-            {members.map((member, index) => (
-              <li key={index}>
-                <img
-                  src={member.profile === null ? userImage : member.profile}
-                  alt={member.name}
-                />
-              </li>
-            ))}
+            {members.length > 4 ? (
+              <>
+                {members.slice(0, 3).map((member, index) => (
+                  <li key={index}>
+                    <img
+                      src={member.profile === null ? userImage : member.profile}
+                      alt={member.name}
+                    />
+                  </li>
+                ))}
+                <li className="plus-members">+{members.length - 3}</li>
+              </>
+            ) : (
+              members.map((member, index) => (
+                <li key={index}>
+                  <img
+                    src={member.profile === null ? userImage : member.profile}
+                    alt={member.name}
+                  />
+                </li>
+              ))
+            )}
           </ul>
         </TravelCardUserIcon>
       </TravelCardHeader>

@@ -14,6 +14,7 @@ import Login from "./features/Login/Login";
 import SearchIdResult from "./features/SearchIDPW/layout/id/SearchIdResult";
 
 import UserAccount from "./features/UserAccount/UserAccount";
+import InvitationLink from "./features/Landing/InvitationLink";
 
 const routers = [
   {
@@ -39,7 +40,7 @@ const routers = [
   },
   {
     id: 3,
-    path: "/:UserId",
+    path: "/spaceList",
     label: "SpaceList",
     element: <SpaceList />,
     // element: <SpaceList Auth={true} />,
@@ -86,6 +87,13 @@ const routers = [
     label: "UserAccount",
     element: <UserAccount Auth={false} />,
     withAuth: true,
+  },
+  {
+    id: 10,
+    path: "/:invitationCode",
+    label: "invitationLink",
+    element: <InvitationLink />,
+    withAuth: false,
   },
 ];
 

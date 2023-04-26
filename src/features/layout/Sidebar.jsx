@@ -224,7 +224,7 @@ const SideBarTab = [
 ];
 
 function Sidebar() {
-  const { UserId, roomId } = useParams();
+  const { roomId } = useParams();
   const [active, setActive] = useState(0);
   const dispatch = useDispatch();
 
@@ -236,7 +236,7 @@ function Sidebar() {
     <>
       <SidebarContainer>
         <BacktoList>
-          <Link to={`/${UserId}`}>
+          <Link to={`/spaceList`}>
             <span>
               <Icons.HiChevronLeft />
             </span>
