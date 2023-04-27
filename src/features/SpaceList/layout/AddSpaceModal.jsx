@@ -78,7 +78,7 @@ const AddSpaceModal = ({ setIsOpenModal }) => {
     travelStartDate: "",
     travelEndDate: "",
     location: "",
-    roomImage: Math.floor(Math.random() * (5 - 0) + 0),
+    roomImage: Math.floor(Math.random() * (4 - 0) + 0),
   });
 
   const [dateRange, setDateRange] = useState([null, null]);

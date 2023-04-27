@@ -5,6 +5,10 @@ import Button from "../../../components/Button";
 import travelImage from "../../../assets/images/travelImage.jpeg";
 import userImage from "../../../assets/images/userIcon.png";
 import { HiOutlineLocationMarker } from "react-icons/hi";
+import random1 from "../../../assets/images/random1.png";
+import random2 from "../../../assets/images/random2.png";
+import random3 from "../../../assets/images/random3.png";
+import random4 from "../../../assets/images/random4.png";
 const TravelCardWrap = styled.div`
   min-width: 35rem;
   min-height: 48rem;
@@ -113,10 +117,12 @@ const TravelCardBody = styled.dl`
   }
 `;
 
+const randomImageData = [random1, random2, random3, random4];
+
 const TravelCard = ({
   roomId,
   roomName,
-  image,
+  roomImage,
   startDate,
   endDate,
   location,
@@ -128,7 +134,7 @@ const TravelCard = ({
       <TravelCardHeader>
         <img
           className="room_img"
-          src={image ? image : travelImage}
+          src={randomImageData[roomImage]}
           alt={roomName}
         />
         <TravelCardLocation>
