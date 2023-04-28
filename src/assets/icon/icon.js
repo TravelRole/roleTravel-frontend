@@ -5,7 +5,8 @@ import {
   HiOutlinePaperAirplane,
   HiOutlineTicket,
   HiOutlineCalculator,
-  HiOutlineX
+  HiOutlineX,
+  HiOutlinePencilAlt
 } from "react-icons/hi";
 
 import { RiCalendarCheckLine } from "react-icons/ri";
@@ -30,7 +31,8 @@ const Icons = {
   FcGoogle,
   AiOutlineEyeInvisible,
   AiOutlineEye,
-  HiOutlineX
+  HiOutlineX,
+  HiOutlinePencilAlt
 }
 
 export default Icons;
