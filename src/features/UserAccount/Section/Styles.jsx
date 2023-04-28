@@ -2,7 +2,6 @@ import styled from "styled-components";
 import GoogleIcon from '@mui/icons-material/Google';
 
 export const Container = styled.div`
-  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   width: 100%;
 `
 
@@ -37,6 +36,7 @@ export const Content = styled.div`
         color: #585858;
         font-weight: 400;
         font-size: 1.7rem;
+        line-height: 25px;
 
         &:nth-child(1) {
           margin-bottom: 4px;
@@ -61,9 +61,9 @@ export const ContentWrap = styled.div`
   height: 550px;
   margin-left: 20px;
   margin-rigth: 20px;
+  margin-top: 120px;
   display: flex;
   justify-content: center;
-  align-items: center;
 `
 
 export const Section = styled.div`
@@ -72,7 +72,6 @@ export const Section = styled.div`
 
   &:nth-child(1) {
     flex-direction: column;
-    align-self: flex-start;
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
@@ -89,13 +88,17 @@ export const Section = styled.div`
 `
 
 export const Profile = styled.div`
-  width: 220px;
+  width: 215px;
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  & > p {
-    font-size: 1.5rem;
+  & > div:nth-child(2) {
+    display: flex;
+
+    p, span {
+      font-size: 2rem;
+    }
   }
 `
 
@@ -105,7 +108,6 @@ export const Avatar = styled.img`
   border-radius: 100%;
   width: 120px;
   height: 120px;
-  margin-top: 4.5rem;
   margin-bottom: 2rem;
 `
 
@@ -157,4 +159,21 @@ export const Button = styled.button`
   height: 45px;
   border-radius: 8px;
   border: ${(props) => props.border};
+`
+
+export const EditIcon = styled.div`
+  background: white;
+  width: 34.49px;
+  height: 34.49px;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  left: 30.66%;
+  top: 30.9%;
+  position: absolute;
+  border-radius: 100%;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-itemes: center;
+  padding-top: 0.9rem;
+  cursor: pointer;
 `
