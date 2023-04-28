@@ -4,28 +4,49 @@ import { Container, Content, InputContainer } from "./Styles";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { changePasword } from "../LoggedUserSlice";
 
 
 const ChangePassword = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [show, setShow] = useState({ password: false, confirm: false})
-  const [pw, setPW] = useState({ password: '', forConfirm: '', now: ''});
+  const [show, setShow] = useState({ password: false, newPassword: false})
+  const [inputs, setInputs] = useState({ newPassword: '', password: ''});
   const [errors, setErrors] = useState({
+    newPassword: '',
     password: '',
-    forConfirm: '',
-    now: '',
   })
 
   const changeHandler = (e) => {
     const {value, name} = e.target;
-    setPW({...pw, [name]: value})
+    if (value.length > 16) {
+      setErrors({...errors, [name]: '* 16자를 넘을 수 없습니다.'})
+    } else {
+      setErrors({...errors, [name]: ''})
+      setInputs({...inputs, [name]: value})
+    }
   };
   
   const updateHandler = () => {
-    if (pw.password !== pw.forConfirm) {
-      setErrors({ ...errors, forConfirm: '비밀번호가 일치하지 않습니다.'})
+    const pattern = /^[a-zA-Z0-9-_!]{8,16}$/;
+
+    if (!pattern.test(inputs.password)) {
+      setErrors({...errors, password: '* 8~16자 영문, 숫자, 특수문자를 사용하세요.'})
+      return;
     }
+
+    if (!pattern.test(inputs.newPassword)) {
+      setErrors({...errors, newPassword: '* 8~16자 영문, 숫자, 특수문자를 사용하세요.'})
+      return;
+    }
+
     console.log('수정이 완료되었습니다!')
+    dispatch(changePasword({
+      password: inputs.password,
+      newPassword: inputs.newPassword,
+      newPasswordCheck: inputs.newPassword
+    }))
   };
 
   return (
@@ -41,21 +62,9 @@ const ChangePassword = () => {
         <InputContainer>
           <TextField
             fullWidth
-            name="now"
-            label="현재 비밀번호"
-            value={pw.now}
-            onChange={changeHandler}
-            maxLength={11}
-            error={errors.now.length > 0}
-            helperText={errors.now ? errors.now : " "}
-            />
-        </InputContainer>
-        <InputContainer>
-          <TextField
-            fullWidth
             name="password"
-            label="새 비밀번호"
-            value={pw.password}
+            label="현재 비밀번호"
+            value={inputs.password}
             onChange={changeHandler}
             maxLength={11}
             error={errors.password.length > 0}
@@ -67,26 +76,28 @@ const ChangePassword = () => {
                   {show.password ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               ),
+              maxLength: 16,
             }}
             />
         </InputContainer>
         <InputContainer>
           <TextField
             fullWidth
-            name="confirm"
-            label="비밀번호 확인"
-            value={pw.forConfirm}
+            name="newPassword"
+            label="새 비밀번호"
+            value={inputs.newPassword}
             onChange={changeHandler}
             maxLength={11}
-            error={errors.forConfirm.length > 0}
-            helperText={errors.forConfirm ? errors.forConfirm : " "}
-            type={show.confirm ? 'text' : 'password'}
+            error={errors.newPassword.length > 0}
+            helperText={errors.newPassword ? errors.newPassword : " "}
+            type={show.newPassword ? 'text' : 'password'}
             InputProps={{
               endAdornment: (
-                <IconButton onClick={() => setShow({...show, confirm: !show.confirm})}>
-                  {show.confirm ? <VisibilityOff /> : <Visibility />}
+                <IconButton onClick={() => setShow({...show, newPassword: !show.newPassword})}>
+                  {show.newPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               ),
+              maxLength: 16,
             }}
             />
         </InputContainer>
