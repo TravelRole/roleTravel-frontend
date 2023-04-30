@@ -1,10 +1,6 @@
-
+import React from "react";
 
 function Allplan() {
-  return (
-    <>
-      <div>AllPlan</div>
-    </>
-  );
+  return <> allplan</>;
 }
-export default Allplan
+export default Allplan;
