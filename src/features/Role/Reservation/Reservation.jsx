@@ -38,13 +38,13 @@ const Wrapper = styled.div`
 `;
 
 const PageHeader = styled.header`
-  margin: 7.8rem 0 6rem 5rem;
+  padding: 7.8rem 0 6rem 6rem;
   font-size: 3rem;
   font-weight: 600;
 `;
 
 const StyledBox = styled(Box)`
-  padding-left: 5rem;
+  padding-left: 6rem;
 `;
 
 const StyledTabs = styled(TabList)`
