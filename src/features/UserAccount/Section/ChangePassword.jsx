@@ -8,7 +8,6 @@ import { useDispatch } from "react-redux";
 import { changePassword } from "../LoggedUserSlice";
 import { toast } from "react-toastify";
 
-
 const ChangePassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,7 +29,7 @@ const ChangePassword = () => {
       setInputs({...inputs, [name]: value})
     }
   };
-  
+
   const updateHandler = () => {
     const pattern = /^[a-zA-Z0-9-_!]{8,16}$/;
 
@@ -74,6 +73,11 @@ const ChangePassword = () => {
         <div width="76px">
           <p>비밀번호는 8~16자 영문, 숫자, 특수문자를 사용할 수 있습니다.</p>
           <p>비밀번호는 <span style={{ color: '#3884FD', fontSize: '1.7rem'}}>주기적(최소 6개월)</span>으로 변경해 주시기 바랍니다.</p>
+          <p>
+            비밀번호는{" "}
+            <span style={{ color: "#3884FD" }}>주기적(최소 6개월)</span>으로
+            변경해 주시기 바랍니다.
+          </p>
         </div>
       </Content>
       <Content>
@@ -137,7 +141,7 @@ const ChangePassword = () => {
         </Button>
       </Content>
     </Container>
-  )
+  );
 };
 
 export default ChangePassword;

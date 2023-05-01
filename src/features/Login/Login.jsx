@@ -20,40 +20,43 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import FormHelperText from "@mui/material/FormHelperText";
-
-import Map from "../layout/Map";
-import RoleLogo from "../../assets/images/RoleTravelRogo.png";
+import authBg from "../../assets/images/authBg.png";
+import Header from "../layout/Header";
+import { getTravelList } from "../SpaceList/travelSlice";
 
 const LoginWrap = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  height: calc(100vh - 10rem);
+  background-image: url(${authBg});
+  background-size: cover cover;
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  padding-top: 2rem;
 `;
 
 const LoginContainer = styled.div`
-  width: 33.75rem;
-  height: 43.125rem;
-  padding: 4.375rem;
-  box-shadow: 0px 4px 15px rgba(92, 119, 163, 0.25);
-  border-radius: 30px;
+  width: 100%;
+  max-width: 54rem;
+  padding: 6rem 8.5rem;
+  background-color: #fff;
+  box-shadow: 0rem 0.4rem 1rem 0.5rem #e6edf9;
+  border-radius: 3rem;
+  margin: 0 auto;
 `;
 
 const LoginHeader = styled.div`
   dl {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 4rem;
     dt {
-      margin-bottom: 20px;
-      font-size: 2rem;
-      letter-spacing: 0.1rem;
-      font-weight: bold;
+      margin-bottom: 1rem;
+      font-size: 3.2rem;
+      font-weight: 500;
     }
     dd {
-      font-size: 1.188rem;
+      font-size: 1.9rem;
       color: #585858;
-      font-weight: 500;
+      font-weight: 400;
     }
   }
 `;
@@ -65,10 +68,10 @@ const LoginContent = styled.div`
 
   span {
     position: relative;
-    margin: 50px 0;
+    margin: 3rem 0 2.5rem 0;
     text-align: center;
-    font-size: 0.8rem;
-    color: #949494;
+    font-size: 1.4rem;
+    color: #d7d7d7;
     width: 100%;
 
     &::before {
@@ -77,9 +80,9 @@ const LoginContent = styled.div`
       top: 50%;
       left: 0;
       transform: translateY(-50%);
-      width: 40%;
-      height: 1px;
-      background-color: #ddd;
+      width: 44%;
+      height: 0.1rem;
+      background-color: #d7d7d7;
     }
     &::after {
       content: "";
@@ -87,148 +90,140 @@ const LoginContent = styled.div`
       top: 50%;
       right: 0;
       transform: translateY(-50%);
-      width: 40%;
-      height: 1px;
-      background-color: #ddd;
+      width: 44%;
+      height: 0.1rem;
+      background-color: #d7d7d7;
     }
   }
 
   form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 2rem;
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 1.5rem;
     align-items: center;
-    /* input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 18px 30px;
-      border: 1px solid #ddd;
-      outline: none;
-    } */
+    button.login-btn {
+      margin-top: 1rem;
+    }
   }
   ul {
     display: flex;
     align-items: center;
-    gap: 20px;
-    font-size: 1rem;
-    color: #666;
+    gap: 2rem;
+
+    li {
+      a {
+        font-size: 1.4rem;
+        color: #777;
+      }
+    }
+
     li:first-child {
       position: relative;
+
       &::after {
         content: "";
         position: absolute;
-        top: 43%;
-        right: -10px;
+        top: 50%;
+        right: -1rem;
         transform: translateY(-50%);
-        width: 1px;
-        height: 100%;
-        background-color: #909090;
+        width: 0.1rem;
+        height: 1.7rem;
+        background-color: #acacac;
       }
     }
   }
 
   .googleSub {
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-weight: 400;
-    color: rgba(168, 168, 168, 1);
-    margin-top: 1rem;
+    color: #a8a8a8;
+    margin-top: 1.5rem;
   }
 `;
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const { isAuth } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState({ email: false, password: false });
+
+  // password type 변경 이벤트들
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const loginPayload = {};
+
+  // 구글 로그인 이벤트
+  const onClickGoogle = useCallback(() => {
+    window.location.assign(
+      `${process.env.REACT_APP_BASE_URL}oauth2/authorization/google`
+    );
+  }, []);
+
+  // 입력된 정보가 없을 때 에러메세지 보여주는 함수
+  const InputNull = (e) => {
+    if (e.currentTarget.name === "email" && !e.currentTarget.value)
+      return setError({ email: true, password: false });
+    if (e.currentTarget.name === "password" && !e.currentTarget.value)
+      return setError({ email: false, password: true });
+    setError({ email: false, password: false });
+  };
+
+  // 로그인 submit 이벤트
+  const loginSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
     const email = formData.get("email");
     const password = formData.get("password");
-    if (!email) return setError({ email: true, password: false });
-    if (!password) return setError({ email: false, password: true });
-    setError({ email: false, password: false });
-  }
-    const onLoginSubmit = useCallback(
-      (e) => {
-        e.preventDefault();
-        dispatch(login(formData));
-      },
-      [dispatch, formData]
-    );
+    const loginPayload = { email: email, password: password };
+    if (!email || !password) return alert("아이디와 패스워드를 적어주세요!");
+    dispatch(login(loginPayload)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        navigate("/spaceList");
+        dispatch(getUserInfo());
+        dispatch(getTravelList());
+        return;
+      }
+    });
 
-    // const onClickRefresh = useCallback(() => {
-    //   dispatch(refreshTokenAsync());
-    // }, [dispatch]);
+    //아래에 loginPayload 를 담아서 서버로 전송하는 코드를 적어주세요!
+  };
 
-    const onClickGoogle = useCallback(() => {
-      window.location.assign(
-        `${process.env.REACT_APP_BASE_URL}oauth2/authorization/google`
-      );
-    }, []);
-
-  
-
-    const InputNull = (e) => {
-      if (e.currentTarget.name === "email" && !e.currentTarget.value)
-        return setError({ email: true, password: false });
-      if (e.currentTarget.name === "password" && !e.currentTarget.value)
-        return setError({ email: false, password: true });
-      setError({ email: false, password: false });
-    };
-
-    const loginSubmit = (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.currentTarget);
-      const email = formData.get("email");
-      const password = formData.get("password");
-      const loginPayload = { email, password };
-      if (!email || !password) return alert("아이디와 패스워드를 적어주세요!");
-      console.log(loginPayload);
-
-      //아래에 loginPayload 를 담아서 서버로 전송하는 코드를 적어주세요!
-    };
-
-    return (
+  return (
+    <>
+      <Header />
       <LoginWrap>
-        {/* <img src={RoleLogo} style={{width:"500px"}} /> */}
-        <Map />
         <LoginContainer>
           <LoginHeader>
             <dl>
               <dt>로그인</dt>
-              <dd>기본정보를 입력해주세요</dd>
+              <dd>기본 정보를 입력해주세요</dd>
             </dl>
           </LoginHeader>
 
           <LoginContent>
             <form onSubmit={loginSubmit}>
               <TextField
-                id="outlined-search"
-                label="E-mail"
+                label="이메일"
                 type="search"
                 fullWidth
                 error={error.email} // error 속성 추가
                 helperText={error.email ? "필수정보입니다" : ""} // helperText 속성 추가
                 name="email"
                 onBlur={InputNull}
+                placeholder="이메일(아이디)를 입력해주세요."
               />
 
               <FormControl variant="outlined" fullWidth>
-                <InputLabel htmlFor="outlined-adornment-password">
-                  Password
+                <InputLabel
+                  htmlFor="outlined-adornment-password"
+                  error={error.password}
+                >
+                  비밀번호
                 </InputLabel>
                 <OutlinedInput
-                  id="outlined-adornment-password"
                   type={showPassword ? "text" : "password"}
                   endAdornment={
                     <InputAdornment position="end">
@@ -238,37 +233,30 @@ const Login = () => {
                         onMouseDown={handleMouseDownPassword}
                         edge="end"
                       >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                        {showPassword ? (
+                          <VisibilityOff sx={{ fontSize: 24 }} />
+                        ) : (
+                          <Visibility sx={{ fontSize: 24 }} />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   }
                   label="Password"
                   name="password"
                   error={error.password}
-                  helperText={
-                    error.password
-                      ? "* 8~16자 영문 대 소문자,숫자,특수문자를 사용하세요."
-                      : ""
-                  }
                   onBlur={InputNull}
+                  placeholder="비밀번호를 입력해주세요."
                 />
-                {error.password && (
-                  <FormHelperText
-                    error={error.password}
-                    id="outlined-weight-helper-text"
-                  >
-                    필수정보입니다
-                  </FormHelperText>
-                )}
+                <FormHelperText
+                  error={error.password}
+                  id="outlined-weight-helper-text"
+                >
+                  {error.password ? "필수 정보입니다." : ""}
+                </FormHelperText>
               </FormControl>
 
-              <Button
-                type="submit"
-                color="#3884fd"
-                size="full"
-                borderRadius="10px"
-              >
-                기존회원 로그인
+              <Button type="submit" color="blue" size="full">
+                기존 회원 로그인
               </Button>
             </form>
 
@@ -292,20 +280,32 @@ const Login = () => {
             </ul>
             <span>또는</span>
             <Button
-              color="#fff"
-              border="solid rgba(218, 218, 218, 1) 1px"
+              className="login_btn"
+              color="kakao"
               size="full"
               onClick={onClickGoogle}
-              borderRadius="10px"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "500",
+              }}
             >
-              <Icons.FcGoogle style={{ marginRight: "0.5rem" }} />
-              Google로 로그인
+              <Icons.RiKakaoTalkFill
+                style={{
+                  marginRight: "0.8rem",
+                  width: "2rem",
+                  height: "2rem",
+                }}
+              />
+              카카오로 로그인
             </Button>
-            <div className="googleSub">구글로 1초만에 가입하세요.</div>
+            <div className="googleSub">카카오로 1초만에 가입하세요.</div>
           </LoginContent>
         </LoginContainer>
       </LoginWrap>
-    );
-  };
+    </>
+  );
+};
 
 export default Login;

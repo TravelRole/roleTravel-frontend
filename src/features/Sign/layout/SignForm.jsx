@@ -7,6 +7,7 @@ import { signUp } from "../signSlice";
 import SignInput from "./SignInput";
 import SignModal from "./SignModal";
 import { login } from "../../Login/authSlice";
+import Modal from "../../../components/Modal";
 
 // 컨테이너 컴포넌트
 
@@ -105,8 +106,6 @@ const SignForm = () => {
     birth: "",
   });
 
-  const date = new Date();
-
   const [formData, setFormData] = useState({
     name: "",
     birth: "",
@@ -118,7 +117,7 @@ const SignForm = () => {
 
   const [formOk, setFormOk] = useState(true);
 
-  const [openModal, setOpenModal] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -132,7 +131,7 @@ const SignForm = () => {
             login({ email: formData.email, password: formData.password })
           ).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
-              navigate("/:userid");
+              navigate("/spaceList");
               return;
             }
           });
@@ -234,7 +233,7 @@ const SignForm = () => {
             />
             <label>[필수] 이용약관 및 개인정보 수집 동의</label>
           </div>
-          <p onClick={() => setOpenModal((prev) => !prev)}>내용 보기</p>
+          <p onClick={() => setIsOpenModal((prev) => !prev)}>내용 보기</p>
         </CheckBoxWrap>
 
         <Button type="submit" size="full" color="blue" disabled={formOk}>
@@ -255,7 +254,11 @@ const SignForm = () => {
           로그인
         </Link>
       </ToLoginText>
-      {openModal && <SignModal setOpenModal={setOpenModal} />}
+      {isOpenModal && (
+        <Modal width="56rem" setIsOpenModal={setIsOpenModal}>
+          <SignModal setIsOpenModal={setIsOpenModal} />
+        </Modal>
+      )}
     </>
   );
 };

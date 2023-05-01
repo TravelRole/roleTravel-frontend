@@ -9,7 +9,7 @@ import {
   HiOutlinePencilAlt
 } from "react-icons/hi";
 
-import { RiCalendarCheckLine } from "react-icons/ri";
+import { RiCalendarCheckLine, RiKakaoTalkFill } from "react-icons/ri";
 import { SlPlane, SlBag } from "react-icons/sl";
 
 import { MdOutlineClose } from "react-icons/md";
@@ -17,7 +17,7 @@ import { MdOutlineClose } from "react-icons/md";
 import { FaDoorOpen } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
-import { AiOutlineEyeInvisible , AiOutlineEye } from "react-icons/ai";
+import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 
 const Icons = {
   TfiPencilAlt,
@@ -35,7 +35,8 @@ const Icons = {
   AiOutlineEye,
   HiOutlineX,
   HiOutlinePencilAlt,
-  MdOutlineClose
-}
+  MdOutlineClose,
+  RiKakaoTalkFill,
+};
 
 export default Icons;

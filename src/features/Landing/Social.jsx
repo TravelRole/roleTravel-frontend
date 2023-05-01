@@ -12,7 +12,7 @@ const Social = () => {
   localStorage.setItem("accessToken", accessToken);
   dispatch(getUserInfo());
   if (accessToken) {
-    return <Navigate to="/:userid" state={{ isGoogleSuccess: true }} />;
+    return <Navigate to="/spaceList" state={{ isGoogleSuccess: true }} />;
   }
   return <Navigate to="/login" />;
 

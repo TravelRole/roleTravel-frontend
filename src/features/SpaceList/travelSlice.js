@@ -34,7 +34,6 @@ export const getTravelList = createAsyncThunk(
       const endTravelList = res.data.filter((list) => {
         const formatEndDate = new Date(list.endDate);
         formatEndDate.setHours(0, 0, 0, 0); // 시간 정보를 0으로 설정
-        console.log(formatEndDate);
         return formatEndDate < today;
       });
 

@@ -3,7 +3,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 
 export const Container = styled.div`
   width: 100%;
-`
+`;
 
 export const Content = styled.div`
   width: 100%;
@@ -27,7 +27,7 @@ export const Content = styled.div`
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      background: #F8F8F8;
+      background: #f8f8f8;
       border-radius: 8px;
       height: ${(props) => props.height};
       margin-bottom: 20px;
@@ -54,7 +54,7 @@ export const Content = styled.div`
     justify-content: left;
     gap: 20px;
   }
-`
+`;
 
 export const ContentWrap = styled.div`
   width: 100%;
@@ -85,7 +85,7 @@ export const Section = styled.div`
   &:nth-child(3) {
     width: 100%;
   }
-`
+`;
 
 export const Profile = styled.div`
   width: 215px;
@@ -109,19 +109,19 @@ export const Avatar = styled.img`
   width: 120px;
   height: 120px;
   margin-bottom: 2rem;
-`
+`;
 
 export const Nav = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 60px;
-  border-bottom: 1px solid #E1E1E1;
+  border-bottom: 1px solid #e1e1e1;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 34px;
   padding-bottom: 10px;
-`
+`;
 
 export const Tab = styled.span`
   font-weight: 400;
@@ -130,11 +130,10 @@ export const Tab = styled.span`
   letter-spacing: -0.02em;
   color: ${(props) => props.color};
   cursor: pointer;
-`
+`;
 
 export const InputContainer = styled.div`
   width: 100%;
-  height: 40px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -143,7 +142,7 @@ export const InputContainer = styled.div`
   &:nth-child(3) {
     margin-bottom: 0px;
   }
-`
+`;
 
 export const Button = styled.button`
   cursor: pointer;
