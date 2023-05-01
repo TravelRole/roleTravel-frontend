@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import tokenApi from "../../lib/customAPI";
+import { toast } from "react-toastify";
 
 const initialState = {
+  changePassword: null,
   loggedInfo: null,
   presignedUrl: '',
   error: false,
@@ -13,17 +15,23 @@ export const getLoggedInfo = createAsyncThunk("api/users", async () => {
   return res.data;
 });
 
-export const updateLoggedInfo = createAsyncThunk("api/users", async (updatedData, thunkAPI) => {
+export const updatedInfo = createAsyncThunk("api/users", async (updatedData, thunkAPI) => {
     await tokenApi.put(`api/users`, updatedData)
-    .then((res) => console.log(res.data))
+    .then((res) => {
+      return res.data
+    })
     .catch((err) => {
-      throw err;
+      if (err.response && err.response.status === 400) {
+        return thunkAPI.rejectWithValue('이름 또는 생년월일의 형식이 올바르지 않습니다.');
+      }
     });
 });
 
-export const changePasword = createAsyncThunk("api/users/password", async (pwData, thunkAPI) => {
+export const changePassword = createAsyncThunk("api/users/password", async (pwData, thunkAPI) => {
     await tokenApi.put(`api/users/password`, pwData)
-    .then((res) => console.log(res.data))
+    .then((res) => {
+      return res.data
+    })
     .catch((err) => {
       if (err.response && err.response.status === 400) {
         return thunkAPI.rejectWithValue('비밀번호가 일치하지 않습니다.');
@@ -31,21 +39,24 @@ export const changePasword = createAsyncThunk("api/users/password", async (pwDat
     });
 });
 
+export const changeProfileImage = createAsyncThunk("api/users/image", async () => {
+    await tokenApi.put(`api/users/image`)
+    .then((res) => {
+      return res.data
+    })
+    .catch((err) => {
+      throw err;
+    });
+});
+
 export const deleteProfileImage = createAsyncThunk("api/users/image", async () => {
   try {
-    await tokenApi.delete(`api/users/image`);
+    const address = (await tokenApi.get("api/users/image/presigned-url")).data;
+    await tokenApi.delete(`${address}/api/users/image`);
     dispatchEvent(getLoggedInfo())
   } catch (err) {
     throw err;
   }
-});
-
-export const changeProfileImage = createAsyncThunk("api/users/image", async () => {
-    await tokenApi.put(`api/users/image`)
-    .then((res) => console.log(res.data))
-    .catch((err) => {
-      throw err;
-    });
 });
 
 export const getPresignedUrl = createAsyncThunk("api/users/image", async () => {
@@ -59,17 +70,31 @@ const loggedUserSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getLoggedInfo.rejected, (state, action) => {
-        state.error = action.payload;
-      })
       .addCase(getLoggedInfo.fulfilled, (state, action) => {
         state.loggedInfo = action.payload;
       })
-      .addCase(getPresignedUrl.rejected, (state, action) => {
+      .addCase(getLoggedInfo.rejected, (state, action) => {
+        state.error = action.payload;
+        toast.error(action.payload, {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          progress: undefined,
+        });
+      })
+      .addCase(changePassword.fulfilled, (state, action) => {
+        state.changePassword = action.payload;
+      })
+      .addCase(changePassword.rejected, (state, action) => {
         state.error = action.payload;
       })
       .addCase(getPresignedUrl.fulfilled, (state, action) => {
         state.presignedUrl = action.payload;
+      })
+      .addCase(getPresignedUrl.rejected, (state, action) => {
+        state.error = action.payload;
       })
     }
 });
