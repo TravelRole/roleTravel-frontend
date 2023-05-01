@@ -1,54 +1,61 @@
-import React, { useCallback, useState } from "react";
-import DatePicker from "react-datepicker";
+import React, { useCallback, useRef, useState } from "react";
+import DatePicker, { registerLocale } from "react-datepicker";
 import styled from "styled-components";
 import Button from "../../../components/Button";
 import { toast } from "react-toastify";
 import { addTravel, getTravelList } from "../travelSlice";
 import { useDispatch } from "react-redux";
+import ko from "date-fns/locale/ko";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import CalendarHeader from "./CalendarHeader";
+import {
+  FormControl,
+  FormHelperText,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
 
-const AddModalWrap = styled.div`
-  h3 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-align: center;
+registerLocale("ko", ko);
+
+const AddTravelModalWrap = styled.div``;
+
+const AddTravelModalHeader = styled.div`
+  border-bottom: 0.1rem solid #e6e6e6;
+  dl {
+    padding: 2.6rem 2.4rem 1.7rem 2.4rem;
+    dt {
+      font-size: 1.6rem;
+      color: #ffc759;
+      font-family: "Unbounded", cursive;
+      margin-bottom: 1.4rem;
+    }
+    dd {
+      font-size: 2.4rem;
+    }
+  }
+`;
+
+const AddTravelModalBody = styled.div`
+  p.modal-body-text {
+    padding: 1.1rem 2.4rem 2.1rem 2.4rem;
+    font-size: 1.6rem;
+    color: #8b8b8b;
   }
 
-  form {
-    width: 100%;
-    dl {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      dt {
-        width: 20%;
-      }
-      dd {
-        width: 80%;
-        input {
-          padding: 10px 20px;
-          width: 100%;
-          border: none;
-          outline: none;
-          border-bottom: 1px solid #ddd;
-          &::placeholder {
-            font-size: 1rem;
-          }
-          &.react-datepicker-ignore-onclickoutside {
-            cursor: pointer;
-            &:focus {
-              color: transparent;
-              text-shadow: 0 0 0 black;
-              outline: none;
-            }
-          }
-        }
-      }
-    }
-    button.submitBtn {
-      margin-top: 20px;
-      float: right;
-    }
+  .form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    padding: 0 2.5rem 3.5rem 2.5rem;
+    border-bottom: 0.1rem solid #e6e6e6;
+  }
+
+  .addTravelBtns {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding: 2rem 2.5rem;
   }
 `;
 
@@ -60,19 +67,25 @@ function formatDate(date) {
   return `${year}/${month}/${day}`;
 }
 
-const AddSpaceModal = ({ setIsAddModal }) => {
+const AddSpaceModal = ({ setIsOpenModal }) => {
   const dispatch = useDispatch();
+  const ROOM_NAME_MAX = 20;
+  const LOCATION_MAX = 15;
+  const [roomNameValue, setRoomNameValue] = useState("");
+  const [locationValue, setLocationValue] = useState("");
   const [formData, setFormData] = useState({
     roomName: "",
     travelStartDate: "",
     travelEndDate: "",
     location: "",
+    roomImage: Math.floor(Math.random() * (4 - 0) + 0),
   });
 
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
 
-  const handleDateChange = (dates) => {
+  const handleDateChange = useCallback((dates) => {
+    // react-datepicker에서는 range 옵션을 설정해놓으면, 처음 날짜와 마지막 날짜를 인자로 줌.
     const [start, end] = dates;
 
     // 선택한 기간이 8일 이상인 경우, 종료 날짜를 강제로 줄임
@@ -87,6 +100,7 @@ const AddSpaceModal = ({ setIsAddModal }) => {
         travelStartDate: formatStart,
         travelEndDate: formatEnd,
       }));
+      // 토스트를 사용해 7일까지 선택가능함을 사용자에게 알려줌.
       toast.warn("7일까지 선택 가능합니다.", {
         position: "top-center",
         autoClose: 3000,
@@ -97,7 +111,9 @@ const AddSpaceModal = ({ setIsAddModal }) => {
         progress: undefined,
         theme: "colored",
       });
+      return;
     } else {
+      // 만약 사용자가 8일 이상으로 날짜를 선택하지 않을 경우에는 날짜만 변환해서 데이터를 저장함.
       setDateRange(dates);
       const formatStart = formatDate(start);
       const formatEnd = formatDate(end);
@@ -107,95 +123,157 @@ const AddSpaceModal = ({ setIsAddModal }) => {
         travelEndDate: formatEnd,
       }));
     }
-  };
+  }, []);
 
   const onChangeInput = useCallback((e) => {
     const { name, value } = e.target;
 
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    switch (name) {
+      case "roomName": {
+        if (value.length <= ROOM_NAME_MAX) {
+          setRoomNameValue(value);
+          setFormData((prev) => ({ ...prev, [name]: value }));
+        }
+        break;
+      }
+      case "location": {
+        if (value.length <= LOCATION_MAX) {
+          setLocationValue(value);
+          setFormData((prev) => ({ ...prev, [name]: value }));
+        }
+        break;
+      }
+      default:
+        break;
+    }
   }, []);
 
   const onAddTravelSubmit = useCallback(
     (e) => {
       e.preventDefault();
+      console.log(formData);
       dispatch(addTravel(formData)).then((res) => {
-        console.log(res);
         if (res.meta.requestStatus === "fulfilled") {
-          setIsAddModal(false);
+          setIsOpenModal(false);
           dispatch(getTravelList());
           return;
         }
       });
     },
-    [dispatch, formData, setIsAddModal]
+    [dispatch, formData, setIsOpenModal]
   );
 
   return (
-    <AddModalWrap>
-      <h3>새 여행 만들기</h3>
-      <form onSubmit={onAddTravelSubmit}>
+    <AddTravelModalWrap>
+      <AddTravelModalHeader>
         <dl>
-          <dt>
-            <label htmlFor="spaceName">여행 이름</label>
-          </dt>
-          <dd>
-            <input
-              type="text"
-              name="roomName"
-              placeholder="여행 이름을 입력해주세요."
-              onChange={onChangeInput}
-            />
-          </dd>
+          <dt>NEW PLAN</dt>
+          <dd>새로운 여행 계획 만들기</dd>
         </dl>
-        <dl>
-          <dt>
-            <label htmlFor="tripDate">여행 일자</label>
-          </dt>
-          <dd>
-            <DatePicker
-              placeholderText="여행 일자를 선택해주세요."
-              selectsRange={true}
-              selected={startDate}
-              startDate={startDate}
-              endDate={endDate}
-              minDate={new Date()}
-              dateFormat="yyyy/MM/dd"
-              onChange={handleDateChange}
-            />
-          </dd>
-        </dl>
-        <dl>
-          <dt>
-            <label htmlFor="tripLocation">장소</label>
-          </dt>
-          <dd>
-            <input
-              type="text"
-              name="location"
-              placeholder="여행 장소를 입력해주세요."
-              onChange={onChangeInput}
-            />
-            {/* <SearchLocationInput /> */}
-          </dd>
-        </dl>
-        {/* <dl>
-          <dt>
-            <label htmlFor="tripMember">총 인원 수</label>
-          </dt>
-          <dd>
-            <input
-              type="number"
-              id="tripMember"
-              placeholder="인원 수를 입력해주세요."
-            />
-          </dd>
-        </dl> */}
-
-        <Button className="submitBtn" type="submit" color="blue" size="small">
-          확인
-        </Button>
-      </form>
-    </AddModalWrap>
+      </AddTravelModalHeader>
+      <AddTravelModalBody>
+        <p className="modal-body-text">
+          시작할 여행의 이름, 일자, 장소를 설정해보세요!
+        </p>
+        <form onSubmit={onAddTravelSubmit}>
+          <div className="form-content">
+            <FormControl fullWidth variant="outlined">
+              <InputLabel htmlFor="add-Travel-Name">여행이름</InputLabel>
+              <OutlinedInput
+                autoComplete="off"
+                value={roomNameValue}
+                id="add-Travel-Name"
+                name="roomName"
+                endAdornment={
+                  <InputAdornment position="end">
+                    ({roomNameValue.length}/{ROOM_NAME_MAX})
+                  </InputAdornment>
+                }
+                label="여행이름"
+                onChange={onChangeInput}
+              />
+              <FormHelperText id="add-Travel-Name-helper-text">
+                * 최대 20자까지 입력 가능합니다.
+              </FormHelperText>
+            </FormControl>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel htmlFor="add-Travel-Date">일자</InputLabel>
+              <DatePicker
+                id="add-Travel-Date"
+                selectsRange={true}
+                selected={startDate}
+                startDate={startDate}
+                autoComplete="off"
+                endDate={endDate}
+                minDate={new Date()}
+                locale="ko"
+                dateFormat="yyyy/MM/dd"
+                onChange={handleDateChange}
+                customInput={
+                  <OutlinedInput
+                    id="add-Travel-Name"
+                    autoComplete="off"
+                    label="일자"
+                    fullWidth
+                  />
+                }
+                renderCustomHeader={({
+                  date,
+                  decreaseMonth,
+                  increaseMonth,
+                }) => (
+                  <CalendarHeader
+                    date={date}
+                    decreaseMonth={decreaseMonth}
+                    increaseMonth={increaseMonth}
+                  />
+                )}
+              />
+            </FormControl>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel htmlFor="add-Travel-Location">장소</InputLabel>
+              <OutlinedInput
+                autoComplete="off"
+                value={locationValue}
+                id="add-Travel-Location"
+                name="location"
+                endAdornment={
+                  <InputAdornment position="end">
+                    ({locationValue.length}/{LOCATION_MAX})
+                  </InputAdornment>
+                }
+                label="장소"
+                onChange={onChangeInput}
+              />
+              <FormHelperText id="add-Travel-Location-helper-text">
+                * 최대 15자까지 입력 가능합니다.
+              </FormHelperText>
+            </FormControl>
+          </div>
+          <div className="addTravelBtns">
+            <Button
+              className="cancelBtn"
+              type="button"
+              color="stroke"
+              size="small"
+              onClick={() => {
+                setIsOpenModal(false);
+              }}
+            >
+              취소
+            </Button>
+            <Button
+              className="submitBtn"
+              type="submit"
+              color="blue"
+              size="small"
+            >
+              생성
+            </Button>
+          </div>
+        </form>
+      </AddTravelModalBody>
+    </AddTravelModalWrap>
   );
 };
 

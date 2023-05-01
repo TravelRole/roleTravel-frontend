@@ -147,7 +147,6 @@ const SignInput = ({
     <FormControl variant="outlined">
       <InputLabel
         error={errorData[name] && ERROR_MSG[errorData[name]] ? true : false}
-        sx={{ fontSize: "1.5rem" }}
       >
         {label}
       </InputLabel>
@@ -166,7 +165,6 @@ const SignInput = ({
         required
         onChange={onChangeInput}
         onBlur={checkRegex}
-        sx={{ borderRadius: "0.8rem" }}
         type={showPassword ? "text" : "password"}
         endAdornment={
           name === "password" && (
@@ -191,7 +189,6 @@ const SignInput = ({
       />
       <FormHelperText
         sx={{
-          fontSize: "1.3rem",
           color:
             (errorData[name] === "confirmPw" ||
               errorData[name] === "confirmId") &&

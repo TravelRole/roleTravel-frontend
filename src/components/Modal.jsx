@@ -7,29 +7,35 @@ const ModalBg = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.5);
 `;
 
 const ModalWrap = styled.div`
   width: 100%;
-  max-width: 600px;
+  max-width: ${({ width }) => width};
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 50px;
+  box-shadow: 0px 2rem 2rem rgba(0, 0, 0, 0.08),
+    0px 0px 0.2rem rgba(0, 0, 0, 0.12);
+  z-index: 20;
+  border-radius: 1.6rem;
   background-color: #fff;
 `;
 
-const Modal = ({ setIsAddModal, children }) => {
-  const onCloseModal = useCallback(() => setIsAddModal(false), []);
+const Modal = ({ setIsOpenModal, width, children }) => {
+  const onCloseModal = useCallback(
+    () => setIsOpenModal(false),
+    [setIsOpenModal]
+  );
   // useMemo 로 변경
   return (
     <>
       <ModalBg onClick={onCloseModal} />
-      <ModalWrap>{children}</ModalWrap>
+      <ModalWrap width={width}>{children}</ModalWrap>
     </>
   );
 };

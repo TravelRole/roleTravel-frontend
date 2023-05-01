@@ -5,16 +5,16 @@ import {
   HiOutlinePaperAirplane,
   HiOutlineTicket,
   HiOutlineCalculator,
-  HiOutlineX
+  HiOutlineX,
 } from "react-icons/hi";
 
-import { RiCalendarCheckLine } from "react-icons/ri";
+import { RiCalendarCheckLine, RiKakaoTalkFill } from "react-icons/ri";
 import { SlPlane, SlBag } from "react-icons/sl";
 
 import { FaDoorOpen } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
-import { AiOutlineEyeInvisible , AiOutlineEye } from "react-icons/ai";
+import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 
 const Icons = {
   TfiPencilAlt,
@@ -30,7 +30,8 @@ const Icons = {
   FcGoogle,
   AiOutlineEyeInvisible,
   AiOutlineEye,
-  HiOutlineX
-}
+  HiOutlineX,
+  RiKakaoTalkFill,
+};
 
 export default Icons;
