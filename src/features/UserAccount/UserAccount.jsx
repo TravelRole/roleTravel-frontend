@@ -6,24 +6,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { getLoggedInfo } from "./LoggedUserSlice";
 import Header from '../layout/Header';
 import Icons from "../../assets/icon/icon";
-
+import AddImageModal from "./Modal/AddImageModal";
+import Modal from '../../components/Modal'
 
 const UserAccount = () => {
-  const [clicked, setClicked] = useState(true);
   const dispatch = useDispatch();
-  const { presignedUrl, loggedInfo } =
-    useSelector((state) => state.loggedUser);
+  // const { loggedInfo } =
+  //   useSelector((state) => state.loggedUser);
+  const [clicked, setClicked] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   
   useEffect(() => {
     dispatch(getLoggedInfo());
   }, [dispatch]);
 
-  useEffect(() => {
-    
-  })
-
-  const changeAvatarHandler = () => {
-    console.log('이미지 변경 성공')
+  const clickHandler = () => {
+    setIsOpen(true);
   };
 
   return (
@@ -38,13 +36,13 @@ const UserAccount = () => {
           <Profile>
             <div>
               <Avatar src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1635&q=80" alt="avatar" />
-              <EditIcon onClick={changeAvatarHandler}>
+              <EditIcon onClick={clickHandler}>
                   <Icons.HiOutlinePencilAlt color="black" style={{ postiion: 'absolute', width: '15.68px', height: '15.68px'}} />
               </EditIcon>
             </div>
             <div>
               <p> 홍길동 님 </p>
-              <span>{loggedInfo.provider === 'google' ? <Icons.FcGoogle /> : <></>}</span>
+              {/* <span>{loggedInfo.provider === 'google' ? <Icons.FcGoogle /> : <></>}</span> */}
             </div>
           </Profile>
         </Section>
@@ -53,6 +51,9 @@ const UserAccount = () => {
         </Section>
         <Section></Section>
       </ContentWrap>
+      {isOpen ? (
+        <AddImageModal isAddModal={isOpen} setIsAddModal={setIsOpen} />
+      ) : ''}
     </>
   );
 };

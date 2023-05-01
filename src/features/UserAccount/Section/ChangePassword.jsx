@@ -5,12 +5,15 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { changePasword } from "../LoggedUserSlice";
+import { changePassword } from "../LoggedUserSlice";
+import { toast } from "react-toastify";
 
 
 const ChangePassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // const { loggedInfo } =
+  //   useSelector((state) => state.loggedUser);
   const [show, setShow] = useState({ password: false, newPassword: false})
   const [inputs, setInputs] = useState({ newPassword: '', password: ''});
   const [errors, setErrors] = useState({
@@ -41,12 +44,27 @@ const ChangePassword = () => {
       return;
     }
 
-    console.log('수정이 완료되었습니다!')
-    dispatch(changePasword({
+    dispatch(changePassword({
       password: inputs.password,
       newPassword: inputs.newPassword,
       newPasswordCheck: inputs.newPassword
-    }))
+    })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setTimeout(() => {
+          toast.success('비밀번호 수정이 완료되었습니다.', {
+            position: 'top-center',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            onClose: () => navigate('/:userId')
+          });
+        }, 1);
+      } else {
+        toast.error('올바르지 않은 정보입니다. 다시 확인해주세요.\n비밀번호는 (8~16자의 영문, 숫자, 특수기호(!), (_) (-) 만 사용 가능합니다.)');
+      }
+    })
   };
 
   return (

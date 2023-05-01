@@ -6,28 +6,30 @@ import Button from "../../../components/Button";
 import { switched } from './validation';
 import useAddSlash from '../../../lib/useAddSlash';
 import { useDispatch, useSelector } from "react-redux";
-import { updateLoggedInfo } from "../LoggedUserSlice";
+import { updatedInfo } from "../LoggedUserSlice";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Info = () => {
   const dispatch = useDispatch();
   const addSlash = useAddSlash();
   const navigate = useNavigate();
-  const { loggedInfo } =
-    useSelector((state) => state.loggedUser);
+  // const { loggedInfo } =
+  //   useSelector((state) => state.loggedUser);
   const [inputs, setInputs] = useState({ email: "", date: "", nickname: "", platform: '' });
   const [errors, setErrors] = useState({ date: "", nickname: "" });
 
-  console.log(loggedInfo)
+  // console.log(loggedInfo)
 
-  useEffect(() => {
-    setInputs({
-      email: loggedInfo.email ? loggedInfo.email : '',
-      nickname: loggedInfo.name ? loggedInfo.name : '',
-      date: loggedInfo.birth ? loggedInfo.birth : '',
-      platform: loggedInfo.provider ? loggedInfo.provider : '',
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // useEffect(() => {
+  //   setInputs({
+  //     email: loggedInfo.email ? loggedInfo.email : '',
+  //     nickname: loggedInfo.name ? loggedInfo.name : '',
+  //     date: loggedInfo.birth ? loggedInfo.birth : '',
+  //     platform: loggedInfo.provider ? loggedInfo.provider : '',
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   const changeHandler = (e) => {
     const { value, name } = e.target;
@@ -41,9 +43,23 @@ const Info = () => {
   };
 
   const updateHandler = () => {
-    console.log('수정 성공하였습니다!')
-    dispatch(updateLoggedInfo({name: inputs.nickname, birth: inputs.date})).then((res) => {
-      console.log(res.meta.requestStatus)
+    dispatch(updatedInfo({name: inputs.nickname, birth: inputs.date}))
+    .then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setTimeout(() => {
+          toast.success('수정이 완료되었습니다.', {
+            position: 'top-center',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            onClose: () => navigate('/:userId')
+          });
+        }, 1);
+      } else {
+        toast.error('수정에 실패하였습니다.');
+      }
     })
   };
 
