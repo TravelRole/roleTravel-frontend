@@ -6,10 +6,13 @@ import {
   HiOutlineTicket,
   HiOutlineCalculator,
   HiOutlineX,
+  HiOutlinePencilAlt
 } from "react-icons/hi";
 
 import { RiCalendarCheckLine, RiKakaoTalkFill } from "react-icons/ri";
 import { SlPlane, SlBag } from "react-icons/sl";
+
+import { MdOutlineClose } from "react-icons/md";
 
 import { FaDoorOpen } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -31,6 +34,8 @@ const Icons = {
   AiOutlineEyeInvisible,
   AiOutlineEye,
   HiOutlineX,
+  HiOutlinePencilAlt,
+  MdOutlineClose,
   RiKakaoTalkFill,
 };
 
