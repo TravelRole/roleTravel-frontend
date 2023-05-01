@@ -82,16 +82,26 @@ const CardOrCashBox = styled.div`
 
 const EditReserveModal = ({ setIsOpenModal }) => {
   const [payment, setPayment] = useState("card");
-  const noteMax = 30;
   const [note, setNote] = useState("");
   const [fee, setFee] = useState("");
+
+  const noteMax = 30;
+
+  const formatValue = (value) => {
+    // 숫자 값을 쉼표로 구분하여 문자열로 변환
+    if(value.length) setFee("")
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;
 
     switch (name) {
       case "fee": {
-        setFee(value);
+        const inputfeeValue = value;
+        const parts = inputfeeValue.split(",");
+        const newFeeValue = isNaN(parseInt(parts.join(''), 10)) ? '' : parseInt(parts.join(''), 10)
+        setFee(newFeeValue);
         break;
       }
       case "note": {
@@ -105,7 +115,7 @@ const EditReserveModal = ({ setIsOpenModal }) => {
 
   const EditReserve = (e) => {
     e.preventDefault();
-    console.log(payment , fee , note);
+    console.log(payment, fee, note);
   };
 
   return (
@@ -144,8 +154,13 @@ const EditReserveModal = ({ setIsOpenModal }) => {
                 id="outlined-adornment-reserve"
                 label="금액"
                 name="fee"
-                value={fee}
+                value={formatValue(fee) }
                 onChange={onChangeInput}
+                endAdornment={
+                  <InputAdornment position="end">
+                    원
+                  </InputAdornment>
+                }
               />
             </FormControl>
             <FormControl fullWidth variant="outlined">
