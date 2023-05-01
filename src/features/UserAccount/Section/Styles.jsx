@@ -166,8 +166,8 @@ export const EditIcon = styled.div`
   width: 34.49px;
   height: 34.49px;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
-  left: 30.66%;
-  top: 30.9%;
+  margin-top: -60px;
+  margin-left: 85px;
   position: absolute;
   border-radius: 100%;
   color: black;
