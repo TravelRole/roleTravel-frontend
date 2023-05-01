@@ -37,12 +37,8 @@ export const setUserRole = createAsyncThunk(
   "user/userRole",
   async ({ selectRole, invitationCode }, thunkAPI) => {
     try {
-      console.log(selectRole, invitationCode);
-      await tokenApi
-        .post(`api/room/${invitationCode}`, selectRole)
-        .then((res) => {
-          return res.data;
-        });
+      const res = await tokenApi.post(`api/room/${invitationCode}`, selectRole);
+      return res.data.roomId;
     } catch (error) {}
   }
 );

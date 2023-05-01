@@ -51,6 +51,14 @@ const colorStyles = css`
       border: none;
       background-color: #c4c4c4;
     `}
+
+    ${(props) =>
+    props.color === "kakao" &&
+    css`
+      color: #181600;
+      border: none;
+      background-color: #fee500;
+    `}
 `;
 
 const StyledButton = styled.button`

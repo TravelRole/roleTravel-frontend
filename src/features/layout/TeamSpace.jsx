@@ -3,11 +3,11 @@ import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import Leader from "../Role/Leader";
-import Allplan from "../Role/Allplan";
 import Reservation from "../Role/Reservation/Reservation";
 import Account from "../Role/Account/Account";
 import Essentials from "../Role/Essentials/Essentials";
 import Schedule from "../Role/Schedule/Schedule";
+import Allplan from "../Role/Allplan/Allplan";
 
 const TeamSpaceBox = styled.div`
   display: flex;

@@ -281,7 +281,7 @@ const Login = () => {
             <span>또는</span>
             <Button
               className="login_btn"
-              color="stroke"
+              color="kakao"
               size="full"
               onClick={onClickGoogle}
               style={{
@@ -291,16 +291,16 @@ const Login = () => {
                 fontWeight: "500",
               }}
             >
-              <Icons.FcGoogle
+              <Icons.RiKakaoTalkFill
                 style={{
                   marginRight: "0.8rem",
-                  width: "1.841rem",
-                  height: "1.8rem",
+                  width: "2rem",
+                  height: "2rem",
                 }}
               />
-              Google로 로그인
+              카카오로 로그인
             </Button>
-            <div className="googleSub">구글로 1초만에 가입하세요.</div>
+            <div className="googleSub">카카오로 1초만에 가입하세요.</div>
           </LoginContent>
         </LoginContainer>
       </LoginWrap>

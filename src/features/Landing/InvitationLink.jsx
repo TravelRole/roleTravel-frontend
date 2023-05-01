@@ -135,7 +135,7 @@ const InvitationLink = () => {
   const onSubmitSetUserRole = useCallback(() => {
     dispatch(setUserRole({ selectRole, invitationCode })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        navigate("/spaceList");
+        navigate(`/${res.payload}/allPlan`);
       }
     });
   }, [dispatch, invitationCode, navigate, selectRole]);
