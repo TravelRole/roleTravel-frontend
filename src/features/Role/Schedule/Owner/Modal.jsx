@@ -3,15 +3,16 @@ import styled from "styled-components";
 import Button from "../../../../components/Button";
 
 const SuperContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   border: 5px solid red;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
   background-color: rgba(1, 1, 1, 0.5);
   z-index: 10;
 `;
@@ -25,11 +26,14 @@ const AddScheduleModal = styled.div`
 const AddScheduleBox = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 2rem;
+  padding: 2rem;
   h2 {
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 2rem;
+  }
+  input {
+    font-size: 1.5rem;
   }
 `;
 
@@ -69,11 +73,11 @@ const AddSpaceModal = ({
       WebsiteLink,
       Extra,
     };
+
+    console.log(time)
     AddScheduleList(ScheduleObj);
     setIsAddModal(false);
   };
-
-  console.log(modalPlace)
 
 
   return (
@@ -81,7 +85,6 @@ const AddSpaceModal = ({
       {isAddModal ? (
         <SuperContainer
           onClick={() => {
-            console.log("why ");
             setIsAddModal(false);
           }}
         >
@@ -97,7 +100,7 @@ const AddSpaceModal = ({
                 </select>
               </div>
               <div>
-                시간 : <input type="time" name="time" />
+                시간 :{" "} <input type="time" name="time"  ></input>
               </div>
               <div>
                 장소 :{" "}
@@ -127,13 +130,14 @@ const AddSpaceModal = ({
                   <option value="예약완료">예약완료</option>
                 </select>
               </div>
-              <div>
+              <div >
                 링크 :{" "}
                 <input
                   type="text"
                   name="WebsiteLink"
                   value={modalPlace.place_url && modalPlace.place_url}
                   readonly
+                  style={{width:"100%"}}
                 ></input>
               </div>
               <div>

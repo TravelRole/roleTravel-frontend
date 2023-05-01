@@ -7,20 +7,18 @@ import { useDispatch } from "react-redux";
 import { getInvitationCode } from "./invitationCodeSlice";
 
 const SidebarContainer = styled.nav`
-  /* display: flex;
-  flex-direction: column; */
-  width: 34rem;
-  /* height: 100vh; */
+  width: 32rem;
+  height: 100vh;
+
   background-color: #ffffff;
   box-shadow: 0 0.4rem 2rem 0px rgba(200, 214, 236, 0.7);
-  /* transition: 0.9s; */
   padding: 3.2rem 3rem;
-  /* font-size: 1rem; */
-  /* color: #9e9e9e; */
-  /* z-index: 1; */
-  /* @media (max-width: 800px) {
-    width: 92px;
-  } */
+
+  overflow: scroll;
+  z-index: 1;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const BacktoList = styled.div`
@@ -67,12 +65,12 @@ const Profile = styled.div`
   }
 
   p {
-    cursor: pointer;
-    font-size: 1.4rem;
     display: flex;
     align-items: center;
     gap: 0.3rem;
+    font-size: 1.4rem;
     color: #acb1b9;
+    cursor: pointer;
     span {
       width: 1.3rem;
       height: 1.3rem;
@@ -172,7 +170,7 @@ const Out = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  margin-top: 12rem;
+  margin-top: 7rem;
   a {
     display: flex;
     align-items: center;

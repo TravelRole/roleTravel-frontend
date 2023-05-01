@@ -40,7 +40,7 @@ export const Section = styled.section`
 
     & > h1 {
       font-weight: 700;
-      font-size: 1.6rem;x
+      font-size: 1.6rem;
       color: #4E4E4E;
       margin-top: 3.5px;
     }
@@ -87,7 +87,6 @@ export const Section = styled.section`
     }
   }
 `
-
 export const Profile = styled.div`
   width: 90px;
   height: 90px;

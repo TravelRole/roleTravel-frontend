@@ -1,12 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
-import { useSelector } from "react-redux";
+import { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import { getUserInfo } from "../Landing/userSlice";
-import { login, refreshTokenAsync } from "./authSlice";
+import { login } from "./authSlice";
 
 import Icons from "../../assets/icon/icon";
 
