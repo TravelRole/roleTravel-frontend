@@ -7,6 +7,7 @@ import userReducer from "../features/Landing/userSlice";
 import searchReducer from "../features/SearchIDPW/searchSlice";
 import travelReducer from "../features/SpaceList/travelSlice";
 import loggedUserReducer from "../features/UserAccount/LoggedUserSlice";
+import invitationCodeReducer from "../features/layout/invitationCodeSlice";
 
 export const store = configureStore({
   reducer: {
@@ -17,5 +18,6 @@ export const store = configureStore({
     search: searchReducer,
     travel: travelReducer,
     loggedInUser: loggedUserReducer,
+    invitationCode: invitationCodeReducer,
   },
 });

@@ -1,18 +1,42 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css");
+@import url("https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700;800;900&display=swap");
+/* toast 폰트 사이즈 */
+
+.Toastify__toast {
+  gap: 2rem;
+}
+
+.Toastify__toast-body {
+  gap: 1rem;
+  padding: 1.5rem 1rem;
+}
 
 .Toastify__toast-body div {
-  font-size: 1.6rem !important ;
+  font-size: 1.6rem !important;
+}
+
+.Toastify__toast-body div p {
+  font-size: 1.6rem !important;
+  line-height: 2.4rem !important;
+}
+
+.Toastify__toast-container {
+  width: max-content !important;
 }
 
 /* date-picker 전체 부분 */
 
 .react-datepicker-popper {
   width: 100% !important;
-  max-width: 40rem !important;
+  max-width: 30rem !important;
+  z-index: 50;
 }
 
 .react-datepicker {
   width: 100% !important;
+  border: 1px solid #dadada !important;
+  border-radius: 1.6rem !important;
+  font-family: "Pretendard" !important;
 }
 
 .react-datepicker__month-container {
@@ -23,27 +47,77 @@
 /* date-picker 헤더 부분 */
 
 .react-datepicker__header {
-  background-color: #3884fd;
-  padding: 1.4rem 1.5rem;
+  background-color: #fff;
+  padding: 0;
+  border: none;
+  border-radius: 1.6rem 1.6rem 0 0 !important;
 }
 
-.react-datepicker__current-month {
-  font-size: 1.5rem;
-  color: #fff;
-  font-weight: 500;
-  letter-spacing: 0.2rem;
+.react-datepicker__triangle {
+  transform: translate(5rem, 0) !important;
+}
+
+.react-datepicker__triangle::before {
+  border-bottom-color: #dadada !important;
+}
+
+.react-datepicker__triangle::after {
+  border-bottom-color: #fff !important;
+}
+
+.react-datepicker__header .header {
+  border-bottom: 0.1rem solid #dadada;
+}
+
+.react-datepicker__header .header .header-container {
+  padding: 2.2rem 2rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.react-datepicker__header .header button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.4rem;
+  color: #b8b8b8;
+}
+
+.react-datepicker__header .header button svg {
+  width: 100%;
+  height: 100%;
+}
+
+.react-datepicker__header .header .date {
+  font-size: 1.6rem;
+  color: #333;
 }
 
 .react-datepicker__day-names {
   display: flex !important;
   justify-content: space-between;
-  margin-top: 1.2rem;
+  margin: 0.8rem 0 1rem 0;
+  padding: 0 2rem;
 }
 
 .react-datepicker__day-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3rem;
+  height: 3rem;
   font-size: 1.4rem;
-  color: #fff;
-  font-weight: 300;
+  color: #333;
+  font-weight: 500;
+}
+
+.react-datepicker__day-name:nth-child(1),
+.react-datepicker__day-name:nth-child(7) {
+  color: #3884fd;
 }
 
 /* date-picker body 부분 */
@@ -51,36 +125,58 @@
 .react-datepicker__month {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  padding: 1.4rem 1.5rem;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0 2rem 2.2rem 2rem;
+  width: 100% !important;
+  margin: 0 !important;
 }
 
-.react-datepicker__week {
-  display: flex;
-  align-items: center;
+.react-datepicker__month .react-datepicker__week {
+  width: 100% !important;
+  display: flex !important;
   justify-content: space-between;
+  /* gap: 2.2rem; */
+  align-items: center;
 }
 
 .react-datepicker__day {
-  flex: 1;
-  height: 5.1rem;
-  line-height: 5.1rem;
-  font-size: 1.6rem;
-  text-align: center;
-  width: fit-content;
-  margin: 0;
+  margin: 0 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
   border-radius: 50% !important;
+  width: 3rem !important;
+  height: 3rem !important;
+  color: #333;
+}
+
+.react-datepicker__day:hover {
+  background-color: #f1f3f8;
+}
+
+.react-datepicker__day--in-selecting-range:not(.react-datepicker__day--in-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--in-range) {
+  background-color: #f1f3f8;
+}
+
+.react-datepicker__day--disabled {
+  color: #dadada !important;
+}
+
+.react-datepicker__day--weekend {
+  color: #ffc759;
 }
 
 .react-datepicker__day--selected {
-  font-weight: normal;
+  background-color: #ffc759 !important;
+}
+
+.react-datepicker__day--range-end {
   background-color: #3884fd !important;
+  color: #fff !important;
 }
 
 .react-datepicker__day--in-range {
-  background-color: #3884fd !important;
-}
-
-.react-datepicker__day--in-range:hover {
-  background-color: #3884fd !important;
+  background-color: #f1f3f8;
 }

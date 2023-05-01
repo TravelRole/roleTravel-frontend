@@ -7,21 +7,35 @@ import { toast } from "react-toastify";
 
 const initialState = {
   isAuth: localStorage.getItem("accessToken") ? true : false,
-  isLoading: false,
-  error: null,
 };
 
 //로그인
-export const login = createAsyncThunk("auth/login", async (userData) => {
-  const res = await authApi.post("auth/login", userData, {
-    withCredentials: true,
-  });
+export const login = createAsyncThunk(
+  "auth/login",
+  async (userData, thunkAPI) => {
+    try {
+      const res = await authApi.post("auth/login", userData, {
+        withCredentials: true,
+      });
 
-  const { accessToken } = res.data;
+      const { accessToken } = res.data;
 
-  // 로컬스토리지에 accessToken 저장
-  localStorage.setItem("accessToken", accessToken);
-});
+      // 로컬스토리지에 accessToken 저장
+      localStorage.setItem("accessToken", accessToken);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        return thunkAPI.rejectWithValue(
+          <p>
+            회원정보를 잘못 입력했습니다
+            <br />
+            입력하신 내용을 다시 확인해주세요.
+          </p>
+        );
+      }
+      return thunkAPI.rejectWithValue("네트워크가 불안정합니다.");
+    }
+  }
+);
 
 //로그아웃
 export const logoutAsync = createAsyncThunk("auth/logout", async () => {
@@ -40,11 +54,9 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
-        state.isLoading = true;
         state.isAuth = false;
       })
       .addCase(login.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.isAuth = true;
         toast.success("로그인이 되었습니다!", {
           position: "top-center",
@@ -59,8 +71,16 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.isAuth = false;
-        state.error = action.payload;
-        state.isLoading = false;
+        toast.error(action.payload, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       })
       .addCase(logoutAsync.pending, (state) => {
         state.isLoading = true;

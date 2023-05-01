@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Input, InputContainer, Content } from "./Styles";
 import { useDispatch } from "react-redux";
+import { TextField } from "@mui/material";
 
 const Info = () => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const Info = () => {
       <Content>
         <InputContainer>
           {/* <Label width="80px">아이디</Label> */}
-          <Input readOnly defaultValue={"asdf@adsf.com"} />
+          <TextField readOnly defaultValue={"asdf@adsf.com"} />
         </InputContainer>
         <InputContainer>
           {/* <Label width="80px">이름 (별명)</Label> */}
