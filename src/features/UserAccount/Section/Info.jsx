@@ -1,35 +1,70 @@
-import { useState } from "react";
-import styled from "styled-components";
-// import { validation } from './validation';
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Container, Input, InputContainer, Content } from "./Styles";
-import { useDispatch } from "react-redux";
+import { Container, InputContainer, Content } from "./Styles";
 import { TextField } from "@mui/material";
+import Button from "../../../components/Button";
+import { switched } from './validation';
+import useAddSlash from '../../../lib/useAddSlash';
+import { useDispatch, useSelector } from "react-redux";
+import { updatedInfo } from "../LoggedUserSlice";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Info = () => {
+  const dispatch = useDispatch();
+  const addSlash = useAddSlash();
   const navigate = useNavigate();
-  const [nickname, setNickname] = useState("");
-  const [date, setDate] = useState({ year: "", month: "", date: "" });
+  // const { loggedInfo } =
+  //   useSelector((state) => state.loggedUser);
+  const [inputs, setInputs] = useState({ email: "", date: "", nickname: "", platform: '' });
+  const [errors, setErrors] = useState({ date: "", nickname: "" });
+
+  // console.log(loggedInfo)
+
+  // useEffect(() => {
+  //   setInputs({
+  //     email: loggedInfo.email ? loggedInfo.email : '',
+  //     nickname: loggedInfo.name ? loggedInfo.name : '',
+  //     date: loggedInfo.birth ? loggedInfo.birth : '',
+  //     platform: loggedInfo.provider ? loggedInfo.provider : '',
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   const changeHandler = (e) => {
     const { value, name } = e.target;
-    if (name === "nickname") {
-      setNickname(value);
-    } else if (name === "year") {
-      setDate({ ...date, year: value });
-    } else if (name === "month") {
-      setDate({ ...date, month: value });
-    } else if (name === "date") {
-      setDate({ ...date, date: value });
+    const validation = switched(name, value);
+    if (validation.success) {
+      setErrors({...errors, [name]: ''})
+      setInputs({...inputs, [name]: value})
+    } else {
+      setErrors({...errors, [name]: validation.error})
     }
   };
 
   const updateHandler = () => {
-    console.log("수정이 완료되었습니다!");
+    dispatch(updatedInfo({name: inputs.nickname, birth: inputs.date}))
+    .then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setTimeout(() => {
+          toast.success('수정이 완료되었습니다.', {
+            position: 'top-center',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            onClose: () => navigate('/:userId')
+          });
+        }, 1);
+      } else {
+        toast.error('수정에 실패하였습니다.');
+      }
+    })
   };
 
   return (
-    <Container>
+    <Container marginTop="0px">
       <Content>
         <h1>회원정보 수정</h1>
         <div width="46px">
@@ -38,43 +73,53 @@ const Info = () => {
       </Content>
       <Content>
         <InputContainer>
-          {/* <Label width="80px">아이디</Label> */}
-          <TextField readOnly defaultValue={"asdf@adsf.com"} />
-        </InputContainer>
-        <InputContainer>
-          {/* <Label width="80px">이름 (별명)</Label> */}
-          <Input
-            name="nickname"
-            value={nickname}
+          <TextField
+            fullWidth
+            name="id"
+            value={inputs.email}
             onChange={changeHandler}
-            placeholder="닉네임"
+            InputProps={{
+              readOnly: true,
+            }}
+            helperText={" "}
+            sx={{ cursor: 'none'}}
           />
         </InputContainer>
         <InputContainer>
-          {/* <Label width="80px">생년월일</Label> */}
-          <Input
-            maxLength={4}
-            name="year"
-            value={date.year}
+          <TextField
+            fullWidth
+            name="nickname"
+            label="닉네임"
+            value={inputs.nickname}
             onChange={changeHandler}
-            placeholder="생년월일"
+            error={errors.nickname.length > 0}
+            helperText={errors.nickname ? errors.nickname : " "}
+          />
+        </InputContainer>
+        <InputContainer>
+          <TextField
+            fullWidth
+            name="date"
+            label="생년월일"
+            value={addSlash(inputs.date)}
+            onChange={changeHandler}
+            error={errors.date.length > 0}
+            helperText={errors.date ? errors.date : " "}
           />
         </InputContainer>
       </Content>
       <Content>
         <Button
+          size="small"
           onClick={() => navigate("/home")}
-          backgroundColor="#FAFAFA"
-          color="black"
-          border="1px solid #C4C4C4"
+          color="stroke"
         >
           취소
         </Button>
         <Button
+          size="small"
           onClick={updateHandler}
-          backgroundColor="#3884FD"
-          color="white"
-          border="none"
+          color="blue"
         >
           수정하기
         </Button>
