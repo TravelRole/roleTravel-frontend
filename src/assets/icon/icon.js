@@ -19,10 +19,12 @@ import {
   AiOutlineEye,
   AiOutlineExclamationCircle,
   AiOutlineCheckCircle,
+  AiOutlineCreditCard
 } from "react-icons/ai";
 
 import { TbPencilMinus } from "react-icons/tb";
 import { MdOutlineClose } from "react-icons/md";
+import { BiCoinStack } from "react-icons/bi";
 
 const Icons = {
   TfiPencilAlt,
@@ -45,6 +47,8 @@ const Icons = {
   HiOutlinePencilAlt,
   MdOutlineClose,
   RiKakaoTalkFill,
+  AiOutlineCreditCard,
+  BiCoinStack
 };
 
 export default Icons;

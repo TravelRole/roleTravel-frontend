@@ -8,6 +8,8 @@ import TabPanel from "@mui/lab/TabPanel";
 import ReserveCellLayout from "./layout/ReserveCell";
 import BlankPanel from "./layout/BlankPanel";
 import SmallBlank from "./layout/SmallBlank";
+import Modal from "../../../components/Modal";
+import EditReserveModal from "./layout/EditReserveModal";
 
 const Wrapper = styled.div`
   display: flex;
@@ -164,6 +166,8 @@ function Reservation({ reserveList }) {
     reserveList[value] &&
     reserveList[value].filter((item) => item.reserve === "예약완료");
 
+
+  const [isOpenModal, setIsOpenModal] = useState(true);
   return (
     <>
       <Wrapper>
@@ -179,6 +183,7 @@ function Reservation({ reserveList }) {
                 {ReservationDay.map((item, i) => {
                   return (
                     <StyleTab
+                      key={i}
                       label={
                         <DateBox>
                           <Day>{item.CountDay}일차</Day>
@@ -232,6 +237,11 @@ function Reservation({ reserveList }) {
             </ReserveWrapper>
           </TabContext>
         </Box>
+        {isOpenModal ? (
+        <Modal width="46rem" setIsOpenModal={setIsOpenModal}>
+          <EditReserveModal setIsOpenModal={setIsOpenModal} />
+        </Modal>
+      ) : null}
       </Wrapper>
     </>
   );
