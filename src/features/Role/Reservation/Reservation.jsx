@@ -40,7 +40,7 @@ const Wrapper = styled.div`
 `;
 
 const PageHeader = styled.header`
-  padding: 7.8rem 0 6rem 6rem;
+  padding: 8.5rem 0 6rem 6rem;
   font-size: 3rem;
   font-weight: 600;
 `;
