@@ -25,6 +25,7 @@ import {
 import { TbPencilMinus } from "react-icons/tb";
 import { MdOutlineClose } from "react-icons/md";
 import { BiCoinStack } from "react-icons/bi";
+import { RxMagnifyingGlass } from "react-icons/rx";
 
 const Icons = {
   TfiPencilAlt,
@@ -48,7 +49,8 @@ const Icons = {
   MdOutlineClose,
   RiKakaoTalkFill,
   AiOutlineCreditCard,
-  BiCoinStack
+  BiCoinStack,
+  RxMagnifyingGlass
 };
 
 export default Icons;
