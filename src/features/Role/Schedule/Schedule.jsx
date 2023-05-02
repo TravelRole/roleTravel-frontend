@@ -53,8 +53,9 @@ const MapWrapper = styled.div`
   display: flex;
   flex-direction: row;
   height: 52rem;
-  padding: 0 4.6rem 0 6rem;
+  padding: 0 4rem 0 6rem;
 `;
+
 
 const SearchAndWantBox = styled.div`
   //원래 32rem인데 임의적으로 변경함
@@ -248,21 +249,22 @@ function Schedule({ setReserveList }) {
 
     ps.keywordSearch(keyWord, (data, status, _pagination) => {
       try {
-        if(status === "ZERO_RESULT") return toast.error("검색어 관련 장소가 없습니다.", {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        if (status === "ZERO_RESULT")
+          return toast.error("검색어 관련 장소가 없습니다.", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         if (status === kakao.maps.services.Status.OK) {
           // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
           // LatLngBounds 객체에 좌표를 추가합니다
           const bounds = new kakao.maps.LatLngBounds();
-          
+
           for (var i = 0; i < data.length; i++) {
             setSearchPlaceList(data);
             bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
@@ -277,7 +279,7 @@ function Schedule({ setReserveList }) {
     });
   };
 
-  console.log(searchPlaceList);
+  const [info, setInfo] = useState();
   return (
     <>
       <Wrapper>
@@ -287,7 +289,26 @@ function Schedule({ setReserveList }) {
             center={{ lat: lat, lng: lng }}
             style={{ width: "75%", height: "100%" }}
             onCreate={setMap}
-          ></Map>
+          >
+            {searchPlaceList.map((marker) => {
+              console.log(marker);
+              const position = {
+                lat: Number(marker.y),
+                lng: Number(marker.x),
+              };
+              return (
+                <MapMarker
+                  key={`marker-${position}-${position.lat},${position.lng}`}
+                  position={position}
+                  onClick={() => setInfo(marker)}
+                >
+                  {info && info.place_name === marker.place_name && (
+                    <div style={{ color: "#000" }}>{marker.place_name}</div>
+                  )}
+                </MapMarker>
+              );
+            })}
+          </Map>
           <SearchAndWantBox>
             {/* 검색 및 찜목록 layout */}
             {/* <SearchAndWant />  */}
