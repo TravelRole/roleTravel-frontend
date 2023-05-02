@@ -1,17 +1,9 @@
-import { useState } from "react";
-import Owner from "./Owner/Owner";
-import Guest from "./Guest/Guest";
+function Schedule({ setReserveList }) {
 
+  // 구현해놓은 모킹 페이지
+  // <Owner setReserveList={setReserveList} />
 
-
-function Schedule({setReserveList}) {
-  const [Mode, setMode] = useState(true);
-
-  return (
-    <>
-      <Owner setReserveList={setReserveList} />
-    </>
-  );
+  return <></>;
 }
 
 export default Schedule;
