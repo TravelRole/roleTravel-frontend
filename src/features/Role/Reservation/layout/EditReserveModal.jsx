@@ -89,7 +89,7 @@ const EditReserveModal = ({ setIsOpenModal }) => {
 
   const formatValue = (value) => {
     // 숫자 값을 쉼표로 구분하여 문자열로 변환
-    if(value.length) setFee("")
+    if (value.length) setFee("");
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
@@ -100,7 +100,9 @@ const EditReserveModal = ({ setIsOpenModal }) => {
       case "fee": {
         const inputfeeValue = value;
         const parts = inputfeeValue.split(",");
-        const newFeeValue = isNaN(parseInt(parts.join(''), 10)) ? '' : parseInt(parts.join(''), 10)
+        const newFeeValue = isNaN(parseInt(parts.join(""), 10))
+          ? ""
+          : parseInt(parts.join(""), 10);
         setFee(newFeeValue);
         break;
       }
@@ -154,12 +156,10 @@ const EditReserveModal = ({ setIsOpenModal }) => {
                 id="outlined-adornment-reserve"
                 label="금액"
                 name="fee"
-                value={formatValue(fee) }
+                value={formatValue(fee)}
                 onChange={onChangeInput}
                 endAdornment={
-                  <InputAdornment position="end">
-                    원
-                  </InputAdornment>
+                  <InputAdornment position="end">원</InputAdornment>
                 }
               />
             </FormControl>
