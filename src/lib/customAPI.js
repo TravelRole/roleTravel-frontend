@@ -30,20 +30,17 @@ tokenApi.interceptors.response.use(
       const { status } = response;
       const { message } = response.data;
       const originalRequest = config;
-      // console.log(message);
-      // console.log(status);
-      if (message === "유효하지 않은 토큰입니다." && status === 401) {
-        window.alert("로그인을 해주세요.");
-        window.location.replace("/login");
-        return;
-      } else if (message === "인증에 실패하였습니다." && status === 401) {
+      console.log(message);
+      console.log(status);
+      if (
+        (message === "유효하지 않은 토큰입니다." ||
+          message === "인증에 실패하였습니다.") &&
+        status === 401
+      ) {
         if (localStorage.getItem("accessToken")) {
           await axios
             .post(
-              `${process.env.REACT_APP_BASE_URL}auth/refresh`,
-              {
-                accessToken: localStorage.getItem("accessToken"),
-              },
+              `${process.env.REACT_APP_BASE_URL}api/refresh`,
               {
                 withCredentials: true,
                 // 이렇게 보내보고 안된다면 쿠키에서 refreshToken 꺼내기
@@ -59,7 +56,8 @@ tokenApi.interceptors.response.use(
             })
             .catch((error) => {
               if (
-                error.response.message === "인증에 실패하였습니다." &&
+                (error.response.message === "인증에 실패하였습니다." ||
+                  error.response.message === "인증에 실패하였습니다.") &&
                 error.response.status === 401
               ) {
                 const cookies = new Cookies();

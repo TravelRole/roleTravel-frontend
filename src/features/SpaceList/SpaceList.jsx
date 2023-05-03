@@ -111,7 +111,7 @@ function SpaceList() {
   // 구글로 로그인했을 때 보이는 토스트
   useEffect(() => {
     if (location.state?.isGoogleSuccess) {
-      toast.success("구글 로그인이 되었습니다!", {
+      toast.success("카카오 로그인이 되었습니다!", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: true,

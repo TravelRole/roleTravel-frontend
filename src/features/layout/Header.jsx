@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -9,6 +9,7 @@ import { logoutAsync } from "../Login/authSlice";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { HiUser, HiOutlineLogout } from "react-icons/hi";
+import { getUserInfo } from "../Landing/userSlice";
 
 const HeaderWrap = styled.header`
   padding: 2rem;
@@ -111,6 +112,16 @@ const Header = () => {
   const onControlMenu = useCallback(() => {
     setOpenMenu((prev) => !prev);
   }, []);
+
+  useEffect(() => {
+    if (
+      location.pathname === "/spaceList" ||
+      location.pathname === "/account/:userId"
+    )
+      if (localStorage.getItem("accessToken")) {
+        dispatch(getUserInfo());
+      }
+  }, [dispatch, location.pathname]);
 
   if (
     location.pathname === "/landing" ||
