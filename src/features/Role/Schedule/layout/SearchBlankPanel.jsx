@@ -17,17 +17,29 @@ const Wrapper = styled.div`
   }
 `;
 
-const SearchBlankPanel = () => {
+const SearchBlankPanel = ({ filter }) => {
   return (
     <Wrapper>
-      <p>
-        가고 싶은 곳을 검색해 <br />
-        찜 목록에 추가해 보세요.
-        <br />
-        <br />
-        이 팀 스페이스에 있다면 <br />
-        누구나 추가할 수 있답니다 :)
-      </p>
+      {filter === "search" ? (
+        <p>
+          가고 싶은 곳을 검색해 <br />
+          찜 목록에 추가해 보세요.
+          <br />
+          <br />
+          이 팀 스페이스에 있다면 <br />
+          누구나 추가할 수 있답니다 :)
+        </p>
+      ) : (
+        <p>
+          친구들이 가고 싶다고 찜한 <br />
+          장소를 표시하는 곳이에요.
+          <br />
+          <br />
+          검색하기 탭에서 찜 버튼을
+          <br />
+          눌러 추가해 보세요!
+        </p>
+      )}
     </Wrapper>
   );
 };
