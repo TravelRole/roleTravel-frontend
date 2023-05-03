@@ -116,16 +116,18 @@ const SignInput = ({
 
   const checkRegex = useCallback(
     async (e) => {
+      const { name, value } = e.target;
       let result;
 
-      if (e.target.name === "email" && formData.email.length > 0) {
+      if (name === "email" && formData.email.length > 0) {
         await authApi
-          .post("auth/confirm-id", { email: formData.email })
+          .post("api/confirm-id", { email: formData.email })
           .then((res) => {
             if (res.data.isExist === true) {
+              setFormData((prev) => ({ ...prev, email: "" }));
               result = "duplicateId";
-              return;
             }
+            setFormData((prev) => ({ ...prev, email: value }));
             result = "confirmId";
           })
           .catch((error) => {
@@ -140,7 +142,8 @@ const SignInput = ({
       }
       return;
     },
-    [formData, setErrorData]
+
+    [formData.email, setErrorData, setFormData]
   );
 
   return (

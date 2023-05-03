@@ -157,7 +157,7 @@ const Login = () => {
   // 구글 로그인 이벤트
   const onClickGoogle = useCallback(() => {
     window.location.assign(
-      `${process.env.REACT_APP_BASE_URL}oauth2/authorization/google`
+      `${process.env.REACT_APP_BASE_URL}oauth2/authorization/kakao`
     );
   }, []);
 

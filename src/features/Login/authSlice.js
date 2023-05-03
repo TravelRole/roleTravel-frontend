@@ -14,7 +14,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async (userData, thunkAPI) => {
     try {
-      const res = await authApi.post("auth/login", userData, {
+      const res = await authApi.post("api/login", userData, {
         withCredentials: true,
       });
 
@@ -40,7 +40,7 @@ export const login = createAsyncThunk(
 //로그아웃
 export const logoutAsync = createAsyncThunk("auth/logout", async () => {
   try {
-    await tokenApi.post(`auth/logout`);
+    await tokenApi.post(`api/logout`);
     localStorage.removeItem("accessToken");
   } catch (error) {
     throw error;
