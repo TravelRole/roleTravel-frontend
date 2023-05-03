@@ -56,10 +56,9 @@ const MapWrapper = styled.div`
   padding: 0 4rem 0 6rem;
 `;
 
-
 const SearchAndWantBox = styled.div`
   //원래 32rem인데 임의적으로 변경함
-  width: 25%;
+  width: 30%;
   padding-left: 2rem;
 `;
 
@@ -164,39 +163,60 @@ const SearchResultContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+`;
 
-    article {
-      display: flex;
-      flex-direction: column;
+const StyledPlaceCard = styled.article`
+  position: relative;
+  cursor: pointer;
 
-      padding: 2rem;
-      background: #ffffff;
-      border-radius: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-      header {
-        margin-bottom: 1rem;
-        font-weight: 600;
-        font-size: 1.7rem;
-        color: #333333;
-      }
-      p:nth-child(2) {
-        margin-bottom: 0.2rem;
-        font-weight: 500;
-        font-size: 1.4rem;
-        color: #707070;
-      }
-      p:nth-child(3) {
-        margin-bottom: 0.7rem;
-        font-weight: 400;
-        font-size: 1.4rem;
-        color: #c4c4c4;
-      }
-      span {
-        font-weight: 400;
-        font-size: 1.4rem;
-        color: #3884fd;
-      }
-    }
+  width: 100%;
+  height: 13rem;
+
+  padding: 2rem;
+  background: ${(props) => (props.selected ? "#EEF1F8" : "#ffffff")};
+  border-radius: 0.8rem;
+
+  header {
+    margin-bottom: 1rem;
+    font-weight: 600;
+    font-size: 1.7rem;
+    color: #333333;
+  }
+  p:nth-child(2) {
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: #707070;
+  }
+  p:nth-child(3) {
+    margin-bottom: 0.8rem;
+    font-weight: 400;
+    font-size: 1.4rem;
+    color: #c4c4c4;
+  }
+  span {
+    font-weight: 400;
+    font-size: 1.4rem;
+    color: #3884fd;
+  }
+  button {
+    height: 2.6rem;
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+    padding: 0.2rem 1rem;
+    font-size: 1.2rem;
+    color: ${(props) => (props.selected ? " #3884FD;" : "#8B8B8B")};
+    border: none;
+    background: #fafafa;
+    border: ${(props) =>
+      props.selected ? "1px solid #3884FD" : "1px solid #DADADA"};
+    border-radius: 0.8rem;
   }
 `;
 
@@ -216,8 +236,8 @@ function Schedule({ setReserveList }) {
   const handleChange = (event, newValue) => {
     setFilter(newValue);
   };
-  const baseUrl = process.env.REACT_APP_BASE_URL;
 
+  const baseUrl = process.env.REACT_APP_BASE_URL;
   const { roomId } = useParams();
 
   // useEffect(() => {
@@ -280,6 +300,7 @@ function Schedule({ setReserveList }) {
   };
 
   const [info, setInfo] = useState();
+
   return (
     <>
       <Wrapper>
@@ -287,11 +308,10 @@ function Schedule({ setReserveList }) {
         <MapWrapper>
           <Map
             center={{ lat: lat, lng: lng }}
-            style={{ width: "75%", height: "100%" }}
+            style={{ width: "70%", height: "100%" }}
             onCreate={setMap}
           >
             {searchPlaceList.map((marker) => {
-              console.log(marker);
               const position = {
                 lat: Number(marker.y),
                 lng: Number(marker.x),
@@ -354,13 +374,21 @@ function Schedule({ setReserveList }) {
                   <ul>
                     {searchPlaceList.map((place, i) => {
                       return (
-                        <li>
-                          <article>
+                        <li key={i}>
+                          <StyledPlaceCard
+                            selected={info && info.address_name === place.address_name}
+                            onClick={() => {
+                              setInfo(place);
+                              setlat(place.y);
+                              setlng(place.x);
+                            }}
+                          >
                             <header>{place.place_name}</header>
                             <p>{place.road_address_name}</p>
                             <p>{place.address_name}</p>
                             <span>{place.phone}</span>
-                          </article>
+                            <button>일정에 추가</button>
+                          </StyledPlaceCard>
                         </li>
                       );
                     })}
