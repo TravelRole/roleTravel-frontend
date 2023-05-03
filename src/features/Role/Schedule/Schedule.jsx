@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { useState } from "react";
-import SearchAndWant from "./layout/SearchAndWant";
 import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
@@ -15,6 +14,7 @@ import { useRef } from "react";
 import Icons from "../../../assets/icon/icon";
 import { toast } from "react-toastify";
 import SearchBlankPanel from "./layout/SearchBlankPanel";
+import ScheduleBox from "./layout/ScheduleContainer";
 
 const Wrapper = styled.div`
   display: flex;
@@ -221,6 +221,12 @@ const StyledPlaceCard = styled.article`
   }
 `;
 
+/** 스케쥴 컨테이너 */
+const ScheduleContainer = styled.div`
+  padding-top: 1.5rem;
+  height: fit-content;
+`;
+
 function Schedule({ setReserveList }) {
   // 구현해놓은 모킹 페이지
   // <Owner setReserveList={setReserveList} />
@@ -398,14 +404,20 @@ function Schedule({ setReserveList }) {
                       })}
                     </ul>
                   ) : (
-                    <SearchBlankPanel />
+                    <SearchBlankPanel filter={"search"} />
                   )}
                 </SearchResultContainer>
               </StyledTabPanel>
-              <StyledTabPanel value={"wish"}>찜목록</StyledTabPanel>
+              <StyledTabPanel value={"wish"}>
+                <SearchBlankPanel filter={"want"} />
+              </StyledTabPanel>
             </StyledTabContext>
           </SearchAndWantBox>
         </MapWrapper>
+
+        <ScheduleContainer>
+          <ScheduleBox />
+        </ScheduleContainer>
       </Wrapper>
     </>
   );
