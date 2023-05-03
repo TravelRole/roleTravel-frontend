@@ -41,11 +41,9 @@ tokenApi.interceptors.response.use(
           await axios
             .post(
               `${process.env.REACT_APP_BASE_URL}api/refresh`,
+              { accessToken: localStorage.getItem("accessToken") },
               {
                 withCredentials: true,
-                // 이렇게 보내보고 안된다면 쿠키에서 refreshToken 꺼내기
-              },
-              {
                 XMLHttpRequest: true,
               }
             )
@@ -55,19 +53,27 @@ tokenApi.interceptors.response.use(
               return axios(originalRequest);
             })
             .catch((error) => {
-              if (
-                (error.response.message === "인증에 실패하였습니다." ||
-                  error.response.message === "인증에 실패하였습니다.") &&
-                error.response.status === 401
-              ) {
-                const cookies = new Cookies();
-                localStorage.removeItem("accessToken");
-                cookies.remove("refreshToken");
+              console.log(error);
+              const cookies = new Cookies();
+              localStorage.removeItem("accessToken");
+              cookies.remove("refreshToken");
 
-                if (!localStorage.getItem("accessToken")) {
-                  window.location.replace("/login");
-                }
+              if (!localStorage.getItem("accessToken")) {
+                window.location.replace("/login");
               }
+              // if (
+              //   (error.response.message === "토큰 값이 없습니다." ||
+              //     error.response.message === "인증에 실패하였습니다.") &&
+              //   error.response.status === 401
+              // ) {
+              //   const cookies = new Cookies();
+              //   localStorage.removeItem("accessToken");
+              //   cookies.remove("refreshToken");
+
+              //   if (!localStorage.getItem("accessToken")) {
+              //     window.location.replace("/login");
+              //   }
+              // }
             });
         }
       }
