@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 import { useRef } from "react";
 import Icons from "../../../assets/icon/icon";
 import { toast } from "react-toastify";
+import SearchBlankPanel from "./layout/SearchBlankPanel";
 
 const Wrapper = styled.div`
   display: flex;
@@ -330,8 +331,6 @@ function Schedule({ setReserveList }) {
             })}
           </Map>
           <SearchAndWantBox>
-            {/* 검색 및 찜목록 layout */}
-            {/* <SearchAndWant />  */}
             <StyledTabContext value={filter}>
               <Box sx={{ mb: -1 }}>
                 <StyledTabs
@@ -371,28 +370,36 @@ function Schedule({ setReserveList }) {
                   <Icons.RxMagnifyingGlass size={25} />
                 </SearchContainer>
                 <SearchResultContainer>
-                  <ul>
-                    {searchPlaceList.map((place, i) => {
-                      return (
-                        <li key={i}>
-                          <StyledPlaceCard
-                            selected={info && info.address_name === place.address_name}
-                            onClick={() => {
-                              setInfo(place);
-                              setlat(place.y);
-                              setlng(place.x);
-                            }}
-                          >
-                            <header>{place.place_name}</header>
-                            <p>{place.road_address_name}</p>
-                            <p>{place.address_name}</p>
-                            <span>{place.phone}</span>
-                            <button>일정에 추가</button>
-                          </StyledPlaceCard>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                  {searchPlaceList.length ? (
+                    <ul>
+                      {searchPlaceList.map((place, i) => {
+                        return (
+                          <li key={i}>
+                            <StyledPlaceCard
+                              selected={
+                                info && info.address_name === place.address_name
+                              }
+                              onClick={() => {
+                                setInfo(place);
+                                setlat(place.y);
+                                setlng(place.x);
+                              }}
+                            >
+                              <header>{place.place_name}</header>
+                              <p>{place.road_address_name}</p>
+                              <p>{place.address_name}</p>
+                              <span>
+                                {place.phone ? place.phone : "전화번호 없음"}
+                              </span>
+                              <button>일정에 추가</button>
+                            </StyledPlaceCard>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  ) : (
+                    <SearchBlankPanel />
+                  )}
                 </SearchResultContainer>
               </StyledTabPanel>
               <StyledTabPanel value={"wish"}>찜목록</StyledTabPanel>
