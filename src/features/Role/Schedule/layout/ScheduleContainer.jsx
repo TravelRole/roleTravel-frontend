@@ -6,6 +6,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { useState } from "react";
+import ScheduleBlankPanel from "./ScheduleBlankPanel";
 
 const StyledBox = styled(Box)`
   padding-left: 6rem;
@@ -68,6 +69,10 @@ const ColumnHeader = styled.div`
   padding: 1.4rem 0;
   background: #eef1f8;
   border-radius: 0.8rem;
+  div {
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 const Column = styled.div`
@@ -85,7 +90,7 @@ const PlaceNameColumn = styled(Column)`
   justify-content: flex-start;
   font-weight: 500;
   color: #333333;
-
+  width: 25%;
   input {
     appearance: none;
     border-radius: 50%;
@@ -110,6 +115,45 @@ const PlaceNameColumn = styled(Column)`
 `;
 const DetailColumn = styled(Column)`
   font-size: 1.6rem;
+  width: 7%;
+
+  &::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+  }
+  &::-webkit-scrollbar {
+    height: 0.4rem;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: #cdcdf4;
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+`;
+
+const DetailFeeColumn = styled(DetailColumn)`
+  width: 10%;
+`;
+
+const DetailLinkColumn = styled(DetailColumn)`
+  width: 14%;
+  justify-content: flex-start;
+  padding: 0 1rem;
+  a {
+    font-size: 1.6rem;
+  }
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.6rem;
+  }
 `;
 
 const NoteColumn = styled(Column)`
@@ -117,7 +161,33 @@ const NoteColumn = styled(Column)`
 `;
 
 const NoteDetailColumn = styled(NoteColumn)`
-  font-size: 1.6rem;
+  width: 30%;
+
+  justify-content: flex-start;
+  padding: 0 1rem;
+
+  span {
+    height: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    font-size: 1.6rem;
+
+    &::-webkit-scrollbar-button {
+      width: 0;
+      height: 0;
+    }
+    &::-webkit-scrollbar {
+      height: 0.4rem;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background-color: #cdcdf4;
+    }
+  }
 `;
 
 const ScheduleDetails = styled.div`
@@ -181,60 +251,107 @@ const ScheduleBox = () => {
           <ScheduleWrapper>
             <StyledTabPanel value="1">
               <ColumnHeader>
-                <Column flex={3.5}>장소</Column>
-                <Column flex={1}>시간</Column>
-                <Column flex={1}>예약여부</Column>
-                <Column flex={1}>카테고리</Column>
-                <Column flex={1.5}>금액</Column>
-                <Column flex={2}>링크</Column>
-                <NoteColumn flex={4}>비고</NoteColumn>
+                <PlaceNameColumn>장소</PlaceNameColumn>
+                <DetailColumn>시간</DetailColumn>
+                <DetailColumn>예약여부</DetailColumn>
+                <DetailColumn>카테고리</DetailColumn>
+                <DetailFeeColumn>금액</DetailFeeColumn>
+                <DetailLinkColumn>링크</DetailLinkColumn>
+                <NoteDetailColumn>비고</NoteDetailColumn>
               </ColumnHeader>
               <ScheduleDetails>
                 <ScheduleRow>
-                  <PlaceNameColumn flex={3.5}>
+                  <PlaceNameColumn>
                     <input type="checkbox" />
-                    연돈
+                    연돈이게최대몇자까지 들어갈까더가능
                   </PlaceNameColumn>
-                  <DetailColumn flex={1}>10:00</DetailColumn>
-                  <DetailColumn flex={1}>필요</DetailColumn>
-                  <DetailColumn flex={1}>식당</DetailColumn>
-                  <DetailColumn flex={1.5}>1,231,230원</DetailColumn>
-                  <DetailColumn flex={2}>https://www.naver</DetailColumn>
-                  <NoteDetailColumn flex={4}>
-                    제일깔끔하고 괜찮아보여서 선정했어요.
+                  <DetailColumn>10:00</DetailColumn>
+                  <DetailColumn>필요</DetailColumn>
+                  <DetailColumn>식당</DetailColumn>
+                  <DetailFeeColumn>1,231,230원</DetailFeeColumn>
+                  <DetailLinkColumn>
+                    <span>
+                      {" "}
+                      <a
+                        href={"https://www.ncloud.com/charge/price"}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {" "}
+                        https://www.naver.com/kr.ja{" "}
+                      </a>{" "}
+                    </span>
+                  </DetailLinkColumn>
+                  <NoteDetailColumn>
+                    <span>
+                      {" "}
+                      제일깔끔하고 괜찮아보여서 선정했어요. 바보 이거 길어지{" "}
+                    </span>
                   </NoteDetailColumn>
                 </ScheduleRow>
+                
                 <ScheduleRow>
-                  <PlaceNameColumn flex={3.5}>
+                  <PlaceNameColumn>
                     <input type="checkbox" />
-                    연돈
+                    연돈이게최대몇자까지 들어갈까더가능
                   </PlaceNameColumn>
-                  <DetailColumn flex={1}>10:00</DetailColumn>
-                  <DetailColumn flex={1}>필요</DetailColumn>
-                  <DetailColumn flex={1}>식당</DetailColumn>
-                  <DetailColumn flex={1.5}>1,231,230원</DetailColumn>
-                  <DetailColumn flex={2}>https://www.naver</DetailColumn>
-                  <NoteDetailColumn flex={4}>
-                    제일깔끔하고 괜찮아보여서 선정했어요.
+                  <DetailColumn>10:00</DetailColumn>
+                  <DetailColumn>필요</DetailColumn>
+                  <DetailColumn>식당</DetailColumn>
+                  <DetailFeeColumn>1,231,230원</DetailFeeColumn>
+                  <DetailLinkColumn>
+                    <span>
+                      {" "}
+                      <a
+                        href={"https://www.ncloud.com/charge/price"}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {" "}
+                        https://www.naver.com/kr.ja{" "}
+                      </a>{" "}
+                    </span>
+                  </DetailLinkColumn>
+                  <NoteDetailColumn>
+                    <span>
+                      {" "}
+                      제일깔끔하고 괜찮아보여서 선정했어요. 바보 이거 길어지{" "}
+                    </span>
                   </NoteDetailColumn>
                 </ScheduleRow>
+
                 <ScheduleRow>
-                  <PlaceNameColumn flex={3.5}>
+                  <PlaceNameColumn>
                     <input type="checkbox" />
-                    연돈
+                    연돈이게최대몇자까지 들어갈까더가능
                   </PlaceNameColumn>
-                  <DetailColumn flex={1}>10:00</DetailColumn>
-                  <DetailColumn flex={1}>필요</DetailColumn>
-                  <DetailColumn flex={1}>식당</DetailColumn>
-                  <DetailColumn flex={1.5}>1,231,230원</DetailColumn>
-                  <DetailColumn flex={2}>https://www.naver</DetailColumn>
-                  <NoteDetailColumn flex={4}>
-                    제일깔끔하고 괜찮아보여서 선정했어요.
+                  <DetailColumn>10:00</DetailColumn>
+                  <DetailColumn>필요</DetailColumn>
+                  <DetailColumn>식당</DetailColumn>
+                  <DetailFeeColumn>1,231,230원</DetailFeeColumn>
+                  <DetailLinkColumn>
+                    <span>
+                      {" "}
+                      <a
+                        href={"https://www.ncloud.com/charge/price"}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {" "}
+                        https://www.naver.com/kr.ja{" "}
+                      </a>{" "}
+                    </span>
+                  </DetailLinkColumn>
+                  <NoteDetailColumn>
+                    <span>
+                      {" "}
+                      제일깔끔하고 괜찮아보여서 선정했어요. 바보 이거 길어지{" "}
+                    </span>
                   </NoteDetailColumn>
                 </ScheduleRow>
               </ScheduleDetails>
             </StyledTabPanel>
-            <StyledTabPanel value="2">Item Two</StyledTabPanel>
+            <StyledTabPanel value="2"><ScheduleBlankPanel /></StyledTabPanel>
             <StyledTabPanel value="3">Item Three</StyledTabPanel>
           </ScheduleWrapper>
         </TabContext>
