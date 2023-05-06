@@ -15,13 +15,13 @@ const TravelSliderContainer = styled.div`
 
 const TravelSlider = ({ travelData, currentIndex }) => {
   return (
-    <TravelSliderWrap currentLength={travelData.length}>
+    <TravelSliderWrap currentLength={travelData?.length}>
       <TravelSliderContainer
         style={{
           transform: `translateX(-${currentIndex * (35 + 2.3)}rem)`,
         }}
       >
-        {travelData.map((travel) => (
+        {travelData?.map((travel) => (
           <TravelCard key={travel.roomId} {...travel} />
         ))}
       </TravelSliderContainer>
