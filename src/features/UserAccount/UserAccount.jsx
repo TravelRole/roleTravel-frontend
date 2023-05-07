@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 const UserAccount = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuth } = useSelector((state) => state.auth);
   const { loggedInfo } =
     useSelector((state) => state.loggedInUser);
   const [clicked, setClicked] = useState(true);
@@ -20,7 +19,7 @@ const UserAccount = () => {
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
-      navigate(`/login`);
+      navigate('/login');
       return;
     }
     dispatch(getLoggedInfo());
@@ -41,7 +40,6 @@ const UserAccount = () => {
         <Section>
           <Profile>
             <div>
-              {/* <Avatar src={loggedInfo.profile === null ? 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1635&q=80' : loggedInfo.profile} alt="avatar" /> */}
               <Avatar src={loggedInfo ? loggedInfo.profile : 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1635&q=80'} alt="avatar" />
               <EditIcon onClick={clickHandler}>
                   <Icons.HiOutlinePencilAlt color="black" style={{ postiion: 'absolute', width: '15.68px', height: '15.68px'}} />
@@ -59,7 +57,7 @@ const UserAccount = () => {
         <Section></Section>
       </ContentWrap>
       {isOpen ? (
-        <AddImageModal isAddModal={isOpen} setIsAddModal={setIsOpen} />
+        <AddImageModal setIsOpen={setIsOpen} />
       ) : ''}
     </>
   );

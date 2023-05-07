@@ -8,8 +8,7 @@ import tokenApi from "../../../lib/customAPI";
 import { changeProfileImage, deleteProfileImage } from "../LoggedUserSlice";
 
 const AddImageModal = ({
-  isAddModal,
-  setIsAddModal,
+  setIsOpen,
 }) => {
   const dispatch = useDispatch();
   const imageRef = useRef();
@@ -42,7 +41,7 @@ const AddImageModal = ({
           .then((res) => {
             console.log('Success', res.data);
             dispatch(changeProfileImage())
-            setIsAddModal(false);
+            setIsOpen(false);
           })
           .catch((err) => console.log(err))
       })
@@ -66,8 +65,7 @@ const AddImageModal = ({
             <h1>프로필 사진 등록</h1>
           </div>
           <span style={{ width: '20px', height: '20px'}}>
-            <Icons.MdOutlineClose style={{ postiion: 'absolute', width: '100%', height: '100%', cursor: 'pointer', marginTop: '2.5px', color: '#9B9B9B'}} onClick={() => setIsAddModal
-            (false)} />
+            <Icons.MdOutlineClose style={{ postiion: 'absolute', width: '100%', height: '100%', cursor: 'pointer', marginTop: '2.5px', color: '#9B9B9B'}} onClick={() => setIsOpen(false)} />
           </span>
         </Section>
         <hr />

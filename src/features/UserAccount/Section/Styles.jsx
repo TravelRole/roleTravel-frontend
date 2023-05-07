@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import GoogleIcon from '@mui/icons-material/Google';
 
 export const Container = styled.div`
   width: 100%;
@@ -8,7 +7,7 @@ export const Container = styled.div`
 export const Content = styled.div`
   width: 100%;
 
-  &:nth-child(1){
+  &:nth-child(1) {
     margin-bottom: 60px;
 
     h1 {
@@ -45,7 +44,7 @@ export const Content = styled.div`
     }
   }
 
-  &:nth-child(2){
+  &:nth-child(2) {
     margin-bottom: 30px;
   }
 
@@ -64,7 +63,7 @@ export const ContentWrap = styled.div`
   margin-top: 120px;
   display: flex;
   justify-content: center;
-`
+`;
 
 export const Section = styled.div`
   height: 100%;
@@ -96,11 +95,12 @@ export const Profile = styled.div`
   & > div:nth-child(2) {
     display: flex;
 
-    p, span {
+    p,
+    span {
       font-size: 2rem;
     }
   }
-`
+`;
 
 export const Avatar = styled.img`
   object-fit: cover;
@@ -158,7 +158,7 @@ export const Button = styled.button`
   height: 45px;
   border-radius: 8px;
   border: ${(props) => props.border};
-`
+`;
 
 export const EditIcon = styled.div`
   background: white;
@@ -172,7 +172,7 @@ export const EditIcon = styled.div`
   color: black;
   display: flex;
   justify-content: center;
-  align-itemes: center;
+  align-items: center;
   padding-top: 0.9rem;
   cursor: pointer;
-`
+`;
