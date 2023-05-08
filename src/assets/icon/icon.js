@@ -7,6 +7,7 @@ import {
   HiOutlineCalculator,
   HiOutlineX,
   HiOutlinePencilAlt,
+  HiOutlineCheckCircle,
 } from "react-icons/hi";
 
 import { RiCalendarCheckLine, RiKakaoTalkFill } from "react-icons/ri";
@@ -23,6 +24,8 @@ import {
 
 import { TbPencilMinus } from "react-icons/tb";
 import { MdOutlineClose } from "react-icons/md";
+
+import { TfiAngleRight, TfiAngleLeft } from 'react-icons/tfi'
 
 const Icons = {
   TfiPencilAlt,
@@ -45,6 +48,9 @@ const Icons = {
   HiOutlinePencilAlt,
   MdOutlineClose,
   RiKakaoTalkFill,
+  TfiAngleRight,
+  TfiAngleLeft,
+  HiOutlineCheckCircle
 };
 
 export default Icons;
