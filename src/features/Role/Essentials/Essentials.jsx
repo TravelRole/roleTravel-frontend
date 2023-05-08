@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Container } from "./Styles";
 import Sections from "./components/Sections";
 import EditNav from "./components/EditNav";
-import TitleContent from './components/TitleContent'
+import TitleContent from "./components/TitleContent";
 
 function Essentials() {
   const [clicked, setClicked] = useState("");
@@ -28,12 +28,14 @@ function Essentials() {
 
   const handleResize = () => {
     setResize(window.innerWidth);
+  };
 
+  useEffect(() => {
     if (resize <= 1200) setDefaultPages(4);
     else if (resize <= 1460) setDefaultPages(5);
     else if (resize <= 1730) setDefaultPages(6);
     else setDefaultPages(7);
-  };
+  }, [resize]);
 
   return (
     <>
