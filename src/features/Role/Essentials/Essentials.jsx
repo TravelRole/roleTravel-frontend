@@ -1,33 +1,57 @@
-import MaterialData from "./material";
-import { Container, Title, Tip, Sub, SubTitle, Content, Row, Wrapper, AddIcon } from './Styles'
-
-MaterialData.필수준비물[0].checked = true
+import { useEffect, useState } from "react";
+import { Container } from "./Styles";
+import Sections from "./components/Sections";
+import EditNav from "./components/EditNav";
+import TitleContent from './components/TitleContent'
 
 function Essentials() {
+  const [clicked, setClicked] = useState("");
+  const [page, setPage] = useState(0);
+  const [defaultPages, setDefaultPages] = useState(7);
+  const [resize, setResize] = useState(window.innerWidth);
+  const [data, setData] = useState({
+    "필수 준비물": ["asdf", "fff"],
+    의류: [],
+    "세면 용품": [],
+    상비약: [],
+    "계절 용품": [],
+    "조리 용품": [],
+    "기타 용품": []
+  });
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const handleResize = () => {
+    setResize(window.innerWidth);
+
+    if (resize <= 1200) setDefaultPages(4);
+    else if (resize <= 1460) setDefaultPages(5);
+    else if (resize <= 1730) setDefaultPages(6);
+    else setDefaultPages(7);
+  };
+
   return (
     <>
       <Container>
-        <Title>
-          <h1 style={{ fontSize: "3rem", fontWeight: "600" }}>
-            준비물
-          </h1>
-          <Tip>TIP&nbsp;!</Tip>
-        </Title>
-        <Sub>
-          <SubTitle color="#A7A7A7;">가져가야 하는 준비물을 잊지 않도록 여기에 적어보세요:) </SubTitle>
-          <SubTitle color="#8490A4">준비물 추가</SubTitle>
-        </Sub>
-        <Content>
-          <Row>
-            <div>필수 준비물</div>
-            <div>의류</div>
-            <div>세면용품</div>
-            <div>상비약</div>
-            <div>계절 용품</div>
-            <div>조리 용품</div>
-            <div>기타 용품</div>
-          </Row>
-        </Content>
+        <TitleContent />
+        <EditNav
+          data={data}
+          clicked={clicked}
+          setClicked={setClicked}
+          page={page}
+          setPage={setPage}
+          defaultPages={defaultPages}
+        />
+        <Sections
+          data={data}
+          page={page}
+          defaultPages={defaultPages}
+        />
       </Container>
     </>
   );

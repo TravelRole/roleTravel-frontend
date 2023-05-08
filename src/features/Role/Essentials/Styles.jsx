@@ -10,7 +10,7 @@ export const Container = styled.div`
   padding-right: 60px;
   padding-top: 80px;
 
-  &: > div:nth-child(2) {
+  & > div:nth-child(2) {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -20,37 +20,37 @@ export const Container = styled.div`
 export const Title = styled.div`
   display: flex;
   justify-content: left;
-  gap: 19px;
-  margin-bottom: 30px;
-`
-
-export const SubTitle = styled.span`
-  font-weight: 500;
-  font-size: 24px;
-  color: ${(props) => props.color}
-`
+  align-items: center;
+  margin-bottom: 40px;
+`;
 
 export const Sub = styled.div`
   margin-bottom: 40px;
   display: flex;
   justify-content: space-between;
-`
+`;
 
 export const Tip = styled.div`
   font-size: 1.4rem;
-  font-wieght: 500;
-  padding: 5px 16px;
-  width: 61px;
+  font-weight: 500;
+  padding: 6px 9.5px;
+  width: 49px;
   height: 27px;
-  background: #3884fd;
+  background: #f4f6fb;
+  border: 1px solid #3883fd;
   border-radius: 99px;
-  color: white;
-`
+  color: #3884fd;
+
+  &:hover {
+    background: #3884fd;
+    color: white;
+  }
+`;
 
 export const Row = styled.div`
   width: 100%;
   height: 50px;
-  background: #EEF1F8;
+  background: #eef1f8;
   mix-blend-mode: normal;
   border-radius: 8px;
   display: flex;
@@ -60,22 +60,33 @@ export const Row = styled.div`
   & > div {
     font-weight: 500;
     font-size: 18px;
-    color: #8490A4;
-    border-right: 1px solid #D8E2F4;
+    color: #8490a4;
+    border-right: 1px solid #d8e2f4;
     text-align: center;
   }
-`
+`;
 
 export const Content = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: column;
-`
+  gap: 10px;
+  overflow: hidden
+`;
+
+export const Section = styled.div`
+  width: 260px;
+  height: 745px;
+  border-radius: 16px;
+  background: #eef1f8;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 24px;
+`;
 
 export const Wrapper = styled.div`
   width: 100%;
   height: 662px;
-  background: #FFFFFF;
+  background: #ffffff;
   mix-blend-mode: normal;
   border-radius: 16px;
   display: flex;
@@ -94,15 +105,54 @@ export const Wrapper = styled.div`
     font-weight: 500;
     font-size: 22px;
     text-align: center;
-    color: #8B8B8B;
+    color: #8b8b8b;
     line-height: 34px;
   }
-`
+`;
 
 export const AddIcon = styled.div`
-  border: 4px solid #C1D9FE;
+  border: 4px solid #c1d9fe;
   width: 68px;
   height: 68px;
   border-radius: 100%;
   margin-bottom: 30px;
-`
+`;
+
+export const EditContent = styled.div`
+  width: 1874px;
+  float: right;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 23px;
+`;
+
+export const EssentialsSpan = styled.span`
+  font-size: ${(props) => props.fontSize};
+  font-weight: ${(props) => props.fontWeight};
+  color: ${(props) => props.color};
+`;
+
+export const Divider = styled.hr`
+  border: 1px solid #d8e2f4;
+  height: 16px;
+  margin-left: 0px;
+  margin-right: 0px;
+`;
+
+export const Dot = styled.div`
+  width: 18px;
+  height: 18px;
+  background: #c5ccd6;
+  border-radius: 100%;
+`;
+
+export const EssentialsItem = styled.div`
+  display: flex;
+  align-items: center;
+  height: 46px;
+  width: 228px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 14px 10px;
+`;
