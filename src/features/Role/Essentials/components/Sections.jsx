@@ -1,9 +1,6 @@
-import { useState } from "react";
-import Icons from "../../../../assets/icon/icon";
 import {
   Content,
   Dot,
-  EssentialsItem,
   EssentialsSpan,
   Section
 } from "../Styles";
