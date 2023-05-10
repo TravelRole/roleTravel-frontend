@@ -4,15 +4,15 @@ import { Container, Content, InputContainer } from "./Styles";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changePassword } from "../LoggedUserSlice";
 import { toast } from "react-toastify";
 
 const ChangePassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const { loggedInfo } =
-  //   useSelector((state) => state.loggedUser);
+  const { loggedInfo } =
+    useSelector((state) => state.loggedInUser);
   const [show, setShow] = useState({ password: false, newPassword: false})
   const [inputs, setInputs] = useState({ newPassword: '', password: ''});
   const [errors, setErrors] = useState({
@@ -57,7 +57,7 @@ const ChangePassword = () => {
             closeOnClick: true,
             pauseOnHover: true,
             draggable: false,
-            onClose: () => navigate('/:userId')
+            onClose: () => navigate(`/home`)
           });
         }, 1);
       } else {
@@ -73,11 +73,6 @@ const ChangePassword = () => {
         <div width="76px">
           <p>비밀번호는 8~16자 영문, 숫자, 특수문자를 사용할 수 있습니다.</p>
           <p>비밀번호는 <span style={{ color: '#3884FD', fontSize: '1.7rem'}}>주기적(최소 6개월)</span>으로 변경해 주시기 바랍니다.</p>
-          <p>
-            비밀번호는{" "}
-            <span style={{ color: "#3884FD" }}>주기적(최소 6개월)</span>으로
-            변경해 주시기 바랍니다.
-          </p>
         </div>
       </Content>
       <Content>
@@ -90,7 +85,7 @@ const ChangePassword = () => {
             onChange={changeHandler}
             maxLength={11}
             error={errors.password.length > 0}
-            helperText={errors.password ? errors.password : " "}
+            helperText={errors.password ? errors.password : ""}
             type={show.password ? 'text' : 'password'}
             InputProps={{
               endAdornment: (
@@ -111,7 +106,7 @@ const ChangePassword = () => {
             onChange={changeHandler}
             maxLength={11}
             error={errors.newPassword.length > 0}
-            helperText={errors.newPassword ? errors.newPassword : " "}
+            helperText={errors.newPassword ? errors.newPassword : ""}
             type={show.newPassword ? 'text' : 'password'}
             InputProps={{
               endAdornment: (

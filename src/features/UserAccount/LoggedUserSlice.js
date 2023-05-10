@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 const initialState = {
   changePassword: null,
   loggedInfo: null,
-  presignedUrl: '',
+  presignedUrl: null,
   error: false,
 };
 
@@ -39,8 +39,8 @@ export const changePassword = createAsyncThunk("api/users/password", async (pwDa
     });
 });
 
-export const changeProfileImage = createAsyncThunk("api/users/image", async () => {
-    await tokenApi.put(`api/users/image`)
+export const changeProfileImage = createAsyncThunk("api/users/image", async (imageData, thunkAPI) => {
+    await tokenApi.put(`api/users/image`, imageData)
     .then((res) => {
       return res.data
     })
@@ -50,18 +50,11 @@ export const changeProfileImage = createAsyncThunk("api/users/image", async () =
 });
 
 export const deleteProfileImage = createAsyncThunk("api/users/image", async () => {
-  try {
-    const address = (await tokenApi.get("api/users/image/presigned-url")).data;
-    await tokenApi.delete(`${address}/api/users/image`);
-    dispatchEvent(getLoggedInfo())
-  } catch (err) {
-    throw err;
-  }
-});
-
-export const getPresignedUrl = createAsyncThunk("api/users/image", async () => {
-  const res = await tokenApi.get("api/users/image/presigned-url")
-  return res.data;
+  await tokenApi.delete('api/users/image')
+    .then((res) => 'Deleted!')
+    .catch((err) => {
+      throw err;
+    })
 });
 
 const loggedUserSlice = createSlice({
@@ -88,12 +81,6 @@ const loggedUserSlice = createSlice({
         state.changePassword = action.payload;
       })
       .addCase(changePassword.rejected, (state, action) => {
-        state.error = action.payload;
-      })
-      .addCase(getPresignedUrl.fulfilled, (state, action) => {
-        state.presignedUrl = action.payload;
-      })
-      .addCase(getPresignedUrl.rejected, (state, action) => {
         state.error = action.payload;
       })
     }

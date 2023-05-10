@@ -7,18 +7,23 @@ import { getLoggedInfo } from "./LoggedUserSlice";
 import Header from '../layout/Header';
 import Icons from "../../assets/icon/icon";
 import AddImageModal from "./Modal/AddImageModal";
-import Modal from '../../components/Modal'
+import { useNavigate } from "react-router-dom";
 
 const UserAccount = () => {
   const dispatch = useDispatch();
-  // const { loggedInfo } =
-  //   useSelector((state) => state.loggedUser);
+  const navigate = useNavigate();
+  const { loggedInfo } =
+    useSelector((state) => state.loggedInUser);
   const [clicked, setClicked] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-  
+
   useEffect(() => {
+    if (!localStorage.getItem("accessToken")) {
+      navigate('/login');
+      return;
+    }
     dispatch(getLoggedInfo());
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   const clickHandler = () => {
     setIsOpen(true);
@@ -35,13 +40,13 @@ const UserAccount = () => {
         <Section>
           <Profile>
             <div>
-              <Avatar src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1635&q=80" alt="avatar" />
+              <Avatar src={loggedInfo ? loggedInfo.profile : 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1635&q=80'} alt="avatar" />
               <EditIcon onClick={clickHandler}>
                   <Icons.HiOutlinePencilAlt color="black" style={{ postiion: 'absolute', width: '15.68px', height: '15.68px'}} />
               </EditIcon>
             </div>
             <div>
-              <p> 홍길동 님 </p>
+              <p> {loggedInfo?.name} 님 </p>
               {/* <span>{loggedInfo.provider === 'google' ? <Icons.FcGoogle /> : <></>}</span> */}
             </div>
           </Profile>
@@ -52,7 +57,7 @@ const UserAccount = () => {
         <Section></Section>
       </ContentWrap>
       {isOpen ? (
-        <AddImageModal isAddModal={isOpen} setIsAddModal={setIsOpen} />
+        <AddImageModal setIsOpen={setIsOpen} />
       ) : ''}
     </>
   );

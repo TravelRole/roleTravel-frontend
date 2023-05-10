@@ -42,9 +42,6 @@ export const dateValidation = (value) => {
 
 
 export const switched = (name, value) => {
-  switch (name) {
-    case 'name': return nameValidation(value)
-    case 'date': return dateValidation(value);
-    default: return;
-  }
+  if (name === 'nickname') return nameValidation(value)
+  else if (name === 'date') return dateValidation(value);
 };

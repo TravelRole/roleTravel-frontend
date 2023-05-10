@@ -14,22 +14,22 @@ const Info = () => {
   const dispatch = useDispatch();
   const addSlash = useAddSlash();
   const navigate = useNavigate();
-  // const { loggedInfo } =
-  //   useSelector((state) => state.loggedUser);
+  const { loggedInfo } =
+    useSelector((state) => state.loggedInUser);
   const [inputs, setInputs] = useState({ email: "", date: "", nickname: "", platform: '' });
   const [errors, setErrors] = useState({ date: "", nickname: "" });
 
-  // console.log(loggedInfo)
+  console.log(loggedInfo)
 
-  // useEffect(() => {
-  //   setInputs({
-  //     email: loggedInfo.email ? loggedInfo.email : '',
-  //     nickname: loggedInfo.name ? loggedInfo.name : '',
-  //     date: loggedInfo.birth ? loggedInfo.birth : '',
-  //     platform: loggedInfo.provider ? loggedInfo.provider : '',
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+  useEffect(() => {
+    setInputs({
+      email: loggedInfo?.email ? loggedInfo?.email : '',
+      nickname: loggedInfo?.name ? loggedInfo?.name : '',
+      date: loggedInfo?.birth ? loggedInfo?.birth : '',
+      platform: loggedInfo?.provider ? loggedInfo?.provider : '',
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedInfo])
 
   const changeHandler = (e) => {
     const { value, name } = e.target;
@@ -60,6 +60,7 @@ const Info = () => {
       } else {
         toast.error('수정에 실패하였습니다.');
       }
+      console.log(res.meta.requestStatus)
     })
   };
 
@@ -81,7 +82,6 @@ const Info = () => {
             InputProps={{
               readOnly: true,
             }}
-            helperText={" "}
             sx={{ cursor: 'none'}}
           />
         </InputContainer>
@@ -93,7 +93,7 @@ const Info = () => {
             value={inputs.nickname}
             onChange={changeHandler}
             error={errors.nickname.length > 0}
-            helperText={errors.nickname ? errors.nickname : " "}
+            helperText={errors.nickname ? errors.nickname : ""}
           />
         </InputContainer>
         <InputContainer>
@@ -104,7 +104,7 @@ const Info = () => {
             value={addSlash(inputs.date)}
             onChange={changeHandler}
             error={errors.date.length > 0}
-            helperText={errors.date ? errors.date : " "}
+            helperText={errors.date ? errors.date : ""}
           />
         </InputContainer>
       </Content>
