@@ -1,9 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Icons from "../../../../assets/icon/icon";
 import { Dot, EssentialsItem, EssentialsSpan } from "../Styles";
 
-const Checkbox = ({ item }) => {
+const Checkbox = ({ item, setData }) => {
   const [checked, setChecked] = useState(false);
+
+  // useEffect(() => {
+  //   setChecked(item.isChecked)
+  // }, [])
+  
+  // useEffect(() => {
+  //   if (checked) {
+  //     willDelete.push(item);
+  //   } else {
+  //     // if (willDelete == )
+  //     // setWillDelete(willDelete.filter(el => el.itemName !== item.itemName))
+  //   }
+  // }, [checked]);
 
   const toggle = () => setChecked(!checked);
 
@@ -23,7 +36,8 @@ const Checkbox = ({ item }) => {
             style={{
               fill: "#eef1f8",
               color: "#3884fd",
-              cursor: "pointer"
+              cursor: "pointer",
+              strokeWidth: '1.7'
             }}
             onClick={() => toggle()}
           />
@@ -44,7 +58,7 @@ const Checkbox = ({ item }) => {
           fontSize="14px"
           style={{ marginLeft: "10px" }}
         >
-          {item}
+          {item.itemName}
         </EssentialsSpan>
       </EssentialsItem>
     </div>

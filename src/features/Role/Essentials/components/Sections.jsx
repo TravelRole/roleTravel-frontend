@@ -1,15 +1,10 @@
-import {
-  Content,
-  Dot,
-  EssentialsSpan,
-  Section
-} from "../Styles";
+import { Content, Dot, EssentialsSpan, Section } from "../Styles";
 import Checkbox from "./CheckBox";
 
-const Sections = ({ data, page, defaultPages }) => {
+const Sections = ({ data, page, defaultPages, resize, setData }) => {
   return (
-    <Content>
-      {Object.entries(data)
+    <Content width={resize - 150}>
+      {Object.keys(data)
         .splice(page, defaultPages)
         .map((el, index) => (
           <Section key={index}>
@@ -17,8 +12,27 @@ const Sections = ({ data, page, defaultPages }) => {
               color="#8490a4"
               fontSize="18px"
               fontWeight="600"
+              style={{ height: "24px" }}
             >
-              {el[0]}
+              {el}
+              {data[el].length > 0 && (
+                <EssentialsSpan
+                  color="#505050"
+                  fontSize="14px"
+                  fontWeight="500"
+                  style={{
+                    background: "#fff",
+                    width: "32px",
+                    border: "1px solid #dadada",
+                    padding: "3px 10px",
+                    borderRadius: "99px",
+                    marginLeft: "8px",
+                    textAlign: "center"
+                  }}
+                >
+                  {data[el].length}
+                </EssentialsSpan>
+              )}
             </EssentialsSpan>
             <hr
               style={{
@@ -28,7 +42,7 @@ const Sections = ({ data, page, defaultPages }) => {
               }}
             />
 
-            {el[1].length === 0 ? (
+            {data[el].length === 0 ? (
               <div
                 style={{
                   display: "flex",
@@ -51,7 +65,13 @@ const Sections = ({ data, page, defaultPages }) => {
                 </EssentialsSpan>
               </div>
             ) : (
-              el[1].map((item, index) => <Checkbox key={index} item={item} />)
+              data[el].map((dat, index) => (
+                <Checkbox
+                  key={index}
+                  item={dat}
+                  setData={setData}
+                />
+              ))
             )}
           </Section>
         ))}

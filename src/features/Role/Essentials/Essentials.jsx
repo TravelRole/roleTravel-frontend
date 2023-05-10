@@ -3,21 +3,44 @@ import { Container } from "./Styles";
 import Sections from "./components/Sections";
 import EditNav from "./components/EditNav";
 import TitleContent from "./components/TitleContent";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getEssentials } from "./EssentialsSlice";
 
 function Essentials() {
+  const dispatch = useDispatch();
+  const { essentials, isLoading } = useSelector((state) => state.essentials);
   const [clicked, setClicked] = useState("");
   const [page, setPage] = useState(0);
   const [defaultPages, setDefaultPages] = useState(7);
   const [resize, setResize] = useState(window.innerWidth);
   const [data, setData] = useState({
-    "필수 준비물": ["asdf", "fff"],
+    "필수 준비물": [],
+    "해외 여행": [],
     의류: [],
-    "세면 용품": [],
+    "세면 용품, 화장품": [],
     상비약: [],
-    "계절 용품": [],
+    계절용품: [],
     "조리 용품": [],
     "기타 용품": []
   });
+
+  useEffect(() => {
+    dispatch(getEssentials());
+    console.log(essentials)
+  }, []);
+
+  if (!isLoading) {
+    Object.keys(essentials).map((el) => {
+      switch (el) {
+        case 'ESSENTIAL':
+          return (data["필수 준비물"] = essentials[el]);
+        case 'ETC':
+          return (data["기타 용품"] = essentials[el]);
+        default: return "";
+      }
+    });
+  }
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -31,15 +54,16 @@ function Essentials() {
   };
 
   useEffect(() => {
-    if (resize <= 1200) setDefaultPages(4);
-    else if (resize <= 1460) setDefaultPages(5);
-    else if (resize <= 1730) setDefaultPages(6);
+    if (resize <= 1180) setDefaultPages(3);
+    else if (resize <= 1460) setDefaultPages(4);
+    else if (resize <= 1730) setDefaultPages(5);
+    else if (resize <= 1980) setDefaultPages(6);
     else setDefaultPages(7);
   }, [resize]);
 
   return (
     <>
-      <Container>
+      <Container style={{ width: resize - 300 }}>
         <TitleContent />
         <EditNav
           data={data}
@@ -48,11 +72,13 @@ function Essentials() {
           page={page}
           setPage={setPage}
           defaultPages={defaultPages}
+          setData={setData}
         />
         <Sections
           data={data}
           page={page}
           defaultPages={defaultPages}
+          resize={resize}
         />
       </Container>
     </>

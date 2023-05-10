@@ -7,13 +7,15 @@ export const Container = styled.div`
   flex-direction: column;
   background-color: #f4f6fb;
   padding-left: 60px;
-  padding-right: 60px;
   padding-top: 80px;
 
   & > div:nth-child(2) {
-    width: 100%;
     display: flex;
     justify-content: space-between;
+
+    @media screen and (min-width = 1900px) {
+      margin-right: 40px;
+    }
   }
 `;
 
@@ -22,12 +24,8 @@ export const Title = styled.div`
   justify-content: left;
   align-items: center;
   margin-bottom: 40px;
-`;
-
-export const Sub = styled.div`
-  margin-bottom: 40px;
-  display: flex;
-  justify-content: space-between;
+  margin-left: 20px;
+  margin-right: 30px;
 `;
 
 export const Tip = styled.div`
@@ -67,10 +65,12 @@ export const Row = styled.div`
 `;
 
 export const Content = styled.div`
-  width: 100%;
+  width: ${(props) => props.width};
   display: flex;
   gap: 10px;
-  overflow: hidden
+  overflow: hidden;
+  margin-left: 20px;
+  margin-right: 20px;
 `;
 
 export const Section = styled.div`
@@ -119,12 +119,11 @@ export const AddIcon = styled.div`
 `;
 
 export const EditContent = styled.div`
-  width: 1874px;
   float: right;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 23px;
+  margin: 0px 90px 20px 20px;
 `;
 
 export const EssentialsSpan = styled.span`
