@@ -8,6 +8,7 @@ import searchReducer from "../features/SearchIDPW/searchSlice";
 import travelReducer from "../features/SpaceList/travelSlice";
 import loggedUserReducer from "../features/UserAccount/LoggedUserSlice";
 import invitationCodeReducer from "../features/layout/invitationCodeSlice";
+import essentialsReducer from '../features/Role/Essentials/EssentialsSlice'
 
 export const store = configureStore({
   reducer: {
@@ -19,5 +20,6 @@ export const store = configureStore({
     travel: travelReducer,
     loggedInUser: loggedUserReducer,
     invitationCode: invitationCodeReducer,
+    essentials: essentialsReducer,
   },
 });
