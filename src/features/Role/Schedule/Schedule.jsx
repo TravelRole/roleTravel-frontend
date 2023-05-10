@@ -15,6 +15,8 @@ import Icons from "../../../assets/icon/icon";
 import { toast } from "react-toastify";
 import SearchBlankPanel from "./layout/SearchBlankPanel";
 import ScheduleBox from "./layout/ScheduleContainer";
+import { getWantPlace } from "./WantPlaceSlice";
+import { useDispatch } from "react-redux";
 
 const Wrapper = styled.div`
   display: flex;
@@ -244,19 +246,12 @@ function Schedule({ setReserveList }) {
     setFilter(newValue);
   };
 
-  const baseUrl = process.env.REACT_APP_BASE_URL;
   const { roomId } = useParams();
 
-  // useEffect(() => {
-  //   tokenApi
-  //     .get(`${baseUrl}api/want-place?roomId=${roomId}`)
-  //     .then((Response) => {
-  //       console.log(Response);
-  //     })
-  //     .catch((Error) => {
-  //       console.log(Error);
-  //     });
-  // }, [baseUrl, roomId]);
+  const dispatch = useDispatch();
+   useEffect(() => {
+    dispatch(getWantPlace());
+   }, [roomId , dispatch]);
 
   const [searchPlaceList, setSearchPlaceList] = useState([]);
 
