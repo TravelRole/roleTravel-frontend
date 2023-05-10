@@ -3,7 +3,6 @@ import { Container } from "./Styles";
 import Sections from "./components/Sections";
 import EditNav from "./components/EditNav";
 import TitleContent from "./components/TitleContent";
-import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getEssentials } from "./EssentialsSlice";
 
@@ -26,11 +25,11 @@ function Essentials() {
   });
 
   useEffect(() => {
-    dispatch(getEssentials());
+    dispatch(getEssentials(window.location.href.split('/')[3]));
     console.log(essentials)
   }, []);
 
-  if (!isLoading) {
+  if (!isLoading && essentials) {
     Object.keys(essentials).map((el) => {
       switch (el) {
         case 'ESSENTIAL':

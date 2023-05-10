@@ -2,12 +2,13 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   flex-direction: column;
   background-color: #f4f6fb;
   padding-left: 60px;
   padding-top: 80px;
+  /* padding-right: 20px; */
 
   & > div:nth-child(2) {
     display: flex;
@@ -31,7 +32,7 @@ export const Title = styled.div`
 export const Tip = styled.div`
   font-size: 1.4rem;
   font-weight: 500;
-  padding: 6px 9.5px;
+  padding: 5.5px 11px;
   width: 49px;
   height: 27px;
   background: #f4f6fb;
@@ -70,7 +71,6 @@ export const Content = styled.div`
   gap: 10px;
   overflow: hidden;
   margin-left: 20px;
-  margin-right: 20px;
 `;
 
 export const Section = styled.div`
@@ -123,7 +123,7 @@ export const EditContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0px 90px 20px 20px;
+  margin: 0px 68px 20px 20px;
 `;
 
 export const EssentialsSpan = styled.span`
