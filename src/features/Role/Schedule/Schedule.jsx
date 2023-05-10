@@ -15,8 +15,9 @@ import Icons from "../../../assets/icon/icon";
 import { toast } from "react-toastify";
 import SearchBlankPanel from "./layout/SearchBlankPanel";
 import ScheduleBox from "./layout/ScheduleContainer";
-import { getWantPlace } from "./WantPlaceSlice";
-import { useDispatch } from "react-redux";
+import { addWantPlace, delWantPlace, getWantPlace } from "./WantPlaceSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useCallback } from "react";
 
 const Wrapper = styled.div`
   display: flex;
@@ -249,9 +250,56 @@ function Schedule({ setReserveList }) {
   const { roomId } = useParams();
 
   const dispatch = useDispatch();
-   useEffect(() => {
-    dispatch(getWantPlace());
-   }, [roomId , dispatch]);
+
+  /** 찜장소 추가하기 */
+  const wantPlaceData = {
+    roomId: roomId,
+    placeName: "강릉바다",
+    placeAddress: "바다바다",
+    phoneNumber: "010-1234-5678",
+    latitude: 15.23,
+    longitude: 12.11,
+    category: "산",
+    lotNumberAddress: "색달동2156-2",
+  };
+
+  const onAddWantPlace = (e) => {
+    e.preventDefault();
+    dispatch(addWantPlace(wantPlaceData)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        dispatch(getWantPlace(roomId));
+        return;
+      }
+    });
+  };
+
+  /** 찜장소 추가하기 */
+
+  /** 찜장소 삭제하기 */
+
+  const delpayload = {
+    roomId: roomId,
+    placeId: 3,
+  };
+
+  const ondelWantPlace = (e) => {
+    e.preventDefault();
+    dispatch(delWantPlace(delpayload)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        dispatch(getWantPlace(roomId));
+        return;
+      }
+    });
+  };
+
+  /** 찜장소 가져오기 */
+  useEffect(() => {
+    dispatch(getWantPlace(roomId));
+  }, [roomId, dispatch]);
+
+  const { wantPlaceList } = useSelector((state) => state.wantPlace);
+  console.log(wantPlaceList.wantPlaces);
+  /** 찜장소 가져오기 */
 
   const [searchPlaceList, setSearchPlaceList] = useState([]);
 
@@ -306,7 +354,11 @@ function Schedule({ setReserveList }) {
   return (
     <>
       <Wrapper>
-        <PageHeader>일정</PageHeader>
+        <PageHeader>
+          일정
+          <button onClick={onAddWantPlace}>찜목록 전송</button>
+          <button onClick={ondelWantPlace}>찜목록 삭제</button>
+        </PageHeader>
         <MapWrapper>
           <Map
             center={{ lat: lat, lng: lng }}

@@ -5,10 +5,10 @@ import tokenApi from "../../../lib/customAPI";
 //팀원들이 찜해놓은 장소 가져오기
 export const getWantPlace = createAsyncThunk(
   "wantplace/getWantPlace",
-  async () => {
+  async (roomId) => {
     try {
-      const res = await tokenApi.get(`api/want-place`);
-      return res;
+      const res = await tokenApi.get(`api/want-place?roomId=${roomId}`);
+      return res.data;
     } catch (error) {
       console.log("서버에러입니다");
     }
@@ -21,7 +21,6 @@ export const addWantPlace = createAsyncThunk(
   async (placeData, thunkAPI) => {
     try {
       await tokenApi.post(`api/want-place`, placeData);
-      dispatchEvent(getWantPlace());
     } catch (error) {
       console.log(error)
     }
@@ -33,8 +32,7 @@ export const delWantPlace = createAsyncThunk(
   "wantplace/delWantPlace",
   async (delpayload, thunkAPI) => {
     try {
-      await tokenApi.delete(`api/want-place`, delpayload);
-      dispatchEvent(getWantPlace());
+      await tokenApi.delete(`api/want-place`, {params : delpayload});
     } catch (error) {
       console.log(error)
     }
@@ -75,7 +73,7 @@ const wantPlaceSlice = createSlice({
       })
       .addCase(getWantPlace.fulfilled, (state, action) => {
         state.isWantPlaceLoading = false;
-        state.wantPlaceList = action.payload.wantPlaceList;
+        state.wantPlaceList = action.payload;
       })
       .addCase(getWantPlace.rejected, (state, action) => {
         state.isWantPlaceLoading = false;
