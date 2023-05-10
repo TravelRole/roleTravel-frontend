@@ -23,7 +23,10 @@ export const login = createAsyncThunk(
       // 로컬스토리지에 accessToken 저장
       localStorage.setItem("accessToken", accessToken);
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (
+        error.response &&
+        (error.response.status === 401 || error.response.status === 400)
+      ) {
         return thunkAPI.rejectWithValue(
           <p>
             회원정보를 잘못 입력했습니다

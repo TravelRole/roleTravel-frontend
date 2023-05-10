@@ -126,6 +126,7 @@ const SignInput = ({
             if (res.data.isExist === true) {
               setFormData((prev) => ({ ...prev, email: "" }));
               result = "duplicateId";
+              return;
             }
             setFormData((prev) => ({ ...prev, email: value }));
             result = "confirmId";
