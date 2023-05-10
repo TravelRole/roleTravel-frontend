@@ -7,6 +7,7 @@ import {
   HiOutlineCalculator,
   HiOutlineX,
   HiOutlinePencilAlt,
+  HiOutlineCheckCircle,
 } from "react-icons/hi";
 
 import { RiCalendarCheckLine, RiKakaoTalkFill } from "react-icons/ri";
@@ -26,6 +27,8 @@ import { TbPencilMinus } from "react-icons/tb";
 import { MdOutlineClose } from "react-icons/md";
 import { BiCoinStack } from "react-icons/bi";
 import { RxMagnifyingGlass } from "react-icons/rx";
+
+import { TfiAngleRight, TfiAngleLeft } from 'react-icons/tfi'
 
 const Icons = {
   TfiPencilAlt,
@@ -48,6 +51,9 @@ const Icons = {
   HiOutlinePencilAlt,
   MdOutlineClose,
   RiKakaoTalkFill,
+  TfiAngleRight,
+  TfiAngleLeft,
+  HiOutlineCheckCircle,
   AiOutlineCreditCard,
   BiCoinStack,
   RxMagnifyingGlass
