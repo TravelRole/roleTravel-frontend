@@ -138,13 +138,6 @@ const theme = createTheme({
 });
 
 function App() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
-      dispatch(getUserInfo());
-    }
-  }, [dispatch]);
-
   return (
     <>
       <GlobalStyle />

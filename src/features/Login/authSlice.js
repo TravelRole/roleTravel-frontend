@@ -14,7 +14,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async (userData, thunkAPI) => {
     try {
-      const res = await authApi.post("auth/login", userData, {
+      const res = await authApi.post("api/login", userData, {
         withCredentials: true,
       });
 
@@ -23,7 +23,10 @@ export const login = createAsyncThunk(
       // 로컬스토리지에 accessToken 저장
       localStorage.setItem("accessToken", accessToken);
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (
+        error.response &&
+        (error.response.status === 401 || error.response.status === 400)
+      ) {
         return thunkAPI.rejectWithValue(
           <p>
             회원정보를 잘못 입력했습니다
@@ -40,7 +43,7 @@ export const login = createAsyncThunk(
 //로그아웃
 export const logoutAsync = createAsyncThunk("auth/logout", async () => {
   try {
-    await tokenApi.post(`auth/logout`);
+    await tokenApi.post(`api/logout`);
     localStorage.removeItem("accessToken");
   } catch (error) {
     throw error;

@@ -20,10 +20,13 @@ import {
   AiOutlineEye,
   AiOutlineExclamationCircle,
   AiOutlineCheckCircle,
+  AiOutlineCreditCard
 } from "react-icons/ai";
 
 import { TbPencilMinus } from "react-icons/tb";
 import { MdOutlineClose } from "react-icons/md";
+import { BiCoinStack } from "react-icons/bi";
+import { RxMagnifyingGlass } from "react-icons/rx";
 
 import { TfiAngleRight, TfiAngleLeft } from 'react-icons/tfi'
 
@@ -50,7 +53,10 @@ const Icons = {
   RiKakaoTalkFill,
   TfiAngleRight,
   TfiAngleLeft,
-  HiOutlineCheckCircle
+  HiOutlineCheckCircle,
+  AiOutlineCreditCard,
+  BiCoinStack,
+  RxMagnifyingGlass
 };
 
 export default Icons;

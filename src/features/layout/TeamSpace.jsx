@@ -2,12 +2,11 @@ import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import Leader from "../Role/Leader";
 import Reservation from "../Role/Reservation/Reservation";
 import Account from "../Role/Account/Account";
 import Essentials from "../Role/Essentials/Essentials";
 import Schedule from "../Role/Schedule/Schedule";
-import Allplan from "../Role/Allplan/Allplan";
+import AllPlan from "../Role/Allplan/AllPlan";
 
 const TeamSpaceBox = styled.div`
   display: flex;
@@ -49,8 +48,7 @@ function TeamSpace({ Auth }) {
         <SpaceContainer>
           {
             {
-              allplan: <Allplan />,
-              leader: <Leader />,
+              allplan: <AllPlan />,
               schedule: <Schedule setReserveList={setReserveList} />,
               reservation: <Reservation reserveList={reserveList} />,
               account: <Account />,

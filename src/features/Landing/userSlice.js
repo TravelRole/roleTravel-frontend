@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import tokenApi from "../../lib/customAPI";
 import dog from "../../assets/images/dog.jpeg";
-import { useNavigate } from "react-router-dom";
 
 const initialState = {
   user: null,
@@ -12,7 +11,7 @@ const initialState = {
 
 export const getUserInfo = createAsyncThunk("user/userInfo", async () => {
   const response = await tokenApi.get("api/basic-profile");
-  const { name, email, profile } = response.data;
+  const { name, email, profile } = response?.data;
   const userInfo = {
     name: name,
     email: email,

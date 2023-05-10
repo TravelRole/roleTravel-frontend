@@ -1,12 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import {
-  GoogleMap,
-  Marker,
-  Autocomplete,
-  StandaloneSearchBox,
-} from "@react-google-maps/api";
+import React, { useState, useRef, useCallback } from "react";
 import styled from "styled-components";
-import GoogleApi from "./MapApi";
 import PlaceInfoBox from "./PlaceInfoBox";
 import WantedPlace from "./WantedPlace";
 import AddSpaceModal from "./Modal";
