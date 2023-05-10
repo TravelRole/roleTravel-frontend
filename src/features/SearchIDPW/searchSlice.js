@@ -13,7 +13,7 @@ export const searchUserId = createAsyncThunk(
     try {
       const { name, birth } = data;
 
-      const res = await authApi.post("auth/find-id", { name, birth });
+      const res = await authApi.post("api/find-id", { name, birth });
       const { email, createdAt } = res.data;
       const userInfo = {
         email: email,
@@ -36,7 +36,7 @@ export const searchUserPw = createAsyncThunk(
     try {
       const { email, name, birth } = data;
 
-      await authApi.post("auth/new-password", { email, name, birth });
+      await authApi.post("api/new-password", { email, name, birth });
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 400) {

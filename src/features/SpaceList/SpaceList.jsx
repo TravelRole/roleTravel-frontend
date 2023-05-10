@@ -8,11 +8,12 @@ import AddSpaceModal from "./layout/AddSpaceModal";
 import Modal from "../../components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getUserInfo } from "../Landing/userSlice";
-import { getTravelList } from "./travelSlice";
 import Traveling from "./layout/Traveling";
 import EndTravel from "./layout/EndTravel";
 import TravelListBg from "../../assets/images/travelListBg.png";
+import { getTravelList } from "./travelSlice";
+import { getUserInfo } from "../Landing/userSlice";
+import { ClipLoader } from "react-spinners";
 
 const SpaceListWrap = styled.main`
   background-image: url(${TravelListBg});
@@ -90,10 +91,9 @@ function SpaceList() {
   const location = useLocation();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [currentNav, setCurrentNav] = useState(0);
-  const { isAuth } = useSelector((state) => state.auth);
+  // const { isAuth } = useSelector((state) => state.auth);
   const { signUpSuccess } = useSelector((state) => state.sign);
-  // const { currentTravelingList, currentEndTravelList, isTravelLoading } =
-  //   useSelector((state) => state.travel);
+  const { isTravelLoading } = useSelector((state) => state.travel);
 
   const handleTravelNav = useCallback((index) => {
     setCurrentNav(index);
@@ -106,12 +106,13 @@ function SpaceList() {
       return;
     }
     dispatch(getTravelList());
+    dispatch(getUserInfo());
   }, [dispatch, navigate]);
 
   // 구글로 로그인했을 때 보이는 토스트
   useEffect(() => {
     if (location.state?.isGoogleSuccess) {
-      toast.success("구글 로그인이 되었습니다!", {
+      toast.success("카카오 로그인이 되었습니다!", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: true,
@@ -128,8 +129,8 @@ function SpaceList() {
   // 회원가입 하고 자동 로그인된 후 정보 받아오는 함수
   useEffect(() => {
     if (signUpSuccess) {
-      dispatch(getUserInfo());
       dispatch(getTravelList());
+      dispatch(getUserInfo());
     }
   }, [signUpSuccess, dispatch]);
 
@@ -159,7 +160,9 @@ function SpaceList() {
             </p>
           </SpaceHeader>
           {/* //header */}
-          {currentNav === 0 ? (
+          {isTravelLoading ? (
+            <ClipLoader color="#36d7b7" />
+          ) : currentNav === 0 ? (
             <Traveling setIsOpenModal={setIsOpenModal} />
           ) : (
             <EndTravel />

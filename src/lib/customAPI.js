@@ -21,54 +21,66 @@ tokenApi.interceptors.request.use(
   }
 );
 
+let isRefreshing = false;
+let refreshSubscribers = [];
+
+const subscribeTokenRefresh = (cb) => {
+  refreshSubscribers.push(cb);
+};
+
+const onRefreshed = (accessToken) => {
+  refreshSubscribers.map((cb) => cb(accessToken));
+};
+
 tokenApi.interceptors.response.use(
   (response) => {
     return response;
   },
   async (error) => {
-    try {
-      const { message, response, config } = error;
-      const originalRequest = config;
-      // const refreshToken = cookies.get("refreshToken")
-      if (localStorage.getItem("accessToken")) {
-        await axios
-          .post(
-            `${process.env.REACT_APP_BASE_URL}auth/refresh`,
-            {
-              accessToken: localStorage.getItem("accessToken"),
-            },
-            {
-              withCredentials: true,
-              // 이렇게 보내보고 안된다면 쿠키에서 refreshToken 꺼내기
-            },
-            {
-              XMLHttpRequest: true,
-            }
-          )
-          .then((res) => {
-            originalRequest.headers.Authorization = `Bearer ${res.data.accessToken}`;
-            localStorage.setItem("accessToken", res.data.accessToken);
-            return axios(originalRequest);
-          })
-          .catch((error) => {
-            if (
-              error.response.status === 401 ||
-              error.response.status === 403
-            ) {
-              const cookies = new Cookies();
-              localStorage.removeItem("accessToken");
-              cookies.remove("refreshToken");
+    const { response, config } = error;
+    const { status } = response || {};
+    const { message } = response?.data || {};
+    const originalRequest = config;
 
-              if (!localStorage.getItem("accessToken")) {
-                window.location.replace("/login");
-              }
-            }
+    if (
+      (message === "유효하지 않은 토큰입니다." ||
+        message === "인증에 실패하였습니다.") &&
+      status === 401
+    ) {
+      if (!isRefreshing) {
+        isRefreshing = true;
+        try {
+          const res = await axios.post(
+            `${process.env.REACT_APP_BASE_URL}api/refresh`,
+            { accessToken: localStorage.getItem("accessToken") },
+            { withCredentials: true }
+          );
+          const newAccessToken = res.data.accessToken;
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          localStorage.setItem("accessToken", newAccessToken);
+          onRefreshed(newAccessToken);
+          return axios(originalRequest);
+        } catch (error) {
+          const cookies = new Cookies();
+          localStorage.removeItem("accessToken");
+          cookies.remove("refreshToken");
+          if (!localStorage.getItem("accessToken")) {
+            window.alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+            return window.location.replace("/login");
+          }
+        } finally {
+          isRefreshing = false;
+        }
+      } else {
+        return new Promise((resolve) => {
+          subscribeTokenRefresh((accessToken) => {
+            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            resolve(axios(originalRequest));
           });
+        });
       }
-    } catch (error) {
-      return error;
     }
-    return error;
+    return Promise.reject(error);
   }
 );
 

@@ -154,10 +154,10 @@ const Login = () => {
   };
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  // 구글 로그인 이벤트
-  const onClickGoogle = useCallback(() => {
+  // 카카오 로그인 이벤트
+  const onClickKakao = useCallback(() => {
     window.location.assign(
-      `${process.env.REACT_APP_BASE_URL}oauth2/authorization/google`
+      `${process.env.REACT_APP_BASE_URL}oauth2/authorization/kakao`
     );
   }, []);
 
@@ -282,7 +282,7 @@ const Login = () => {
               className="login_btn"
               color="kakao"
               size="full"
-              onClick={onClickGoogle}
+              onClick={onClickKakao}
               style={{
                 display: "flex",
                 alignItems: "center",

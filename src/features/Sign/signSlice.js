@@ -11,10 +11,10 @@ const initialState = {
 };
 
 export const signUp = createAsyncThunk(
-  "auth/signup",
+  "sign/signup",
   async (userData, thunkAPI) => {
     try {
-      await authApi.post("auth/signup", userData);
+      await authApi.post("api/signup", userData);
       return thunkAPI.fulfillWithValue(true);
     } catch (error) {
       if (error.response && error.response.status === 400) {
