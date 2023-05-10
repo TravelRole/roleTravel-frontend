@@ -123,12 +123,12 @@ const Traveling = ({ setIsOpenModal }) => {
         setCurrentSlide((prev) => prev - 1);
       } else if (
         name === "right" &&
-        currentSlide < currentTravelingList.length - 1
+        currentSlide < currentTravelingList?.length - 1
       ) {
         setCurrentSlide((prev) => prev + 1);
       }
     },
-    [currentSlide, currentTravelingList.length]
+    [currentSlide, currentTravelingList]
   );
   return (
     <TravelListWrap>
@@ -152,7 +152,7 @@ const Traveling = ({ setIsOpenModal }) => {
           currentIndex={currentSlide}
         />
       </TravelListContainer>
-      {currentTravelingList.length > 2 && (
+      {currentTravelingList?.length > 2 && (
         <TravelListSliderButtons>
           <button
             className="travel-left-btn"
@@ -166,7 +166,7 @@ const Traveling = ({ setIsOpenModal }) => {
             className="travel-right-btn"
             name="right"
             onClick={handleSlider}
-            disabled={currentTravelingList.length === currentSlide + 1}
+            disabled={currentTravelingList?.length === currentSlide + 1}
           >
             <HiOutlineChevronRight />
           </button>
