@@ -69,8 +69,9 @@ const DateBox = styled.div`
   display: flex;
   flex-direction: column;
   text-align: left;
+  gap: 0.5rem;
   width: 100%;
-  padding-bottom: 1.2rem;
+  padding-bottom: 1.5rem;
   padding-right: 7.5rem;
 `;
 
@@ -82,7 +83,7 @@ const Day = styled.div`
 
 const Date = styled.div`
   font-family: "Pretendard";
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: rgba(132, 144, 164, 1);
 `;
 
