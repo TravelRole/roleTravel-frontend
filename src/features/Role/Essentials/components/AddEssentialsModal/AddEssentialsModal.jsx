@@ -16,11 +16,11 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
     "기타 용품": []
   });
 
-  const addHandler = () => {
-    setData(list)
-    console.log(list)
-    setIsOpen(false)
-  };
+  // const addHandler = () => {
+  //   setData(list)
+  //   console.log(list)
+  //   setIsOpen(false)
+  // };
 
   return (
     <>

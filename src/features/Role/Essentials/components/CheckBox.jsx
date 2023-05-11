@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Icons from "../../../../assets/icon/icon";
 import { Dot, EssentialsItem, EssentialsSpan } from "../Styles";
 
-const Checkbox = ({ item, setData }) => {
+const Checkbox = ({ item }) => {
   const [checked, setChecked] = useState(false);
 
   // useEffect(() => {

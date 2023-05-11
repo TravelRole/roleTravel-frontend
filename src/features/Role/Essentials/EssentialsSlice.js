@@ -10,12 +10,12 @@ const initialState = {
   error: false,
 };
 
-export const getEssentials = createAsyncThunk("api/room/1/essentials", async() => {
-  const res = await tokenApi.get(`api/room/1/essentials`)
+export const getEssentials = createAsyncThunk("api/room/room_id/essentials", async (id) => {
+  const res = await tokenApi.get(`api/room/${id}/essentials`)
   return res.data;
 });
 
-export const createEssentials = createAsyncThunk("api/room/{room_id}/essentials", async (createItemData, thunkAPI) => {
+export const createEssentials = createAsyncThunk("api/room/room_id/essentials", async (createItemData, thunkAPI) => {
     await tokenApi.post(`api/room/${createItemData[0]}/essentials`, createItemData[1])
     .then((res) => console.log('Created!', createItemData[1]))
     .catch((err) => {
@@ -26,23 +26,23 @@ export const createEssentials = createAsyncThunk("api/room/{room_id}/essentials"
     });
 });
 
-export const deleteEssentials = createAsyncThunk("api/room/{room_id}/essentials", async (deleteData, thunkAPI) => {
+export const deleteEssentials = createAsyncThunk("api/room/room_id/essentials", async (deleteData, thunkAPI) => {
   await tokenApi.delete(`api/room/${deleteData[0]}/essentials`, deleteData[1])
     .then((res) => console.log('Deleted!'))
     .catch((err) => {
       if (err.response && err.response.status === 400) {
-        return thunkAPI.rejectWithValue('해당 방이 존재하지 않거나 유저가 방에 속하지 않았습니다.');
+        return thunkAPI.rejectWithValue('존재하지 않는 방이거나 참여하지 않은 방 입니다.');
       }
       return thunkAPI.rejectWithValue(err)
     })
 });
 
-export const patchChecks = createAsyncThunk("api/room/{room_id}/essentials/check", async (checkData, thunkAPI) => {
+export const patchChecks = createAsyncThunk("api/room/room_id/essentials/check", async (checkData, thunkAPI) => {
     await tokenApi.post(`api/room/${checkData[0]}/essentials/check`, checkData[1])
     .then((res) => console.log('Created!', checkData[1]))
     .catch((err) => {
       if (err.response && err.response.status === 400) {
-        return thunkAPI.rejectWithValue('해당 방이 존재하지 않거나 방에 속하지 않았습니다.');
+        return thunkAPI.rejectWithValue('존재하지 않는 방이거나 참여하지 않은 방 입니다.');
       }
       return thunkAPI.rejectWithValue(err)
     });
