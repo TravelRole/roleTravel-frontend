@@ -138,6 +138,10 @@ const theme = createTheme({
 });
 
 function App() {
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(getUserInfo()).then((res) => console.log("유저정보"));
+  // }, []);
   return (
     <>
       <GlobalStyle />

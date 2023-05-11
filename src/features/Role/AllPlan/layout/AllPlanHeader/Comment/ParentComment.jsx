@@ -1,59 +1,68 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import dog from "../../../../../../assets/images/dog.jpeg";
-import { HiDotsHorizontal } from "react-icons/hi";
+import { HiDotsHorizontal, HiOutlineChat } from "react-icons/hi";
 import AddChildComment from "./AddChildComment";
 import ChildComment from "./ChildComment";
 import { useDispatch } from "react-redux";
-import { deleteComment, getCommentList } from "../../../commentSlice";
+import {
+  deleteComment,
+  editComment,
+  getCommentList,
+} from "../../../commentSlice";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import "moment/locale/ko";
 moment.locale("ko");
 
 const ParentCommentWrap = styled.div`
-  border-top: 1px solid #d8e2f4;
-  border-bottom: 1px solid #d8e2f4;
+  border-bottom: 1px solid #dadada;
 `;
 
 const ParentCommentContainer = styled.div`
   position: relative;
   display: flex;
-  flex-direction: column;
-  padding: 1.4rem 0;
-  /* border-top: 1px solid #d8e2f4; */
+  padding: 1.4rem 1.5rem 1.4rem 0;
   gap: 1rem;
 `;
 
-const ParentCommentHeader = styled.div`
+const ParentCommentProfileImg = styled.div`
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const ParentCommentMain = styled.div`
+  flex: 2;
+  p {
+    font-size: 1.6rem;
+    color: #707070;
+  }
+`;
+
+const ParentCommentMainTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  margin-bottom: 1rem;
   dl {
     display: flex;
     gap: 2rem;
     align-items: center;
     dt {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       color: #333;
-      span {
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 50%;
-        overflow: hidden;
-        img {
-          width: 100%;
-          height: 100%;
-        }
-      }
     }
     dd {
       position: relative;
       display: flex;
-      gap: 1rem;
       color: #a7a7a7;
 
       &::after {
@@ -73,19 +82,28 @@ const ParentCommentHeader = styled.div`
     }
   }
 
-  button {
-    color: #69778f;
+  i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: none;
     background-color: transparent;
-    font-size: 2rem;
+    width: 2.1rem;
+    height: 2.1rem;
+    color: #a7a7a7;
     cursor: pointer;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
   }
 `;
 
 const ParentCommentEditMenu = styled.ul`
   position: absolute;
   right: 0;
-  bottom: 1rem;
+  bottom: -5.5rem;
   padding: 1rem 1.5rem;
   border: 0.1rem solid #dadada;
   border-radius: 0.4rem;
@@ -102,7 +120,20 @@ const ParentCommentEditMenu = styled.ul`
   }
 `;
 
-const ParentCommentMain = styled.div`
+const ParentCommentMainContent = styled.div`
+  margin-bottom: 1rem;
+  .parent-comment-edit-input {
+    width: 100%;
+    height: 7.7rem;
+    border: 0.1rem solid #dadada;
+    font-size: 1.6rem;
+    color: #707070;
+    outline: none;
+    border-radius: 0.8rem;
+    resize: none;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
   p {
     font-size: 1.6rem;
     color: #707070;
@@ -114,15 +145,36 @@ const ParentCommentFooter = styled.ul`
   align-items: center;
   justify-content: space-between;
   li {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
 
     &:first-child {
       color: #c4c4c4;
     }
-    &:last-child {
+    &.add-child-comment-btn {
+      width: 2.1rem;
+      height: 2.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      text-decoration: underline;
-      color: #333;
+      color: #a7a7a7;
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    &.add-child-comment-active {
+      color: #3884fd;
+    }
+    &.comment-edit-btns {
+      display: flex;
+      gap: 1rem;
+      span {
+        font-size: 1.4rem;
+        color: #a7a7a7;
+        text-decoration: underline;
+        cursor: pointer;
+      }
     }
   }
 `;
@@ -148,16 +200,49 @@ const ParentComment = ({
   commentId,
   content,
   fromUserInfo,
-  toUsername,
   createdDate,
   deleted,
+  childComments,
 }) => {
   const [openAddChildComment, setOpenAddChildComment] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [editValue, setEditValue] = useState(content);
   const [openEditMenu, setOpenEditMenu] = useState(false);
   const { roomId } = useParams();
   const parseCreatedDate = moment(createdDate).format("YYYY.MM.DD hh:mm");
   const dispatch = useDispatch();
 
+  /** 수정 메뉴에서 댓글 수정 누르면 발생하는 함수 **/
+  const handleOpenEditParentComment = useCallback(() => {
+    // 수정하는 edit 레이아웃으로 변경함
+    setIsEdit(true);
+    // 열려있는 수정 메뉴 닫기
+    setOpenEditMenu(false);
+  }, []);
+
+  /** 수정완료 버튼 누르면 발생하는 함수 (수정하는 이벤트) **/
+  const handleEditParentComment = useCallback(() => {
+    const data = { roomId: roomId, commentId: commentId, content: editValue };
+    const getData = { roomId: roomId, page: 0 };
+    dispatch(editComment(data)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        dispatch(getCommentList(getData));
+        setIsEdit(false);
+      }
+    });
+  }, [commentId, dispatch, editValue, roomId]);
+
+  /** 수정하기 누르면 생기는 textarea onChange 함수 **/
+  const onChangeEditTextarea = useCallback((e) => {
+    setEditValue(e.target.value);
+  }, []);
+
+  /** 수정 취소 눌렀을 때 발생하는 함수 **/
+  const handleEditCancelParentComment = useCallback(() => {
+    setIsEdit(false);
+  }, []);
+
+  /** Edit 메뉴에서 댓글 삭제 누르면 발생하는 함수 **/
   const handleDeleteParentComment = useCallback(() => {
     const data = { roomId: roomId, commentId: commentId };
     const getData = { roomId: roomId, page: 0 };
@@ -179,60 +264,89 @@ const ParentComment = ({
           </ParentCommentDeleteWrap>
         ) : (
           <>
-            <ParentCommentHeader>
-              <dl>
-                <dt>
-                  <span>
-                    <img src={fromUserInfo.profile} alt="프로필임시사진" />
-                  </span>
-                  {fromUserInfo.name}
-                </dt>
-                <dd>
-                  {fromUserInfo.roles.map((role, index) =>
-                    index === 0 || index === fromUserInfo.roles.length ? (
-                      <span>{role}</span>
-                    ) : (
-                      <>
-                        <span>&#183; {role}</span>
-                      </>
-                    )
-                  )}
-                </dd>
-              </dl>
-              <button
-                onClick={() => {
-                  setOpenEditMenu((prev) => !prev);
-                }}
-              >
-                <HiDotsHorizontal />
-              </button>
-              {openEditMenu && (
-                <ParentCommentEditMenu>
-                  <li>댓글 수정</li>
-                  <li onClick={handleDeleteParentComment}>댓글 삭제</li>
-                </ParentCommentEditMenu>
-              )}
-            </ParentCommentHeader>
-
+            <ParentCommentProfileImg>
+              <img src={fromUserInfo.profile} alt="프로필임시사진" />
+            </ParentCommentProfileImg>
             <ParentCommentMain>
-              <p>{content}</p>
+              <ParentCommentMainTitle>
+                <dl>
+                  <dt>{fromUserInfo.name}</dt>
+                  <dd>
+                    {fromUserInfo.roles.map((role, index) =>
+                      index === 0 || index === fromUserInfo.roles.length ? (
+                        <span>{role}&nbsp;</span>
+                      ) : (
+                        <>
+                          <span>&#183;&nbsp;{role}</span>
+                        </>
+                      )
+                    )}
+                  </dd>
+                </dl>
+                <i
+                  onClick={() => {
+                    setOpenEditMenu((prev) => !prev);
+                  }}
+                >
+                  <HiDotsHorizontal />
+                </i>
+                {openEditMenu && (
+                  <ParentCommentEditMenu>
+                    <li onClick={handleOpenEditParentComment}>댓글 수정</li>
+                    <li onClick={handleDeleteParentComment}>댓글 삭제</li>
+                  </ParentCommentEditMenu>
+                )}
+              </ParentCommentMainTitle>
+              <ParentCommentMainContent>
+                {isEdit ? (
+                  <textarea
+                    className="parent-comment-edit-input"
+                    defaultValue={content}
+                    maxLength={100}
+                    onChange={onChangeEditTextarea}
+                  />
+                ) : (
+                  <p>{content}</p>
+                )}
+              </ParentCommentMainContent>
+              <ParentCommentFooter>
+                <li>{parseCreatedDate}</li>
+                {isEdit ? (
+                  <li className="comment-edit-btns">
+                    <span onClick={handleEditCancelParentComment}>
+                      수정취소
+                    </span>
+                    <span onClick={handleEditParentComment}>수정완료</span>
+                  </li>
+                ) : (
+                  <li
+                    onClick={() => {
+                      setOpenAddChildComment((prev) => !prev);
+                    }}
+                    className={
+                      openAddChildComment
+                        ? `add-child-comment-btn add-child-comment-active`
+                        : "add-child-comment-btn"
+                    }
+                  >
+                    <HiOutlineChat />
+                  </li>
+                )}
+              </ParentCommentFooter>
             </ParentCommentMain>
-
-            <ParentCommentFooter>
-              <li>{parseCreatedDate}</li>
-              <li
-                onClick={() => {
-                  setOpenAddChildComment((prev) => !prev);
-                }}
-              >
-                답글
-              </li>
-            </ParentCommentFooter>
           </>
         )}
       </ParentCommentContainer>
-      {openAddChildComment && <AddChildComment commentId={commentId} />}
-      {/* <ChildComment /> */}
+      {openAddChildComment && (
+        <AddChildComment
+          commentId={commentId}
+          username={fromUserInfo.name}
+          setOpenAddChildComment={setOpenAddChildComment}
+        />
+      )}
+
+      {childComments &&
+        childComments.map((child) => <ChildComment {...child} />)}
     </ParentCommentWrap>
   );
 };

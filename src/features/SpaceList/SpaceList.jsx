@@ -106,7 +106,6 @@ function SpaceList() {
       return;
     }
     dispatch(getTravelList());
-    dispatch(getUserInfo());
   }, [dispatch, navigate]);
 
   // 구글로 로그인했을 때 보이는 토스트
@@ -130,7 +129,6 @@ function SpaceList() {
   useEffect(() => {
     if (signUpSuccess) {
       dispatch(getTravelList());
-      dispatch(getUserInfo());
     }
   }, [signUpSuccess, dispatch]);
 

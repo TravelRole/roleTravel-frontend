@@ -113,15 +113,15 @@ const Header = () => {
     setOpenMenu((prev) => !prev);
   }, []);
 
-  // useEffect(() => {
-  //   if (
-  //     location.pathname === "/spaceList" ||
-  //     location.pathname === "/account/:userId"
-  //   )
-  //     if (localStorage.getItem("accessToken")) {
-  //       dispatch(getUserInfo());
-  //     }
-  // }, [dispatch, location.pathname]);
+  useEffect(() => {
+    if (
+      location.pathname === "/spaceList" ||
+      location.pathname === "/account/:userId"
+    )
+      if (localStorage.getItem("accessToken")) {
+        dispatch(getUserInfo());
+      }
+  }, [dispatch, location.pathname]);
 
   if (
     location.pathname === "/landing" ||

@@ -6,7 +6,7 @@ import Reservation from "../Role/Reservation/Reservation";
 import Account from "../Role/Account/Account";
 import Essentials from "../Role/Essentials/Essentials";
 import Schedule from "../Role/Schedule/Schedule";
-import AllPlan from "../Role/Allplan/AllPlan";
+import AllPlan from "../Role/AllPlan/AllPlan";
 
 const TeamSpaceBox = styled.div`
   display: flex;

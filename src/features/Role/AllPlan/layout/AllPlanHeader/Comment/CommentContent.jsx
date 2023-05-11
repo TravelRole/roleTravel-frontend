@@ -5,8 +5,10 @@ import ChildComment from "./ChildComment";
 import { useDispatch, useSelector } from "react-redux";
 import { addParentComment, getCommentList } from "../../../commentSlice";
 import { useParams } from "react-router-dom";
-import AddChildComment from "./AddChildComment";
-import { Pagination } from "@mui/material";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2";
+import Pagination from "react-js-pagination";
+import { current } from "@reduxjs/toolkit";
 
 const CommentContentWrap = styled.div`
   padding: 0 1.8rem 1.4rem 1.8rem;
@@ -18,14 +20,82 @@ const CommentContentWrap = styled.div`
 const CommentContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  /* gap 디자이너 한테 말해서 수정 */
 `;
 
 const CommentsWrap = styled.div`
-  /* border-bottom: 1px solid #d8e2f4; */
+  border-bottom: 1px solid #dadada;
+  border-top: 1px solid #dadada;
+  margin-bottom: 1.6rem;
   height: 52.1rem;
-  overflow-y: auto;
+  overflow-y: scroll;
+`;
+
+const NotCommentWrap = styled.dl`
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  dt {
+    font-size: 3.5rem;
+    color: #3884fd;
+    margin-bottom: 2rem;
+  }
+
+  .not-comment-title {
+    font-size: 2.2rem;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 1.7rem;
+  }
+
+  .not-comment-content {
+    font-size: 1.6rem;
+    text-align: center;
+    color: #c4c4c4;
+    line-height: normal;
+  }
+`;
+
+const PaginationWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3.3rem;
+  ul {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+
+    li {
+      a {
+        font-size: 1.4rem;
+        color: #cfcfcf;
+
+        svg {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+      &.disabled {
+        a {
+          color: #dadada;
+        }
+      }
+
+      &.active {
+        a {
+          color: #333;
+        }
+      }
+    }
+
+    .comment-prev-btn,
+    .comment-next-btn {
+      color: #8b8b8b;
+      font-size: 2rem;
+    }
+  }
 `;
 
 const AddCommentWrap = styled.form`
@@ -76,9 +146,20 @@ const AddCommentWrap = styled.form`
 const CommentContent = ({ openComment }) => {
   const textareaRef = useRef(null);
   const [commentValue, setCommentValue] = useState("");
-  const { commentList } = useSelector((state) => state.comment);
+  const [selectPage, setSelectPage] = useState(1);
+  const { commentList, pageInfo } = useSelector((state) => state.comment);
+  const { currentPage, pageSize, size, totalSize } = pageInfo;
   const dispatch = useDispatch();
   const { roomId } = useParams();
+
+  const handlePageChange = useCallback(
+    (page) => {
+      setSelectPage(page);
+      const getData = { roomId: roomId, page: page - 1 };
+      dispatch(getCommentList(getData));
+    },
+    [dispatch, roomId]
+  );
 
   const TEXTAREA_MAX = 100;
 
@@ -102,7 +183,7 @@ const CommentContent = ({ openComment }) => {
     (e) => {
       e.preventDefault();
       const data = { roomId: roomId, content: commentValue };
-      const getData = { roomId: roomId, page: 0 };
+      const getData = { roomId: roomId, page: currentPage - 1 };
       dispatch(addParentComment(data)).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           dispatch(getCommentList(getData));
@@ -110,24 +191,47 @@ const CommentContent = ({ openComment }) => {
         }
       });
     },
-    [commentValue, dispatch, roomId]
+    [commentValue, currentPage, dispatch, roomId]
   );
 
   return (
     <CommentContentWrap>
       <CommentContentContainer>
         <CommentsWrap>
-          {commentList &&
+          {commentList.length > 0 ? (
             commentList.map((data, index) => (
               <ParentComment key={index} {...data} />
-            ))}
+            ))
+          ) : (
+            <NotCommentWrap>
+              <dt>
+                <HiOutlineChatBubbleLeftRight />
+              </dt>
+              <dd className="not-comment-title">의견이 비어있어요!</dd>
+              <dd className="not-comment-content">
+                일정 계획을 보고 추가하거나 수정하고
+                <br />
+                싶은 부분이 있다면 댓글을 작성해보세요!
+              </dd>
+            </NotCommentWrap>
+          )}
         </CommentsWrap>
-        <Pagination
-          count={3}
-          defaultPage={1}
-          boundaryCount={3}
-          // onChange={(e, page) => handlePage(e, page)}
-        />
+        <PaginationWrap>
+          <Pagination
+            activePage={selectPage}
+            itemsCountPerPage={5}
+            totalItemsCount={totalSize}
+            pageRangeDisplayed={3}
+            firstPageText={""}
+            lastPageText={""}
+            prevPageText={<HiChevronLeft />}
+            nextPageText={<HiChevronRight />}
+            linkClassPrev={"comment-prev-btn"}
+            linkClassNext={"comment-next-btn"}
+            onChange={handlePageChange}
+          />
+        </PaginationWrap>
+
         <AddCommentWrap onSubmit={onSubmitParentComment}>
           <div>
             <p>의견 작성하기</p>

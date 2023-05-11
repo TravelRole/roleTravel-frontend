@@ -78,6 +78,23 @@ export const deleteComment = createAsyncThunk(
   }
 );
 
+export const editComment = createAsyncThunk(
+  "comment/editComment",
+  async (data, thunkAPI) => {
+    try {
+      const { roomId, commentId, content } = data;
+
+      const res = await tokenApi.put(
+        `api/room/${roomId}/comments/${commentId}`,
+        { content }
+      );
+      return res;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const commentSlice = createSlice({
   name: "comment",
   initialState: initialState,
