@@ -13,6 +13,7 @@ function Essentials() {
   const [page, setPage] = useState(0);
   const [defaultPages, setDefaultPages] = useState(7);
   const [resize, setResize] = useState(window.innerWidth);
+  const [deleteList, setDeleteList] = useState([]);
   const [data, setData] = useState({
     "필수 준비물": [],
     "해외 여행": [],
@@ -72,12 +73,16 @@ function Essentials() {
           setPage={setPage}
           defaultPages={defaultPages}
           setData={setData}
+          deleteList={deleteList}
         />
         <Sections
           data={data}
           page={page}
           defaultPages={defaultPages}
           resize={resize}
+          clicked={clicked}
+          setDeleteList={setDeleteList}
+          deleteList={deleteList}
         />
       </Container>
     </>

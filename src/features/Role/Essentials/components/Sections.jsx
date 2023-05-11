@@ -1,7 +1,16 @@
 import { Content, Dot, EssentialsSpan, Section } from "../Styles";
 import Checkbox from "./CheckBox";
+import DeleteCheckBox from "./DeleteCheckBox";
 
-const Sections = ({ data, page, defaultPages, resize, setData }) => {
+const Sections = ({
+  data,
+  page,
+  defaultPages,
+  resize,
+  clicked,
+  deleteList,
+  setDeleteList
+}) => {
   return (
     <Content width={resize - 150}>
       {Object.keys(data)
@@ -64,12 +73,20 @@ const Sections = ({ data, page, defaultPages, resize, setData }) => {
                   항목이 비어있어요!
                 </EssentialsSpan>
               </div>
+            ) : clicked === "remove" ? (
+              data[el].map((dat, index) => (
+                <DeleteCheckBox
+                  key={index}
+                  item={dat}
+                  deleteList={deleteList}
+                  setDeleteList={setDeleteList}
+                />
+              ))
             ) : (
               data[el].map((dat, index) => (
                 <Checkbox
                   key={index}
                   item={dat}
-                  setData={setData}
                 />
               ))
             )}

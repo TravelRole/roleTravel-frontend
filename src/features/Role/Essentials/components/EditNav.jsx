@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useDispatch } from "react-redux";
 import Icons from "../../../../assets/icon/icon";
 import { Divider, EditContent, EssentialsSpan } from "../Styles";
-// import AddEssentialsModal from "./AddEssentialsModal/AddEssentialsModal";
+import { deleteEssentials } from "../EssentialsSlice";
+import { useParams } from "react-router-dom";
 
 const EditNav = ({
   data,
@@ -10,13 +11,16 @@ const EditNav = ({
   page,
   setPage,
   defaultPages,
-  setData
+  deleteList
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  
+  const deleteHandler = () => {
+    dispatch(deleteEssentials([window.location.href.split('/')[3], deleteList]))
+  };
 
   return (
     <>
-      {/* {isOpen && <AddEssentialsModal data={data} setData={setData} setIsOpen={setIsOpen} />} */}
       <EditContent>
         <div style={{ display: "flex", alignItems: "center" }}>
           <EssentialsSpan
@@ -67,6 +71,7 @@ const EditNav = ({
                   marginLeft: "30px",
                   cursor: "pointer"
                 }}
+                onClick={() => deleteHandler()}
               >
                 선택 삭제
               </EssentialsSpan>
@@ -83,7 +88,6 @@ const EditNav = ({
               }}
               onClick={() => {
                 setClicked("add");
-                setIsOpen(true);
               }}
             >
               추가하기
