@@ -7,8 +7,6 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import axios from "axios";
-import tokenApi from "../../../lib/customAPI";
 import { useParams } from "react-router-dom";
 import { useRef } from "react";
 import Icons from "../../../assets/icon/icon";
@@ -17,7 +15,6 @@ import SearchBlankPanel from "./layout/SearchBlankPanel";
 import ScheduleBox from "./layout/ScheduleContainer";
 import { addWantPlace, delWantPlace, getWantPlace } from "./WantPlaceSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback } from "react";
 
 const Wrapper = styled.div`
   display: flex;
@@ -208,6 +205,23 @@ const StyledPlaceCard = styled.article`
     font-size: 1.4rem;
     color: #3884fd;
   }
+
+  input {
+    appearance: none;
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background-image: url("data:image/svg+xml, %3Csvg width='20' height='18' viewBox='0 0 20 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2.05313 9.18027C0.0958258 6.54023 0.748262 2.58017 4.01044 1.26015C7.27263 -0.0598677 9.22993 2.58017 9.88237 3.90019C10.5348 2.58017 13.1446 -0.0598677 16.4067 1.26015C19.6689 2.58017 19.6689 6.54023 17.7116 9.18027C15.7543 11.8203 9.88237 17.1004 9.88237 17.1004C9.88237 17.1004 4.01044 11.8203 2.05313 9.18027Z' stroke='%23A7A7A7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+
+    width: 2rem;
+    height: 1.8rem;
+    cursor: pointer;
+
+    &:checked {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='18' viewBox='0 0 20 18' fill='none'%3E%3Cpath d='M2.05313 9.18027C0.0958258 6.54023 0.748262 2.58017 4.01044 1.26015C7.27263 -0.0598677 9.22993 2.58017 9.88237 3.90019C10.5348 2.58017 13.1446 -0.0598677 16.4067 1.26015C19.6689 2.58017 19.6689 6.54023 17.7116 9.18027C15.7543 11.8203 9.88237 17.1004 9.88237 17.1004C9.88237 17.1004 4.01044 11.8203 2.05313 9.18027Z' fill='%23FF6D6D' stroke='%23FF6D6D' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+  }
+
   button {
     height: 2.6rem;
     position: absolute;
@@ -251,46 +265,47 @@ function Schedule({ setReserveList }) {
 
   const dispatch = useDispatch();
 
-  /** 찜장소 추가하기 */
-  const wantPlaceData = {
-    roomId: roomId,
-    placeName: "강릉바다",
-    placeAddress: "바다바다",
-    phoneNumber: "010-1234-5678",
-    latitude: 15.23,
-    longitude: 12.11,
-    category: "산",
-    lotNumberAddress: "색달동2156-2",
+  /** 찜장소 추가+삭제하기 */
+
+  const handleWantPlace = (e, place, isExist) => {
+    const { place_name, road_address_name, address_name, phone, y, x } = place;
+    const wantPlaceData = {
+      roomId: roomId,
+      placeName: place_name,
+      placeAddress: road_address_name,
+      phoneNumber: phone,
+      latitude: y,
+      longitude: x,
+      category: "그냥 일단 빈값처리",
+      lotNumberAddress: address_name,
+    };
+
+    const delpayload = {
+      roomId: roomId,
+      placeId: isExist[0]?.placeId,
+    };
+    const isChecked = e.target.checked;
+
+    if (isChecked) {
+      //추가 로직
+      dispatch(addWantPlace(wantPlaceData)).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          dispatch(getWantPlace(roomId));
+          return;
+        }
+      });
+    } else {
+      //삭제로직
+      dispatch(delWantPlace(delpayload)).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          dispatch(getWantPlace(roomId));
+          return;
+        }
+      });
+    }
   };
 
-  const onAddWantPlace = (e) => {
-    e.preventDefault();
-    dispatch(addWantPlace(wantPlaceData)).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        dispatch(getWantPlace(roomId));
-        return;
-      }
-    });
-  };
-
-  /** 찜장소 추가하기 */
-
-  /** 찜장소 삭제하기 */
-
-  const delpayload = {
-    roomId: roomId,
-    placeId: 3,
-  };
-
-  const ondelWantPlace = (e) => {
-    e.preventDefault();
-    dispatch(delWantPlace(delpayload)).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        dispatch(getWantPlace(roomId));
-        return;
-      }
-    });
-  };
+  /** 찜장소 추가+삭제하기 */
 
   /** 찜장소 가져오기 */
   useEffect(() => {
@@ -298,7 +313,8 @@ function Schedule({ setReserveList }) {
   }, [roomId, dispatch]);
 
   const { wantPlaceList } = useSelector((state) => state.wantPlace);
-  console.log(wantPlaceList.wantPlaces);
+  console.log(wantPlaceList);
+
   /** 찜장소 가져오기 */
 
   const [searchPlaceList, setSearchPlaceList] = useState([]);
@@ -354,11 +370,7 @@ function Schedule({ setReserveList }) {
   return (
     <>
       <Wrapper>
-        <PageHeader>
-          일정
-          <button onClick={onAddWantPlace}>찜목록 전송</button>
-          <button onClick={ondelWantPlace}>찜목록 삭제</button>
-        </PageHeader>
+        <PageHeader>일정</PageHeader>
         <MapWrapper>
           <Map
             center={{ lat: lat, lng: lng }}
@@ -425,12 +437,17 @@ function Schedule({ setReserveList }) {
                 <SearchResultContainer>
                   {searchPlaceList.length ? (
                     <ul>
-                      {searchPlaceList.map((place, i) => {
+                      {searchPlaceList.map((place) => {
+                        const isExist = wantPlaceList.wantPlaces.filter(
+                          (placeInfo) => {
+                            return placeInfo.placeName === place.place_name;
+                          }
+                        );
                         return (
-                          <li key={i}>
+                          <li key={`${place.x} + ${place.place_name}`}>
                             <StyledPlaceCard
                               selected={
-                                info && info.address_name === place.address_name
+                                info?.address_name === place.address_name
                               }
                               onClick={() => {
                                 setInfo(place);
@@ -444,6 +461,13 @@ function Schedule({ setReserveList }) {
                               <span>
                                 {place.phone ? place.phone : "전화번호 없음"}
                               </span>
+                              <input
+                                type="checkbox"
+                                onChange={(e) =>
+                                  handleWantPlace(e, place, isExist)
+                                }
+                                checked={isExist.length}
+                              />
                               <button>일정에 추가</button>
                             </StyledPlaceCard>
                           </li>
