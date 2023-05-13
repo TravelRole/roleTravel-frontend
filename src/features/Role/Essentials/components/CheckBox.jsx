@@ -55,7 +55,7 @@ const Checkbox = ({ item }) => {
         <EssentialsSpan
           color="#8b8b8b"
           fontWeight="500"
-          fontSize="14px"
+          fontSize="1.4rem"
           style={{ marginLeft: "10px" }}
         >
           {item.itemName}

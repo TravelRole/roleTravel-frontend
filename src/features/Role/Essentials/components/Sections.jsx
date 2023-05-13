@@ -19,7 +19,7 @@ const Sections = ({
           <Section key={index}>
             <EssentialsSpan
               color="#8490a4"
-              fontSize="18px"
+              fontSize="1.8rem"
               fontWeight="600"
               style={{ height: "24px" }}
             >
@@ -27,7 +27,7 @@ const Sections = ({
               {data[el].length > 0 && (
                 <EssentialsSpan
                   color="#505050"
-                  fontSize="14px"
+                  fontSize="1.4rem"
                   fontWeight="500"
                   style={{
                     background: "#fff",
@@ -66,7 +66,7 @@ const Sections = ({
                 <Dot />
                 <EssentialsSpan
                   color="#c5ccd6"
-                  fontSize="18px"
+                  fontSize="1.8rem"
                   fontWeight="600"
                   style={{ marginLeft: "6px" }}
                 >

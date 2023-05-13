@@ -2,7 +2,8 @@ import { useDispatch } from "react-redux";
 import Icons from "../../../../assets/icon/icon";
 import { Divider, EditContent, EssentialsSpan } from "../Styles";
 import { deleteEssentials } from "../EssentialsSlice";
-import { useParams } from "react-router-dom";
+import { useState } from "react";
+import AddEssentialsModal from "./AddEssentialsModal/AddEssentialsModal";
 
 const EditNav = ({
   data,
@@ -14,6 +15,7 @@ const EditNav = ({
   deleteList
 }) => {
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
   
   const deleteHandler = () => {
     dispatch(deleteEssentials([window.location.href.split('/')[3], deleteList]))
@@ -21,10 +23,11 @@ const EditNav = ({
 
   return (
     <>
+      {isOpen && <AddEssentialsModal setIsOpen={setIsOpen} />}
       <EditContent>
         <div style={{ display: "flex", alignItems: "center" }}>
           <EssentialsSpan
-            fontSize="24px"
+            fontSize="2.4rem"
             fontWeight="600"
             color="#333333"
           >
@@ -33,7 +36,7 @@ const EditNav = ({
           <EssentialsSpan
             color="#707070"
             fontWeight="600"
-            fontSize="20px"
+            fontSize="2rem"
             style={{ marginLeft: "4px" }}
           >
             ({Object.keys(data).length})
@@ -43,7 +46,7 @@ const EditNav = ({
           {clicked === "add" && (
             <EssentialsSpan
               color="#8490a4"
-              fontSize="18px"
+              fontSize="1.8rem"
               fontWeight="500"
               style={{ textDecorationLine: "underline", cursor: "pointer" }}
               onClick={() => setClicked("remove")}
@@ -55,16 +58,16 @@ const EditNav = ({
             <>
               <EssentialsSpan
                 color="#8490a4"
-                fontSize="18px"
+                fontSize="1.8rem"
                 fontWeight="500"
                 style={{ textDecorationLine: "underline", cursor: "pointer" }}
-                onClick={() => setClicked("")}
+                onClick={() => setClicked("add")}
               >
                 선택취소
               </EssentialsSpan>
               <EssentialsSpan
                 color="#8490a4"
-                fontSize="18px"
+                fontSize="1.8rem"
                 fontWeight="500"
                 style={{
                   textDecorationLine: "underline",
@@ -79,7 +82,7 @@ const EditNav = ({
           ) : (
             <EssentialsSpan
               color="#8490a4"
-              fontSize="18px"
+              fontSize="1.8rem"
               fontWeight="500"
               style={{
                 textDecorationLine: "underline",
@@ -88,21 +91,22 @@ const EditNav = ({
               }}
               onClick={() => {
                 setClicked("add");
+                setIsOpen(true);
               }}
             >
               추가하기
             </EssentialsSpan>
           )}
           <Divider style={{ marginLeft: "20px", marginRight: "20px" }} />
-          <div>
+          <div style={{ display: 'flex', alignItems: 'center'}}>
             <Icons.TfiAngleLeft
-              size="17"
+              size="14"
               color="#8490A4"
               style={{ strokeWidth: "1", cursor: "pointer" }}
               onClick={page > 0 ? () => setPage(page - 1) : () => setPage(0)}
             />
             <Icons.TfiAngleRight
-              size="17"
+              size="14"
               color="#8490A4"
               style={{
                 strokeWidth: "1",
