@@ -95,6 +95,10 @@ export const Button = styled.button`
   font-size: 13px;
   color: #676767;
   cursor: pointer;
+
+  &:hover {
+    background: #3884fd;
+  }
 `;
 
 export const ButtonFab = styled.div`

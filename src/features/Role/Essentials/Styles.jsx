@@ -2,22 +2,11 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  /* width: 100%; */
   height: 100%;
   flex-direction: column;
   background-color: #f4f6fb;
   padding-left: 60px;
   padding-top: 80px;
-  /* padding-right: 20px; */
-
-  & > div:nth-child(2) {
-    display: flex;
-    justify-content: space-between;
-
-    @media screen and (min-width = 1900px) {
-      margin-right: 40px;
-    }
-  }
 `;
 
 export const Title = styled.div`
