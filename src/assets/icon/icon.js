@@ -8,7 +8,9 @@ import {
   HiOutlineX,
   HiOutlinePencilAlt,
   HiOutlineCheckCircle,
-  HiUpload
+  HiUpload,
+  HiCheckCircle,
+  HiOutlinePlusSm
 } from "react-icons/hi";
 
 import { RiCalendarCheckLine, RiKakaoTalkFill } from "react-icons/ri";
@@ -59,7 +61,9 @@ const Icons = {
   BiCoinStack,
   RxMagnifyingGlass,
   HiUpload,
-  TbTrash
+  TbTrash,
+  HiCheckCircle,
+  HiOutlinePlusSm
 };
 
 export default Icons;
