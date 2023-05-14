@@ -15,9 +15,17 @@ const Contents = ({
   const [clicked, setClicked] = useState(false);
   const [id, setId] = useState(0);
 
-  // useEffect(() => {
-  //   if (allChecked) setClicked(true);
-  // }, [allChecked]);
+  useEffect(() => {
+    if (allChecked) {
+      setClicked(true);
+      return;
+    } else {
+      setClicked(false);
+      return;
+    }
+  }, [allChecked]);
+
+  useEffect(() => {}, [list]);
 
   useEffect(() => {
     if (clicked) {
@@ -28,7 +36,7 @@ const Contents = ({
         isChecked: true
       });
     } else {
-      if (list[category].length === 0) list[category] = [];
+      if (!list[category]) list[category] = [];
       else {
         list[category] = list[category].filter(
           (el) => el.itemName !== itemData
@@ -36,7 +44,11 @@ const Contents = ({
       }
     }
     setList(list);
-  }, [clicked]);
+    console.log(materials[category].length, list[category].length);
+    if (list[category]?.length === 0) {
+      setAllChecked(false);
+    }
+  }, [clicked, list]);
 
   const toggle = () => {
     setClicked(!clicked);
