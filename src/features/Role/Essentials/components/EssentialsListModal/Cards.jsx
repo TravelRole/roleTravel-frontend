@@ -7,20 +7,9 @@ import {
   CardHeader,
   EssentialsModalSpan
 } from "./Style";
-import { useEffect } from "react";
-import { materials } from "../../materials";
 
-const Cards = ({ item, setList, list }) => {
+const Cards = ({ category, item, setList, list }) => {
   const [allChecked, setAllChecked] = useState(false);
-
-  // useEffect(() => {
-  //   const idx = materials.findIndex(el => el.category === item.category)
-  //   if (list[item.category].length === materials[idx].items.length) {
-  //     setAllChecked(true);
-  //   } else {
-  //     setAllChecked(false);
-  //   }
-  // }, [list]);
 
   const allCheckToggle = () => setAllChecked(!allChecked);
 
@@ -32,7 +21,7 @@ const Cards = ({ item, setList, list }) => {
           fontSize="1.6rem"
           fontWeight="500"
         >
-          {item.category}
+          {category}
         </EssentialsModalSpan>
         <AllButton
           allChecked={allChecked}
@@ -42,12 +31,12 @@ const Cards = ({ item, setList, list }) => {
         </AllButton>
       </CardHeader>
       <CardContent>
-        {item.items.map((itemData, index) => (
+        {item.map((itemData, index) => (
           <Contents
             itemData={itemData}
             key={index}
             list={list}
-            category={item.category}
+            category={category}
             allChecked={allChecked}
             setAllChecked={setAllChecked}
             setList={setList}

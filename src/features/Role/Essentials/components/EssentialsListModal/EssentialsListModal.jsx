@@ -10,7 +10,6 @@ import {
 import { materials } from "../../materials";
 import Cards from "./Cards";
 import { useState } from "react";
-import Button from "../../../../../components/Button";
 
 const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
   const [list, setList] = useState({
@@ -22,12 +21,6 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
     "조리 용품": [],
     "기타 용품": []
   });
-
-  const addHandler = () => {
-    setData(list);
-    console.log(list);
-    setIsOpen(false);
-  };
 
   return (
     <>
@@ -63,12 +56,13 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
           </EssentialsModalSpan>
         </Section>
         <Section>
-          {materials
+          {Object.keys(materials)
             .filter((_, index) => [0, 1, 2, 3].includes(index))
             .map((el, i) => (
               <Cards
                 key={i}
-                item={el}
+                category={el}
+                item={materials[el]}
                 list={list}
                 setList={setList}
                 data={data}
@@ -76,12 +70,13 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
             ))}
         </Section>
         <Section>
-          {materials
+          {Object.keys(materials)
             .filter((_, index) => [4, 5, 6].includes(index))
             .map((el, i) => (
               <Cards
                 key={i}
-                item={el}
+                category={el}
+                item={materials[el]}
                 list={list}
                 setList={setList}
                 data={data}

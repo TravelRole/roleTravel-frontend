@@ -9,16 +9,15 @@ import { getEssentials } from "./EssentialsSlice";
 function Essentials() {
   const dispatch = useDispatch();
   const { essentials, isLoading } = useSelector((state) => state.essentials);
-  const [clicked, setClicked] = useState("");
+  const [condition, setCondition] = useState("");
   const [page, setPage] = useState(0);
   const [defaultPages, setDefaultPages] = useState(7);
   const [resize, setResize] = useState(window.innerWidth);
   const [deleteList, setDeleteList] = useState([]);
   const [data, setData] = useState({
     "필수 준비물": [],
-    "해외 여행": [],
     의류: [],
-    "세면 용품, 화장품": [],
+    "세면 용품": [],
     상비약: [],
     계절용품: [],
     "조리 용품": [],
@@ -67,8 +66,8 @@ function Essentials() {
         <TitleContent />
         <EditNav
           data={data}
-          clicked={clicked}
-          setClicked={setClicked}
+          condition={condition}
+          setCondition={setCondition}
           page={page}
           setPage={setPage}
           defaultPages={defaultPages}
@@ -80,7 +79,7 @@ function Essentials() {
           page={page}
           defaultPages={defaultPages}
           resize={resize}
-          clicked={clicked}
+          condition={condition}
           setDeleteList={setDeleteList}
           deleteList={deleteList}
         />
