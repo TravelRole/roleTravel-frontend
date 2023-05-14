@@ -7,7 +7,7 @@ const Sections = ({
   page,
   defaultPages,
   resize,
-  clicked,
+  condition,
   deleteList,
   setDeleteList
 }) => {
@@ -73,7 +73,7 @@ const Sections = ({
                   항목이 비어있어요!
                 </EssentialsSpan>
               </div>
-            ) : clicked === "remove" ? (
+            ) : condition === "remove" ? (
               data[el].map((dat, index) => (
                 <DeleteCheckBox
                   key={index}

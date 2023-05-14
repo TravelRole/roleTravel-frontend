@@ -4,25 +4,28 @@ import { Divider, EditContent, EssentialsSpan } from "../Styles";
 import { deleteEssentials } from "../EssentialsSlice";
 import { useState } from "react";
 import AddEssentialsModal from "./AddEssentialsModal/AddEssentialsModal";
+import CheckDeleteModal from "./CheckDeleteModal/CheckDeleteModal";
 
 const EditNav = ({
   data,
-  clicked,
-  setClicked,
+  condition,
+  setCondition,
   page,
   setPage,
   defaultPages,
   deleteList
 }) => {
-  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  
-  const deleteHandler = () => {
-    dispatch(deleteEssentials([window.location.href.split('/')[3], deleteList]))
-  };
+  const [deleteIsOpen, setDeleteIsOpen] = useState(false);
 
   return (
     <>
+      {deleteIsOpen && (
+        <CheckDeleteModal
+          setIsOpen={setDeleteIsOpen}
+          deleteList={deleteList}
+        />
+      )}
       {isOpen && <AddEssentialsModal setIsOpen={setIsOpen} />}
       <EditContent>
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -43,25 +46,25 @@ const EditNav = ({
           </EssentialsSpan>
         </div>
         <div style={{ display: "flex" }}>
-          {clicked === "add" && (
+          {condition === "add" && (
             <EssentialsSpan
               color="#8490a4"
               fontSize="1.8rem"
               fontWeight="500"
               style={{ textDecorationLine: "underline", cursor: "pointer" }}
-              onClick={() => setClicked("remove")}
+              onClick={() => setCondition("remove")}
             >
               삭제하기
             </EssentialsSpan>
           )}
-          {clicked === "remove" ? (
+          {condition === "remove" ? (
             <>
               <EssentialsSpan
                 color="#8490a4"
                 fontSize="1.8rem"
                 fontWeight="500"
                 style={{ textDecorationLine: "underline", cursor: "pointer" }}
-                onClick={() => setClicked("add")}
+                onClick={() => setCondition("")}
               >
                 선택취소
               </EssentialsSpan>
@@ -74,7 +77,7 @@ const EditNav = ({
                   marginLeft: "30px",
                   cursor: "pointer"
                 }}
-                onClick={() => deleteHandler()}
+                onClick={() => setDeleteIsOpen(true)}
               >
                 선택 삭제
               </EssentialsSpan>
@@ -90,7 +93,7 @@ const EditNav = ({
                 cursor: "pointer"
               }}
               onClick={() => {
-                setClicked("add");
+                setCondition("add");
                 setIsOpen(true);
               }}
             >
@@ -98,7 +101,7 @@ const EditNav = ({
             </EssentialsSpan>
           )}
           <Divider style={{ marginLeft: "20px", marginRight: "20px" }} />
-          <div style={{ display: 'flex', alignItems: 'center'}}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <Icons.TfiAngleLeft
               size="14"
               color="#8490A4"
