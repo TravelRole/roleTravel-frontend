@@ -5,7 +5,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { Container } from "../../components/Container";
 import logo from "../../assets/images/logo.png";
 import { useDispatch } from "react-redux";
-import { logoutAsync } from "../Login/authSlice";
+import { logout } from "../Login/authSlice";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { HiUser, HiOutlineLogout } from "react-icons/hi";
@@ -106,8 +106,13 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onClickLogout = useCallback(() => {
-    dispatch(logoutAsync());
-  }, [dispatch]);
+    dispatch(logout()).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        navigate("/login");
+        return;
+      }
+    });
+  }, [dispatch, navigate]);
 
   const onControlMenu = useCallback(() => {
     setOpenMenu((prev) => !prev);

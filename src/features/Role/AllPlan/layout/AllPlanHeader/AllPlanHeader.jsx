@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import CommentWrap from "./Comment/CommentWrap";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserInfo } from "../../../../Landing/userSlice";
+import { getRoomData } from "../../allPlanSlice";
 
 const AllPlanHeaderWrap = styled.div`
   display: flex;
@@ -38,6 +41,12 @@ const AllPlanHeaderLocation = styled.div`
 `;
 
 const AllPlanHeader = () => {
+  const { roomData } = useSelector((state) => state.allPlan);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getUserInfo());
+    dispatch(getRoomData());
+  }, [dispatch]);
   return (
     <AllPlanHeaderWrap>
       <AllPlanHeaderLocation>
@@ -45,7 +54,7 @@ const AllPlanHeader = () => {
           <span>
             <HiOutlineLocationMarker />
           </span>
-          제주도 서귀포시
+          {roomData?.location}
         </p>
       </AllPlanHeaderLocation>
       <CommentWrap />

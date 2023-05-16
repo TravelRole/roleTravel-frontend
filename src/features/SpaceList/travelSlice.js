@@ -26,7 +26,6 @@ export const addTravel = createAsyncThunk(
 export const getTravelList = createAsyncThunk("travel/get", async () => {
   try {
     const res = await tokenApi.get("api/room");
-    console.log(res);
     const today = new Date();
     today.setHours(0, 0, 0, 0); // 시간 정보를 0으로 설정
     // 여행이 완료된 것을 필터링 해주는 쪽

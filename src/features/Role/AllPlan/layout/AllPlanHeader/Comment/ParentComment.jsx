@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import dog from "../../../../../../assets/images/dog.jpeg";
 import { HiDotsHorizontal, HiOutlineChat } from "react-icons/hi";
 import AddChildComment from "./AddChildComment";
 import ChildComment from "./ChildComment";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteComment,
   editComment,
@@ -13,6 +13,7 @@ import {
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import "moment/locale/ko";
+import { getUserInfo } from "../../../../../Landing/userSlice";
 moment.locale("ko");
 
 const ParentCommentWrap = styled.div`
@@ -203,7 +204,9 @@ const ParentComment = ({
   createdDate,
   deleted,
   childComments,
+  selectPage,
 }) => {
+  const { user } = useSelector((state) => state.user);
   const [openAddChildComment, setOpenAddChildComment] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editValue, setEditValue] = useState(content);
@@ -223,14 +226,14 @@ const ParentComment = ({
   /** 수정완료 버튼 누르면 발생하는 함수 (수정하는 이벤트) **/
   const handleEditParentComment = useCallback(() => {
     const data = { roomId: roomId, commentId: commentId, content: editValue };
-    const getData = { roomId: roomId, page: 0 };
+    const getData = { roomId: roomId, page: selectPage - 1 };
     dispatch(editComment(data)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         dispatch(getCommentList(getData));
         setIsEdit(false);
       }
     });
-  }, [commentId, dispatch, editValue, roomId]);
+  }, [commentId, dispatch, editValue, roomId, selectPage]);
 
   /** 수정하기 누르면 생기는 textarea onChange 함수 **/
   const onChangeEditTextarea = useCallback((e) => {
@@ -245,13 +248,13 @@ const ParentComment = ({
   /** Edit 메뉴에서 댓글 삭제 누르면 발생하는 함수 **/
   const handleDeleteParentComment = useCallback(() => {
     const data = { roomId: roomId, commentId: commentId };
-    const getData = { roomId: roomId, page: 0 };
+    const getData = { roomId: roomId, page: selectPage - 1 };
     dispatch(deleteComment(data)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         dispatch(getCommentList(getData));
       }
     });
-  }, [commentId, dispatch, roomId]);
+  }, [commentId, dispatch, roomId, selectPage]);
 
   return (
     <ParentCommentWrap>
@@ -283,13 +286,16 @@ const ParentComment = ({
                     )}
                   </dd>
                 </dl>
-                <i
-                  onClick={() => {
-                    setOpenEditMenu((prev) => !prev);
-                  }}
-                >
-                  <HiDotsHorizontal />
-                </i>
+                {user.userId === fromUserInfo.id && (
+                  <i
+                    onClick={() => {
+                      setOpenEditMenu((prev) => !prev);
+                    }}
+                  >
+                    <HiDotsHorizontal />
+                  </i>
+                )}
+
                 {openEditMenu && (
                   <ParentCommentEditMenu>
                     <li onClick={handleOpenEditParentComment}>댓글 수정</li>
@@ -339,6 +345,7 @@ const ParentComment = ({
       </ParentCommentContainer>
       {openAddChildComment && (
         <AddChildComment
+          selectPage={selectPage}
           commentId={commentId}
           username={fromUserInfo.name}
           setOpenAddChildComment={setOpenAddChildComment}
@@ -346,7 +353,9 @@ const ParentComment = ({
       )}
 
       {childComments &&
-        childComments.map((child) => <ChildComment {...child} />)}
+        childComments.map((child, index) => (
+          <ChildComment key={index} selectPage={selectPage} {...child} />
+        ))}
     </ParentCommentWrap>
   );
 };

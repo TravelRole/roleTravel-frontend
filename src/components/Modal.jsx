@@ -9,7 +9,7 @@ const ModalBg = styled.div`
   bottom: 0;
   width: 100%;
   height: 100vh;
-  z-index: 1;
+  z-index: 9998;
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
@@ -22,7 +22,7 @@ const ModalWrap = styled.div`
   transform: translate(-50%, -50%);
   box-shadow: 0px 2rem 2rem rgba(0, 0, 0, 0.08),
     0px 0px 0.2rem rgba(0, 0, 0, 0.12);
-  z-index: 20;
+  z-index: 9999;
   border-radius: 1.6rem;
   background-color: #fff;
 `;

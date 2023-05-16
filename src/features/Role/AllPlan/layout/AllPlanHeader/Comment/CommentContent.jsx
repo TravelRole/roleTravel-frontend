@@ -1,14 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import ParentComment from "./ParentComment";
-import ChildComment from "./ChildComment";
 import { useDispatch, useSelector } from "react-redux";
 import { addParentComment, getCommentList } from "../../../commentSlice";
 import { useParams } from "react-router-dom";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2";
 import Pagination from "react-js-pagination";
-import { current } from "@reduxjs/toolkit";
 
 const CommentContentWrap = styled.div`
   padding: 0 1.8rem 1.4rem 1.8rem;
@@ -148,7 +146,7 @@ const CommentContent = ({ openComment }) => {
   const [commentValue, setCommentValue] = useState("");
   const [selectPage, setSelectPage] = useState(1);
   const { commentList, pageInfo } = useSelector((state) => state.comment);
-  const { currentPage, pageSize, size, totalSize } = pageInfo;
+  const { totalSize } = pageInfo;
   const dispatch = useDispatch();
   const { roomId } = useParams();
 
@@ -183,7 +181,7 @@ const CommentContent = ({ openComment }) => {
     (e) => {
       e.preventDefault();
       const data = { roomId: roomId, content: commentValue };
-      const getData = { roomId: roomId, page: currentPage - 1 };
+      const getData = { roomId: roomId, page: selectPage - 1 };
       dispatch(addParentComment(data)).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           dispatch(getCommentList(getData));
@@ -191,7 +189,7 @@ const CommentContent = ({ openComment }) => {
         }
       });
     },
-    [commentValue, currentPage, dispatch, roomId]
+    [commentValue, dispatch, roomId, selectPage]
   );
 
   return (
@@ -200,7 +198,7 @@ const CommentContent = ({ openComment }) => {
         <CommentsWrap>
           {commentList.length > 0 ? (
             commentList.map((data, index) => (
-              <ParentComment key={index} {...data} />
+              <ParentComment key={index} selectPage={selectPage} {...data} />
             ))
           ) : (
             <NotCommentWrap>

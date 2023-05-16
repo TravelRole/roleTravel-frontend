@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { HiDotsHorizontal, HiOutlineChat } from "react-icons/hi";
 import AddChildComment from "./AddChildComment";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteComment,
   editComment,
@@ -205,7 +205,9 @@ const ChildComment = ({
   deleted,
   fromUserInfo,
   toUsername,
+  selectPage,
 }) => {
+  const { user } = useSelector((state) => state.user);
   const [openAddChildComment, setOpenAddChildComment] = useState(false);
   const [openEditMenu, setOpenEditMenu] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -230,7 +232,7 @@ const ChildComment = ({
   /** 수정완료 버튼 누르면 발생하는 함수 (수정하는 이벤트) **/
   const handleEditChildComment = useCallback(() => {
     const data = { roomId: roomId, commentId: commentId, content: editValue };
-    const getData = { roomId: roomId, page: 0 };
+    const getData = { roomId: roomId, page: selectPage - 1 };
     dispatch(editComment(data)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         dispatch(getCommentList(getData));
@@ -238,7 +240,7 @@ const ChildComment = ({
         setIsEdit(false);
       }
     });
-  }, [commentId, dispatch, editValue, roomId]);
+  }, [commentId, selectPage, dispatch, editValue, roomId]);
 
   /** 수정 취소 눌렀을 때 발생하는 함수 **/
   const handleEditCancelChildComment = useCallback(() => {
@@ -247,13 +249,13 @@ const ChildComment = ({
 
   const handleDeleteChildComment = useCallback(() => {
     const data = { roomId: roomId, commentId: commentId };
-    const getData = { roomId: roomId, page: 0 };
+    const getData = { roomId: roomId, page: selectPage - 1 };
     dispatch(deleteComment(data)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         dispatch(getCommentList(getData));
       }
     });
-  }, [commentId, dispatch, roomId]);
+  }, [commentId, selectPage, dispatch, roomId]);
   return (
     <ChildCommentWrap>
       <ChildCommentContainer>
@@ -282,13 +284,16 @@ const ChildComment = ({
                     )}
                   </dd>
                 </dl>
-                <i
-                  onClick={() => {
-                    setOpenEditMenu((prev) => !prev);
-                  }}
-                >
-                  <HiDotsHorizontal />
-                </i>
+                {user.userId === fromUserInfo.id && (
+                  <i
+                    onClick={() => {
+                      setOpenEditMenu((prev) => !prev);
+                    }}
+                  >
+                    <HiDotsHorizontal />
+                  </i>
+                )}
+
                 {openEditMenu && (
                   <ChildCommentEditMenu>
                     <li onClick={handleOpenEditChildComment}>댓글 수정</li>
@@ -338,6 +343,7 @@ const ChildComment = ({
       </ChildCommentContainer>
       {openAddChildComment && (
         <AddChildComment
+          selectPage={selectPage}
           commentId={commentId}
           username={fromUserInfo.name}
           setOpenAddChildComment={setOpenAddChildComment}

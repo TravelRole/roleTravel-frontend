@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import Reservation from "../Role/Reservation/Reservation";
@@ -7,39 +6,38 @@ import Account from "../Role/Account/Account";
 import Essentials from "../Role/Essentials/Essentials";
 import Schedule from "../Role/Schedule/Schedule";
 import AllPlan from "../Role/AllPlan/AllPlan";
+import Sidebar from "./Sidebar/Sidebar";
+import { useDispatch } from "react-redux";
+import { getAllPlanList, getRoomData } from "../Role/AllPlan/allPlanSlice";
+import { getUserInfo } from "../Landing/userSlice";
 
 const TeamSpaceBox = styled.div`
   display: flex;
-  /* width: 100%; */
-  height: 100vh;
-  align-items: center;
 `;
 
 const SpaceContainer = styled.div`
+  overflow-x: hidden;
+  height: 100vh;
+  flex: 2;
   display: flex;
-  /* padding: 1rem; */
-  width: 100%;
-  height: 100%;
   flex-direction: column;
-  position: relative;
+  padding-left: 24rem;
   background-color: #f5f5f5;
-  /* border: 5px solid blue; */
 `;
 
 function TeamSpace({ Auth }) {
   // const navigate = useNavigate();
 
+  const [reserveList, setReserveList] = useState([]);
   const { role } = useParams();
 
   // useEffect(() => {
-  //   if (Auth) {
-  //     console.log(Auth);
-  //     navigate(`/login`);
-  //     return;
-  //   }
-  // }, []);
-
-  const [reserveList, setReserveList] = useState([]);
+  //   // if (Auth) {
+  //   //   console.log(Auth);
+  //   //   navigate(`/login`);
+  //   //   return;
+  //   // }
+  // }, [dispatch, roomId]);
 
   return (
     <>

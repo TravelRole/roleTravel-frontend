@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { addChildComment, getCommentList } from "../../../commentSlice";
@@ -63,7 +63,12 @@ const AddChildCommentMain = styled.div`
   }
 `;
 
-const AddChildComment = ({ commentId, setOpenAddChildComment, username }) => {
+const AddChildComment = ({
+  commentId,
+  setOpenAddChildComment,
+  username,
+  selectPage,
+}) => {
   const textareaRef = useRef(null);
   const [commentValue, setCommentValue] = useState("");
   const dispatch = useDispatch();
@@ -92,7 +97,7 @@ const AddChildComment = ({ commentId, setOpenAddChildComment, username }) => {
         parentId: commentId,
         content: commentValue,
       };
-      const getData = { roomId: roomId, page: 0 };
+      const getData = { roomId: roomId, page: selectPage - 1 };
       dispatch(addChildComment(data)).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           dispatch(getCommentList(getData));
@@ -101,7 +106,14 @@ const AddChildComment = ({ commentId, setOpenAddChildComment, username }) => {
         }
       });
     },
-    [commentId, commentValue, dispatch, roomId, setOpenAddChildComment]
+    [
+      commentId,
+      commentValue,
+      dispatch,
+      roomId,
+      selectPage,
+      setOpenAddChildComment,
+    ]
   );
   return (
     <AddChildCommentWrap>

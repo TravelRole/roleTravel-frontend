@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { HiOutlineChat, HiChevronDown } from "react-icons/hi";
+import Icons from "../../../../../../assets/icon/icon";
 import CommentContent from "./CommentContent";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getCommentList } from "../../../commentSlice";
 
 const AllPlanCommentWrap = styled.div`
   flex: 1;
   position: relative;
+  z-index: 1;
 `;
 
 const AllPlanCommentContainer = styled.div`
@@ -82,13 +83,11 @@ const CommentWrap = () => {
         >
           <p>
             <span>
-              <HiOutlineChat />
+              <Icons.HiOutlineChat />
             </span>
             의견 (Comment)
           </p>
-          <i>
-            <HiChevronDown />
-          </i>
+          <i>{openComment ? <Icons.HiChevronUp /> : <Icons.HiChevronDown />}</i>
         </AllPlanCommentHeader>
         {openComment && <CommentContent openComment={openComment} />}
       </AllPlanCommentContainer>

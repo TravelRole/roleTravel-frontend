@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import AllPlanContent from "./layout/AllPlanContent";
 import AllPlanHeader from "./layout/AllPlanHeader/AllPlanHeader";
-import AllPlanMembers from "./layout/AllPlanMembers";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserInfo } from "../../Landing/userSlice";
+import { getAllPlanList, getRoomData } from "./allPlanSlice";
+import { useParams } from "react-router-dom";
+import AllPlanMembers from "./layout/AllPlanMember/AllPlanMembers";
+import AllPlanContent from "./layout/AllPlanContent/AllPlanContent";
 
 const AllPlanWrap = styled.section`
-  padding: 8rem 5rem;
+  padding: 8rem 15rem 8rem 5rem;
   h2 {
     margin-bottom: 3rem;
     font-weight: 500;
@@ -14,20 +18,31 @@ const AllPlanWrap = styled.section`
   }
 `;
 
-const AllPlanContainer = styled.div``;
+const AllPlanContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+`;
 
 function AllPlan() {
+  const dispatch = useDispatch();
+  const { roomId } = useParams();
+
+  useEffect(() => {
+    dispatch(getAllPlanList(roomId));
+    dispatch(getRoomData(roomId));
+    dispatch(getUserInfo());
+  }, [dispatch, roomId]);
+
   return (
-    <>
-      <AllPlanWrap>
-        <h2>모든 여행 계획</h2>
-        <AllPlanContainer>
-          <AllPlanHeader />
-          <AllPlanMembers />
-          <AllPlanContent />
-        </AllPlanContainer>
-      </AllPlanWrap>
-    </>
+    <AllPlanWrap>
+      <h2>모든 여행 계획</h2>
+      <AllPlanContainer>
+        <AllPlanHeader />
+        <AllPlanMembers />
+        <AllPlanContent />
+      </AllPlanContainer>
+    </AllPlanWrap>
   );
 }
 export default AllPlan;

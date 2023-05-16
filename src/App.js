@@ -12,6 +12,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { getTravelList } from "./features/SpaceList/travelSlice";
+import { registerLocale } from "react-datepicker";
+import ko from "date-fns/locale/ko";
+
+registerLocale("ko", ko);
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
