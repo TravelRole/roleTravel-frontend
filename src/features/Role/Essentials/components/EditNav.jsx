@@ -26,7 +26,12 @@ const EditNav = ({
           deleteList={deleteList}
         />
       )}
-      {isOpen && <AddEssentialsModal setIsOpen={setIsOpen} />}
+      {isOpen && (
+        <AddEssentialsModal
+          setIsOpen={setIsOpen}
+          data={data}
+        />
+      )}
       <EditContent>
         <div style={{ display: "flex", alignItems: "center" }}>
           <EssentialsSpan

@@ -1,13 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
 import tokenApi from '../../../lib/customAPI'
 
 const initialState = {
   essentials: {},
   checked: null,
   isLoading: false,
-  error: false,
+  error: null,
 };
 
 export const getEssentials = createAsyncThunk("api/room/room_id/essentials", async (id) => {
@@ -17,7 +16,7 @@ export const getEssentials = createAsyncThunk("api/room/room_id/essentials", asy
 
 export const createEssentials = createAsyncThunk("api/room/room_id/essentials", async (createItemData, thunkAPI) => {
     await tokenApi.post(`api/room/${createItemData[0]}/essentials`, createItemData[1])
-    .then((res) => console.log('Created!', createItemData[1]))
+    .then((res) => console.log('준비물을 생성하였습니다.'))
     .catch((err) => {
       if (err.response && err.response.status === 400) {
         return thunkAPI.rejectWithValue('카테고리명이 올바른 형식이 아니거나 존재하지 않는 방입니다.');
@@ -64,14 +63,6 @@ const essentialsSlice = createSlice({
       .addCase(getEssentials.rejected, (state, action) => {
         state.error = action.payload;
         state.isLoading = false;
-        toast.error(action.payload, {
-          position: "top-center",
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          progress: undefined,
-        });
       })
       .addCase(patchChecks.rejected, (state, action) => {
         state.error = action.payload;

@@ -25,18 +25,28 @@ function Essentials() {
   });
 
   useEffect(() => {
-    dispatch(getEssentials(window.location.href.split('/')[3]));
-    console.log(essentials)
-  }, []);
+    dispatch(getEssentials(window.location.href.split("/")[3]));
+  }, [dispatch]);
 
   if (!isLoading && essentials) {
     Object.keys(essentials).map((el) => {
       switch (el) {
-        case 'ESSENTIAL':
+        case "ESSENTIAL":
           return (data["필수 준비물"] = essentials[el]);
-        case 'ETC':
+        case "CLOTHES":
+          return (data["의류"] = essentials[el]);
+        case "TOILETRIES":
+          return (data["세면 용품"] = essentials[el]);
+        case "MEDICINE":
+          return (data["상비약"] = essentials[el]);
+        case "SESONAL":
+          return (data["계절 용품"] = essentials[el]);
+        case "COOKWARE":
+          return (data["조리 용품"] = essentials[el]);
+        case "ETC":
           return (data["기타 용품"] = essentials[el]);
-        default: return "";
+        default:
+          return "";
       }
     });
   }

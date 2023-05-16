@@ -12,17 +12,17 @@ const Category = ({ clickedCategory, setClickedCategory, setNewEssential, setNew
         카테고리
       </AddEssentialSpan>
       <ButtonList style={{ marginBottom: "20px" }}>
-        {materials.map((el) => (
+        {Object.keys(materials)?.map((category) => (
           <CategoryButton
-            key={el.category}
+            key={category}
             onClick={() => {
-              setClickedCategory(el.category);
+              setClickedCategory(category);
               setNewEssential("");
               setNewList([]);
             }}
-            clicked={clickedCategory === el.category}
+            clicked={clickedCategory === category}
           >
-            {el.category}
+            {category}
           </CategoryButton>
         ))}
       </ButtonList>
