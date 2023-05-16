@@ -4,19 +4,22 @@ import tokenApi from '../../../lib/customAPI'
 
 const initialState = {
   essentials: {},
-  checked: null,
+  check: null,
   isLoading: false,
   error: null,
 };
 
+let thisId;
+
 export const getEssentials = createAsyncThunk("api/room/room_id/essentials", async (id) => {
   const res = await tokenApi.get(`api/room/${id}/essentials`)
+  thisId = id;
   return res.data;
 });
 
 export const createEssentials = createAsyncThunk("api/room/room_id/essentials", async (createItemData, thunkAPI) => {
     await tokenApi.post(`api/room/${createItemData[0]}/essentials`, createItemData[1])
-    .then((res) => console.log('준비물을 생성하였습니다.'))
+    .then((res) => getEssentials(createItemData[0]))
     .catch((err) => {
       if (err.response && err.response.status === 400) {
         return thunkAPI.rejectWithValue('카테고리명이 올바른 형식이 아니거나 존재하지 않는 방입니다.');
@@ -27,7 +30,7 @@ export const createEssentials = createAsyncThunk("api/room/room_id/essentials", 
 
 export const deleteEssentials = createAsyncThunk("api/room/room_id/essentials", async (deleteData, thunkAPI) => {
   await tokenApi.delete(`api/room/${deleteData[0]}/essentials`, deleteData[1])
-    .then((res) => console.log('Deleted!'))
+    .then((res) => getEssentials(deleteData[0]))
     .catch((err) => {
       if (err.response && err.response.status === 400) {
         return thunkAPI.rejectWithValue('존재하지 않는 방이거나 참여하지 않은 방 입니다.');
@@ -38,7 +41,7 @@ export const deleteEssentials = createAsyncThunk("api/room/room_id/essentials", 
 
 export const patchChecks = createAsyncThunk("api/room/room_id/essentials/check", async (checkData, thunkAPI) => {
     await tokenApi.post(`api/room/${checkData[0]}/essentials/check`, checkData[1])
-    .then((res) => console.log('Created!', checkData[1]))
+    .then((res) => console.log('Created!'))
     .catch((err) => {
       if (err.response && err.response.status === 400) {
         return thunkAPI.rejectWithValue('존재하지 않는 방이거나 참여하지 않은 방 입니다.');
@@ -64,7 +67,15 @@ const essentialsSlice = createSlice({
         state.error = action.payload;
         state.isLoading = false;
       })
+      .addCase(patchChecks.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.check = action.payload;
+      })
+      .addCase(patchChecks.pending, (state, action) => {
+        state.isLoading = true;
+      })
       .addCase(patchChecks.rejected, (state, action) => {
+        state.isLoading = false;
         state.error = action.payload;
       })
     }
