@@ -26,22 +26,15 @@ const Contents = ({
   }, [allChecked]);
 
   useEffect(() => {
+    console.log(list);
     if (clicked) {
-      setId(id + 1);
-      list[category].push({
-        id: id,
-        itemName: itemData,
-        isChecked: true
-      });
+      list[category].push(itemData);
+      console.log(list[category])
     } else {
-      if (!list[category]) list[category] = [];
-      else {
-        list[category] = list[category].filter(
-          (el) => el.itemName !== itemData
-        );
-      }
+      list[category] = list[category]?.filter((el) => el.itemName !== itemData);
+      setList(list);
     }
-    setList(list);
+    
     if (list[category]?.length === 0) {
       setAllChecked(false);
     }

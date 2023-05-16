@@ -16,8 +16,14 @@ const CheckDeleteModal = ({ setIsOpen, deleteList }) => {
 
   const deleteHandler = () => {
     dispatch(
-      deleteEssentials([window.location.href.split("/")[3], deleteList])
+      deleteEssentials([
+        Number(window.location.href.split("/")[3]),
+        {
+          ids: deleteList
+        }
+      ])
     );
+    console.log(deleteList)
   };
 
   return (

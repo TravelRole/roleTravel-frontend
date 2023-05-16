@@ -1,24 +1,33 @@
 import { useEffect, useState } from "react";
 import Icons from "../../../../assets/icon/icon";
 import { Dot, EssentialsItem, EssentialsSpan } from "../Styles";
+import { useDispatch, useSelector } from "react-redux";
+import { patchChecks } from "../EssentialsSlice";
 
 const Checkbox = ({ item }) => {
+  const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
+  const { isLoading, check } = useSelector((state) => state.essentials);
 
-  // useEffect(() => {
-  //   setChecked(item.isChecked)
-  // }, [])
-  
-  // useEffect(() => {
-  //   if (checked) {
-  //     willDelete.push(item);
-  //   } else {
-  //     // if (willDelete == )
-  //     // setWillDelete(willDelete.filter(el => el.itemName !== item.itemName))
-  //   }
-  // }, [checked]);
+  // console.log(isLoading, check)
 
-  const toggle = () => setChecked(!checked);
+  useEffect(() => {
+    setChecked(item.isChecked)
+  }, [])
+
+  const toggle = () => {
+    setChecked(!checked);
+
+    dispatch(
+      patchChecks([
+        Number(window.location.href.split("/")[3]),
+        {
+          check: checked,
+          ids: [item.id]
+        }
+      ])
+    );
+  };
 
   return (
     <div
@@ -37,7 +46,7 @@ const Checkbox = ({ item }) => {
               fill: "#eef1f8",
               color: "#3884fd",
               cursor: "pointer",
-              strokeWidth: '1.7'
+              strokeWidth: "1.7"
             }}
             onClick={() => toggle()}
           />

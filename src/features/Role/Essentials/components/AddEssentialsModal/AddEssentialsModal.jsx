@@ -8,9 +8,9 @@ import {
   AddEssentialSpan,
   Button
 } from "./Styles";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { createEssentials, getEssentials } from "../../EssentialsSlice";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createEssentials } from "../../EssentialsSlice";
 import Category from "./layout/Category";
 import Form from "./layout/Form";
 import { convertCategoryName } from "./validation";
@@ -20,11 +20,11 @@ const AddEssentialsModal = ({ setIsOpen, data, setData }) => {
   const [clickedCategory, setClickedCategory] = useState("");
   const [newEssential, setNewEssential] = useState("");
   const [newList, setNewList] = useState([]);
-  const { essentials, isLoading } = useSelector((state) => state.essentials);
 
   const submitHandler = () => {
     if (newList.length === 0) return;
     else {
+      console.log(newList)
       const convertCategory = convertCategoryName(clickedCategory);
       dispatch(
         createEssentials([

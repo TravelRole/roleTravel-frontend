@@ -10,8 +10,12 @@ import {
 import { materials } from "../../materials";
 import Cards from "./Cards";
 import { useState } from "react";
+import { convertCategoryName } from "../AddEssentialsModal/validation";
+import { createEssentials } from "../../EssentialsSlice";
+import { useDispatch } from "react-redux";
 
 const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
+  const dispatch = useDispatch();
   const [list, setList] = useState({
     "필수 준비물": [],
     의류: [],
@@ -19,8 +23,33 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
     상비약: [],
     계절용품: [],
     "조리 용품": [],
-    "기타 용품": []
+    "기타 용품": [],
+    '해외 여행': []
   });
+
+  const addHandler = () => {
+    if (Object.values(list).join("") === "") return;
+    else {
+      Object.keys(list).map((el) => {
+        const convertCategory = convertCategoryName(el);
+        if (list[el] !== []) {
+          dispatch(
+            createEssentials([
+              Number(window.location.href.split("/")[3]),
+              {
+                category: convertCategory,
+                items: list[el]
+              }
+            ])
+          );
+          console.log(convertCategory, list[el])
+        } else {
+          return;
+        }
+        
+      });
+    }
+  };
 
   return (
     <>
@@ -43,7 +72,7 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
             fontWeight="500"
             style={{ lineHeight: "19px", marginBottom: "3px" }}
           >
-            여행계획에서 선정한 여행 시 가져가면 좋은 준비물 리스트에요 :)
+            여행역할에서 선정한 여행 시 가져가면 좋은 준비물 리스트에요 :)
           </EssentialsModalSpan>
           <EssentialsModalSpan
             color="#707070"
@@ -96,6 +125,7 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
             color="#fff"
             background="#3884fd"
             border="none"
+            onClick={() => addHandler()}
           >
             완료
           </ModalButton>

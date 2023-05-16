@@ -12,8 +12,10 @@ export const convertCategoryName = (name) => {
       return 'SEASONAL'
     case '조리 용품':
       return 'COOKWARE'
-    case '기타용품':
+    case '기타 용품':
       return 'ETC'
+    case '해외 여행':
+      return 'ABROAD'
     default: return;
   }
 };

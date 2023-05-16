@@ -8,7 +8,7 @@ const DeleteCheckBox = ({ item, deleteList, setDeleteList }) => {
 
   useEffect(() => {
     if (checked) {
-      deleteList.push(item.id)
+      setDeleteList([...deleteList, item.id])
     } else {
       setDeleteList(deleteList.filter((el) => el !== item.id))
     }
