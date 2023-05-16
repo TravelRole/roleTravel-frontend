@@ -13,7 +13,7 @@ import Icons from "../../../assets/icon/icon";
 import { toast } from "react-toastify";
 import SearchBlankPanel from "./layout/SearchBlankPanel";
 import ScheduleBox from "./layout/ScheduleContainer";
-import { addWantPlace, delWantPlace, getWantPlace } from "./WantPlaceSlice";
+import { addWantPlace, delWantPlace, getWantPlace } from "./wantPlaceSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Wrapper = styled.div`
