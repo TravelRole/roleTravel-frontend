@@ -268,7 +268,8 @@ function Schedule({ setReserveList }) {
   /** 찜장소 추가+삭제하기 */
 
   const handleWantPlace = (e, place, isExist) => {
-    const { place_name, road_address_name, address_name, phone, y, x } = place;
+    const { place_name, road_address_name, address_name, phone, y, x, id } =
+      place;
     const wantPlaceData = {
       roomId: roomId,
       placeName: place_name,
@@ -278,6 +279,7 @@ function Schedule({ setReserveList }) {
       longitude: x,
       category: "그냥 일단 빈값처리",
       lotNumberAddress: address_name,
+      mapPlaceId: id,
     };
 
     const delpayload = {
@@ -313,7 +315,6 @@ function Schedule({ setReserveList }) {
   }, [roomId, dispatch]);
 
   const { wantPlaceList } = useSelector((state) => state.wantPlace);
-  console.log(wantPlaceList);
 
   /** 찜장소 가져오기 */
 
@@ -366,7 +367,6 @@ function Schedule({ setReserveList }) {
   };
 
   const [info, setInfo] = useState();
-
   return (
     <>
       <Wrapper>
@@ -388,9 +388,11 @@ function Schedule({ setReserveList }) {
                   position={position}
                   onClick={() => setInfo(marker)}
                 >
-                  {info && info.place_name === marker.place_name && (
-                    <div style={{ color: "#000" }}>{marker.place_name}</div>
-                  )}
+                  {info &&
+                    (marker.id === info.id ||
+                      marker.id === String(info.mapPlaceId)) && (
+                      <div style={{ color: "#000" }}>{marker.place_name}</div>
+                    )}
                 </MapMarker>
               );
             })}
@@ -443,12 +445,11 @@ function Schedule({ setReserveList }) {
                             return placeInfo.placeName === place.place_name;
                           }
                         );
+
                         return (
                           <li key={`${place.x} + ${place.place_name}`}>
                             <StyledPlaceCard
-                              selected={
-                                info?.address_name === place.address_name
-                              }
+                              selected={String(info?.id) === String(place.id)}
                               onClick={() => {
                                 setInfo(place);
                                 setlat(place.y);
@@ -480,7 +481,57 @@ function Schedule({ setReserveList }) {
                 </SearchResultContainer>
               </StyledTabPanel>
               <StyledTabPanel value={"wish"}>
-                <SearchBlankPanel filter={"want"} />
+                <SearchResultContainer>
+                  {true ? (
+                    <ul>
+                      {wantPlaceList.wantPlaces?.map((place) => {
+                        const isExist = wantPlaceList.wantPlaces.filter(
+                          (placeInfo) => {
+                            return placeInfo.placeName === place.placeName;
+                          }
+                        );
+
+                        return (
+                          <li key={`${place.latitude} + ${place.placeName}`}>
+                            <StyledPlaceCard
+                              selected={
+                                String(info?.id) === String(place.mapPlaceId)
+                              }
+                              onClick={() => {
+                                const newPlace = {
+                                  ...place,
+                                  id: String(place.mapPlaceId),
+                                };
+                                setInfo(newPlace);
+                                setlat(place.latitude);
+                                setlng(place.longitude);
+                              }}
+                            >
+                              <header>{place.placeName}</header>
+                              <p>{place.placeAddress}</p>
+                              <p>{place.lotNumberAddress}</p>
+                              <span>
+                                {place.phoneNumber
+                                  ? place.phoneNumber
+                                  : "전화번호 없음"}
+                              </span>
+                              <input
+                                type="checkbox"
+                                onChange={(e) =>
+                                  handleWantPlace(e, place, isExist)
+                                }
+                                checked={true}
+                              />
+                              <button>일정에 추가</button>
+                            </StyledPlaceCard>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  ) : (
+                    <SearchBlankPanel filter={"want"} />
+                  )}
+                </SearchResultContainer>
               </StyledTabPanel>
             </StyledTabContext>
           </SearchAndWantBox>
