@@ -26,7 +26,7 @@ function Essentials() {
 
   useEffect(() => {
     dispatch(getEssentials(window.location.href.split("/")[3]));
-  }, [dispatch]);
+  }, [dispatch, essentials]);
 
   if (!isLoading && essentials) {
     Object.keys(essentials).map((el) => {

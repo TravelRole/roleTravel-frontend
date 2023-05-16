@@ -25,8 +25,6 @@ const Contents = ({
     }
   }, [allChecked]);
 
-  useEffect(() => {}, [list]);
-
   useEffect(() => {
     if (clicked) {
       setId(id + 1);
@@ -44,7 +42,6 @@ const Contents = ({
       }
     }
     setList(list);
-    console.log(materials[category].length, list[category].length);
     if (list[category]?.length === 0) {
       setAllChecked(false);
     }

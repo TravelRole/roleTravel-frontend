@@ -8,6 +8,7 @@ import CheckDeleteModal from "./CheckDeleteModal/CheckDeleteModal";
 
 const EditNav = ({
   data,
+  setData,
   condition,
   setCondition,
   page,
@@ -30,6 +31,7 @@ const EditNav = ({
         <AddEssentialsModal
           setIsOpen={setIsOpen}
           data={data}
+          setData={setData}
         />
       )}
       <EditContent>

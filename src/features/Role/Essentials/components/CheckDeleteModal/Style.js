@@ -59,7 +59,7 @@ export const Title = styled.h1`
 `;
 
 export const Span = styled.span`
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 500;
   color: #8b8b8b;
 `;
@@ -67,7 +67,7 @@ export const Span = styled.span`
 export const Button = styled.button`
   width: 180px;
   height: 45px;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 500;
   border-radius: 8px;
   cursor: pointer;

@@ -15,7 +15,7 @@ import Category from "./layout/Category";
 import Form from "./layout/Form";
 import { convertCategoryName } from "./validation";
 
-const AddEssentialsModal = ({ setIsOpen, data }) => {
+const AddEssentialsModal = ({ setIsOpen, data, setData }) => {
   const dispatch = useDispatch();
   const [clickedCategory, setClickedCategory] = useState("");
   const [newEssential, setNewEssential] = useState("");
@@ -35,18 +35,6 @@ const AddEssentialsModal = ({ setIsOpen, data }) => {
           }
         ])
       );
-      dispatch(getEssentials(window.location.href.split("/")[3]));
-      Object.keys(essentials).map((el) => {
-        switch (el) {
-          case "ESSENTIAL":
-            return (data["필수 준비물"] = essentials[el]);
-          case "ETC":
-            return (data["기타 용품"] = essentials[el]);
-          default:
-            return "";
-        }
-      });
-
       setIsOpen(false);
     }
   };
