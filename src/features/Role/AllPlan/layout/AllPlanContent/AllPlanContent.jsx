@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Icons from "../../../../../assets/icon/icon";
 import AllPlanContentCard from "./AllPlanContentCard";
-import { getAllPlanList } from "../../allPlanSlice";
 
 const AllPlanContentWrap = styled.section``;
 
@@ -155,6 +154,8 @@ const AllPlanContent = () => {
   const { totalExpense, data } = allPlanList ?? {};
   const { startDate, endDate } = roomData ?? {};
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  console.log(data)
 
   const handleSlider = useCallback(
     (e) => {

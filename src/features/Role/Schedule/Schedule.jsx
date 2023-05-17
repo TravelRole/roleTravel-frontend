@@ -17,6 +17,7 @@ import { addWantPlace, delWantPlace, getWantPlace } from "./wantPlaceSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../components/Modal";
 import AddScheduleModal from "./layout/AddScheduleModal";
+import SearchPlaceCard from "./components/SearchPlaceCard";
 
 const Wrapper = styled.div`
   display: flex;
@@ -169,7 +170,7 @@ const SearchResultContainer = styled.div`
   }
 `;
 
-const StyledPlaceCard = styled.article`
+const StyledPlaceCard = styled.li`
   position: relative;
   cursor: pointer;
 
@@ -448,33 +449,14 @@ function Schedule({ setReserveList }) {
                             return placeInfo.placeName === place.place_name;
                           }
                         );
-
                         return (
-                          <li key={`${place.x} + ${place.place_name}`}>
-                            <StyledPlaceCard
-                              selected={String(info?.id) === String(place.id)}
-                              onClick={() => {
-                                setInfo(place);
-                                setlat(place.y);
-                                setlng(place.x);
-                              }}
-                            >
-                              <header>{place.place_name}</header>
-                              <p>{place.road_address_name}</p>
-                              <p>{place.address_name}</p>
-                              <span>
-                                {place.phone ? place.phone : "전화번호 없음"}
-                              </span>
-                              <input
-                                type="checkbox"
-                                onChange={(e) =>
-                                  handleWantPlace(e, place, isExist)
-                                }
-                                checked={isExist.length}
-                              />
-                              <button>일정에 추가</button>
-                            </StyledPlaceCard>
-                          </li>
+                          <SearchPlaceCard
+                            place={place}
+                            isExist={isExist}
+                            handleWantPlace={handleWantPlace}
+                            locationFn={{ setlat, setlng }}
+                            Info={{ setInfo, info }}
+                          />
                         );
                       })}
                     </ul>
@@ -544,10 +526,10 @@ function Schedule({ setReserveList }) {
           <ScheduleBox />
         </ScheduleContainer>
         {isOpenModal ? (
-        <Modal width="52rem" setIsOpenModal={setIsOpenModal}>
-          <AddScheduleModal setIsOpenModal={setIsOpenModal} />
-        </Modal>
-      ) : null}
+          <Modal width="52rem" setIsOpenModal={setIsOpenModal}>
+            <AddScheduleModal setIsOpenModal={setIsOpenModal} />
+          </Modal>
+        ) : null}
       </Wrapper>
     </>
   );
