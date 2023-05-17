@@ -18,36 +18,31 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
   const dispatch = useDispatch();
   const [list, setList] = useState({
     "필수 준비물": [],
-    의류: [],
+    "의류": [],
     "세면 용품": [],
-    상비약: [],
-    계절용품: [],
+    "상비약": [],
+    "계절 용품": [],
     "조리 용품": [],
     "기타 용품": [],
-    '해외 여행': []
   });
 
   const addHandler = () => {
     if (Object.values(list).join("") === "") return;
     else {
-      Object.keys(list).map((el) => {
-        const convertCategory = convertCategoryName(el);
-        if (list[el] !== []) {
+      Object.keys(list).map(name => {
+        if (list[name]?.length > 0) {
+          const convert = convertCategoryName(name)
           dispatch(
             createEssentials([
               Number(window.location.href.split("/")[3]),
               {
-                category: convertCategory,
-                items: list[el]
+                category: convert,
+                items: list[name]
               }
             ])
           );
-          console.log(convertCategory, list[el])
-        } else {
-          return;
         }
-        
-      });
+      })
     }
   };
 

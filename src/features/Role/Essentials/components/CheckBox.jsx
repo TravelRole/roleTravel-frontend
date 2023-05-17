@@ -7,9 +7,6 @@ import { patchChecks } from "../EssentialsSlice";
 const Checkbox = ({ item }) => {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
-  const { isLoading, check } = useSelector((state) => state.essentials);
-
-  // console.log(isLoading, check)
 
   useEffect(() => {
     setChecked(item.isChecked)
@@ -17,15 +14,14 @@ const Checkbox = ({ item }) => {
 
   const toggle = () => {
     setChecked(!checked);
-
     dispatch(
-      patchChecks([
-        Number(window.location.href.split("/")[3]),
+      patchChecks(
+        // Number(window.location.href.split("/")[3]),
         {
-          check: checked,
+          check: !checked,
           ids: [item.id]
         }
-      ])
+      )
     );
   };
 
