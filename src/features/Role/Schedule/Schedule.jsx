@@ -12,13 +12,14 @@ import { useRef } from "react";
 import Icons from "../../../assets/icon/icon";
 import { toast } from "react-toastify";
 import SearchBlankPanel from "./layout/SearchBlankPanel";
-import ScheduleBox from "./layout/ScheduleContainer";
+import ScheduleContainer from "./layout/ScheduleContainer";
 import { addWantPlace, delWantPlace, getWantPlace } from "./wantPlaceSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../components/Modal";
 import AddScheduleModal from "./layout/AddScheduleModal";
 import SearchPlaceCard from "./components/SearchPlaceCard";
 import WantPlaceCard from "./components/WantPlaceCard";
+import { getTravelDay } from "./travelDaySlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -172,7 +173,7 @@ const SearchResultContainer = styled.div`
 `;
 
 /** 스케쥴 컨테이너 */
-const ScheduleContainer = styled.div`
+const ScheduleSection = styled.div`
   padding-top: 1.5rem;
   height: fit-content;
 `;
@@ -201,8 +202,16 @@ function Schedule({ setReserveList }) {
   /** 찜장소 추가+삭제하기 */
 
   const handleWantPlace = (e, place, isExist) => {
-    const { place_name, road_address_name, address_name, phone, y, x, id , place_url } =
-      place;
+    const {
+      place_name,
+      road_address_name,
+      address_name,
+      phone,
+      y,
+      x,
+      id,
+      place_url,
+    } = place;
     const wantPlaceData = {
       roomId: roomId,
       placeName: place_name,
@@ -213,7 +222,7 @@ function Schedule({ setReserveList }) {
       category: "그냥 일단 빈값처리",
       lotNumberAddress: address_name,
       mapPlaceId: id,
-      link : place_url
+      link: place_url,
     };
 
     const delpayload = {
@@ -246,9 +255,13 @@ function Schedule({ setReserveList }) {
   /** 찜장소 가져오기 */
   useEffect(() => {
     dispatch(getWantPlace(roomId));
+    dispatch(getTravelDay(roomId));
   }, [roomId, dispatch]);
 
   const { wantPlaceList } = useSelector((state) => state.wantPlace);
+  const { travelDayList } = useSelector((state) => state.travelDay);
+  console.log(wantPlaceList);
+  console.log(travelDayList);
 
   /** 찜장소 가져오기 */
   const [searchPlaceList, setSearchPlaceList] = useState([]);
@@ -433,14 +446,15 @@ function Schedule({ setReserveList }) {
           </SearchAndWantBox>
         </MapWrapper>
 
-        <ScheduleContainer>
-          <ScheduleBox />
-        </ScheduleContainer>
+        <ScheduleSection>
+          <ScheduleContainer travelDayList={travelDayList} />
+        </ScheduleSection>
         {isOpenModal ? (
           <Modal width="52rem" setIsOpenModal={setIsOpenModal}>
             <AddScheduleModal
               setIsOpenModal={setIsOpenModal}
               modalData={modalData}
+              travelDayList={travelDayList}
             />
           </Modal>
         ) : null}

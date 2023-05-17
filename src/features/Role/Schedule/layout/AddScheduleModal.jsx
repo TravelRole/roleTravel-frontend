@@ -137,18 +137,18 @@ const CategoryWrap = styled.li`
   }
 `;
 
-const dayOption = [
-  { label: "1일차", day: 1 },
-  { label: "2일차", day: 2 },
-  { label: "3일차", day: 3 },
-  { label: "4일차", day: 4 },
-];
-
 const reserveOption = ["예약필요", "예약완료"];
 
 const categoryOptions = ["교통", "숙박", "음식", "관광", "쇼핑", "기타"];
 
-const AddScheduleModal = ({ setIsOpenModal, modalData }) => {
+const AddScheduleModal = ({ setIsOpenModal, modalData ,travelDayList}) => {
+
+   const dayOption = travelDayList?.map((dayData)=>{
+    return {
+      label:`${dayData.idx}일차` , day:dayData.idx
+    }
+  })
+
   let {
     id,
     place_name,
@@ -192,12 +192,32 @@ const AddScheduleModal = ({ setIsOpenModal, modalData }) => {
   //     "mapPlaceId" : 123456
   // }
 
-  console.log(modalData);
+ 
   const [category, setCategory] = useState("교통");
 
   const [note, setNote] = useState("");
 
   const noteMax = 30;
+
+  // 로그인 submit 이벤트
+  const loginSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const loginPayload = { email: email, password: password };
+    // if (!email || !password) return alert("아이디와 패스워드를 적어주세요!");
+    // dispatch(login(loginPayload)).then((res) => {
+    //   if (res.meta.requestStatus === "fulfilled") {
+    //     navigate("/spaceList");
+    //     dispatch(getUserInfo());
+    //     dispatch(getTravelList());
+    //     return;
+    //   }
+    // });
+  }
+
+
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;

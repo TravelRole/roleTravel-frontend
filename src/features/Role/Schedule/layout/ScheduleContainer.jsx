@@ -217,7 +217,7 @@ const ReservationDay = [
   { CountDay: 7, Date: "4.23(일)" },
 ];
 
-const ScheduleBox = () => {
+const ScheduleContainer = ({ travelDayList }) => {
   const [value, setValue] = useState("1");
 
   const handleChange = (event, newValue) => {
@@ -233,17 +233,21 @@ const ScheduleBox = () => {
               onChange={handleChange}
               aria-label="lab API tabs example"
             >
-              {ReservationDay.map((item, i) => {
+              {travelDayList.map(({ idx, date, day }) => {
+                const transformedDate =
+                  date.split("-")[1] + "." + date.split("-")[2];
                 return (
                   <StyleTab
-                    key={i}
+                    key={date}
                     label={
                       <DateBox>
-                        <Day>{item.CountDay}일차</Day>
-                        <Date>{item.Date}</Date>
+                        <Day>{idx}일차</Day>
+                        <Date>
+                          {transformedDate}({day})
+                        </Date>
                       </DateBox>
                     }
-                    value={`${i + 1}`}
+                    value={`${idx}`}
                   />
                 );
               })}
@@ -290,7 +294,7 @@ const ScheduleBox = () => {
                     </span>
                   </NoteDetailColumn>
                 </ScheduleRow>
-                
+
                 <ScheduleRow>
                   <PlaceNameColumn>
                     <input type="checkbox" />
@@ -352,7 +356,9 @@ const ScheduleBox = () => {
                 </ScheduleRow>
               </ScheduleDetails>
             </StyledTabPanel>
-            <StyledTabPanel value="2"><ScheduleBlankPanel /></StyledTabPanel>
+            <StyledTabPanel value="2">
+              <ScheduleBlankPanel />
+            </StyledTabPanel>
             <StyledTabPanel value="3">Item Three</StyledTabPanel>
           </ScheduleWrapper>
         </TabContext>
@@ -361,4 +367,4 @@ const ScheduleBox = () => {
   );
 };
 
-export default ScheduleBox;
+export default ScheduleContainer;
