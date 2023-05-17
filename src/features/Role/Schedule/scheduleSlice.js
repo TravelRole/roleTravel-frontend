@@ -5,7 +5,9 @@ import tokenApi from "../../../lib/customAPI";
 //날짜에 맞는 일정 가져오기
 export const getSchedule = createAsyncThunk(
   "schedule/getSchedule",
-  async (roomId, date) => {
+  async (payload) => {
+    const { roomId, date } = payload;
+    console.log(roomId ,date)
     try {
       const res = await tokenApi.get(
         `api/room/${roomId}/schedule?date=${date}`
