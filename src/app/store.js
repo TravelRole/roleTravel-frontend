@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import axios from "axios";
 import counterReducer from "../features/counter/counterSlice";
 import signReducer from "../features/Sign/signSlice";
 import authReducer from "../features/Login/authSlice";
