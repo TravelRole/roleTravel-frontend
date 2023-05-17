@@ -1,29 +1,18 @@
 import { useEffect, useState } from "react";
-import Icons from "../../../../assets/icon/icon";
 import { Dot, EssentialsItem, EssentialsSpan } from "../Styles";
-import { useDispatch } from "react-redux";
-import { patchChecks } from "../EssentialsSlice";
+import Icons from "../../../../assets/icon/icon";
 
-const Checkbox = ({ item }) => {
-  const dispatch = useDispatch();
+const DeleteCheckBox = ({ item, deleteList, setDeleteList }) => {
   const [checked, setChecked] = useState(false);
+  const toggle = () => setChecked(!checked);
 
   useEffect(() => {
-    setChecked(item.isChecked)
-  }, [])
-
-  const toggle = () => {
-    setChecked(!checked);
-    dispatch(
-      patchChecks([
-        Number(window.location.href.split("/")[3]),
-        {
-          check: !checked,
-          ids: [item.id]
-        }
-      ])
-    );
-  };
+    if (checked) {
+      setDeleteList([...deleteList, item.id])
+    } else {
+      setDeleteList(deleteList.filter((el) => el !== item.id))
+    }
+  }, [checked]);
 
   return (
     <div
@@ -39,10 +28,9 @@ const Checkbox = ({ item }) => {
           <Icons.HiOutlineCheckCircle
             size="20"
             style={{
-              fill: "#eef1f8",
               color: "#3884fd",
               cursor: "pointer",
-              strokeWidth: "1.7"
+              strokeWidth: "1.4"
             }}
             onClick={() => toggle()}
           />
@@ -70,4 +58,4 @@ const Checkbox = ({ item }) => {
   );
 };
 
-export default Checkbox;
+export default DeleteCheckBox;

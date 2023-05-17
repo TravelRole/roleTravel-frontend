@@ -1,26 +1,45 @@
-import { useState } from "react";
 import Icons from "../../../../assets/icon/icon";
 import { Divider, EditContent, EssentialsSpan } from "../Styles";
-// import AddEssentialsModal from "./AddEssentialsModal/AddEssentialsModal";
+import { useState } from "react";
+import AddEssentialsModal from "./AddEssentialsModal/AddEssentialsModal";
+import CheckDeleteModal from "./CheckDeleteModal/CheckDeleteModal";
 
 const EditNav = ({
   data,
-  clicked,
-  setClicked,
+  setData,
+  condition,
+  setCondition,
   page,
   setPage,
   defaultPages,
-  setData
+  deleteList,
+  setDeleteList,
+  setDeleted,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [deleteIsOpen, setDeleteIsOpen] = useState(false);
 
   return (
     <>
-      {/* {isOpen && <AddEssentialsModal data={data} setData={setData} setIsOpen={setIsOpen} />} */}
+      {deleteIsOpen && (
+        <CheckDeleteModal
+          setIsOpen={setDeleteIsOpen}
+          deleteList={deleteList}
+          setDeleteList={setDeleteList}
+          setDeleted={setDeleted}
+        />
+      )}
+      {isOpen && (
+        <AddEssentialsModal
+          setIsOpen={setIsOpen}
+          data={data}
+          setData={setData}
+        />
+      )}
       <EditContent>
         <div style={{ display: "flex", alignItems: "center" }}>
           <EssentialsSpan
-            fontSize="24px"
+            fontSize="2.4rem"
             fontWeight="600"
             color="#333333"
           >
@@ -29,44 +48,45 @@ const EditNav = ({
           <EssentialsSpan
             color="#707070"
             fontWeight="600"
-            fontSize="20px"
+            fontSize="2rem"
             style={{ marginLeft: "4px" }}
           >
             ({Object.keys(data).length})
           </EssentialsSpan>
         </div>
         <div style={{ display: "flex" }}>
-          {clicked === "add" && (
+          {condition === "add" && (
             <EssentialsSpan
               color="#8490a4"
-              fontSize="18px"
+              fontSize="1.8rem"
               fontWeight="500"
               style={{ textDecorationLine: "underline", cursor: "pointer" }}
-              onClick={() => setClicked("remove")}
+              onClick={() => setCondition("remove")}
             >
               삭제하기
             </EssentialsSpan>
           )}
-          {clicked === "remove" ? (
+          {condition === "remove" ? (
             <>
               <EssentialsSpan
                 color="#8490a4"
-                fontSize="18px"
+                fontSize="1.8rem"
                 fontWeight="500"
                 style={{ textDecorationLine: "underline", cursor: "pointer" }}
-                onClick={() => setClicked("")}
+                onClick={() => setCondition("")}
               >
                 선택취소
               </EssentialsSpan>
               <EssentialsSpan
                 color="#8490a4"
-                fontSize="18px"
+                fontSize="1.8rem"
                 fontWeight="500"
                 style={{
                   textDecorationLine: "underline",
                   marginLeft: "30px",
                   cursor: "pointer"
                 }}
+                onClick={() => setDeleteIsOpen(true)}
               >
                 선택 삭제
               </EssentialsSpan>
@@ -74,7 +94,7 @@ const EditNav = ({
           ) : (
             <EssentialsSpan
               color="#8490a4"
-              fontSize="18px"
+              fontSize="1.8rem"
               fontWeight="500"
               style={{
                 textDecorationLine: "underline",
@@ -82,7 +102,7 @@ const EditNav = ({
                 cursor: "pointer"
               }}
               onClick={() => {
-                setClicked("add");
+                setCondition("add");
                 setIsOpen(true);
               }}
             >
@@ -90,15 +110,15 @@ const EditNav = ({
             </EssentialsSpan>
           )}
           <Divider style={{ marginLeft: "20px", marginRight: "20px" }} />
-          <div>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <Icons.TfiAngleLeft
-              size="17"
+              size="14"
               color="#8490A4"
               style={{ strokeWidth: "1", cursor: "pointer" }}
               onClick={page > 0 ? () => setPage(page - 1) : () => setPage(0)}
             />
             <Icons.TfiAngleRight
-              size="17"
+              size="14"
               color="#8490A4"
               style={{
                 strokeWidth: "1",

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Divider, EssentialsSpan, Tip, Title } from "../Styles";
-// import AddEssentialsModal from '../components/AddEssentialsModal/AddEssentialsModal'
+import EssentialsListModal from '../components/EssentialsListModal/EssentialsListModal'
 
 const TitleContent = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      {/* {isOpen && <AddEssentialsModal setIsOpen={setIsOpen} />} */}
+      {isOpen && <EssentialsListModal setIsOpen={setIsOpen} />}
       <Title>
         <h1
           style={{ fontSize: "3rem", fontWeight: "600", marginRight: "19px" }}
@@ -23,7 +23,7 @@ const TitleContent = () => {
         <EssentialsSpan
           color="#A7A7A7"
           fontWeight="500"
-          fontSize="18px"
+          fontSize="1.8rem"
           style={{ marginLeft: "16px" }}
         >
           TIP 버튼을 눌러 템플릿에서 추가 하거나 추가하기 버튼을 눌러 직접

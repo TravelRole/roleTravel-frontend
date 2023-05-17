@@ -10,7 +10,7 @@ import random2 from "../../../assets/images/random2.png";
 import random3 from "../../../assets/images/random3.png";
 import random4 from "../../../assets/images/random4.png";
 import { useDispatch } from "react-redux";
-import { getAllPlanList, getRoomData } from "../../Role/Allplan/allPlanSlice";
+import { getAllPlanList, getRoomData } from "../../Role/AllPlan/allPlanSlice";
 const TravelCardWrap = styled.div`
   min-width: 35rem;
   min-height: 48rem;

@@ -19,6 +19,9 @@ import {
   HiChevronDown,
   HiChevronUp,
   HiOutlineCalendar,
+  HiUpload,
+  HiCheckCircle,
+  HiOutlinePlusSm
 } from "react-icons/hi";
 
 import {
@@ -38,7 +41,7 @@ import {
   AiOutlineCreditCard,
 } from "react-icons/ai";
 
-import { TbPencilMinus } from "react-icons/tb";
+import { TbPencilMinus, TbTrash } from "react-icons/tb";
 import { MdOutlineClose } from "react-icons/md";
 import { BiCoinStack } from "react-icons/bi";
 import { RxMagnifyingGlass } from "react-icons/rx";
@@ -84,6 +87,10 @@ const Icons = {
   HiChevronDown,
   HiChevronUp,
   HiOutlineCalendar,
+  HiUpload,
+  TbTrash,
+  HiCheckCircle,
+  HiOutlinePlusSm
 };
 
 export default Icons;
