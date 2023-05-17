@@ -300,6 +300,7 @@ function Schedule({ setReserveList }) {
 
   const [info, setInfo] = useState();
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [modalData, setModalData] = useState({});
   return (
     <>
       <Wrapper>
@@ -385,6 +386,8 @@ function Schedule({ setReserveList }) {
                             handleWantPlace={handleWantPlace}
                             locationFn={{ setlat, setlng }}
                             Info={{ setInfo, info }}
+                            setIsOpenModal={setIsOpenModal}
+                            setModalData={setModalData}
                           />
                         );
                       })}
@@ -412,6 +415,8 @@ function Schedule({ setReserveList }) {
                             handleWantPlace={handleWantPlace}
                             locationFn={{ setlat, setlng }}
                             Info={{ setInfo, info }}
+                            setIsOpenModal={setIsOpenModal}
+                            setModalData={setModalData}
                           />
                         );
                       })}
@@ -430,7 +435,10 @@ function Schedule({ setReserveList }) {
         </ScheduleContainer>
         {isOpenModal ? (
           <Modal width="52rem" setIsOpenModal={setIsOpenModal}>
-            <AddScheduleModal setIsOpenModal={setIsOpenModal} />
+            <AddScheduleModal
+              setIsOpenModal={setIsOpenModal}
+              modalData={modalData}
+            />
           </Modal>
         ) : null}
       </Wrapper>

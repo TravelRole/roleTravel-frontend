@@ -1,6 +1,5 @@
-import React from 'react';
+import React from "react";
 import styled from "styled-components";
-
 
 const StyledPlaceCard = styled.li`
   position: relative;
@@ -73,43 +72,50 @@ const StyledPlaceCard = styled.li`
   }
 `;
 const WantPlaceCard = (props) => {
-    const { place, isExist, handleWantPlace, locationFn, Info } = props;
+  const {
+    place,
+    isExist,
+    handleWantPlace,
+    locationFn,
+    Info,
+    setModalData,
+    setIsOpenModal,
+  } = props;
   const { setlat, setlng } = locationFn;
   const { info, setInfo } = Info;
-    return (
-        <StyledPlaceCard
-        key={`${place.latitude} + ${place.placeName}`}
-        selected={
-          String(info?.id) === String(place.mapPlaceId)
-        }
+  return (
+    <StyledPlaceCard
+      key={`${place.latitude} + ${place.placeName}`}
+      selected={String(info?.id) === String(place.mapPlaceId)}
+      onClick={() => {
+        const newPlace = {
+          ...place,
+          id: String(place.mapPlaceId),
+        };
+        setInfo(newPlace);
+        setlat(place.latitude);
+        setlng(place.longitude);
+      }}
+    >
+      <header>{place.placeName}</header>
+      <p>{place.placeAddress}</p>
+      <p>{place.lotNumberAddress}</p>
+      <span>{place.phoneNumber ? place.phoneNumber : "전화번호 없음"}</span>
+      <input
+        type="checkbox"
+        onChange={(e) => handleWantPlace(e, place, isExist)}
+        checked={true}
+      />
+      <button
         onClick={() => {
-          const newPlace = {
-            ...place,
-            id: String(place.mapPlaceId),
-          };
-          setInfo(newPlace);
-          setlat(place.latitude);
-          setlng(place.longitude);
+          setModalData(place);
+          setIsOpenModal(true);
         }}
       >
-        <header>{place.placeName}</header>
-        <p>{place.placeAddress}</p>
-        <p>{place.lotNumberAddress}</p>
-        <span>
-          {place.phoneNumber
-            ? place.phoneNumber
-            : "전화번호 없음"}
-        </span>
-        <input
-          type="checkbox"
-          onChange={(e) =>
-            handleWantPlace(e, place, isExist)
-          }
-          checked={true}
-        />
-        <button>일정에 추가</button>
-      </StyledPlaceCard>
-    );
+        일정에 추가
+      </button>
+    </StyledPlaceCard>
+  );
 };
 
 export default WantPlaceCard;

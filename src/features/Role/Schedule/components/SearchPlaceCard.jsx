@@ -73,7 +73,15 @@ const StyledPlaceCard = styled.li`
 `;
 
 const SearchPlaceCard = (props) => {
-  const { place, isExist, handleWantPlace, locationFn, Info } = props;
+  const {
+    place,
+    isExist,
+    handleWantPlace,
+    locationFn,
+    Info,
+    setModalData,
+    setIsOpenModal,
+  } = props;
   const { setlat, setlng } = locationFn;
   const { info, setInfo } = Info;
   return (
@@ -95,7 +103,14 @@ const SearchPlaceCard = (props) => {
         onChange={(e) => handleWantPlace(e, place, isExist)}
         checked={isExist.length}
       />
-      <button>일정에 추가</button>
+      <button
+        onClick={() => {
+          setModalData(place);
+          setIsOpenModal(true);
+        }}
+      >
+        일정에 추가
+      </button>
     </StyledPlaceCard>
   );
 };

@@ -150,10 +150,11 @@ const reserveOption = ["예약필요", "예약완료"];
 
 const categoryOptions = ["교통", "숙박", "음식", "관광", "쇼핑", "기타"];
 
-const AddScheduleModal = ({ setIsOpenModal }) => {
+const AddScheduleModal = ({ setIsOpenModal, modalData }) => {
+  console.log(modalData);
   const [category, setCategory] = useState("traffic");
   const [note, setNote] = useState("");
-  const [fee, setFee] = useState("");
+
 
   const noteMax = 30;
 
@@ -161,15 +162,6 @@ const AddScheduleModal = ({ setIsOpenModal }) => {
     const { name, value } = e.target;
 
     switch (name) {
-      case "fee": {
-        const inputfeeValue = value;
-        const parts = inputfeeValue.split(",");
-        const newFeeValue = isNaN(parseInt(parts.join(""), 10))
-          ? ""
-          : parseInt(parts.join(""), 10);
-        setFee(newFeeValue);
-        break;
-      }
       case "note": {
         if (value.length <= noteMax) setNote(value);
         break;
@@ -211,7 +203,7 @@ const AddScheduleModal = ({ setIsOpenModal }) => {
                 options={reserveOption}
                 sx={{ width: "100%" }}
                 renderInput={(params) => (
-                  <TextField {...params} label="예약여부"  />
+                  <TextField {...params} label="예약여부" />
                 )}
               />
             </div>
