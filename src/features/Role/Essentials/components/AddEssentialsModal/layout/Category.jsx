@@ -11,7 +11,7 @@ const Category = ({ clickedCategory, setClickedCategory, setNewEssential, setNew
       >
         카테고리
       </AddEssentialSpan>
-      <ButtonList style={{ marginBottom: "20px" }}>
+      <ButtonList style={{ marginBottom: "2rem" }}>
         {Object.keys(materials)?.map((category) => (
           <CategoryButton
             key={category}

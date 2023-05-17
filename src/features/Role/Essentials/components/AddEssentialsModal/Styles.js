@@ -13,10 +13,9 @@ export const Blur = styled.div`
 `;
 
 export const ModalWrapper = styled.div`
-  width: 382px;
-  /* height: 371px; */
-  box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.08), 0px 0px 2px rgba(0, 0, 0, 0.12);
-  border-radius: 16px;
+  width: 38.2rem;
+  box-shadow: 0rem 2rem 2rem rgba(0, 0, 0, 0.08), 0rem 0rem 2rem rgba(0, 0, 0, 0.12);
+  border-radius: 1.6rem;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -26,11 +25,11 @@ export const ModalWrapper = styled.div`
 `;
 
 export const Header = styled.div`
-  padding-top: 21px;
+  padding-top: 2.1rem;
   width: 100%;
-  border-bottom: 1px solid #e6e6e6;
-  padding-left: 25px;
-  padding-bottom: 24px;
+  border-bottom: 0.1rem solid #e6e6e6;
+  padding-left: 2.5rem;
+  padding-bottom: 2.4rem;
 `;
 
 export const Title = styled.h1`
@@ -38,7 +37,7 @@ export const Title = styled.h1`
   font-weight: 500;
   font-size: 1.6rem;
   color: #ffc759;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 `;
 
 export const AddEssentialSpan = styled.span`
@@ -49,33 +48,33 @@ export const AddEssentialSpan = styled.span`
 
 export const Body = styled.div`
   width: 100%;
-  padding-left: 25px;
-  min-height: 198px;
-  max-height: 392px;
-  padding-top: 16px;
-  padding-right: 25px;
+  padding-left: 2.5rem;
+  min-height: 19.8rem;
+  max-height: 39.2rem;
+  padding-top: 1.6rem;
+  padding-right: 2.5rem;
   overflow: scroll;
 `;
 
 export const ButtonList = styled.div`
   width: 100%;
   display: flex;
-  gap: 10px;
+  gap: 1rem;
   flex-wrap: wrap;
-  margin-top: 10px;
+  margin-top: 1rem;
 `;
 
 export const CategoryButton = styled.button`
-  height: 33px;
+  height: 3.3rem;
   background: #fff;
-  border-radius: 8px;
+  border-radius: 0.8rem;
   cursor: pointer;
   border: ${(props) =>
-    props.clicked ? "1px solid #3884fd" : "1px solid #c4c4c4"};
+    props.clicked ? "0.1rem solid #3884fd" : "0.1rem solid #c4c4c4"};
   box-shadow: ${(props) =>
-    props.clicked ? "0px 1px 4px 1px #D9E6FF" : "none"};
+    props.clicked ? "0rem 0.1rem 0.4rem 0.1rem #D9E6FF" : "none"};
   color: ${(props) => (props.clicked ? "#3884fd" : "#c4c4c4")};
-  padding: 8px 15px;
+  padding: 0.8rem 1.5rem;
 `;
 
 export const ColumnFlex = styled.div`
@@ -91,32 +90,32 @@ export const RowFlex = styled.div`
 
 export const Footer = styled.div`
   width: 100%;
-  height: 80px;
+  height: 8rem;
   display: flex;
   justify-content: right;
   align-items: center;
-  gap: 10px;
-  padding-right: 24px;
-  border-top: 1px solid #e6e6e6;
+  gap: 1rem;
+  padding-right: 2.4rem;
+  border-top: 0.1rem solid #e6e6e6;
 `;
 
 export const Button = styled.button`
-  width: 90px;
-  height: 40px;
-  border-radius: 8px;
+  width: 9rem;
+  height: 4rem;
+  border-radius: 0.8rem;
   font-size: 1.6rem;
   font-weight: 600;
   cursor: pointer;
-  border: ${(props) => (props.color === "blue" ? "none" : "1px solid #C4C4C4")};
+  border: ${(props) => (props.color === "blue" ? "none" : "0.1rem solid #C4C4C4")};
   background: ${(props) => (props.color === "blue" ? "#3884fd" : "#fff")};
   color: ${(props) => (props.color === "blue" ? "#fff" : "#333")};
 `;
 
 export const StyledInput = styled(OutlinedInput)`
   width: 100%;
-  height: 48px;
+  height: 4.8rem;
   font-size: 1.8rem;
   font-weight: 400;
   color: #c4c4c4;
-  margin-right: 10px;
+  margin-right: 1rem;
 `;
