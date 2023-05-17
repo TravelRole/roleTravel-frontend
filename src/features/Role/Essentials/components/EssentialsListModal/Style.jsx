@@ -12,63 +12,63 @@ export const Blur = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-  width: 774px;
-  height: 824px;
+  width: 77.4rem;
+  height: 82.4rem;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   border: none;
   background-color: #fff;
-  border-radius: 20px;
+  border-radius: 2rem;
   display: flex;
   flex-direction: column;
-  padding-top: 21px;
+  padding-top: 2.1rem;
 `;
 
 export const Section = styled.section`
   height: ${(props) => props.height};
   width: 100%;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 2.4rem;
+  padding-right: 2.4rem;
 
   &:nth-child(1) {
     display: flex;
     flex-direction: column;
     align-items: left;
     justify-content: center;
-    border-bottom: 1px solid #e6e6e6;
-    padding-bottom: 22px;
+    border-bottom: 0.1rem solid #e6e6e6;
+    padding-bottom: 2.2rem;
   }
 
   &:nth-child(2) {
-    margin-top: 16px;
-    margin-bottom: 21px;
+    margin-top: 1.6rem;
+    margin-bottom: 2.1rem;
     display: flex;
     flex-direction: column;
   }
 
   &:nth-child(3) {
-    gap: 10px;
+    gap: 1rem;
     display: flex;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
     justify-content: space-between;
   }
 
   &:nth-child(4) {
-    gap: 10px;
+    gap: 1rem;
     display: flex;
     justify-content: space-between;
     justify-content: center;
-    margin-bottom: 26px;
+    margin-bottom: 2.6rem;
   }
 
   &:nth-child(5) {
     display: flex;
-    gap: 10px;
+    gap: 1rem;
     justify-content: right;
     align-items: center;
-    border-top: 1px solid #E6E6E6;
+    border-top: 0.1rem solid #E6E6E6;
   }
 `;
 
@@ -79,11 +79,11 @@ export const EssentialsModalSpan = styled.span`
 `;
 
 export const Card = styled.div`
-  width: 174px;
-  height: 268px;
+  width: 17.4rem;
+  height: 26.8rem;
   background: #fff;
-  border: 1px solid #e6e6e6;
-  border-radius: 8px;
+  border: 0.1rem solid #e6e6e6;
+  border-radius: 0.8rem;
   display: flex;
   flex-direction: column;
 `;
@@ -91,17 +91,17 @@ export const Card = styled.div`
 export const CardContent = styled.div`
   display: flex;
   flex-direction: column;
-  height: 208px;
-  padding-left: 15.7px;
-  padding-top: 8px;
+  height: 20.8rem;
+  padding-left: 1.57rem;
+  padding-top: 0.8rem;
 `;
 
 export const Dot = styled.div`
-  width: 13px;
-  height: 13px;
+  width: 1.3rem;
+  height: 1.3rem;
   background: #fff;
-  border: 1px solid #dadada;
-  margin-right: 6.7px;
+  border: 0.1rem solid #dadada;
+  margin-right: 0.67rem;
   border-radius: 100%;
   cursor: pointer;
 `;
@@ -111,7 +111,7 @@ export const Title = styled.span`
   font-weight: 600;
   font-size: 1.6rem;
   color: #ffc759;
-  margin-bottom: 8px;
+  margin-bottom: 0.8rem;
 `;
 
 export const Emphasis = styled.span`
@@ -121,22 +121,22 @@ export const Emphasis = styled.span`
 `;
 
 export const CardHeader = styled.div`
-  padding: 13px 13px 10px 13px;
-  border-bottom: 1px solid #e6e6e6;
+  padding: 1.3rem 1.3rem 1rem 1.3rem;
+  border-bottom: 0.1rem solid #e6e6e6;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
 export const AllButton = styled.button`
-  padding: 4px 10px;
-  border-radius: 99px;
+  padding: 0.4rem 1rem;
+  border-radius: 9.9rem;
   font-size: 1.2rem;
   font-weight: 600;
   background: ${(props) => (props.allChecked ? "#3884fd" : "#fff")};
   color: ${(props) => (props.allChecked ? "#fff" : "#DADADA")};
   border: ${(props) =>
-    props.allChecked ? "1px solid #3884fd" : "1px solid #DADADA"};
+    props.allChecked ? "0.1rem solid #3884fd" : "0.1rem solid #DADADA"};
   cursor: pointer;
 `;
 
@@ -147,14 +147,14 @@ export const CheckSpan = styled.span`
 `;
 
 export const ModalButton = styled.button`
-  width: 90px;
-  height: 40px;
+  width: 9rem;
+  height: 4rem;
   text-align: center;
   font-size: 1.6rem;
   font-weight: 600;
   color: ${(props) => props.color};
   background: ${(props) => props.background};
   border: ${(props) => props.border};
-  border-radius: 8px;
+  border-radius: 0.8rem;
   cursor: pointer;
 `;

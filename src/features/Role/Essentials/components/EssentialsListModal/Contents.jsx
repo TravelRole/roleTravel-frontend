@@ -43,15 +43,15 @@ const Contents = ({
   };
 
   return (
-    <div style={{ display: "flex", marginBottom: "10px" }}>
+    <div style={{ display: "flex", marginBottom: "1rem" }}>
       {clicked ? (
-        <IconContext.Provider value={{ color: "#3884fd", size: "16px" }}>
+        <IconContext.Provider value={{ color: "#3884fd", size: "1.6rem" }}>
           <Icons.HiCheckCircle
             style={{
-              marginRight: "5px",
+              marginRight: "0.5rem",
               cursor: "pointer",
-              marginLeft: "-1.5px",
-              marginBottom: "-2px"
+              marginLeft: "-0.15rem",
+              marginBottom: "-0.2rem"
             }}
             onClick={() => toggle()}
           />
