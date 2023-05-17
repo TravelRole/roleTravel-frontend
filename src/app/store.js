@@ -8,10 +8,10 @@ import searchReducer from "../features/SearchIDPW/searchSlice";
 import travelReducer from "../features/SpaceList/travelSlice";
 import loggedUserReducer from "../features/UserAccount/LoggedUserSlice";
 import invitationCodeReducer from "../features/layout/invitationCodeSlice";
-import essentialsReducer from '../features/Role/Essentials/EssentialsSlice'
-import wantPlaceReducer from "../features/Role/Schedule/WantPlaceSlice"
-import allPlanReducer from "../features/Role/Allplan/allPlanSlice";
-import commentReducer from "../features/Role/Allplan/commentSlice";
+import essentialsReducer from "../features/Role/Essentials/EssentialsSlice";
+import wantPlaceReducer from "../features/Role/Schedule/WantPlaceSlice";
+import allPlanReducer from "../features/Role/AllPlan/allPlanSlice";
+import commentReducer from "../features/Role/AllPlan/commentSlice";
 
 export const store = configureStore({
   reducer: {
@@ -24,7 +24,7 @@ export const store = configureStore({
     loggedInUser: loggedUserReducer,
     invitationCode: invitationCodeReducer,
     essentials: essentialsReducer,
-    wantPlace : wantPlaceReducer,
+    wantPlace: wantPlaceReducer,
     allPlan: allPlanReducer,
     comment: commentReducer,
   },

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import TravelCard from "../features/SpaceList/layout/TravelCard";
+import TravelCard from "./TravelCard";
 
 const TravelSliderWrap = styled.div`
   width: ${(currentLength) => `calc(${currentLength} * 35rem)`};

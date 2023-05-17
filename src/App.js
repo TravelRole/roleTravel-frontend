@@ -12,6 +12,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { getTravelList } from "./features/SpaceList/travelSlice";
+import { registerLocale } from "react-datepicker";
+import ko from "date-fns/locale/ko";
+
+registerLocale("ko", ko);
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -138,6 +142,10 @@ const theme = createTheme({
 });
 
 function App() {
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(getUserInfo()).then((res) => console.log("유저정보"));
+  // }, []);
   return (
     <>
       <GlobalStyle />

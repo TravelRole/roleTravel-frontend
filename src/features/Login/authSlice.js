@@ -41,10 +41,9 @@ export const login = createAsyncThunk(
 );
 
 //로그아웃
-export const logoutAsync = createAsyncThunk("auth/logout", async () => {
+export const logout = createAsyncThunk("auth/logout", async () => {
   try {
     await tokenApi.post(`api/logout`);
-    localStorage.removeItem("accessToken");
   } catch (error) {
     throw error;
   }
@@ -85,13 +84,12 @@ const authSlice = createSlice({
           theme: "colored",
         });
       })
-      .addCase(logoutAsync.pending, (state) => {
+      .addCase(logout.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(logoutAsync.fulfilled, (state) => {
+      .addCase(logout.fulfilled, (state) => {
         state.isLoading = false;
         state.isAuth = false;
-        window.location.replace("/login");
       });
   },
 });

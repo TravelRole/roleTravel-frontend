@@ -61,6 +61,7 @@ tokenApi.interceptors.response.use(
           onRefreshed(newAccessToken);
           return axios(originalRequest);
         } catch (error) {
+          console.log(error);
           const cookies = new Cookies();
           localStorage.removeItem("accessToken");
           cookies.remove("refreshToken");

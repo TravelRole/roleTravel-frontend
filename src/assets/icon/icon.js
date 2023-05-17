@@ -8,9 +8,24 @@ import {
   HiOutlineX,
   HiOutlinePencilAlt,
   HiOutlineCheckCircle,
+  HiOutlineChevronLeft,
+  HiOutlineChevronRight,
+  HiOutlineCog,
+  HiOutlineTrash,
+  HiPencilAlt,
+  HiUser,
+  HiCalendar,
+  HiOutlineChat,
+  HiChevronDown,
+  HiChevronUp,
+  HiOutlineCalendar,
 } from "react-icons/hi";
 
-import { RiCalendarCheckLine, RiKakaoTalkFill } from "react-icons/ri";
+import {
+  RiCalendarCheckLine,
+  RiKakaoTalkFill,
+  RiErrorWarningLine,
+} from "react-icons/ri";
 import { SlPlane, SlBag } from "react-icons/sl";
 
 import { FaDoorOpen, FaChevronRight } from "react-icons/fa";
@@ -20,7 +35,7 @@ import {
   AiOutlineEye,
   AiOutlineExclamationCircle,
   AiOutlineCheckCircle,
-  AiOutlineCreditCard
+  AiOutlineCreditCard,
 } from "react-icons/ai";
 
 import { TbPencilMinus } from "react-icons/tb";
@@ -28,7 +43,7 @@ import { MdOutlineClose } from "react-icons/md";
 import { BiCoinStack } from "react-icons/bi";
 import { RxMagnifyingGlass } from "react-icons/rx";
 
-import { TfiAngleRight, TfiAngleLeft } from 'react-icons/tfi'
+import { TfiAngleRight, TfiAngleLeft } from "react-icons/tfi";
 
 const Icons = {
   TfiPencilAlt,
@@ -56,7 +71,19 @@ const Icons = {
   HiOutlineCheckCircle,
   AiOutlineCreditCard,
   BiCoinStack,
-  RxMagnifyingGlass
+  RxMagnifyingGlass,
+  HiOutlineChevronLeft,
+  HiOutlineChevronRight,
+  HiOutlineCog,
+  HiOutlineTrash,
+  HiPencilAlt,
+  HiUser,
+  HiCalendar,
+  RiErrorWarningLine,
+  HiOutlineChat,
+  HiChevronDown,
+  HiChevronUp,
+  HiOutlineCalendar,
 };
 
 export default Icons;
