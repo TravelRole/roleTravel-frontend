@@ -201,7 +201,7 @@ function Schedule({ setReserveList }) {
   /** 찜장소 추가+삭제하기 */
 
   const handleWantPlace = (e, place, isExist) => {
-    const { place_name, road_address_name, address_name, phone, y, x, id } =
+    const { place_name, road_address_name, address_name, phone, y, x, id , place_url } =
       place;
     const wantPlaceData = {
       roomId: roomId,
@@ -213,6 +213,7 @@ function Schedule({ setReserveList }) {
       category: "그냥 일단 빈값처리",
       lotNumberAddress: address_name,
       mapPlaceId: id,
+      link : place_url
     };
 
     const delpayload = {
@@ -381,6 +382,7 @@ function Schedule({ setReserveList }) {
                         );
                         return (
                           <SearchPlaceCard
+                            key={place.id}
                             place={place}
                             isExist={isExist}
                             handleWantPlace={handleWantPlace}
@@ -410,6 +412,7 @@ function Schedule({ setReserveList }) {
 
                         return (
                           <WantPlaceCard
+                            key={place.mapPlaceId}
                             place={place}
                             isExist={isExist}
                             handleWantPlace={handleWantPlace}

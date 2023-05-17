@@ -114,28 +114,26 @@ const CategoryOptions = styled.div`
     flex-direction: row;
     gap: 1rem;
     margin-top: 1rem;
+  }
+`;
 
-    li {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
+const CategoryWrap = styled.li`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 
-      div {
-        width: 7rem;
-        height: 7rem;
-        border: 1px solid #dadada;
-        border-radius: 0.8rem;
-        margin-bottom: 0.8rem;
-      }
-    }
-
-    .active {
-      color: #3884fd;
-      border: 0.1rem solid #3884fd;
-      box-shadow: 0 0.1rem 0.4rem 0.1rem #d9e6ff;
-    }
+  div {
+    width: 7rem;
+    height: 7rem;
+    background-color:${props => (props.selected ? "#F4F6FB" : "#FFFFFF")};
+    border: 1px solid ${props => (props.selected ? "#3884fd" : "#dadada")}; 
+    border-radius: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+  span {
+    color: ${props => (props.selected ? "#3884fd" : "#dadada")};
   }
 `;
 
@@ -151,10 +149,53 @@ const reserveOption = ["예약필요", "예약완료"];
 const categoryOptions = ["교통", "숙박", "음식", "관광", "쇼핑", "기타"];
 
 const AddScheduleModal = ({ setIsOpenModal, modalData }) => {
-  console.log(modalData);
-  const [category, setCategory] = useState("traffic");
-  const [note, setNote] = useState("");
+  let {
+    id,
+    place_name,
+    road_address_name,
+    address_name,
+    phone,
+    place_url,
+    x,
+    y,
+    mapPlaceId,
+    placeName,
+    placeAddress,
+    lotNumberAddress,
+    phoneNumber,
+    latitude,
+    longitude,
+    link,
+  } = modalData;
 
+  if (!mapPlaceId) {
+    mapPlaceId = id;
+    placeName = place_name;
+    placeAddress = road_address_name;
+    lotNumberAddress = address_name;
+    phoneNumber = phone;
+    latitude = x;
+    longitude = y;
+    link = place_url;
+  }
+
+  //   {
+  //     "placeName": "우도",
+  //     "placeAddress": "제주시",
+  //     "scheduleDate": "2023-02-21 13:15",
+  //     "link" : "asd",
+  //     "isBookRequired" : "false",
+  //     "category" : "TRAFFIC",
+  //     "latitude": 15.23,
+  //     "longitude": 12.11,
+  //     "etc" : "asdas",
+  //     "mapPlaceId" : 123456
+  // }
+
+  console.log(modalData);
+  const [category, setCategory] = useState("교통");
+
+  const [note, setNote] = useState("");
 
   const noteMax = 30;
 
@@ -184,7 +225,7 @@ const AddScheduleModal = ({ setIsOpenModal, modalData }) => {
           <div className="form-content">
             <p className="modal-body-text">
               <span>장소</span>
-              <span>장소 이름 텍스트가 들어갑니다.</span>
+              <span>{placeName}</span>
             </p>
             <div className="dayTimeOption">
               <Autocomplete
@@ -213,10 +254,10 @@ const AddScheduleModal = ({ setIsOpenModal, modalData }) => {
               <ul>
                 {categoryOptions.map((item) => {
                   return (
-                    <li key={item}>
-                      <div></div>
+                    <CategoryWrap selected={category === item} key={item}>
+                      <div onClick={()=>setCategory(item)}></div>
                       <span>{item}</span>
-                    </li>
+                    </CategoryWrap>
                   );
                 })}
               </ul>
