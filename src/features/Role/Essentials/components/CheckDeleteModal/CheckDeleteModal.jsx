@@ -23,7 +23,7 @@ const CheckDeleteModal = ({ setIsOpen, deleteList }) => {
         }
       ])
     );
-    console.log(deleteList)
+    setIsOpen(false);
   };
 
   return (

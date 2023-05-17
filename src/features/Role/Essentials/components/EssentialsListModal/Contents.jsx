@@ -26,12 +26,10 @@ const Contents = ({
   }, [allChecked]);
 
   useEffect(() => {
-    console.log(list);
     if (clicked) {
       list[category].push(itemData);
-      console.log(list[category])
     } else {
-      list[category] = list[category]?.filter((el) => el.itemName !== itemData);
+      list[category] = list[category]?.filter((el) => el.itemName === itemData);
       setList(list);
     }
     

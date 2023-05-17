@@ -60,7 +60,8 @@ const Sections = ({
                   paddingTop: "3px",
                   marginTop: "16px",
                   width: "228px",
-                  height: "46px"
+                  height: "46px",
+                  overflow: "scroll",
                 }}
               >
                 <Dot />

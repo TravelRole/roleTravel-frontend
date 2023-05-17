@@ -24,7 +24,6 @@ const AddEssentialsModal = ({ setIsOpen, data, setData }) => {
   const submitHandler = () => {
     if (newList.length === 0) return;
     else {
-      console.log(newList)
       const convertCategory = convertCategoryName(clickedCategory);
       dispatch(
         createEssentials([
