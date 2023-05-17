@@ -8,7 +8,7 @@ import travelReducer from "../features/SpaceList/travelSlice";
 import loggedUserReducer from "../features/UserAccount/LoggedUserSlice";
 import invitationCodeReducer from "../features/layout/invitationCodeSlice";
 import essentialsReducer from '../features/Role/Essentials/EssentialsSlice'
-import wantPlaceReducer from "../features/Role/Schedule/wantPlaceSlice"
+import wantPlaceReducer from "../features/Role/Schedule/WantPlaceSlice"
 import allPlanReducer from "../features/Role/AllPlan/allPlanSlice";
 import commentReducer from "../features/Role/AllPlan/commentSlice";
 

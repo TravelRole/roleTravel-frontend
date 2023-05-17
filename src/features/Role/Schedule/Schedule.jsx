@@ -13,7 +13,7 @@ import Icons from "../../../assets/icon/icon";
 import { toast } from "react-toastify";
 import SearchBlankPanel from "./layout/SearchBlankPanel";
 import ScheduleBox from "./layout/ScheduleContainer";
-import { addWantPlace, delWantPlace, getWantPlace } from "./wantPlaceSlice";
+import { addWantPlace, delWantPlace, getWantPlace } from "./WantPlaceSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../components/Modal";
 import AddScheduleModal from "./layout/AddScheduleModal";
