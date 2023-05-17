@@ -76,9 +76,9 @@ const UserAccount = () => {
                   color="black"
                   style={{
                     postiion: "absolute",
-                    width: "15.68px",
-                    height: "15.68px",
-                    marginTop: "-8px"
+                    width: "1.568rem",
+                    height: "1.568rem",
+                    marginTop: "-0.8rem"
                   }}
                 />
               </EditIcon>

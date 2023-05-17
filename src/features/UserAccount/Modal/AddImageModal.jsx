@@ -71,7 +71,7 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
     <>
       <Blur></Blur>
       <ContentWrapper>
-        <Section height="72px">
+        <Section height="7.2rem">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Title>PROFILE</Title>
             <Icons.MdOutlineClose
@@ -82,7 +82,7 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
           </div>
           <h1>프로필 사진 등록</h1>
         </Section>
-        <Section height="342px">
+        <Section height="34.2rem">
           <h1>프로필 사진을 등록해 주세요.</h1>
           <Image
             src={image ? image : defaultImage}
@@ -92,8 +92,8 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
             style={{
               display: "flex",
               justifyContent: "center",
-              gap: "10px",
-              marginBottom: "15px"
+              gap: "1rem",
+              marginBottom: "1.5rem"
             }}
           >
             <div>
@@ -111,7 +111,7 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
                   <Icons.HiUpload
                     size="20"
                     style={{
-                      marginRight: "13px",
+                      marginRight: "1.3rem",
                       color: "black"
                     }}
                   />
@@ -126,7 +126,7 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
               <Icons.TbTrash
                 size="19"
                 style={{
-                  marginRight: "13px",
+                  marginRight: "1.3rem",
                   color: "#ff4a4a"
                 }}
               />
@@ -138,10 +138,10 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
             <p>* jpg, jpeg, png 파일만 업로드 가능합니다.</p>
           </Explanation>
         </Section>
-        <Section height="85px">
+        <Section height="8.5rem">
           <Button
             backgroundColor="#c4c4c4"
-            style={{ color: 'white', fontSize: "16px", fontWeight: '600', width: '107px'}}
+            style={{ color: 'white', fontSize: "1.6rem", fontWeight: '600', width: '10.7rem'}}
             onClick={submitHandler}
           >
             등록 완료

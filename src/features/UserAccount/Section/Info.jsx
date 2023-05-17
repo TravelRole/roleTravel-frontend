@@ -65,10 +65,10 @@ const Info = () => {
   };
 
   return (
-    <Container marginTop="0px">
+    <Container marginTop="0rem">
       <Content>
         <h1>회원정보 수정</h1>
-        <div width="46px">
+        <div width="4.6remx">
           <p>회원님의 정보를 수정/확인 하실 수 있습니다.</p>
         </div>
       </Content>
