@@ -1,5 +1,6 @@
-import React from "react";
+import React from 'react';
 import styled from "styled-components";
+
 
 const StyledPlaceCard = styled.li`
   position: relative;
@@ -71,33 +72,44 @@ const StyledPlaceCard = styled.li`
     border-radius: 0.8rem;
   }
 `;
-
-const SearchPlaceCard = (props) => {
-  const { place, isExist, handleWantPlace, locationFn, Info } = props;
+const WantPlaceCard = (props) => {
+    const { place, isExist, handleWantPlace, locationFn, Info } = props;
   const { setlat, setlng } = locationFn;
   const { info, setInfo } = Info;
-  return (
-    <StyledPlaceCard
-      key={`${place.x} + ${place.place_name}`}
-      selected={String(info?.id) === String(place.id)}
-      onClick={() => {
-        setInfo(place);
-        setlat(place.y);
-        setlng(place.x);
-      }}
-    >
-      <header>{place.place_name}</header>
-      <p>{place.road_address_name}</p>
-      <p>{place.address_name}</p>
-      <span>{place.phone ? place.phone : "전화번호 없음"}</span>
-      <input
-        type="checkbox"
-        onChange={(e) => handleWantPlace(e, place, isExist)}
-        checked={isExist.length}
-      />
-      <button>일정에 추가</button>
-    </StyledPlaceCard>
-  );
+    return (
+        <StyledPlaceCard
+        key={`${place.latitude} + ${place.placeName}`}
+        selected={
+          String(info?.id) === String(place.mapPlaceId)
+        }
+        onClick={() => {
+          const newPlace = {
+            ...place,
+            id: String(place.mapPlaceId),
+          };
+          setInfo(newPlace);
+          setlat(place.latitude);
+          setlng(place.longitude);
+        }}
+      >
+        <header>{place.placeName}</header>
+        <p>{place.placeAddress}</p>
+        <p>{place.lotNumberAddress}</p>
+        <span>
+          {place.phoneNumber
+            ? place.phoneNumber
+            : "전화번호 없음"}
+        </span>
+        <input
+          type="checkbox"
+          onChange={(e) =>
+            handleWantPlace(e, place, isExist)
+          }
+          checked={true}
+        />
+        <button>일정에 추가</button>
+      </StyledPlaceCard>
+    );
 };
 
-export default SearchPlaceCard;
+export default WantPlaceCard;
