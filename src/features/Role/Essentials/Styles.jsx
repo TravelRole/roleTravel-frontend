@@ -4,28 +4,28 @@ export const Container = styled.div`
   display: flex;
   height: 100%;
   flex-direction: column;
-  padding-left: 60px;
-  padding-top: 80px;
+  padding-left: 6rem;
+  padding-top: 8rem;
 `;
 
 export const Title = styled.div`
   display: flex;
   justify-content: left;
   align-items: center;
-  margin-bottom: 40px;
-  margin-left: 20px;
-  margin-right: 30px;
+  margin-bottom: 4rem;
+  margin-left: 2rem;
+  margin-right: 3rem;
 `;
 
 export const Tip = styled.div`
   font-size: 1.4rem;
   font-weight: 500;
-  padding: 5.5px 11px;
-  width: 49px;
-  height: 27px;
+  padding: 0.55rem 1.1rem;
+  width: 4.9rem;
+  height: 2.7rem;
   background: #f4f6fb;
-  border: 1px solid #3883fd;
-  border-radius: 99px;
+  border: 0.1rem solid #3883fd;
+  border-radius: 9.9rem;
   color: #3884fd;
 
   &:hover {
@@ -36,10 +36,10 @@ export const Tip = styled.div`
 
 export const Row = styled.div`
   width: 100%;
-  height: 50px;
+  height: 5rem;
   background: #eef1f8;
   mix-blend-mode: normal;
-  border-radius: 8px;
+  border-radius: 0.8rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -48,7 +48,7 @@ export const Row = styled.div`
     font-weight: 500;
     font-size: 1.8rem;
     color: #8490a4;
-    border-right: 1px solid #d8e2f4;
+    border-right: 0.1rem solid #d8e2f4;
     text-align: center;
   }
 `;
@@ -56,27 +56,27 @@ export const Row = styled.div`
 export const Content = styled.div`
   width: ${(props) => props.width};
   display: flex;
-  gap: 10px;
+  gap: 1rem;
   overflow: hidden;
-  margin-left: 20px;
+  margin-left: 2rem;
 `;
 
 export const Section = styled.div`
-  width: 260px;
-  height: 745px;
-  border-radius: 16px;
+  width: 26rem;
+  height: 74.5rem;
+  border-radius: 1.6rem;
   background: #eef1f8;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-top: 24px;
+  padding-left: 1.6rem;
+  padding-right: 1.6remx;
+  padding-top: 2.4rem;
 `;
 
 export const Wrapper = styled.div`
   width: 100%;
-  height: 662px;
+  height: 66.2rem;
   background: #ffffff;
   mix-blend-mode: normal;
-  border-radius: 16px;
+  border-radius: 1.6rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -86,7 +86,7 @@ export const Wrapper = styled.div`
     font-weight: 600;
     font-size: 2.6rem;
     color: #333333;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
   }
 
   & > span {
@@ -94,16 +94,16 @@ export const Wrapper = styled.div`
     font-size: 2.2rem;
     text-align: center;
     color: #8b8b8b;
-    line-height: 34px;
+    line-height: 3.4rem;
   }
 `;
 
 export const AddIcon = styled.div`
-  border: 4px solid #c1d9fe;
-  width: 68px;
-  height: 68px;
+  border: 0.4rem solid #c1d9fe;
+  width: 6.8rem;
+  height: 6.8rem;
   border-radius: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 3rem;
 `;
 
 export const EditContent = styled.div`
@@ -111,7 +111,7 @@ export const EditContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0px 68px 20px 20px;
+  margin: 0rem 6.8rem 2rem 2rem;
 `;
 
 export const EssentialsSpan = styled.span`
@@ -121,15 +121,15 @@ export const EssentialsSpan = styled.span`
 `;
 
 export const Divider = styled.hr`
-  border: 1px solid #d8e2f4;
-  height: 16px;
-  margin-left: 0px;
-  margin-right: 0px;
+  border: 0.1rem solid #d8e2f4;
+  height: 1.6rem;
+  margin-left: 0rem;
+  margin-right: 0rem;
 `;
 
 export const Dot = styled.div`
-  width: 18px;
-  height: 18px;
+  width: 1.8rem;
+  height: 1.8rem;
   background: #c5ccd6;
   border-radius: 100%;
 `;
@@ -137,9 +137,9 @@ export const Dot = styled.div`
 export const EssentialsItem = styled.div`
   display: flex;
   align-items: center;
-  height: 46px;
-  width: 228px;
+  height: 4.6rem;
+  width: 22.8rem;
   background: #fff;
-  border-radius: 8px;
-  padding: 14px 10px;
+  border-radius: 0.8rem;
+  padding: 1.4rem 1rem;
 `;

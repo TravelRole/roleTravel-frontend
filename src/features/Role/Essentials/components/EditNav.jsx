@@ -49,7 +49,7 @@ const EditNav = ({
             color="#707070"
             fontWeight="600"
             fontSize="2rem"
-            style={{ marginLeft: "4px" }}
+            style={{ marginLeft: "0.4rem" }}
           >
             ({Object.keys(data).length})
           </EssentialsSpan>
@@ -83,7 +83,7 @@ const EditNav = ({
                 fontWeight="500"
                 style={{
                   textDecorationLine: "underline",
-                  marginLeft: "30px",
+                  marginLeft: "3rem",
                   cursor: "pointer"
                 }}
                 onClick={() => setDeleteIsOpen(true)}
@@ -98,7 +98,7 @@ const EditNav = ({
               fontWeight="500"
               style={{
                 textDecorationLine: "underline",
-                marginLeft: "30px",
+                marginLeft: "3rem",
                 cursor: "pointer"
               }}
               onClick={() => {
@@ -109,7 +109,7 @@ const EditNav = ({
               추가하기
             </EssentialsSpan>
           )}
-          <Divider style={{ marginLeft: "20px", marginRight: "20px" }} />
+          <Divider style={{ marginLeft: "2rem", marginRight: "2rem" }} />
           <div style={{ display: "flex", alignItems: "center" }}>
             <Icons.TfiAngleLeft
               size="14"
@@ -122,7 +122,7 @@ const EditNav = ({
               color="#8490A4"
               style={{
                 strokeWidth: "1",
-                marginLeft: "12px",
+                marginLeft: "1.2rem",
                 cursor: "pointer"
               }}
               onClick={

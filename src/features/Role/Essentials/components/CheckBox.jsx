@@ -31,7 +31,7 @@ const Checkbox = ({ item }) => {
         display: "flex",
         justifyContent: "left",
         alignItems: "center",
-        marginTop: "16px"
+        marginTop: "1.6rem"
       }}
     >
       <EssentialsItem>
@@ -50,8 +50,8 @@ const Checkbox = ({ item }) => {
           <Dot
             style={{
               background: "#fff",
-              border: "1px solid #dadada",
-              marginRight: "2px",
+              border: "0.1rem solid #dadada",
+              marginRight: "0.2rem",
               cursor: "pointer"
             }}
             onClick={() => toggle()}
@@ -61,7 +61,7 @@ const Checkbox = ({ item }) => {
           color="#8b8b8b"
           fontWeight="500"
           fontSize="1.4rem"
-          style={{ marginLeft: "10px" }}
+          style={{ marginLeft: "1rem" }}
         >
           {item.itemName}
         </EssentialsSpan>
