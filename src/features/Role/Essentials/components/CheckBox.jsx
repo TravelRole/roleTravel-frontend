@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Icons from "../../../../assets/icon/icon";
 import { Dot, EssentialsItem, EssentialsSpan } from "../Styles";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { patchChecks } from "../EssentialsSlice";
 
 const Checkbox = ({ item }) => {

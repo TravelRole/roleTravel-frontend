@@ -46,7 +46,7 @@ function Essentials() {
         case "ETC":
           return (data["기타 용품"] = essentials[el]);
         default:
-          return;
+          return '';
       }
     });
   }

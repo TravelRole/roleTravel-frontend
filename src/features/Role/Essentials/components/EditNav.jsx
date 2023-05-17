@@ -1,7 +1,5 @@
-import { useDispatch } from "react-redux";
 import Icons from "../../../../assets/icon/icon";
 import { Divider, EditContent, EssentialsSpan } from "../Styles";
-import { deleteEssentials } from "../EssentialsSlice";
 import { useState } from "react";
 import AddEssentialsModal from "./AddEssentialsModal/AddEssentialsModal";
 import CheckDeleteModal from "./CheckDeleteModal/CheckDeleteModal";
