@@ -17,7 +17,7 @@ export const getEssentials = createAsyncThunk("api/room/room_id/essentials", asy
 export const createEssentials = createAsyncThunk("api/room/room_id/essentials", async (createItemData, thunkAPI) => {
   await tokenApi.post(`api/room/${createItemData[0]}/essentials`, createItemData[1])
   try {
-    dispatchEvent(getEssentials(createItemData[0]))
+    // dispatchEvent(getEssentials(createItemData[0]))
   } catch (err) {
     console.log(err)
     if (err.response && err.response.status === 400) {
@@ -30,7 +30,7 @@ export const createEssentials = createAsyncThunk("api/room/room_id/essentials", 
 export const deleteEssentials = createAsyncThunk("api/room/room_id/essentials", async (deleteData) => {
   await tokenApi.delete(`api/room/${deleteData[0]}/essentials`, { data: {...deleteData[1]}})
   try {
-    dispatchEvent(getEssentials(deleteData[0]))
+    getEssentials(deleteData[0])
   } catch (err) {
     console.log(err)
   }
@@ -39,7 +39,7 @@ export const deleteEssentials = createAsyncThunk("api/room/room_id/essentials", 
 export const patchChecks = createAsyncThunk("api/room/room_id/essentials/check", async (checkData) => {
   await tokenApi.patch(`api/room/${checkData[0]}/essentials/check`, checkData[1]);
   try {
-    dispatchEvent(getEssentials(checkData[0]))
+    getEssentials(checkData[0])
   } catch (err) {
     console.log(err)  
   }
