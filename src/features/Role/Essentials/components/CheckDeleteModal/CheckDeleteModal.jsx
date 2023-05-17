@@ -10,9 +10,9 @@ import {
   Title
 } from "./Style";
 
-import { deleteEssentials, getEssentials } from "../../EssentialsSlice";
+import { deleteEssentials } from "../../EssentialsSlice";
 
-const CheckDeleteModal = ({ setIsOpen, deleteList }) => {
+const CheckDeleteModal = ({ setIsOpen, deleteList, setDeleteList }) => {
   const dispatch = useDispatch();
 
   const deleteHandler = () => {
@@ -26,6 +26,7 @@ const CheckDeleteModal = ({ setIsOpen, deleteList }) => {
           }
         ])
       );
+      setDeleteList([])
       setIsOpen(false);
     }
   };

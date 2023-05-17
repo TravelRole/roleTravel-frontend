@@ -9,7 +9,7 @@ const Sections = ({
   resize,
   condition,
   deleteList,
-  setDeleteList
+  setDeleteList,
 }) => {
   return (
     <Content width={resize - 150}>

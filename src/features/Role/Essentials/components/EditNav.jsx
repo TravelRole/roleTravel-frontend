@@ -14,7 +14,9 @@ const EditNav = ({
   page,
   setPage,
   defaultPages,
-  deleteList
+  deleteList,
+  setDeleteList,
+  setDeleted,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
@@ -25,6 +27,8 @@ const EditNav = ({
         <CheckDeleteModal
           setIsOpen={setDeleteIsOpen}
           deleteList={deleteList}
+          setDeleteList={setDeleteList}
+          setDeleted={setDeleted}
         />
       )}
       {isOpen && (
