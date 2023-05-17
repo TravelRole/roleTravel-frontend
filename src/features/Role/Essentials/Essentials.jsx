@@ -16,10 +16,10 @@ function Essentials() {
   const [deleteList, setDeleteList] = useState([]);
   const [data, setData] = useState({
     "필수 준비물": [],
-    의류: [],
+    "의류": [],
     "세면 용품": [],
-    상비약: [],
-    계절용품: [],
+    "상비약": [],
+    "계절용품": [],
     "조리 용품": [],
     "기타 용품": []
   });
@@ -40,13 +40,13 @@ function Essentials() {
         case "MEDICINE":
           return (data["상비약"] = essentials[el]);
         case "SESONAL":
-          return (data["계절 용품"] = essentials[el]);
+          return (data["계절용품"] = essentials[el]);
         case "COOKWARE":
           return (data["조리 용품"] = essentials[el]);
         case "ETC":
           return (data["기타 용품"] = essentials[el]);
         default:
-          return "";
+          return;
       }
     });
   }
@@ -83,6 +83,7 @@ function Essentials() {
           defaultPages={defaultPages}
           setData={setData}
           deleteList={deleteList}
+          setDeleteList={setDeleteList}
         />
         <Sections
           data={data}

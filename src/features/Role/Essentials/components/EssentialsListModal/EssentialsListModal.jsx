@@ -21,7 +21,7 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
     "의류": [],
     "세면 용품": [],
     "상비약": [],
-    "계절 용품": [],
+    "계절용품": [],
     "조리 용품": [],
     "기타 용품": [],
   });
