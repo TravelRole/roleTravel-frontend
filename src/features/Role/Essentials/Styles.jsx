@@ -2,22 +2,11 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  /* width: 100%; */
   height: 100%;
   flex-direction: column;
   background-color: #f4f6fb;
   padding-left: 60px;
   padding-top: 80px;
-  /* padding-right: 20px; */
-
-  & > div:nth-child(2) {
-    display: flex;
-    justify-content: space-between;
-
-    @media screen and (min-width = 1900px) {
-      margin-right: 40px;
-    }
-  }
 `;
 
 export const Title = styled.div`
@@ -58,7 +47,7 @@ export const Row = styled.div`
 
   & > div {
     font-weight: 500;
-    font-size: 18px;
+    font-size: 1.8rem;
     color: #8490a4;
     border-right: 1px solid #d8e2f4;
     text-align: center;
@@ -96,14 +85,14 @@ export const Wrapper = styled.div`
 
   & > h1 {
     font-weight: 600;
-    font-size: 26px;
+    font-size: 2.6rem;
     color: #333333;
     margin-bottom: 10px;
   }
 
   & > span {
     font-weight: 500;
-    font-size: 22px;
+    font-size: 2.2rem;
     text-align: center;
     color: #8b8b8b;
     line-height: 34px;

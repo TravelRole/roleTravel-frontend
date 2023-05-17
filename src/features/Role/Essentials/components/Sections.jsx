@@ -1,7 +1,16 @@
 import { Content, Dot, EssentialsSpan, Section } from "../Styles";
 import Checkbox from "./CheckBox";
+import DeleteCheckBox from "./DeleteCheckBox";
 
-const Sections = ({ data, page, defaultPages, resize, setData }) => {
+const Sections = ({
+  data,
+  page,
+  defaultPages,
+  resize,
+  condition,
+  deleteList,
+  setDeleteList,
+}) => {
   return (
     <Content width={resize - 150}>
       {Object.keys(data)
@@ -10,7 +19,7 @@ const Sections = ({ data, page, defaultPages, resize, setData }) => {
           <Section key={index}>
             <EssentialsSpan
               color="#8490a4"
-              fontSize="18px"
+              fontSize="1.8rem"
               fontWeight="600"
               style={{ height: "24px" }}
             >
@@ -18,7 +27,7 @@ const Sections = ({ data, page, defaultPages, resize, setData }) => {
               {data[el].length > 0 && (
                 <EssentialsSpan
                   color="#505050"
-                  fontSize="14px"
+                  fontSize="1.4rem"
                   fontWeight="500"
                   style={{
                     background: "#fff",
@@ -51,25 +60,34 @@ const Sections = ({ data, page, defaultPages, resize, setData }) => {
                   paddingTop: "3px",
                   marginTop: "16px",
                   width: "228px",
-                  height: "46px"
+                  height: "46px",
+                  overflow: "scroll",
                 }}
               >
                 <Dot />
                 <EssentialsSpan
                   color="#c5ccd6"
-                  fontSize="18px"
+                  fontSize="1.8rem"
                   fontWeight="600"
                   style={{ marginLeft: "6px" }}
                 >
                   항목이 비어있어요!
                 </EssentialsSpan>
               </div>
+            ) : condition === "remove" ? (
+              data[el].map((dat, index) => (
+                <DeleteCheckBox
+                  key={index}
+                  item={dat}
+                  deleteList={deleteList}
+                  setDeleteList={setDeleteList}
+                />
+              ))
             ) : (
               data[el].map((dat, index) => (
                 <Checkbox
                   key={index}
                   item={dat}
-                  setData={setData}
                 />
               ))
             )}

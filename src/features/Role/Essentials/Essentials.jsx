@@ -9,34 +9,44 @@ import { getEssentials } from "./EssentialsSlice";
 function Essentials() {
   const dispatch = useDispatch();
   const { essentials, isLoading } = useSelector((state) => state.essentials);
-  const [clicked, setClicked] = useState("");
+  const [condition, setCondition] = useState("");
   const [page, setPage] = useState(0);
   const [defaultPages, setDefaultPages] = useState(7);
   const [resize, setResize] = useState(window.innerWidth);
+  const [deleteList, setDeleteList] = useState([]);
   const [data, setData] = useState({
     "필수 준비물": [],
-    "해외 여행": [],
-    의류: [],
-    "세면 용품, 화장품": [],
-    상비약: [],
-    계절용품: [],
+    "의류": [],
+    "세면 용품": [],
+    "상비약": [],
+    "계절용품": [],
     "조리 용품": [],
     "기타 용품": []
   });
 
   useEffect(() => {
-    dispatch(getEssentials(window.location.href.split('/')[3]));
-    console.log(essentials)
-  }, []);
+    dispatch(getEssentials(window.location.href.split("/")[3]));
+  }, [dispatch, essentials]);
 
   if (!isLoading && essentials) {
     Object.keys(essentials).map((el) => {
       switch (el) {
-        case 'ESSENTIAL':
+        case "ESSENTIAL":
           return (data["필수 준비물"] = essentials[el]);
-        case 'ETC':
+        case "CLOTHES":
+          return (data["의류"] = essentials[el]);
+        case "TOILETRIES":
+          return (data["세면 용품"] = essentials[el]);
+        case "MEDICINE":
+          return (data["상비약"] = essentials[el]);
+        case "SESONAL":
+          return (data["계절용품"] = essentials[el]);
+        case "COOKWARE":
+          return (data["조리 용품"] = essentials[el]);
+        case "ETC":
           return (data["기타 용품"] = essentials[el]);
-        default: return "";
+        default:
+          return '';
       }
     });
   }
@@ -66,18 +76,23 @@ function Essentials() {
         <TitleContent />
         <EditNav
           data={data}
-          clicked={clicked}
-          setClicked={setClicked}
+          condition={condition}
+          setCondition={setCondition}
           page={page}
           setPage={setPage}
           defaultPages={defaultPages}
           setData={setData}
+          deleteList={deleteList}
+          setDeleteList={setDeleteList}
         />
         <Sections
           data={data}
           page={page}
           defaultPages={defaultPages}
           resize={resize}
+          condition={condition}
+          setDeleteList={setDeleteList}
+          deleteList={deleteList}
         />
       </Container>
     </>

@@ -249,10 +249,10 @@ function Account() {
                         <DetailColumn>필요</DetailColumn>
                         <DetailColumn>식당</DetailColumn>
                         <DetailFeeColumn>
-                          예약비고 텍스트가 이곳에 들어갑니다
+                          <span>예약비고 텍스트가 이곳에 들어갑니다 </span>
                         </DetailFeeColumn>
                         <NoteDetailColumn>
-                          회계비고 텍스트가 이곳에 들어갑니다
+                          <span>회계비고 텍스트가 이곳에 들어갑니다 </span>
                         </NoteDetailColumn>
                       </ScheduleRow>
                       <AllAcountRow>
@@ -307,9 +307,10 @@ const StyledScheduleTabs = styled(TabList)`
 const DateBox = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   text-align: left;
   width: 100%;
-  padding-bottom: 1.2rem;
+  padding-bottom: 1.5rem;
   padding-right: 7.5rem;
 `;
 
@@ -321,7 +322,7 @@ const Day = styled.div`
 
 const Date = styled.div`
   font-family: "Pretendard";
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: rgba(132, 144, 164, 1);
 `;
 
@@ -396,6 +397,29 @@ const DetailColumn = styled(Column)`
 
 const DetailFeeColumn = styled(DetailColumn)`
   width: 28%;
+
+  span {
+    height: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    font-size: 1.6rem;
+
+    &::-webkit-scrollbar-button {
+      width: 0;
+      height: 0;
+    }
+    &::-webkit-scrollbar {
+      height: 0.4rem;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background-color: #cdcdf4;
+    }
+  }
 `;
 
 const NoteColumn = styled(Column)`

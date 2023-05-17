@@ -22,7 +22,7 @@ const EditReserveHeader = styled.div`
       font-size: 1.6rem;
       color: #ffc759;
       font-family: "Unbounded", cursive;
-      margin-bottom: 1.4rem;
+      margin-bottom: 0.4rem;
     }
     dd {
       font-size: 2.4rem;
@@ -59,12 +59,15 @@ const CardOrCashBox = styled.div`
 
     li {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
       gap: 0.3rem;
-      width: 8rem;
-      height: 6rem;
+      width: 23rem;
+      height: 7rem;
+      padding: 1.5rem 1.7rem;
+
+      font-size: 2rem;
       color: #c4c4c4;
       border: 1px solid #c4c4c4;
       border-radius: 0.8rem;
@@ -74,8 +77,8 @@ const CardOrCashBox = styled.div`
 
     .active {
       color: #3884fd;
+      background-color: #f4f6fb;
       border: 0.1rem solid #3884fd;
-      box-shadow: 0 0.1rem 0.4rem 0.1rem #d9e6ff;
     }
   }
 `;
@@ -138,15 +141,15 @@ const EditReserveModal = ({ setIsOpenModal }) => {
                   onClick={() => setPayment("card")}
                   className={payment === "card" ? "active" : null}
                 >
-                  <Icons.AiOutlineCreditCard size={25} />
                   카드
+                  <Icons.AiOutlineCreditCard size={33} />
                 </li>
                 <li
                   onClick={() => setPayment("cash")}
                   className={payment === "cash" ? "active" : null}
                 >
-                  <Icons.BiCoinStack size={25} />
                   현금
+                  <Icons.BiCoinStack size={33} />
                 </li>
               </ul>
             </CardOrCashBox>
