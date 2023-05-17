@@ -6,14 +6,30 @@ const initialState = {
   allPlanList: null,
   allPlanListLoading: false,
   allPlanListError: null,
+  roomData: null,
+  roomDataLoading: false,
+  roomDataError: null,
 };
 
 export const getAllPlanList = createAsyncThunk(
   "allPlan/getAllPlanList",
-  async (inviteCode, thunkAPI) => {
+  async (roomId, thunkAPI) => {
     try {
-      const res = await tokenApi.get(`api/check-room/${inviteCode}`);
-      return res;
+      const res = await tokenApi.get(`api/room/${roomId}/all-plan`);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const getRoomData = createAsyncThunk(
+  "allPlan/getRoomData",
+  async (roomId, thunkAPI) => {
+    try {
+      console.log(roomId);
+      const res = await tokenApi.get(`api/room/${roomId}`);
+      return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -27,16 +43,26 @@ const allPlanSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAllPlanList.pending, (state) => {
-        state.isLoading = true;
+        state.allPlanListLoading = true;
       })
       .addCase(getAllPlanList.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.user = action.payload;
+        state.allPlanListLoading = false;
+        state.allPlanList = action.payload;
       })
       .addCase(getAllPlanList.rejected, (state, action) => {
-        state.user = null;
-        state.error = action.payload;
-        state.isLoading = false;
+        state.allPlanListError = action.payload;
+        state.allPlanListLoading = false;
+      })
+      .addCase(getRoomData.pending, (state) => {
+        state.roomDataLoading = true;
+      })
+      .addCase(getRoomData.fulfilled, (state, action) => {
+        state.roomDataLoading = false;
+        state.roomData = action.payload;
+      })
+      .addCase(getRoomData.rejected, (state, action) => {
+        state.roomDataError = action.payload;
+        state.roomDataLoading = false;
       });
   },
 });

@@ -27,6 +27,7 @@
 /* date-picker 전체 부분 */
 
 .react-datepicker-popper {
+  transform: translate(0, 5.5rem) !important;
   width: 100% !important;
   max-width: 30rem !important;
   z-index: 50;

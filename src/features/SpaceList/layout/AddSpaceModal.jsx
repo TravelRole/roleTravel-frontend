@@ -1,12 +1,10 @@
 import React, { useCallback, useRef, useState } from "react";
-import DatePicker, { registerLocale } from "react-datepicker";
+import DatePicker from "react-datepicker";
 import styled from "styled-components";
 import Button from "../../../components/Button";
 import { toast } from "react-toastify";
 import { addTravel, getTravelList } from "../travelSlice";
 import { useDispatch } from "react-redux";
-import ko from "date-fns/locale/ko";
-import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import CalendarHeader from "./CalendarHeader";
 import {
   FormControl,
@@ -15,8 +13,6 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-
-registerLocale("ko", ko);
 
 const AddTravelModalWrap = styled.div``;
 
@@ -28,7 +24,7 @@ const AddTravelModalHeader = styled.div`
       font-size: 1.6rem;
       color: #ffc759;
       font-family: "Unbounded", cursive;
-      margin-bottom: 1.4rem;
+      margin-bottom: 0.4rem;
     }
     dd {
       font-size: 2.4rem;

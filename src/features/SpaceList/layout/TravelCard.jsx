@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../../components/Button";
@@ -9,6 +9,8 @@ import random1 from "../../../assets/images/random1.png";
 import random2 from "../../../assets/images/random2.png";
 import random3 from "../../../assets/images/random3.png";
 import random4 from "../../../assets/images/random4.png";
+import { useDispatch } from "react-redux";
+import { getAllPlanList, getRoomData } from "../../Role/Allplan/allPlanSlice";
 const TravelCardWrap = styled.div`
   min-width: 35rem;
   min-height: 48rem;
@@ -129,6 +131,14 @@ const TravelCard = ({
   members,
 }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleInRoom = useCallback(() => {
+    dispatch(getRoomData(roomId)).then((res) => {
+      dispatch(getAllPlanList(roomId)).then((res) => {
+        navigate(`/${roomId}/allplan`);
+      });
+    });
+  }, [dispatch, navigate, roomId]);
   return (
     <TravelCardWrap>
       <TravelCardHeader>
@@ -177,11 +187,7 @@ const TravelCard = ({
             {startDate} ~ {endDate}
           </dd>
         </dl>
-        <Button
-          size="full"
-          color="blue"
-          onClick={() => navigate(`/${roomId}/allplan`)}
-        >
+        <Button size="full" color="blue" onClick={handleInRoom}>
           팀 스페이스 입장
         </Button>
       </TravelCardBody>

@@ -11,8 +11,9 @@ const initialState = {
 
 export const getUserInfo = createAsyncThunk("user/userInfo", async () => {
   const response = await tokenApi.get("api/basic-profile");
-  const { name, email, profile } = response?.data;
+  const { name, email, profile, userId } = response?.data;
   const userInfo = {
+    userId: userId,
     name: name,
     email: email,
     profile: profile === null ? dog : profile,

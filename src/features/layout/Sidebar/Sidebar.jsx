@@ -1,18 +1,29 @@
 import styled from "styled-components";
 import { Link, NavLink, useParams } from "react-router-dom";
-import { useCallback, useState } from "react";
-import Icons from "../../assets/icon/icon";
-import ProfileImg from "../../assets/images/image1.jpg";
+import { useCallback, useEffect, useState } from "react";
+import Icons from "../../../assets/icon/icon";
+import ProfileImg from "../../../assets/images/image1.jpg";
 import { useDispatch } from "react-redux";
-import { getInvitationCode } from "./invitationCodeSlice";
+import { getInvitationCode } from "../invitationCodeSlice";
+import logo from "../../../assets/images/logo.png";
+import Menu from "../../../components/Menu";
+import RoomEditMenu from "./RoomEditMenu";
+import { getRoomData } from "../../Role/Allplan/allPlanSlice";
+import { Modal } from "@mui/material";
+import RoomEditModal from "./EditMenuModal/RoomEditModal";
+import RoomDeleteModal from "./DeleteMenuModal/RoomDeleteModal";
 
 const SidebarContainer = styled.nav`
-  width: 32rem;
+  width: 24rem;
   height: 100vh;
-
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: #ffffff;
   box-shadow: 0 0.4rem 2rem 0px rgba(200, 214, 236, 0.7);
-  padding: 3.2rem 3rem;
+  padding: 2rem 2rem;
 
   overflow: scroll;
   z-index: 1;
@@ -21,39 +32,62 @@ const SidebarContainer = styled.nav`
   }
 `;
 
-const BacktoList = styled.div`
-  margin-bottom: 2.7rem;
+const SidebarHeader = styled.div`
+  margin-bottom: 4.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   a {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    width: 9rem;
+    height: 2rem;
     text-decoration: none;
-    color: #9e9e9e;
-    font-size: 1.4rem;
-    span {
-      color: #9e9e9e;
-      font-size: 1.4rem;
+    color: #c4c4c4;
+
+    img {
+      width: 100%;
+      height: 100%;
     }
   }
 `;
 
-const Profile = styled.div`
-  width: 100%;
+const SidebarProfile = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 3.7rem;
+  margin-bottom: 4.7rem;
+  user-select: none;
 
   .profile_img {
     width: 14.5rem;
     height: 14.5rem;
-    border-radius: 50%;
-    overflow: hidden;
     margin-bottom: 3rem;
+    position: relative;
     img {
       width: 100%;
       height: 100%;
+      overflow: hidden;
+      border-radius: 50%;
+    }
+    .room-edit-btn {
+      position: absolute;
+      width: 3.5rem;
+      height: 3.5rem;
+      background-color: #fff;
+      box-shadow: 0px 2px 4px rgba(196, 196, 196, 0.25);
+      border-radius: 50%;
+      z-index: 1;
+      right: 0;
+      bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      svg {
+        width: 2.6rem;
+        height: 2.6rem;
+        color: #a7a7a7;
+      }
     }
   }
 
@@ -221,39 +255,56 @@ const SideBarTab = [
   },
 ];
 
-function Sidebar() {
+function Sidebar({ setOpenRoomEditModal, setOpenRoomDeleteModal }) {
   const { roomId } = useParams();
-  const [active, setActive] = useState(0);
+  const [openRoomEditMenu, setOpenRoomEditMenu] = useState(false);
   const dispatch = useDispatch();
 
   const handleInvitationCode = useCallback(() => {
     dispatch(getInvitationCode(roomId));
   }, [roomId, dispatch]);
 
+  useEffect(() => {
+    dispatch(getRoomData(roomId));
+  }, [dispatch, roomId]);
+
   return (
     <>
       <SidebarContainer>
-        <BacktoList>
+        <SidebarHeader>
           <Link to={`/spaceList`}>
-            <span>
-              <Icons.HiChevronLeft />
-            </span>
-            목록으로돌아가기
+            <img src={logo} alt="여행역할로고" />
           </Link>
-        </BacktoList>
+        </SidebarHeader>
 
-        <Profile>
+        <SidebarProfile>
           <div className="profile_img">
             <img src={ProfileImg} alt="noimages" />
+            <div
+              className="room-edit-btn"
+              onClick={() => setOpenRoomEditMenu((prev) => !prev)}
+            >
+              <Icons.HiOutlineCog />
+            </div>
+            {openRoomEditMenu && (
+              <Menu>
+                <RoomEditMenu
+                  setOpenRoomEditModal={setOpenRoomEditModal}
+                  setOpenRoomDeleteModal={setOpenRoomDeleteModal}
+                />
+              </Menu>
+            )}
           </div>
+
           <h1>제주도 여행</h1>
+
           <p onClick={handleInvitationCode}>
             초대하기
             <span>
               <Icons.HiOutlineLink />
             </span>
           </p>
-        </Profile>
+        </SidebarProfile>
 
         <Category>
           <p>팀 스페이스</p>

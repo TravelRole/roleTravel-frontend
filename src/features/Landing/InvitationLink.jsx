@@ -135,7 +135,7 @@ const InvitationLink = () => {
   const onSubmitSetUserRole = useCallback(() => {
     dispatch(setUserRole({ selectRole, invitationCode })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        navigate(`/${res.payload}/allPlan`);
+        navigate(`/${res.payload}/allplan`);
       }
     });
   }, [dispatch, invitationCode, navigate, selectRole]);
@@ -147,10 +147,12 @@ const InvitationLink = () => {
           setIsOpenSelectRole(true);
           return;
         } else if (res.payload.response.status === 400) {
-          window.alert(res.payload.response.data.message);
+          window.alert(
+            "이미 초대받은 팀스페이스입니다! 확인 버튼을 누르면 해당 팀스페이스로 이동됩니다. "
+          );
           navigate("/spaceList");
         } else if (res.payload.response.status === 403) {
-          window.alert("로그인을 해주세요.");
+          window.alert("로그인 및 회원가입을 진행하신 후 입장해주세요.");
           navigate("/login");
         }
       })

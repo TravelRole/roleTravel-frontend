@@ -1,12 +1,12 @@
 import React, { useCallback, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { addChildComment, getCommentList } from "../../../commentSlice";
 
 const AddChildCommentWrap = styled.div`
   padding: 1.4rem 1.4rem;
-  border-top: 1px solid #d8e2f4;
+  border-top: 1px solid #dadada;
   background-color: #f6f7fa;
 `;
 
@@ -63,7 +63,12 @@ const AddChildCommentMain = styled.div`
   }
 `;
 
-const AddChildComment = ({ commentId }) => {
+const AddChildComment = ({
+  commentId,
+  setOpenAddChildComment,
+  username,
+  selectPage,
+}) => {
   const textareaRef = useRef(null);
   const [commentValue, setCommentValue] = useState("");
   const dispatch = useDispatch();
@@ -78,6 +83,11 @@ const AddChildComment = ({ commentId }) => {
     }
   }, []);
 
+  /** 자식 댓글 작성 취소하기 버튼 클릭시 발생하는 함수 **/
+  const handleAddChildCommentCancel = useCallback(() => {
+    setOpenAddChildComment(false);
+  }, [setOpenAddChildComment]);
+
   // 부모 댓글 추가하는 함수
   const onSubmitChildComment = useCallback(
     (e) => {
@@ -87,23 +97,31 @@ const AddChildComment = ({ commentId }) => {
         parentId: commentId,
         content: commentValue,
       };
-      const getData = { roomId: roomId, page: 0 };
+      const getData = { roomId: roomId, page: selectPage - 1 };
       dispatch(addChildComment(data)).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           dispatch(getCommentList(getData));
+          setOpenAddChildComment(false);
           setCommentValue("");
         }
       });
     },
-    [commentId, commentValue, dispatch, roomId]
+    [
+      commentId,
+      commentValue,
+      dispatch,
+      roomId,
+      selectPage,
+      setOpenAddChildComment,
+    ]
   );
   return (
     <AddChildCommentWrap>
       <AddChildCommentContainer onSubmit={onSubmitChildComment}>
         <AddChildCommentHeader onSubmit={onSubmitChildComment}>
-          <p>답글 작성하기</p>
+          <p>@{username}에게 답글 작성하기</p>
           <ul>
-            <li>취소</li>
+            <li onClick={handleAddChildCommentCancel}>취소</li>
             <li onClick={onSubmitChildComment}>등록</li>
           </ul>
         </AddChildCommentHeader>

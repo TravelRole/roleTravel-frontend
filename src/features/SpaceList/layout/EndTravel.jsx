@@ -4,7 +4,7 @@ import {
   TravelListSliderButtons,
   TravelListWrap,
 } from "./Traveling";
-import TravelSlider from "../../../lib/TravelSlider";
+import TravelSlider from "./TravelSlider";
 import { useSelector } from "react-redux";
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from "react-icons/hi";
 

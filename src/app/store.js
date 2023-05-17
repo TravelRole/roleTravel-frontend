@@ -9,8 +9,6 @@ import loggedUserReducer from "../features/UserAccount/LoggedUserSlice";
 import invitationCodeReducer from "../features/layout/invitationCodeSlice";
 import essentialsReducer from '../features/Role/Essentials/EssentialsSlice'
 import wantPlaceReducer from "../features/Role/Schedule/wantPlaceSlice"
-import scheduleReducer from "../features/Role/Schedule/scheduleSlice"
-import reservationReducer from "../features/Role/Reservation/reserveSlice"
 import allPlanReducer from "../features/Role/Allplan/allPlanSlice";
 import commentReducer from "../features/Role/Allplan/commentSlice";
 
@@ -26,8 +24,6 @@ export const store = configureStore({
     invitationCode: invitationCodeReducer,
     essentials: essentialsReducer,
     wantPlace : wantPlaceReducer,
-    schedule : scheduleReducer,
-    reservation : reservationReducer,
     allPlan: allPlanReducer,
     comment: commentReducer,
   },
