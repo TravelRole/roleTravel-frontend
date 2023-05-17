@@ -29,24 +29,18 @@ export const createEssentials = createAsyncThunk("api/room/room_id/essentials", 
 });
 
 export const deleteEssentials = createAsyncThunk("api/room/room_id/essentials", async (deleteData, thunkAPI) => {
-  await tokenApi.delete(`api/room/${deleteData[0]}/essentials`, deleteData[1])
-    .then((res) => getEssentials(deleteData[0]))
+  await tokenApi.delete(`api/room/${deleteData[0]}/essentials`, { data: {...deleteData[1]}})
+    .then((res) => console.log('Deleted'))
     .catch((err) => {
-      if (err.response && err.response.status === 400) {
-        return thunkAPI.rejectWithValue('존재하지 않는 방이거나 참여하지 않은 방 입니다.');
-      }
-      return thunkAPI.rejectWithValue(err)
+      console.log(err)
     })
 });
 
 export const patchChecks = createAsyncThunk("api/room/room_id/essentials/check", async (checkData, thunkAPI) => {
-    await tokenApi.post(`api/room/${checkData[0]}/essentials/check`, checkData[1])
-    .then((res) => console.log('Created!'))
+    await tokenApi.patch(`api/room/${thisId}/essentials/check`, checkData)
+    .then((res) => console.log('Checked!'))
     .catch((err) => {
-      if (err.response && err.response.status === 400) {
-        return thunkAPI.rejectWithValue('존재하지 않는 방이거나 참여하지 않은 방 입니다.');
-      }
-      return thunkAPI.rejectWithValue(err)
+      console.log(err)
     });
 });
 
