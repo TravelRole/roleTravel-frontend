@@ -15,6 +15,8 @@ import SearchBlankPanel from "./layout/SearchBlankPanel";
 import ScheduleBox from "./layout/ScheduleContainer";
 import { addWantPlace, delWantPlace, getWantPlace } from "./wantPlaceSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Modal from "../../../components/Modal";
+import AddScheduleModal from "./layout/AddScheduleModal";
 
 const Wrapper = styled.div`
   display: flex;
@@ -367,6 +369,7 @@ function Schedule({ setReserveList }) {
   };
 
   const [info, setInfo] = useState();
+  const [isOpenModal, setIsOpenModal] = useState(true);
   return (
     <>
       <Wrapper>
@@ -484,7 +487,7 @@ function Schedule({ setReserveList }) {
                 <SearchResultContainer>
                   {true ? (
                     <ul>
-                      {wantPlaceList.wantPlaces?.map((place) => {
+                      {wantPlaceList?.wantPlaces?.map((place) => {
                         const isExist = wantPlaceList.wantPlaces.filter(
                           (placeInfo) => {
                             return placeInfo.placeName === place.placeName;
@@ -540,6 +543,11 @@ function Schedule({ setReserveList }) {
         <ScheduleContainer>
           <ScheduleBox />
         </ScheduleContainer>
+        {isOpenModal ? (
+        <Modal width="52rem" setIsOpenModal={setIsOpenModal}>
+          <AddScheduleModal setIsOpenModal={setIsOpenModal} />
+        </Modal>
+      ) : null}
       </Wrapper>
     </>
   );
