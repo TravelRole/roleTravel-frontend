@@ -24,7 +24,7 @@ const AddTravelModalHeader = styled.div`
       font-size: 1.6rem;
       color: #ffc759;
       font-family: "Unbounded", cursive;
-      margin-bottom: 1.4rem;
+      margin-bottom: 0.4rem;
     }
     dd {
       font-size: 2.4rem;

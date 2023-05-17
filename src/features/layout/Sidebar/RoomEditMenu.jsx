@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Icons from "../../../assets/icon/icon";
-import Modal from "../../../components/Modal";
-import RoomEditModal from "./EditMenuModal/RoomEditModal";
-import RoomDeleteModal from "./EditMenuModal/RoomDeleteModal";
 
 const RoomEditMenuWrap = styled.ul`
   display: flex;
@@ -35,35 +32,23 @@ const RoomEditMenuWrap = styled.ul`
   }
 `;
 
-const RoomEditMenu = () => {
-  const [openRoomEditModal, setOpenRoomEditModal] = useState(false);
-  const [openRoomDeleteModal, setOpenRoomDeleteModal] = useState(false);
+const RoomEditMenu = ({ setOpenRoomEditModal, setOpenRoomDeleteModal }) => {
   return (
     <>
       <RoomEditMenuWrap>
-        <li onClick={() => setOpenRoomEditModal((prev) => !prev)}>
+        <li onClick={() => setOpenRoomEditModal(true)}>
           <span>
             <Icons.HiPencilAlt />
           </span>
           스페이스 설정
         </li>
-        <li onClick={() => setOpenRoomDeleteModal((prev) => !prev)}>
+        <li onClick={() => setOpenRoomDeleteModal(true)}>
           <span>
             <Icons.HiOutlineTrash />
           </span>
           스페이스 삭제
         </li>
       </RoomEditMenuWrap>
-      {openRoomEditModal && (
-        <Modal width="41.8rem" setIsOpenModal={setOpenRoomEditModal}>
-          <RoomEditModal />
-        </Modal>
-      )}
-      {openRoomDeleteModal && (
-        <Modal width="41.8rem" setIsOpenModal={setOpenRoomDeleteModal}>
-          <RoomDeleteModal />
-        </Modal>
-      )}
     </>
   );
 };

@@ -18,6 +18,7 @@ import {
   HiOutlineChat,
   HiChevronDown,
   HiChevronUp,
+  HiOutlineCalendar,
 } from "react-icons/hi";
 
 import {
@@ -82,6 +83,7 @@ const Icons = {
   HiOutlineChat,
   HiChevronDown,
   HiChevronUp,
+  HiOutlineCalendar,
 };
 
 export default Icons;

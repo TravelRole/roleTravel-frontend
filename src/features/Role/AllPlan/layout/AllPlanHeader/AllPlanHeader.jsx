@@ -45,7 +45,6 @@ const AllPlanHeader = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getUserInfo());
-    dispatch(getRoomData());
   }, [dispatch]);
   return (
     <AllPlanHeaderWrap>

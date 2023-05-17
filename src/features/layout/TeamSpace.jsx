@@ -10,6 +10,9 @@ import Sidebar from "./Sidebar/Sidebar";
 import { useDispatch } from "react-redux";
 import { getAllPlanList, getRoomData } from "../Role/AllPlan/allPlanSlice";
 import { getUserInfo } from "../Landing/userSlice";
+import Modal from "../../components/Modal";
+import RoomDeleteModal from "./Sidebar/DeleteMenuModal/RoomDeleteModal";
+import RoomEditModal from "./Sidebar/EditMenuModal/RoomEditModal";
 
 const TeamSpaceBox = styled.div`
   display: flex;
@@ -22,12 +25,13 @@ const SpaceContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding-left: 24rem;
-  background-color: #f5f5f5;
+  background-color: #f6f8fc;
 `;
 
 function TeamSpace({ Auth }) {
   // const navigate = useNavigate();
-
+  const [openRoomEditModal, setOpenRoomEditModal] = useState(false);
+  const [openRoomDeleteModal, setOpenRoomDeleteModal] = useState(false);
   const [reserveList, setReserveList] = useState([]);
   const { role } = useParams();
 
@@ -42,7 +46,10 @@ function TeamSpace({ Auth }) {
   return (
     <>
       <TeamSpaceBox>
-        <Sidebar />
+        <Sidebar
+          setOpenRoomDeleteModal={setOpenRoomDeleteModal}
+          setOpenRoomEditModal={setOpenRoomEditModal}
+        />
         <SpaceContainer>
           {
             {
@@ -54,6 +61,16 @@ function TeamSpace({ Auth }) {
             }[role]
           }
         </SpaceContainer>
+        {openRoomEditModal && (
+          <Modal width="51.8rem" setIsOpenModal={setOpenRoomEditModal}>
+            <RoomEditModal />
+          </Modal>
+        )}
+        {openRoomDeleteModal && (
+          <Modal width="51.8rem" setIsOpenModal={setOpenRoomDeleteModal}>
+            <RoomDeleteModal />
+          </Modal>
+        )}
       </TeamSpaceBox>
     </>
   );

@@ -8,6 +8,9 @@ import React from "react";
 import styled from "styled-components";
 import CalendarHeader from "../../../SpaceList/layout/CalendarHeader";
 import DatePicker from "react-datepicker";
+import { useSelector } from "react-redux";
+import RoleEditInput from "./RoleEditInput";
+import dog from "../../../../assets/images/dog.jpeg";
 
 const RoomEditModalWrap = styled.div``;
 
@@ -20,7 +23,7 @@ const RoomEditModalHeader = styled.div`
       font-size: 1.6rem;
       color: #ffc759;
       font-family: "Unbounded", cursive;
-      margin-bottom: 1.4rem;
+      margin-bottom: 0.4rem;
     }
     dd {
       font-size: 2.4rem;
@@ -30,11 +33,65 @@ const RoomEditModalHeader = styled.div`
 
 const RoomEditModalForm = styled.form`
   padding: 2.5rem 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  overflow-y: auto;
+  max-height: 53rem;
+`;
+
+const RoomEditModalRoleWrap = styled.div`
+  p {
+    font-size: 1.4rem;
+    color: #8b8b8b;
+    margin-bottom: 1rem;
+  }
+`;
+
+const RoomEditModalRoleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const RoomEditModalRoleContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  width: 100%;
+  border: 0.1rem solid #dadada;
+  border-radius: 0.8rem;
+  .room-edit-users-info {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    img {
+      width: 3.4rem;
+      height: 3.4rem;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    dl {
+      dt {
+        font-size: 1.6rem;
+        color: #333;
+        font-weight: 400;
+      }
+      dd {
+        font-size: 1.2rem;
+        font-weight: 400;
+        color: #a7a7a7;
+      }
+    }
+  }
 `;
 
 const RoomEditModalFooter = styled.div``;
 
 const RoomEditModal = () => {
+  const { roomData } = useSelector((state) => state.allPlan);
+
   return (
     <RoomEditModalWrap>
       <RoomEditModalHeader>
@@ -45,20 +102,20 @@ const RoomEditModal = () => {
       </RoomEditModalHeader>
       <RoomEditModalForm>
         <FormControl fullWidth variant="outlined">
-          <InputLabel htmlFor="add-Travel-Name">여행이름</InputLabel>
+          <InputLabel htmlFor="edit-travel-name">여행이름</InputLabel>
           <OutlinedInput
             autoComplete="off"
-            id="add-Travel-Name"
+            id="edit-travel-name"
             name="roomName"
             label="여행이름"
             // onChange={onChangeInput}
           />
-          <FormHelperText id="add-Travel-Name-helper-text">
+          <FormHelperText id="edit-travel-Name-helper-text">
             * 최대 20자까지 입력 가능합니다.
           </FormHelperText>
         </FormControl>
         <FormControl fullWidth variant="outlined">
-          <InputLabel htmlFor="room-edit-date">여행일자</InputLabel>
+          <InputLabel htmlFor="room-edit-date">일자</InputLabel>
           <DatePicker
             id="room-edit-date"
             selectsRange={true}
@@ -74,7 +131,7 @@ const RoomEditModal = () => {
               <OutlinedInput
                 id="room-edit-date-input"
                 autoComplete="off"
-                label="여행일자"
+                label="일자"
                 fullWidth
               />
             }
@@ -87,6 +144,40 @@ const RoomEditModal = () => {
             )}
           />
         </FormControl>
+        <FormControl fullWidth variant="outlined">
+          <InputLabel htmlFor="edit-Travel-location">장소</InputLabel>
+          <OutlinedInput
+            autoComplete="off"
+            id="edit-Travel-location"
+            name="roomLocation"
+            label="장소"
+            // onChange={onChangeInput}
+          />
+          <FormHelperText id="edit-Travel-location-helper-text">
+            * 최대 10자까지 입력 가능합니다.
+          </FormHelperText>
+        </FormControl>
+        <RoomEditModalRoleWrap>
+          <p>역할 정하기</p>
+          <RoomEditModalRoleContainer>
+            {roomData?.roles?.map((role, index) => (
+              <RoomEditModalRoleContent>
+                <div className="room-edit-users-info">
+                  <img
+                    src={role.profile === null ? dog : role.profile}
+                    alt={role.name}
+                  />
+
+                  <dl>
+                    <dt>{role.name}</dt>
+                    <dd>{role.email}</dd>
+                  </dl>
+                </div>
+                <RoleEditInput roles={role.roles} />
+              </RoomEditModalRoleContent>
+            ))}
+          </RoomEditModalRoleContainer>
+        </RoomEditModalRoleWrap>
       </RoomEditModalForm>
       <RoomEditModalFooter></RoomEditModalFooter>
     </RoomEditModalWrap>

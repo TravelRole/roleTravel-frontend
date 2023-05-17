@@ -190,14 +190,18 @@ const AllPlanContent = () => {
         <AllPlanContentHeaderBtns>
           <button
             className="plan-left"
-            disabled={currentSlide === 0}
+            disabled={currentSlide === 0 || data?.length === 0 || data === null}
             onClick={handleSlider}
           >
             <Icons.HiOutlineChevronLeft />
           </button>
           <button
             className="plan-right"
-            disabled={data?.length === currentSlide + 1}
+            disabled={
+              data?.length === currentSlide + 1 ||
+              data?.length === 0 ||
+              data === null
+            }
             onClick={handleSlider}
           >
             <Icons.HiOutlineChevronRight />
@@ -205,7 +209,7 @@ const AllPlanContent = () => {
         </AllPlanContentHeaderBtns>
       </AllPlanContentHeader>
       <AllPlanContentMain>
-        {data?.length < 0 ? (
+        {data?.length === 0 || data === null ? (
           <AllPlanContentNone>
             <i>
               <Icons.RiErrorWarningLine />

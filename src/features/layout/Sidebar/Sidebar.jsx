@@ -9,6 +9,9 @@ import logo from "../../../assets/images/logo.png";
 import Menu from "../../../components/Menu";
 import RoomEditMenu from "./RoomEditMenu";
 import { getRoomData } from "../../Role/AllPlan/allPlanSlice";
+import { Modal } from "@mui/material";
+import RoomEditModal from "./EditMenuModal/RoomEditModal";
+import RoomDeleteModal from "./DeleteMenuModal/RoomDeleteModal";
 
 const SidebarContainer = styled.nav`
   width: 24rem;
@@ -252,9 +255,8 @@ const SideBarTab = [
   },
 ];
 
-function Sidebar() {
+function Sidebar({ setOpenRoomEditModal, setOpenRoomDeleteModal }) {
   const { roomId } = useParams();
-  const [active, setActive] = useState(0);
   const [openRoomEditMenu, setOpenRoomEditMenu] = useState(false);
   const dispatch = useDispatch();
 
@@ -286,7 +288,10 @@ function Sidebar() {
             </div>
             {openRoomEditMenu && (
               <Menu>
-                <RoomEditMenu />
+                <RoomEditMenu
+                  setOpenRoomEditModal={setOpenRoomEditModal}
+                  setOpenRoomDeleteModal={setOpenRoomDeleteModal}
+                />
               </Menu>
             )}
           </div>

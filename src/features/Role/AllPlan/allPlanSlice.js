@@ -27,6 +27,7 @@ export const getRoomData = createAsyncThunk(
   "allPlan/getRoomData",
   async (roomId, thunkAPI) => {
     try {
+      console.log(roomId);
       const res = await tokenApi.get(`api/room/${roomId}`);
       return res.data;
     } catch (error) {

@@ -30,7 +30,6 @@ function AllPlan() {
 
   useEffect(() => {
     dispatch(getAllPlanList(roomId));
-    dispatch(getRoomData(roomId));
     dispatch(getUserInfo());
   }, [dispatch, roomId]);
 
