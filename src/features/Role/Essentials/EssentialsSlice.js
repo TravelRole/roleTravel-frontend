@@ -9,39 +9,40 @@ const initialState = {
   error: null,
 };
 
-let thisId;
-
 export const getEssentials = createAsyncThunk("api/room/room_id/essentials", async (id) => {
   const res = await tokenApi.get(`api/room/${id}/essentials`)
-  thisId = id;
   return res.data;
 });
 
 export const createEssentials = createAsyncThunk("api/room/room_id/essentials", async (createItemData, thunkAPI) => {
-    await tokenApi.post(`api/room/${createItemData[0]}/essentials`, createItemData[1])
-    .then((res) => getEssentials(createItemData[0]))
-    .catch((err) => {
-      if (err.response && err.response.status === 400) {
-        return thunkAPI.rejectWithValue('카테고리명이 올바른 형식이 아니거나 존재하지 않는 방입니다.');
-      }
-      return thunkAPI.rejectWithValue(err)
-    });
+  await tokenApi.post(`api/room/${createItemData[0]}/essentials`, createItemData[1])
+  try {
+    dispatchEvent(getEssentials(createItemData[0]))
+  } catch (err) {
+    console.log(err)
+    if (err.response && err.response.status === 400) {
+      return thunkAPI.rejectWithValue('카테고리명이 올바른 형식이 아니거나 존재하지 않는 방입니다.');
+    }
+    return thunkAPI.rejectWithValue(err)
+  }
 });
 
-export const deleteEssentials = createAsyncThunk("api/room/room_id/essentials", async (deleteData, thunkAPI) => {
+export const deleteEssentials = createAsyncThunk("api/room/room_id/essentials", async (deleteData) => {
   await tokenApi.delete(`api/room/${deleteData[0]}/essentials`, { data: {...deleteData[1]}})
-    .then((res) => console.log('Deleted'))
-    .catch((err) => {
-      console.log(err)
-    })
+  try {
+    dispatchEvent(getEssentials(deleteData[0]))
+  } catch (err) {
+    console.log(err)
+  }
 });
 
-export const patchChecks = createAsyncThunk("api/room/room_id/essentials/check", async (checkData, thunkAPI) => {
-    await tokenApi.patch(`api/room/${thisId}/essentials/check`, checkData)
-    .then((res) => console.log('Checked!'))
-    .catch((err) => {
-      console.log(err)
-    });
+export const patchChecks = createAsyncThunk("api/room/room_id/essentials/check", async (checkData) => {
+  await tokenApi.patch(`api/room/${checkData[0]}/essentials/check`, checkData[1]);
+  try {
+    dispatchEvent(getEssentials(checkData[0]))
+  } catch (err) {
+    console.log(err)  
+  }
 });
 
 const essentialsSlice = createSlice({

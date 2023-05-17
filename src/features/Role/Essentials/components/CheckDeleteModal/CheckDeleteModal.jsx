@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Emphasis } from "../EssentialsListModal/Style";
 import {
   Blur,
@@ -9,21 +9,25 @@ import {
   Span,
   Title
 } from "./Style";
-import { deleteEssentials } from "../../EssentialsSlice";
+
+import { deleteEssentials, getEssentials } from "../../EssentialsSlice";
 
 const CheckDeleteModal = ({ setIsOpen, deleteList }) => {
   const dispatch = useDispatch();
 
   const deleteHandler = () => {
-    dispatch(
-      deleteEssentials([
-        Number(window.location.href.split("/")[3]),
-        {
-          ids: deleteList
-        }
-      ])
-    );
-    setIsOpen(false);
+    if (deleteList.length === 0) return;
+    else {
+      dispatch(
+        deleteEssentials([
+          Number(window.location.href.split("/")[3]),
+          {
+            ids: deleteList
+          }
+        ])
+      );
+      setIsOpen(false);
+    }
   };
 
   return (

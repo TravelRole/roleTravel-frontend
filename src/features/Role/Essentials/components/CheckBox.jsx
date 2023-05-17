@@ -15,13 +15,13 @@ const Checkbox = ({ item }) => {
   const toggle = () => {
     setChecked(!checked);
     dispatch(
-      patchChecks(
-        // Number(window.location.href.split("/")[3]),
+      patchChecks([
+        Number(window.location.href.split("/")[3]),
         {
           check: !checked,
           ids: [item.id]
         }
-      )
+      ])
     );
   };
 

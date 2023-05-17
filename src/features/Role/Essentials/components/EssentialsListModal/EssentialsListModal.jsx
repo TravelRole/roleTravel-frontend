@@ -43,6 +43,7 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
           );
         }
       })
+      setIsOpen(false);
     }
   };
 
