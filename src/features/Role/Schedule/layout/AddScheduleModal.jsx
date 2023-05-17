@@ -56,7 +56,7 @@ const EditReserveModalBody = styled.div`
         color: black;
       }
     }
-    p.dayTimeOption {
+    div.dayTimeOption {
       display: flex;
       flex-direction: row;
       gap: 1rem;
@@ -85,7 +85,7 @@ const EditReserveModalBody = styled.div`
         cursor: pointer;
       }
     }
-    p.reserveOption {
+    div.reserveOption {
       div {
         svg {
           font-size: 2rem;
@@ -194,7 +194,7 @@ const AddScheduleModal = ({ setIsOpenModal }) => {
               <span>장소</span>
               <span>장소 이름 텍스트가 들어갑니다.</span>
             </p>
-            <p className="dayTimeOption">
+            <div className="dayTimeOption">
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
@@ -203,25 +203,25 @@ const AddScheduleModal = ({ setIsOpenModal }) => {
                 renderInput={(params) => <TextField {...params} label="일자" />}
               />
               <input type="time" className="timeInput" />
-            </p>
-            <p className="reserveOption">
+            </div>
+            <div className="reserveOption">
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
                 options={reserveOption}
                 sx={{ width: "100%" }}
                 renderInput={(params) => (
-                  <TextField {...params} label="예약여부" />
+                  <TextField {...params} label="예약여부"  />
                 )}
               />
-            </p>
+            </div>
 
             <CategoryOptions>
               <span>카테고리</span>
               <ul>
                 {categoryOptions.map((item) => {
                   return (
-                    <li>
+                    <li key={item}>
                       <div></div>
                       <span>{item}</span>
                     </li>
