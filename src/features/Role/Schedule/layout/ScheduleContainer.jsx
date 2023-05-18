@@ -219,14 +219,12 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
 
   useEffect(() => {
     setDate(firstDayDate);
-    
-    if(date) dispatch(getSchedule({ roomId, date }));
-    
+
+    if (date) dispatch(getSchedule({ roomId, date }));
   }, [dispatch, date, roomId, firstDayDate]);
 
   const { scheduleList } = useSelector((state) => state.schedule);
-  console.log(scheduleList);
-
+ console.log(scheduleList)
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -276,95 +274,42 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
                 <NoteDetailColumn>비고</NoteDetailColumn>
               </ColumnHeader>
               <ScheduleDetails>
-                <ScheduleRow>
-                  <PlaceNameColumn>
-                    <input type="checkbox" />
-                    연돈이게최대몇자까지 들어갈까더가능
-                  </PlaceNameColumn>
-                  <DetailColumn>10:00</DetailColumn>
-                  <DetailColumn>필요</DetailColumn>
-                  <DetailColumn>식당</DetailColumn>
-                  <DetailFeeColumn>1,231,230원</DetailFeeColumn>
-                  <DetailLinkColumn>
-                    <span>
-                      {" "}
-                      <a
-                        href={"https://www.ncloud.com/charge/price"}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {" "}
-                        https://www.naver.com/kr.ja{" "}
-                      </a>{" "}
-                    </span>
-                  </DetailLinkColumn>
-                  <NoteDetailColumn>
-                    <span>
-                      {" "}
-                      제일깔끔하고 괜찮아보여서 선정했어요. 바보 이거 길어지{" "}
-                    </span>
-                  </NoteDetailColumn>
-                </ScheduleRow>
-
-                <ScheduleRow>
-                  <PlaceNameColumn>
-                    <input type="checkbox" />
-                    연돈이게최대몇자까지 들어갈까더가능
-                  </PlaceNameColumn>
-                  <DetailColumn>10:00</DetailColumn>
-                  <DetailColumn>필요</DetailColumn>
-                  <DetailColumn>식당</DetailColumn>
-                  <DetailFeeColumn>1,231,230원</DetailFeeColumn>
-                  <DetailLinkColumn>
-                    <span>
-                      {" "}
-                      <a
-                        href={"https://www.ncloud.com/charge/price"}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {" "}
-                        https://www.naver.com/kr.ja{" "}
-                      </a>{" "}
-                    </span>
-                  </DetailLinkColumn>
-                  <NoteDetailColumn>
-                    <span>
-                      {" "}
-                      제일깔끔하고 괜찮아보여서 선정했어요. 바보 이거 길어지{" "}
-                    </span>
-                  </NoteDetailColumn>
-                </ScheduleRow>
-
-                <ScheduleRow>
-                  <PlaceNameColumn>
-                    <input type="checkbox" />
-                    연돈이게최대몇자까지 들어갈까더가능
-                  </PlaceNameColumn>
-                  <DetailColumn>10:00</DetailColumn>
-                  <DetailColumn>필요</DetailColumn>
-                  <DetailColumn>식당</DetailColumn>
-                  <DetailFeeColumn>1,231,230원</DetailFeeColumn>
-                  <DetailLinkColumn>
-                    <span>
-                      {" "}
-                      <a
-                        href={"https://www.ncloud.com/charge/price"}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {" "}
-                        https://www.naver.com/kr.ja{" "}
-                      </a>{" "}
-                    </span>
-                  </DetailLinkColumn>
-                  <NoteDetailColumn>
-                    <span>
-                      {" "}
-                      제일깔끔하고 괜찮아보여서 선정했어요. 바보 이거 길어지{" "}
-                    </span>
-                  </NoteDetailColumn>
-                </ScheduleRow>
+                {scheduleList &&
+                  scheduleList.map((schedule) => {
+                    const extractedTime = schedule.time.slice(0, 5);
+                    return (
+                      <ScheduleRow>
+                        <PlaceNameColumn>
+                          <input type="checkbox" />
+                          {schedule.placeName}
+                        </PlaceNameColumn>
+                        <DetailColumn>{extractedTime}</DetailColumn>
+                        <DetailColumn>
+                          {schedule.isBooked === null
+                            ? "불필요"
+                            : schedule.isBooked === true
+                            ? "예약완료"
+                            : "필요"}
+                        </DetailColumn>
+                        <DetailColumn>{schedule.category}</DetailColumn>
+                        <DetailFeeColumn>{schedule.price}</DetailFeeColumn>
+                        <DetailLinkColumn>
+                          <span>
+                            <a
+                              href={schedule.link}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {schedule.link}
+                            </a>
+                          </span>
+                        </DetailLinkColumn>
+                        <NoteDetailColumn>
+                          <span> {schedule.etc} </span>
+                        </NoteDetailColumn>
+                      </ScheduleRow>
+                    );
+                  })}
               </ScheduleDetails>
             </StyledTabPanel>
             <StyledTabPanel value="2">
