@@ -25,6 +25,13 @@ ${(props) =>
       max-width: 13rem;
       font-size: 1.6rem;
     `}
+    ${(props) =>
+    props.size === "x-small" &&
+    css`
+      width: 100%;
+      max-width: 9rem;
+      font-size: 1.6rem;
+    `}
 `;
 
 const colorStyles = css`

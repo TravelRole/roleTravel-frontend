@@ -63,7 +63,7 @@ function TeamSpace({ Auth }) {
         </SpaceContainer>
         {openRoomEditModal && (
           <Modal width="51.8rem" setIsOpenModal={setOpenRoomEditModal}>
-            <RoomEditModal />
+            <RoomEditModal setOpenRoomEditModal={setOpenRoomEditModal} />
           </Modal>
         )}
         {openRoomDeleteModal && (
