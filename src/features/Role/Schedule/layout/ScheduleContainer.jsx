@@ -278,7 +278,7 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
                   scheduleList.map((schedule) => {
                     const extractedTime = schedule.time.slice(0, 5);
                     return (
-                      <ScheduleRow>
+                      <ScheduleRow key={schedule.mapPlaceId}>
                         <PlaceNameColumn>
                           <input type="checkbox" />
                           {schedule.placeName}
