@@ -260,8 +260,6 @@ function Schedule({ setReserveList }) {
 
   const { wantPlaceList } = useSelector((state) => state.wantPlace);
   const { travelDayList } = useSelector((state) => state.travelDay);
-  console.log(wantPlaceList);
-  console.log(travelDayList);
 
   /** 찜장소 가져오기 */
   const [searchPlaceList, setSearchPlaceList] = useState([]);
@@ -447,7 +445,10 @@ function Schedule({ setReserveList }) {
         </MapWrapper>
 
         <ScheduleSection>
-          <ScheduleContainer travelDayList={travelDayList} />
+          <ScheduleContainer
+            travelDayList={travelDayList}
+            firstDayDate={travelDayList[0]?.date}
+          />
         </ScheduleSection>
         {isOpenModal ? (
           <Modal width="52rem" setIsOpenModal={setIsOpenModal}>

@@ -7,7 +7,7 @@ export const getSchedule = createAsyncThunk(
   "schedule/getSchedule",
   async (payload) => {
     const { roomId, date } = payload;
-    console.log(roomId ,date)
+    console.log(roomId, date);
     try {
       const res = await tokenApi.get(
         `api/room/${roomId}/schedule?date=${date}`
@@ -22,9 +22,12 @@ export const getSchedule = createAsyncThunk(
 //일정 추가하기
 export const addSchedule = createAsyncThunk(
   "schedule/addSchedule",
-  async (roomId, scheduleData, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      await tokenApi.post(`api/room/${roomId}/board`, scheduleData);
+      await tokenApi.post(
+        `api/room/${payload.roomId}/schedule`,
+        payload.schedulePayload
+      );
     } catch (error) {
       console.log(error);
     }
@@ -77,7 +80,7 @@ const scheduleSlice = createSlice({
       })
       .addCase(getSchedule.fulfilled, (state, action) => {
         state.isWantPlaceLoading = false;
-        state.isScheduleLoading = action.payload;
+        state.scheduleList = action.payload;
       })
       .addCase(getSchedule.rejected, (state, action) => {
         state.isScheduleLoading = false;

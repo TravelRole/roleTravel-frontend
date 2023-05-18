@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
@@ -7,6 +7,9 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { useState } from "react";
 import ScheduleBlankPanel from "./ScheduleBlankPanel";
+import { useDispatch, useSelector } from "react-redux";
+import { getSchedule } from "../scheduleSlice";
+import { useParams } from "react-router-dom";
 
 const StyledBox = styled(Box)`
   padding-left: 6rem;
@@ -207,18 +210,22 @@ const ScheduleRow = styled.div`
   border-radius: 0.8rem;
 `;
 
-const ReservationDay = [
-  { CountDay: 1, Date: "4.17(월)" },
-  { CountDay: 2, Date: "4.18(화)" },
-  { CountDay: 3, Date: "4.19(수)" },
-  { CountDay: 4, Date: "4.20(목)" },
-  { CountDay: 5, Date: "4.21(금)" },
-  { CountDay: 6, Date: "4.22(토)" },
-  { CountDay: 7, Date: "4.23(일)" },
-];
+const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
+  const { roomId } = useParams();
+  const dispatch = useDispatch();
 
-const ScheduleContainer = ({ travelDayList }) => {
+  const [date, setDate] = useState(firstDayDate);
   const [value, setValue] = useState("1");
+
+  useEffect(() => {
+    setDate(firstDayDate);
+    
+    if(date) dispatch(getSchedule({ roomId, date }));
+    
+  }, [dispatch, date, roomId, firstDayDate]);
+
+  const { scheduleList } = useSelector((state) => state.schedule);
+  console.log(scheduleList);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -248,6 +255,10 @@ const ScheduleContainer = ({ travelDayList }) => {
                       </DateBox>
                     }
                     value={`${idx}`}
+                    onClick={() => {
+                      setDate(date);
+                      if (date) dispatch(getSchedule({ roomId, date }));
+                    }}
                   />
                 );
               })}

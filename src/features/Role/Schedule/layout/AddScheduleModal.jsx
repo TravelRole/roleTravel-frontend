@@ -12,6 +12,9 @@ import {
 import Button from "../../../../components/Button";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import { useDispatch, useSelector } from "react-redux";
+import { addSchedule, getSchedule } from "../scheduleSlice";
+import { useParams } from "react-router-dom";
 
 const AddScheduleModalWrapper = styled.div``;
 
@@ -127,28 +130,18 @@ const CategoryWrap = styled.li`
   div {
     width: 7rem;
     height: 7rem;
-    background-color:${props => (props.selected ? "#F4F6FB" : "#FFFFFF")};
-    border: 1px solid ${props => (props.selected ? "#3884fd" : "#dadada")}; 
+    background-color: ${(props) => (props.selected ? "#F4F6FB" : "#FFFFFF")};
+    border: 1px solid ${(props) => (props.selected ? "#3884fd" : "#dadada")};
     border-radius: 0.8rem;
     margin-bottom: 0.8rem;
   }
   span {
-    color: ${props => (props.selected ? "#3884fd" : "#dadada")};
+    color: ${(props) => (props.selected ? "#3884fd" : "#dadada")};
   }
 `;
 
-const reserveOption = ["예약필요", "예약완료"];
-
-const categoryOptions = ["교통", "숙박", "음식", "관광", "쇼핑", "기타"];
-
-const AddScheduleModal = ({ setIsOpenModal, modalData ,travelDayList}) => {
-
-   const dayOption = travelDayList?.map((dayData)=>{
-    return {
-      label:`${dayData.idx}일차` , day:dayData.idx
-    }
-  })
-
+const AddScheduleModal = ({ setIsOpenModal, modalData, travelDayList }) => {
+  const { roomId } = useParams();
   let {
     id,
     place_name,
@@ -179,49 +172,53 @@ const AddScheduleModal = ({ setIsOpenModal, modalData ,travelDayList}) => {
     link = place_url;
   }
 
-  //   {
-  //     "placeName": "우도",
-  //     "placeAddress": "제주시",
-  //     "scheduleDate": "2023-02-21 13:15",
-  //     "link" : "asd",
-  //     "isBookRequired" : "false",
-  //     "category" : "TRAFFIC",
-  //     "latitude": 15.23,
-  //     "longitude": 12.11,
-  //     "etc" : "asdas",
-  //     "mapPlaceId" : 123456
-  // }
-
- 
+  const dayOption = travelDayList?.map((dayData) => {
+    return {
+      label: `${dayData.idx}일차`,
+      date: dayData.date,
+    };
+  });
+  const reserveOption = [
+    { label: "불필요", value: false },
+    { label: "필요", value: true },
+  ];
+  const categoryOptions = ["교통", "숙박", "음식", "관광", "쇼핑", "기타"];
+  const [day, setDay] = useState(null);
+  const [reserve, setReserve] = useState(false);
   const [category, setCategory] = useState("교통");
-
   const [note, setNote] = useState("");
 
-  const noteMax = 30;
-
-  // 로그인 submit 이벤트
-  const loginSubmit = (e) => {
+  // 일정추가 submit 이벤트
+  const dispatch = useDispatch();
+  const addScheduleData = (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const loginPayload = { email: email, password: password };
-    // if (!email || !password) return alert("아이디와 패스워드를 적어주세요!");
-    // dispatch(login(loginPayload)).then((res) => {
-    //   if (res.meta.requestStatus === "fulfilled") {
-    //     navigate("/spaceList");
-    //     dispatch(getUserInfo());
-    //     dispatch(getTravelList());
-    //     return;
-    //   }
-    // });
-  }
+    const time = formData.get("time");
 
+    const schedulePayload = {
+      placeName: placeName,
+      placeAddress: placeAddress,
+      scheduleDate: `${day} ${time}`,
+      link: link,
+      isBookRequired: reserve,
+      category: "Traffic",
+      latitude: latitude,
+      longitude: longitude,
+      etc: note,
+      mapPlaceId: mapPlaceId,
+    };
 
+    dispatch(addSchedule({roomId, schedulePayload})).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        dispatch(getSchedule({roomId , date : day}));
+        return;
+      }
+    });
+  };
 
+  const noteMax = 30;
   const onChangeInput = (e) => {
     const { name, value } = e.target;
-
     switch (name) {
       case "note": {
         if (value.length <= noteMax) setNote(value);
@@ -241,7 +238,7 @@ const AddScheduleModal = ({ setIsOpenModal, modalData ,travelDayList}) => {
         </dl>
       </EditReserveHeader>
       <EditReserveModalBody>
-        <form>
+        <form onSubmit={addScheduleData}>
           <div className="form-content">
             <p className="modal-body-text">
               <span>장소</span>
@@ -251,21 +248,29 @@ const AddScheduleModal = ({ setIsOpenModal, modalData ,travelDayList}) => {
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
+                name="date"
                 options={dayOption}
                 sx={{ width: "50%" }}
                 renderInput={(params) => <TextField {...params} label="일자" />}
+                onChange={(e, value) => {
+                  setDay(value.date);
+                }}
               />
-              <input type="time" className="timeInput" />
+              <input name="time" type="time" className="timeInput" />
             </div>
             <div className="reserveOption">
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
+                name="reserve"
                 options={reserveOption}
                 sx={{ width: "100%" }}
                 renderInput={(params) => (
                   <TextField {...params} label="예약여부" />
                 )}
+                onChange={(e, value) => {
+                  setReserve(value.value);
+                }}
               />
             </div>
 
@@ -275,7 +280,7 @@ const AddScheduleModal = ({ setIsOpenModal, modalData ,travelDayList}) => {
                 {categoryOptions.map((item) => {
                   return (
                     <CategoryWrap selected={category === item} key={item}>
-                      <div onClick={()=>setCategory(item)}></div>
+                      <div onClick={() => setCategory(item)}></div>
                       <span>{item}</span>
                     </CategoryWrap>
                   );
