@@ -5,16 +5,18 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import CalendarHeader from "../../../SpaceList/layout/CalendarHeader";
 import DatePicker from "react-datepicker";
-import { useSelector } from "react-redux";
-import RoleEditInput from "./RoleEditInput";
-import dog from "../../../../assets/images/dog.jpeg";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../../../../components/Button";
 import { formatDate } from "../../../../lib/formatDate";
 import { toast } from "react-toastify";
+import RoomEditModalRoleContent from "./RoomEditModalRoleContent";
+import { useParams } from "react-router-dom";
+import { editRoomInfo } from "../roomEditSlice";
+import { getRoomData } from "../../../Role/AllPlan/allPlanSlice";
 
 const RoomEditModalWrap = styled.div``;
 
@@ -59,39 +61,6 @@ const RoomEditModalRoleContainer = styled.div`
   gap: 1rem;
 `;
 
-const RoomEditModalRoleContent = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  width: 100%;
-  border: 0.1rem solid #dadada;
-  border-radius: 0.8rem;
-  .room-edit-users-info {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    img {
-      width: 3.4rem;
-      height: 3.4rem;
-      border-radius: 50%;
-      overflow: hidden;
-    }
-    dl {
-      dt {
-        font-size: 1.6rem;
-        color: #333;
-        font-weight: 400;
-      }
-      dd {
-        font-size: 1.2rem;
-        font-weight: 400;
-        color: #a7a7a7;
-      }
-    }
-  }
-`;
-
 const RoomEditModalFooter = styled.div`
   padding: 2rem 2.4rem;
   display: flex;
@@ -102,6 +71,8 @@ const RoomEditModalFooter = styled.div`
 
 const RoomEditModal = ({ setOpenRoomEditModal }) => {
   const { roomData } = useSelector((state) => state.allPlan);
+  const { roomId } = useParams();
+  const dispatch = useDispatch();
   const { roomName, location, startDate, endDate, roles } = roomData ?? {};
   const MAX_NAME = 20;
   const MAX_LOCATION = 10;
@@ -115,7 +86,6 @@ const RoomEditModal = ({ setOpenRoomEditModal }) => {
     roles: roles,
   });
 
-  console.log(formData);
   const [dateRange, setDateRange] = useState([
     startDate ? new Date(startDate) : null,
     endDate ? new Date(endDate) : null,
@@ -185,6 +155,19 @@ const RoomEditModal = ({ setOpenRoomEditModal }) => {
       }
     }
   }, []);
+
+  const onSubmitEditRoom = useCallback(
+    (e) => {
+      e.preventDefault();
+      const data = { roomId, formData };
+      dispatch(editRoomInfo(data)).then((res) => {
+        if (res.meta.status === 200) {
+          dispatch(getRoomData(roomId));
+        }
+      });
+    },
+    [dispatch, formData, roomId]
+  );
 
   return (
     <RoomEditModalWrap>
@@ -269,25 +252,14 @@ const RoomEditModal = ({ setOpenRoomEditModal }) => {
         <RoomEditModalRoleWrap>
           <p>역할 정하기</p>
           <RoomEditModalRoleContainer>
-            {roomData?.roles?.map((role, index) => (
-              <RoomEditModalRoleContent>
-                <div className="room-edit-users-info">
-                  <img
-                    src={role.profile === null ? dog : role.profile}
-                    alt={role.name}
-                  />
-
-                  <dl>
-                    <dt>{role.name}</dt>
-                    <dd>{role.email}</dd>
-                  </dl>
-                </div>
-                <RoleEditInput
-                  roles={role.roles}
-                  index={index}
-                  setFormData={setFormData}
-                />
-              </RoomEditModalRoleContent>
+            {roles?.map((role, index) => (
+              <RoomEditModalRoleContent
+                key={index}
+                roles={role.roles}
+                role={role}
+                index={index}
+                setFormData={setFormData}
+              />
             ))}
           </RoomEditModalRoleContainer>
         </RoomEditModalRoleWrap>
@@ -302,7 +274,12 @@ const RoomEditModal = ({ setOpenRoomEditModal }) => {
         >
           취소
         </Button>
-        <Button type="submit" color="blue" size="x-small">
+        <Button
+          type="submit"
+          onClick={onSubmitEditRoom}
+          color="blue"
+          size="x-small"
+        >
           확인
         </Button>
       </RoomEditModalFooter>

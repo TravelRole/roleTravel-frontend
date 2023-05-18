@@ -1,11 +1,40 @@
-import React from "react";
-import { useState } from "react";
-import Icons from "../../../../assets/icon/icon";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import { useEffect } from "react";
+import dog from "../../../../assets/images/dog.jpeg";
+import Icons from "../../../../assets/icon/icon";
 
-const RoleEditInputWrap = styled.div`
+const RoomEditModalRoleContentWrap = styled.div`
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  width: 100%;
+  border: 0.1rem solid #dadada;
+  border-radius: 0.8rem;
+  .room-edit-users-info {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    img {
+      width: 3.4rem;
+      height: 3.4rem;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    dl {
+      dt {
+        font-size: 1.6rem;
+        color: #333;
+        font-weight: 400;
+      }
+      dd {
+        font-size: 1.2rem;
+        font-weight: 400;
+        color: #a7a7a7;
+      }
+    }
+  }
 `;
 
 const RoleEditInputValue = styled.div`
@@ -39,12 +68,12 @@ const RoleEditInputOptions = styled.div`
   z-index: 10;
   border: 1px solid #dadada;
   background: #ffffff;
-  width: 15rem;
+  width: 12.7rem;
   border-radius: 1rem;
   margin-top: 1rem;
   position: absolute;
-  bottom: 0;
-  right: -1.2rem;
+  bottom: -14.8rem;
+  right: 0;
 `;
 
 const RoleEditInputOptionsContainer = styled.div`
@@ -63,7 +92,7 @@ const RoleEditInputOptionsContainer = styled.div`
     display: block;
     width: 0;
     top: -1.1rem;
-    left: 11.2rem;
+    left: 8.2rem;
   }
   &::before {
     content: "";
@@ -74,7 +103,7 @@ const RoleEditInputOptionsContainer = styled.div`
     display: block;
     width: 0;
     top: -1.2rem;
-    left: 11.2rem;
+    left: 8.2rem;
   }
 `;
 
@@ -101,11 +130,9 @@ const RoleEditInputOptionsContent = styled.div`
   }
 `;
 
-const RoleEditInput = ({ roles, index, setFormData }) => {
-  console.log(roles, index);
+const RoomEditModalRoleContent = ({ role, roles, index, setFormData }) => {
   const [isOpen, setIsOpen] = useState(false); // 메뉴 열림/닫힘 상태
-  const [selectedOptions, setSelectedOptions] = useState([...roles]); // 선택된 옵션들
-
+  const [selectedOptions, setSelectedOptions] = useState([...roles]);
   const options = [
     { value: "일정", label: "일정", id: "option-schedule" },
     { value: "회계", label: "회계", id: "option-account" },
@@ -114,9 +141,8 @@ const RoleEditInput = ({ roles, index, setFormData }) => {
   ];
 
   const handleToggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
-
   const handleOptionClick = (optionValue) => {
     let updatedOptions = [];
 
@@ -174,7 +200,15 @@ const RoleEditInput = ({ roles, index, setFormData }) => {
   }, [selectedOptions]);
 
   return (
-    <RoleEditInputWrap className="multiselect">
+    <RoomEditModalRoleContentWrap>
+      <div className="room-edit-users-info">
+        <img src={role.profile === null ? dog : role.profile} alt={role.name} />
+
+        <dl>
+          <dt>{role.name}</dt>
+          <dd>{role.email}</dd>
+        </dl>
+      </div>
       <RoleEditInputValue onClick={handleToggleMenu}>
         <ul>
           {selectedOptions.map((option, i) =>
@@ -215,8 +249,8 @@ const RoleEditInput = ({ roles, index, setFormData }) => {
               </RoleEditInputOptionsContainer>
             </RoleEditInputOptions>
           )}
-    </RoleEditInputWrap>
+    </RoomEditModalRoleContentWrap>
   );
 };
 
-export default RoleEditInput;
+export default RoomEditModalRoleContent;
