@@ -161,12 +161,13 @@ const RoomEditModal = ({ setOpenRoomEditModal }) => {
       e.preventDefault();
       const data = { roomId, formData };
       dispatch(editRoomInfo(data)).then((res) => {
-        if (res.meta.status === 200) {
-          dispatch(getRoomData(roomId));
+        if (res.payload.status === 200) {
+          setOpenRoomEditModal(false);
+          window.location.reload();
         }
       });
     },
-    [dispatch, formData, roomId]
+    [dispatch, formData, roomId, setOpenRoomEditModal]
   );
 
   return (

@@ -10,13 +10,14 @@ export const editRoomInfo = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const { roomId, formData } = data;
-      await tokenApi.put(`api/room/${roomId}`, {
+      const res = await tokenApi.put(`api/room/${roomId}`, {
         roomName: formData.roomName,
         endDate: formData.endDate,
         startDate: formData.startDate,
         location: formData.location,
-        roles: formData.roles,
+        userRoles: formData.roles,
       });
+      return res;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
