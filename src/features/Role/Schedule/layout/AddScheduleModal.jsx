@@ -12,7 +12,7 @@ import {
 import Button from "../../../../components/Button";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addSchedule, getSchedule } from "../scheduleSlice";
 import { useParams } from "react-router-dom";
 
@@ -165,8 +165,6 @@ const AddScheduleModal = ({ setIsOpenModal, modalData, travelDayList }) => {
     mapPlaceId = id;
     placeName = place_name;
     placeAddress = road_address_name;
-    lotNumberAddress = address_name;
-    phoneNumber = phone;
     latitude = x;
     longitude = y;
     link = place_url;
