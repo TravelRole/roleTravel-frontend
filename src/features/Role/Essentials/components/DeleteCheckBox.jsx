@@ -14,6 +14,10 @@ const DeleteCheckBox = ({ item, deleteList, setDeleteList }) => {
     }
   }, [checked]);
 
+  useEffect(() => {
+    if (deleteList.length === 0) setChecked(false);
+  }, [deleteList])
+
   return (
     <div
       style={{

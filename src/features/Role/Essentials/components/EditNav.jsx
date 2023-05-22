@@ -3,10 +3,9 @@ import { Divider, EditContent, EssentialsSpan } from "../Styles";
 import { useState } from "react";
 import AddEssentialsModal from "./AddEssentialsModal/AddEssentialsModal";
 import CheckDeleteModal from "./CheckDeleteModal/CheckDeleteModal";
+import { useSelector } from "react-redux";
 
 const EditNav = ({
-  data,
-  setData,
   condition,
   setCondition,
   page,
@@ -15,6 +14,8 @@ const EditNav = ({
   deleteList,
   setDeleteList,
   setDeleted,
+  data,
+  setData,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
@@ -27,22 +28,13 @@ const EditNav = ({
           deleteList={deleteList}
           setDeleteList={setDeleteList}
           setDeleted={setDeleted}
-        />
-      )}
-      {isOpen && (
-        <AddEssentialsModal
-          setIsOpen={setIsOpen}
-          data={data}
           setData={setData}
         />
       )}
+      {isOpen && <AddEssentialsModal setIsOpen={setIsOpen} setData={setData} />}
       <EditContent>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <EssentialsSpan
-            fontSize="2.4rem"
-            fontWeight="600"
-            color="#333333"
-          >
+          <EssentialsSpan fontSize="2.4rem" fontWeight="600" color="#333333">
             카테고리
           </EssentialsSpan>
           <EssentialsSpan
@@ -84,7 +76,7 @@ const EditNav = ({
                 style={{
                   textDecorationLine: "underline",
                   marginLeft: "3rem",
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
                 onClick={() => setDeleteIsOpen(true)}
               >
@@ -99,7 +91,7 @@ const EditNav = ({
               style={{
                 textDecorationLine: "underline",
                 marginLeft: "3rem",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
               onClick={() => {
                 setCondition("add");
@@ -123,7 +115,7 @@ const EditNav = ({
               style={{
                 strokeWidth: "1",
                 marginLeft: "1.2rem",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
               onClick={
                 page <= Object.keys(data).length - defaultPages

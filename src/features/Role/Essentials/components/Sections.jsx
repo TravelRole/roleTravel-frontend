@@ -3,13 +3,14 @@ import Checkbox from "./CheckBox";
 import DeleteCheckBox from "./DeleteCheckBox";
 
 const Sections = ({
-  data,
   page,
   defaultPages,
   resize,
   condition,
   deleteList,
   setDeleteList,
+  data,
+  setData,
 }) => {
   return (
     <Content width={resize - 150}>
@@ -36,7 +37,7 @@ const Sections = ({
                     padding: "0.3rem 1rem",
                     borderRadius: "9.9rem",
                     marginLeft: "0.8rem",
-                    textAlign: "center"
+                    textAlign: "center",
                   }}
                 >
                   {data[el].length}
@@ -47,7 +48,7 @@ const Sections = ({
               style={{
                 border: "none",
                 borderTop: "0.1rem solid #cfcfcf",
-                marginTop: "1.6rem"
+                marginTop: "1.6rem",
               }}
             />
 
@@ -80,14 +81,12 @@ const Sections = ({
                   item={dat}
                   deleteList={deleteList}
                   setDeleteList={setDeleteList}
+                  setData={setData}
                 />
               ))
             ) : (
               data[el].map((dat, index) => (
-                <Checkbox
-                  key={index}
-                  item={dat}
-                />
+                <Checkbox key={index} item={dat} setData={setData} />
               ))
             )}
           </Section>

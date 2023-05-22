@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import Icons from "../../../../assets/icon/icon";
 import { Dot, EssentialsItem, EssentialsSpan } from "../Styles";
-import { useDispatch } from "react-redux";
-import { patchChecks } from "../EssentialsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getEssentials, patchChecks } from "../EssentialsSlice";
 
-const Checkbox = ({ item }) => {
+const Checkbox = ({ item, setData }) => {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
+  const { essentials, isLoading } = useSelector((state) => state.essentials)
 
   useEffect(() => {
     setChecked(item.isChecked)
@@ -22,7 +23,10 @@ const Checkbox = ({ item }) => {
           ids: [item.id]
         }
       ])
-    );
+    ).then((res) => {
+      dispatch(getEssentials(Number(window.location.href.split("/")[3])))
+      if (isLoading) setData(essentials)
+    })
   };
 
   return (

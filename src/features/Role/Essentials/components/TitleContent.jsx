@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Divider, EssentialsSpan, Tip, Title } from "../Styles";
-import EssentialsListModal from '../components/EssentialsListModal/EssentialsListModal'
+import EssentialsListModal from "../components/EssentialsListModal/EssentialsListModal";
 
-const TitleContent = () => {
+const TitleContent = ({ setData }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      {isOpen && <EssentialsListModal setIsOpen={setIsOpen} />}
+      {isOpen && (
+        <EssentialsListModal setIsOpen={setIsOpen} setData={setData} />
+      )}
       <Title>
         <h1
           style={{ fontSize: "3rem", fontWeight: "600", marginRight: "1.9rem" }}

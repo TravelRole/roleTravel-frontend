@@ -11,11 +11,12 @@ import { materials } from "../../materials";
 import Cards from "./Cards";
 import { useState } from "react";
 import { convertCategoryName } from "../AddEssentialsModal/validation";
-import { createEssentials } from "../../EssentialsSlice";
-import { useDispatch } from "react-redux";
+import { createEssentials, getEssentials } from "../../EssentialsSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
+const AddEssentialsModal = ({ setIsOpen, setData }) => {
   const dispatch = useDispatch();
+  const { essentials } = useSelector((state) => state.essentials)
   const [list, setList] = useState({
     "필수 준비물": [],
     "의류": [],
@@ -32,7 +33,7 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
       Object.keys(list).map(name => {
         if (list[name]?.length > 0) {
           const convert = convertCategoryName(name)
-          dispatch(
+          return dispatch(
             createEssentials([
               Number(window.location.href.split("/")[3]),
               {
@@ -40,7 +41,10 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
                 items: list[name]
               }
             ])
-          );
+          ).then((res) => {
+            dispatch(getEssentials(Number(window.location.href.split("/")[3])))
+            setData(essentials)
+          })
         }
       })
       setIsOpen(false);
@@ -90,7 +94,6 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
                 item={materials[el]}
                 list={list}
                 setList={setList}
-                data={data}
               />
             ))}
         </Section>
@@ -104,7 +107,6 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
                 item={materials[el]}
                 list={list}
                 setList={setList}
-                data={data}
               />
             ))}
         </Section>
