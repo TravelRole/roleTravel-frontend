@@ -447,7 +447,7 @@ function Schedule({ setReserveList }) {
         <ScheduleSection>
           <ScheduleContainer
             travelDayList={travelDayList}
-            firstDayDate={travelDayList[0]?.date}
+            firstDayDate={travelDayList && travelDayList[0]?.date}
           />
         </ScheduleSection>
         {isOpenModal ? (

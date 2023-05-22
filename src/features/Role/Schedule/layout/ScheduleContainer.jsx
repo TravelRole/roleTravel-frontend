@@ -8,9 +8,9 @@ import TabPanel from "@mui/lab/TabPanel";
 import { useState } from "react";
 import ScheduleBlankPanel from "./ScheduleBlankPanel";
 import { useDispatch, useSelector } from "react-redux";
-import { getSchedule } from "../scheduleSlice";
+import { delSchedule, getSchedule } from "../scheduleSlice";
 import { useParams } from "react-router-dom";
-import changeLanCategory from "../utils/changeLanCategory"
+import changeLanCategory from "../utils/changeLanCategory";
 
 const StyledBox = styled(Box)`
   padding-left: 6rem;
@@ -62,8 +62,27 @@ const StyledTabPanel = styled(TabPanel)`
   padding: 0 !important;
 `;
 
+const EditButtonSection = styled.section`
+  width: 100%;
+  height: 5.8rem;
+  display: flex;
+  justify-content: flex-end;
+  button {
+    padding: 0;
+    margin: 1.8rem 0;
+    font-family: "Pretendard";
+    color: #8490a4;
+    font-weight: 500;
+    background-color: transparent;
+    border: none;
+    border-bottom: 0.1rem solid #8490a4;
+
+    cursor: pointer;
+  }
+`;
+
 const ScheduleWrapper = styled.div`
-  padding: 3rem 6rem 0 6rem !important;
+  padding: 0 6rem 5rem 6rem !important;
 `;
 const ColumnHeader = styled.div`
   display: flex;
@@ -215,6 +234,7 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
 
   const [day, setDay] = useState("1");
   const [date, setDate] = useState(firstDayDate);
+  const [delscheduleId, setDelscheduleId] = useState([]);
 
   useEffect(() => {
     setDate(firstDayDate);
@@ -223,10 +243,31 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
   }, [dispatch, date, roomId, firstDayDate]);
 
   const { scheduleList } = useSelector((state) => state.schedule);
-  console.log(scheduleList);
+
   const handleChange = (event, newValue) => {
+    setDelscheduleId([]);
     setDay(newValue);
   };
+
+  const delScheduleState = (id) => {
+    let copyDelSet = [...delscheduleId];
+    let newDelSet = [];
+    if (copyDelSet && copyDelSet.includes(id)) {
+      newDelSet = copyDelSet.filter((idx) => idx !== id);
+      setDelscheduleId(newDelSet);
+    } else {
+      // newDelSet = copyDelSet.push(id); //얜왜안됌?
+      copyDelSet.push(id);
+      newDelSet = copyDelSet;
+      setDelscheduleId(newDelSet);
+    }
+  };
+
+  const delScheduleFn = () => {
+    dispatch(delSchedule({ roomId, delscheduleId }));
+    dispatch(getSchedule({ roomId, date }))
+  };
+
   return (
     <>
       <Box>
@@ -263,6 +304,11 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
           </StyledBox>
           <ScheduleWrapper>
             <StyledTabPanel value={day}>
+              <EditButtonSection>
+                {delscheduleId?.length ? (
+                  <button onClick={delScheduleFn}>선택삭제</button>
+                ) : null}
+              </EditButtonSection>
               <ColumnHeader>
                 <PlaceNameColumn>장소</PlaceNameColumn>
                 <DetailColumn>시간</DetailColumn>
@@ -276,12 +322,14 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
                 {scheduleList ? (
                   scheduleList.map((schedule) => {
                     const extractedTime = schedule.time.slice(0, 5);
-                    const categoryCon = changeLanCategory(schedule.category)  
-                    console.log(schedule.category)
+                    const categoryCon = changeLanCategory(schedule.category);
                     return (
                       <ScheduleRow key={schedule.mapPlaceId}>
                         <PlaceNameColumn>
-                          <input type="checkbox" />
+                          <input
+                            type="checkbox"
+                            onChange={() => delScheduleState(schedule.id)}
+                          />
                           {schedule.placeName}
                         </PlaceNameColumn>
                         <DetailColumn>{extractedTime}</DetailColumn>

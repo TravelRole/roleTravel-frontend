@@ -7,7 +7,6 @@ export const getSchedule = createAsyncThunk(
   "schedule/getSchedule",
   async (payload) => {
     const { roomId, date } = payload;
-    console.log(roomId, date);
     try {
       const res = await tokenApi.get(
         `api/room/${roomId}/schedule?date=${date}`
@@ -37,9 +36,15 @@ export const addSchedule = createAsyncThunk(
 //일정 삭제하기
 export const delSchedule = createAsyncThunk(
   "schedule/delSchedule",
-  async (roomId, id, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      await tokenApi.delete(`api/room/${roomId}/schedule?ids=${id}`);
+      console.log(
+        `api/room/${payload.roomId}/schedule?ids=${payload.delscheduleId}`
+      );
+       const res = await tokenApi.delete(
+        `api/room/${payload.roomId}/schedule?ids=${payload.delscheduleId}`
+      );
+      console.log(res)
     } catch (error) {
       console.log(error);
     }
