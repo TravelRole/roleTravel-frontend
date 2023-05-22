@@ -10,6 +10,7 @@ import ScheduleBlankPanel from "./ScheduleBlankPanel";
 import { useDispatch, useSelector } from "react-redux";
 import { getSchedule } from "../scheduleSlice";
 import { useParams } from "react-router-dom";
+import changeLanCategory from "../utils/changeLanCategory"
 
 const StyledBox = styled(Box)`
   padding-left: 6rem;
@@ -275,6 +276,8 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
                 {scheduleList ? (
                   scheduleList.map((schedule) => {
                     const extractedTime = schedule.time.slice(0, 5);
+                    const categoryCon = changeLanCategory(schedule.category)  
+                    console.log(schedule.category)
                     return (
                       <ScheduleRow key={schedule.mapPlaceId}>
                         <PlaceNameColumn>
@@ -289,7 +292,7 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
                             ? "예약완료"
                             : "필요"}
                         </DetailColumn>
-                        <DetailColumn>{schedule.category}</DetailColumn>
+                        <DetailColumn>{categoryCon}</DetailColumn>
                         <DetailFeeColumn>{schedule.price}</DetailFeeColumn>
                         <DetailLinkColumn>
                           <span>

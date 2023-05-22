@@ -1,41 +1,42 @@
 const changeLanCategory = (item) => {
+   
   let category = "";
 
   switch (item) {
     case "교통":
-      category = "traffic";
+      category = "TRAFFIC";
       break;
     case "숙박":
-      category = "accommodation";
+      category = "ACCOMODATION";
       break;
     case "음식":
-      category = "food";
+      category = "FOOD";
       break;
     case "관광":
-      category = "tour";
+      category = "TOUR";
       break;
     case "쇼핑":
-      category = "shopping";
+      category = "SHOPPING";
       break;
     case "기타":
-      category = "etc";
+      category = "ETC";
       break;
-    case "traffic":
+    case "TRAFFIC":
       category = "교통";
       break;
-    case "accommodation":
+    case "ACCOMODATION":
       category = "숙박";
       break;
-    case "food":
+    case "FOOD":
       category = "음식";
       break;
-    case "tour":
+    case "TOUR":
       category = "관광";
       break;
-    case "shopping":
+    case "SHOPPING":
       category = "쇼핑";
       break;
-    case "etc":
+    case "ETC":
       category = "기타";
       break;
     default:

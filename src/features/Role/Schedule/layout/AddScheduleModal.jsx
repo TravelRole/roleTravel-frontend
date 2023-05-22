@@ -15,6 +15,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useDispatch } from "react-redux";
 import { addSchedule, getSchedule } from "../scheduleSlice";
 import { useParams } from "react-router-dom";
+import changeLanCategory from "../utils/changeLanCategory"
 
 const AddScheduleModalWrapper = styled.div``;
 
@@ -193,13 +194,15 @@ const AddScheduleModal = ({ setIsOpenModal, modalData, travelDayList }) => {
     const formData = new FormData(e.currentTarget);
     const time = formData.get("time");
 
+   const categoryCon = changeLanCategory(category) 
+
     const schedulePayload = {
       placeName: placeName,
       placeAddress: placeAddress,
       scheduleDate: `${day} ${time}`,
       link: link,
       isBookRequired: reserve,
-      category: "Traffic",
+      category: categoryCon,
       latitude: latitude,
       longitude: longitude,
       etc: note,
