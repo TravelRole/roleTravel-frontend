@@ -15,7 +15,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useDispatch } from "react-redux";
 import { addSchedule, getSchedule } from "../scheduleSlice";
 import { useParams } from "react-router-dom";
-import changeLanCategory from "../utils/changeLanCategory"
+import changeLanCategory from "../utils/changeLanCategory";
 
 const AddScheduleModalWrapper = styled.div``;
 
@@ -141,7 +141,12 @@ const CategoryWrap = styled.li`
   }
 `;
 
-const AddScheduleModal = ({ setIsOpenModal, modalData, travelDayList }) => {
+const AddScheduleModal = ({
+  setIsOpenModal,
+  modalData,
+  travelDayList,
+  date,
+}) => {
   const { roomId } = useParams();
   let {
     id,
@@ -194,7 +199,7 @@ const AddScheduleModal = ({ setIsOpenModal, modalData, travelDayList }) => {
     const formData = new FormData(e.currentTarget);
     const time = formData.get("time");
 
-   const categoryCon = changeLanCategory(category) 
+    const categoryCon = changeLanCategory(category);
 
     const schedulePayload = {
       placeName: placeName,
@@ -209,9 +214,12 @@ const AddScheduleModal = ({ setIsOpenModal, modalData, travelDayList }) => {
       mapPlaceId: mapPlaceId,
     };
 
-    dispatch(addSchedule({roomId, schedulePayload})).then((res) => {
+    dispatch(addSchedule({ roomId, schedulePayload })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        dispatch(getSchedule({roomId , date : day}));
+        if (date === day) {
+          dispatch(getSchedule({ roomId, date: day }));
+        }
+        setIsOpenModal(false);
         return;
       }
     });

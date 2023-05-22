@@ -228,19 +228,17 @@ const ScheduleRow = styled.div`
   border-radius: 0.8rem;
 `;
 
-const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
+const ScheduleContainer = ({ travelDayList, firstDayDate, date, setDate }) => {
   const { roomId } = useParams();
   const dispatch = useDispatch();
 
   const [day, setDay] = useState("1");
-  const [date, setDate] = useState(firstDayDate);
+
   const [delscheduleId, setDelscheduleId] = useState([]);
 
   useEffect(() => {
-    setDate(firstDayDate);
-
     if (date) dispatch(getSchedule({ roomId, date }));
-  }, [dispatch, date, roomId, firstDayDate]);
+  }, [dispatch, date, roomId, firstDayDate, setDate]);
 
   const { scheduleList } = useSelector((state) => state.schedule);
 
@@ -264,8 +262,12 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
   };
 
   const delScheduleFn = () => {
-    dispatch(delSchedule({ roomId, delscheduleId }));
-    dispatch(getSchedule({ roomId, date }))
+    dispatch(delSchedule({ roomId, delscheduleId })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        dispatch(getSchedule({ roomId, date }));
+      }
+    });
+    setDelscheduleId([]);
   };
 
   return (
@@ -326,10 +328,14 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
                     return (
                       <ScheduleRow key={schedule.mapPlaceId}>
                         <PlaceNameColumn>
-                          <input
-                            type="checkbox"
-                            onChange={() => delScheduleState(schedule.id)}
-                          />
+                          {schedule.isBooked !== null ? (
+                            <input  type="checkbox" disabled={true} />
+                          ) : (
+                            <input
+                              type="checkbox"
+                              onChange={() => delScheduleState(schedule.id)}
+                            />
+                          )}
                           {schedule.placeName}
                         </PlaceNameColumn>
                         <DetailColumn>{extractedTime}</DetailColumn>

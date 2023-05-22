@@ -75,7 +75,7 @@ const reservationSlice = createSlice({
       })
       .addCase(getReserveList.fulfilled, (state, action) => {
         state.isWantPlaceLoading = false;
-        state.isReservationLoading = action.payload;
+        state.reservationList = action.payload;
       })
       .addCase(getReserveList.rejected, (state, action) => {
         state.isReservationLoading = false;

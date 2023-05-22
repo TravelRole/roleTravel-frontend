@@ -313,6 +313,14 @@ function Schedule({ setReserveList }) {
   const [info, setInfo] = useState();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [modalData, setModalData] = useState({});
+
+  const firstDay = travelDayList[0]?.date;
+  const [date, setDate] = useState();
+
+  useEffect(()=>{
+    setDate(firstDay)
+  },[firstDay])
+
   return (
     <>
       <Wrapper>
@@ -448,6 +456,8 @@ function Schedule({ setReserveList }) {
           <ScheduleContainer
             travelDayList={travelDayList}
             firstDayDate={travelDayList && travelDayList[0]?.date}
+            date={date}
+            setDate={setDate}
           />
         </ScheduleSection>
         {isOpenModal ? (
@@ -456,6 +466,7 @@ function Schedule({ setReserveList }) {
               setIsOpenModal={setIsOpenModal}
               modalData={modalData}
               travelDayList={travelDayList}
+              date={date}
             />
           </Modal>
         ) : null}

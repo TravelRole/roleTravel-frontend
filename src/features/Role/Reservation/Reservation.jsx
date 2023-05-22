@@ -10,6 +10,9 @@ import BlankPanel from "./layout/BlankPanel";
 import SmallBlank from "./layout/SmallBlank";
 import Modal from "../../../components/Modal";
 import EditReserveModal from "./layout/EditReserveModal";
+import { useDispatch, useSelector } from "react-redux";
+import { getReserveList } from "./reserveSlice";
+import { useParams } from "react-router-dom";
 
 const Wrapper = styled.div`
   display: flex;
@@ -138,17 +141,10 @@ const ReserveListColumn = styled.div`
   }
 `;
 
-const ReservationDay = [
-  { CountDay: 1, Date: "4.17(월)" },
-  { CountDay: 2, Date: "4.18(화)" },
-  { CountDay: 3, Date: "4.19(수)" },
-  { CountDay: 4, Date: "4.20(목)" },
-  { CountDay: 5, Date: "4.21(금)" },
-  { CountDay: 6, Date: "4.22(토)" },
-  { CountDay: 7, Date: "4.23(일)" },
-];
 
 function Reservation({ reserveList }) {
+
+  const { roomId } = useParams();
   const [value, setValue] = useState("1");
 
   const handleChange = (event, newValue) => {
@@ -167,8 +163,13 @@ function Reservation({ reserveList }) {
     reserveList[value] &&
     reserveList[value].filter((item) => item.reserve === "예약완료");
 
+  const dispatch = useDispatch();
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
-  const [isOpenModal, setIsOpenModal] = useState(true);
+  const { travelDayList } = useSelector((state) => state.travelDay);
+  const { reservationList } = useSelector((state) => state.reserveList);
+  console.log(reservationList)
+  const [date, setDate] = useState(travelDayList[0]?.date);
   return (
     <>
       <Wrapper>
@@ -181,17 +182,25 @@ function Reservation({ reserveList }) {
                 onChange={handleChange}
                 aria-label="lab API tabs example"
               >
-                {ReservationDay.map((item, i) => {
+                {travelDayList.map(({ idx, date, day }) => {
+                  const transformedDate =
+                    date.split("-")[1] + "." + date.split("-")[2];
                   return (
                     <StyleTab
-                      key={i}
+                      key={date}
                       label={
                         <DateBox>
-                          <Day>{item.CountDay}일차</Day>
-                          <Date>{item.Date}</Date>
+                          <Day>{idx}일차</Day>
+                          <Date>
+                            {transformedDate}({day})
+                          </Date>
                         </DateBox>
                       }
-                      value={`${i + 1}`}
+                      value={`${idx}`}
+                      onClick={() => {
+                        setDate(date);
+                        if (date) dispatch(getReserveList({ roomId, date }));
+                      }}
                     />
                   );
                 })}
@@ -215,7 +224,7 @@ function Reservation({ reserveList }) {
                           ></ReserveCellLayout>
                         ))
                       ) : (
-                        <SmallBlank classify={"expected"}  />
+                        <SmallBlank classify={"expected"} />
                       )}
                     </ReserveListColumn>
                     <ReserveListColumn>
@@ -239,10 +248,10 @@ function Reservation({ reserveList }) {
           </TabContext>
         </Box>
         {isOpenModal ? (
-        <Modal width="46rem" setIsOpenModal={setIsOpenModal}>
-          <EditReserveModal setIsOpenModal={setIsOpenModal} />
-        </Modal>
-      ) : null}
+          <Modal width="46rem" setIsOpenModal={setIsOpenModal}>
+            <EditReserveModal setIsOpenModal={setIsOpenModal} />
+          </Modal>
+        ) : null}
       </Wrapper>
     </>
   );
