@@ -16,7 +16,12 @@ const HeaderWrap = styled.header`
   display: flex;
   align-items: center;
   height: 10rem;
-
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
   h1 {
     img {
       width: 20%;
