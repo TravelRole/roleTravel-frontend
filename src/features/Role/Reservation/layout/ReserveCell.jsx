@@ -157,8 +157,8 @@ const CellReserveDetail = styled.div`
   }
 `;
 
-const ReserveCellLayout = ({ element, date, setIsOpenModal }) => {
-  console.log(element);
+const ReserveCellLayout = ({ element, date, setIsOpenModal , setEditReserve}) => {
+
   const { roomId } = useParams();
   const {
     accountingEtc,
@@ -179,38 +179,48 @@ const ReserveCellLayout = ({ element, date, setIsOpenModal }) => {
 
   const dispatch = useDispatch();
 
+  const editBookInfo = {
+    bookInfoId: bookInfoId,
+    accountingInfoId: accountingId,
+  }
+
   const bookingReserve = (e) => {
+
     let bookState = null;
     if (!e.target.checked) {
       bookState = true;
     } else {
       bookState = false;
     }
+
     const bookInfo = {
       bookInfoId: bookInfoId,
       accountingInfoId: accountingId,
       paymentTime: date,
       isBooked: bookState,
     };
-    console.log(bookInfo);
-
+    
     dispatch(bookedReserveList({ roomId, bookInfo })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         dispatch(getReserveList({ roomId, date }));
       }
     });
   };
+
   return (
     <ReserveCell>
       <CellTitle>
         <input
           type="checkbox"
-          onClick={bookingReserve}
+          onChange={bookingReserve}
           checked={isBooked && true}
         />
         <label htmlFor="placeName">{placeName}</label>
         <div>{categoryName}</div>
-        <button onClick={() => setIsOpenModal(true)}>
+        <button onClick={() => {
+          setIsOpenModal(true)
+          setEditReserve(editBookInfo)
+          }}>
           <span>수정하기</span> <Icons.FaChevronRight />{" "}
         </button>
       </CellTitle>

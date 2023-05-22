@@ -18,11 +18,12 @@ export const getReserveList = createAsyncThunk(
 );
 
 //예약정보 수정
-export const addReserveList = createAsyncThunk(
-  "reservation/addReserveList",
-  async (roomId, thunkAPI) => {
+export const editReserveInfo = createAsyncThunk(
+  "reservation/editReserveInfo",
+  async (payload, thunkAPI) => {
     try {
-      await tokenApi.patch(`api/room/${roomId}/board/book`);
+      console.log(payload)
+      await tokenApi.patch(`api/room/${payload.roomId}/board/book` , payload.requestEditInfo );
     } catch (error) {
       console.log(error);
     }
@@ -55,13 +56,13 @@ const reservationSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(addReserveList.pending, (state) => {
+      .addCase(editReserveInfo.pending, (state) => {
         state.isReservationLoading = true;
       })
-      .addCase(addReserveList.fulfilled, (state, action) => {
+      .addCase(editReserveInfo.fulfilled, (state, action) => {
         state.isReservationLoading = false;
       })
-      .addCase(addReserveList.rejected, (state, action) => {
+      .addCase(editReserveInfo.rejected, (state, action) => {
         state.isReservationLoading = false;
       })
       .addCase(bookedReserveList.pending, (state) => {

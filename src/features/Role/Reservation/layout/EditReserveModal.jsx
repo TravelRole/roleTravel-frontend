@@ -11,6 +11,9 @@ import {
 
 import Button from "../../../../components/Button";
 import Icons from "../../../../assets/icon/icon";
+import { useDispatch } from "react-redux";
+import { editReserveInfo } from "../reserveSlice";
+import { useParams } from "react-router-dom";
 
 const EditReserveModalWrapper = styled.div``;
 
@@ -83,7 +86,9 @@ const CardOrCashBox = styled.div`
   }
 `;
 
-const EditReserveModal = ({ setIsOpenModal }) => {
+const EditReserveModal = ({ setIsOpenModal, editReserve }) => {
+
+  const { roomId } = useParams();
   const [payment, setPayment] = useState("card");
   const [note, setNote] = useState("");
   const [fee, setFee] = useState("");
@@ -118,10 +123,22 @@ const EditReserveModal = ({ setIsOpenModal }) => {
     }
   };
 
+  const dispatch = useDispatch();
+
   const EditReserve = (e) => {
     e.preventDefault();
-    console.log(payment, fee, note);
+    const requestEditInfo = { ...editReserve };
+    requestEditInfo.paymentMethod = payment;
+    requestEditInfo.price = fee;
+    requestEditInfo.bookEtc = note;
+  
+    console.log(requestEditInfo)
+
+    dispatch(editReserveInfo({roomId , requestEditInfo}));
+    setIsOpenModal(false)
   };
+
+ 
 
   return (
     <EditReserveModalWrapper>

@@ -158,6 +158,7 @@ function Reservation() {
 
   const firstDay = travelDayList[0]?.date;
   const [date, setDate] = useState();
+  const [editReserve, setEditReserve] = useState();
 
   useEffect(() => {
     setDate(firstDay);
@@ -172,7 +173,6 @@ function Reservation() {
   }, [dispatch, roomId, date]);
 
   const { reservationList } = useSelector((state) => state.reserveList);
-  console.log(reservationList);
 
   const isUndefined = reservationList.length;
 
@@ -222,7 +222,6 @@ function Reservation() {
               </StyledTabs>
             </StyledBox>
             <ReserveWrapper>
-              {" "}
               <StyledTabPanel value={value}>
                 {isUndefined === undefined || isUndefined.length === 0 ? (
                   <BlankPanel />
@@ -240,6 +239,7 @@ function Reservation() {
                             element={element}
                             date={date}
                             setIsOpenModal={setIsOpenModal}
+                            setEditReserve={setEditReserve}
                           ></ReserveCellLayout>
                         ))
                       ) : (
@@ -258,6 +258,7 @@ function Reservation() {
                             element={element}
                             date={date}
                             setIsOpenModal={setIsOpenModal}
+                            setEditReserve={setEditReserve}
                           ></ReserveCellLayout>
                         ))
                       ) : (
@@ -272,7 +273,10 @@ function Reservation() {
         </Box>
         {isOpenModal ? (
           <Modal width="46rem" setIsOpenModal={setIsOpenModal}>
-            <EditReserveModal setIsOpenModal={setIsOpenModal} />
+            <EditReserveModal
+              setIsOpenModal={setIsOpenModal}
+              editReserve={editReserve}
+            />
           </Modal>
         ) : null}
       </Wrapper>
