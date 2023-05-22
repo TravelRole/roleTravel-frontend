@@ -13,6 +13,7 @@ import { getUserInfo } from "../Landing/userSlice";
 import Modal from "../../components/Modal";
 import RoomDeleteModal from "./Sidebar/DeleteMenuModal/RoomDeleteModal";
 import RoomEditModal from "./Sidebar/EditMenuModal/RoomEditModal";
+import InvitationModal from "./Sidebar/Invitation/InvitationModal";
 
 const TeamSpaceBox = styled.div`
   display: flex;
@@ -32,6 +33,7 @@ function TeamSpace({ Auth }) {
   // const navigate = useNavigate();
   const [openRoomEditModal, setOpenRoomEditModal] = useState(false);
   const [openRoomDeleteModal, setOpenRoomDeleteModal] = useState(false);
+  const [openInvitationModal, setOpenInvitationModal] = useState(false);
   const [reserveList, setReserveList] = useState([]);
   const { role } = useParams();
 
@@ -49,6 +51,7 @@ function TeamSpace({ Auth }) {
         <Sidebar
           setOpenRoomDeleteModal={setOpenRoomDeleteModal}
           setOpenRoomEditModal={setOpenRoomEditModal}
+          setOpenInvitationModal={setOpenInvitationModal}
         />
         <SpaceContainer>
           {
@@ -69,6 +72,11 @@ function TeamSpace({ Auth }) {
         {openRoomDeleteModal && (
           <Modal width="51.8rem" setIsOpenModal={setOpenRoomDeleteModal}>
             <RoomDeleteModal />
+          </Modal>
+        )}
+        {openInvitationModal && (
+          <Modal width="72.8rem" setIsOpenModal={setOpenInvitationModal}>
+            <InvitationModal />
           </Modal>
         )}
       </TeamSpaceBox>

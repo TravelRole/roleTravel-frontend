@@ -88,7 +88,7 @@ const routers = [
   },
   {
     id: 10,
-    path: "/:invitationCode",
+    path: "invitation/:invitationCode",
     label: "invitationLink",
     element: <InvitationLink />,
     withAuth: false,

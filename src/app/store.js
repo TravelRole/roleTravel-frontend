@@ -6,12 +6,12 @@ import userReducer from "../features/Landing/userSlice";
 import searchReducer from "../features/SearchIDPW/searchSlice";
 import travelReducer from "../features/SpaceList/travelSlice";
 import loggedUserReducer from "../features/UserAccount/LoggedUserSlice";
-import invitationCodeReducer from "../features/layout/invitationCodeSlice";
+import invitationCodeReducer from "../features/layout/Sidebar/Invitation/invitationCodeSlice";
 import essentialsReducer from "../features/Role/Essentials/EssentialsSlice";
 import wantPlaceReducer from "../features/Role/Schedule/wantPlaceSlice";
 import allPlanReducer from "../features/Role/AllPlan/allPlanSlice";
 import commentReducer from "../features/Role/AllPlan/commentSlice";
-import roomEditReducer from "../features/layout/Sidebar/roomEditSlice";
+import sidebarReducer from "../features/layout/Sidebar/sidebarSlice";
 
 export const store = configureStore({
   reducer: {
@@ -27,6 +27,6 @@ export const store = configureStore({
     wantPlace: wantPlaceReducer,
     allPlan: allPlanReducer,
     comment: commentReducer,
-    roomEdit: roomEditReducer,
+    sidebar: sidebarReducer,
   },
 });

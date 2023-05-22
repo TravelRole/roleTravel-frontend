@@ -5,7 +5,7 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import CalendarHeader from "../../../SpaceList/layout/CalendarHeader";
 import DatePicker from "react-datepicker";
@@ -15,8 +15,7 @@ import { formatDate } from "../../../../lib/formatDate";
 import { toast } from "react-toastify";
 import RoomEditModalRoleContent from "./RoomEditModalRoleContent";
 import { useParams } from "react-router-dom";
-import { editRoomInfo } from "../roomEditSlice";
-import { getRoomData } from "../../../Role/AllPlan/allPlanSlice";
+import { editRoomInfo } from "../sidebarSlice";
 
 const RoomEditModalWrap = styled.div``;
 
@@ -27,6 +26,7 @@ const RoomEditModalHeader = styled.div`
     dt {
       font-size: 1.6rem;
       color: #ffc759;
+      font-weight: 600;
       font-family: "Unbounded", cursive;
       margin-bottom: 0.4rem;
     }
@@ -39,7 +39,7 @@ const RoomEditModalHeader = styled.div`
 const RoomEditModalForm = styled.form`
   border-bottom: 0.1rem solid #e6e6e6;
   border-top: 0.1rem solid #e6e6e6;
-  padding: 2.5rem 2.4rem;
+  padding: 2.5rem 2.4rem 3rem 2.4rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;

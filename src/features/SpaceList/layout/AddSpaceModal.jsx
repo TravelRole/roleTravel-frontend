@@ -20,12 +20,13 @@ const AddTravelModalWrap = styled.div``;
 const AddTravelModalHeader = styled.div`
   border-bottom: 0.1rem solid #e6e6e6;
   dl {
-    padding: 2.6rem 2.4rem 1.7rem 2.4rem;
+    padding: 2.2rem 2.4rem 1.8rem 2.4rem;
     dt {
       font-size: 1.6rem;
       color: #ffc759;
       font-family: "Unbounded", cursive;
       margin-bottom: 0.4rem;
+      font-weight: 600;
     }
     dd {
       font-size: 2.4rem;
@@ -35,16 +36,17 @@ const AddTravelModalHeader = styled.div`
 
 const AddTravelModalBody = styled.div`
   p.modal-body-text {
-    padding: 1.1rem 2.4rem 2.1rem 2.4rem;
+    padding: 1.2rem 2.4rem 2.1rem 2.4rem;
     font-size: 1.6rem;
     color: #8b8b8b;
+    font-weight: 300;
   }
 
   .form-content {
     display: flex;
     flex-direction: column;
     gap: 2.4rem;
-    padding: 0 2.5rem 3.5rem 2.5rem;
+    padding: 0 2.5rem 2.5rem 2.5rem;
     border-bottom: 0.1rem solid #e6e6e6;
   }
 

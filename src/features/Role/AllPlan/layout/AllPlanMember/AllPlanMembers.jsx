@@ -143,7 +143,9 @@ const AllPlanMembers = () => {
           </button>
           <button
             className="members-right"
-            disabled={members?.length === currentSlide + 1}
+            disabled={
+              members?.length === currentSlide + 1 || members?.length < 5
+            }
             onClick={handleSlider}
           >
             <Icons.HiOutlineChevronRight />
