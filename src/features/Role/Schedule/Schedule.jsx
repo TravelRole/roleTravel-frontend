@@ -317,9 +317,9 @@ function Schedule({ setReserveList }) {
   const firstDay = travelDayList[0]?.date;
   const [date, setDate] = useState();
 
-  useEffect(()=>{
-    setDate(firstDay)
-  },[firstDay])
+  useEffect(() => {
+    setDate(firstDay);
+  }, [firstDay]);
 
   return (
     <>

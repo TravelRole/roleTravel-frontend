@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
@@ -13,6 +13,7 @@ import EditReserveModal from "./layout/EditReserveModal";
 import { useDispatch, useSelector } from "react-redux";
 import { getReserveList } from "./reserveSlice";
 import { useParams } from "react-router-dom";
+import { getTravelDay } from "../Schedule/travelDaySlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -112,6 +113,7 @@ const InsidePanel = styled.div`
 `;
 
 const ReserveListColumn = styled.div`
+  min-width: 61rem;
   padding: 2.5rem;
   background-color: #eef1f8;
   border-radius: 1.6rem;
@@ -141,9 +143,7 @@ const ReserveListColumn = styled.div`
   }
 `;
 
-
-function Reservation({ reserveList }) {
-
+function Reservation() {
   const { roomId } = useParams();
   const [value, setValue] = useState("1");
 
@@ -151,25 +151,40 @@ function Reservation({ reserveList }) {
     setValue(newValue);
   };
 
-  const isUndefined = reserveList[value];
-
-  //예약이 필요한 객체들만 분류
-  const needResrve =
-    reserveList[value] &&
-    reserveList[value].filter((item) => item.reserve === "예약필요");
-
-  //예약이 완료된 객체들만 분류
-  const doneResrve =
-    reserveList[value] &&
-    reserveList[value].filter((item) => item.reserve === "예약완료");
-
   const dispatch = useDispatch();
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const { travelDayList } = useSelector((state) => state.travelDay);
+
+  const firstDay = travelDayList[0]?.date;
+  const [date, setDate] = useState();
+
+  useEffect(() => {
+    setDate(firstDay);
+  }, [firstDay]);
+
+  useEffect(() => {
+    dispatch(getTravelDay(roomId));
+  }, [dispatch, roomId]);
+
+  useEffect(() => {
+    if (date) dispatch(getReserveList({ roomId, date }));
+  }, [dispatch, roomId, date]);
+
   const { reservationList } = useSelector((state) => state.reserveList);
-  console.log(reservationList)
-  const [date, setDate] = useState(travelDayList[0]?.date);
+  console.log(reservationList);
+
+  const isUndefined = reservationList.length;
+
+  //예약이 필요한 객체들만 분류
+  const needResrve =
+    reservationList &&
+    reservationList.filter((item) => item.isBooked === false);
+
+  //예약이 완료된 객체들만 분류
+  const doneResrve =
+    reservationList && reservationList.filter((item) => item.isBooked === true);
+
   return (
     <>
       <Wrapper>
@@ -215,12 +230,16 @@ function Reservation({ reserveList }) {
                   <InsidePanel>
                     <ReserveListColumn>
                       <header>
-                        예약 예정<span className="countList">4</span>
+                        예약 예정
+                        <span className="countList">{needResrve.length}</span>
                       </header>
                       {needResrve.length ? (
                         needResrve.map((element) => (
                           <ReserveCellLayout
+                            key={element.bookInfoId}
                             element={element}
+                            date={date}
+                            setIsOpenModal={setIsOpenModal}
                           ></ReserveCellLayout>
                         ))
                       ) : (
@@ -229,12 +248,16 @@ function Reservation({ reserveList }) {
                     </ReserveListColumn>
                     <ReserveListColumn>
                       <header>
-                        최종 일정<span className="countList">4</span>
+                        최종 일정
+                        <span className="countList">{doneResrve.length}</span>
                       </header>
                       {doneResrve.length ? (
                         doneResrve.map((element) => (
                           <ReserveCellLayout
+                            key={element.bookInfoId}
                             element={element}
+                            date={date}
+                            setIsOpenModal={setIsOpenModal}
                           ></ReserveCellLayout>
                         ))
                       ) : (

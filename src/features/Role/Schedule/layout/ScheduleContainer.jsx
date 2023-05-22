@@ -329,7 +329,7 @@ const ScheduleContainer = ({ travelDayList, firstDayDate, date, setDate }) => {
                       <ScheduleRow key={schedule.mapPlaceId}>
                         <PlaceNameColumn>
                           {schedule.isBooked !== null ? (
-                            <input  type="checkbox" disabled={true} />
+                            <input type="checkbox" disabled={true} />
                           ) : (
                             <input
                               type="checkbox"

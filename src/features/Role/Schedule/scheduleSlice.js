@@ -38,13 +38,10 @@ export const delSchedule = createAsyncThunk(
   "schedule/delSchedule",
   async (payload, thunkAPI) => {
     try {
-      console.log(
+      const res = await tokenApi.delete(
         `api/room/${payload.roomId}/schedule?ids=${payload.delscheduleId}`
       );
-       const res = await tokenApi.delete(
-        `api/room/${payload.roomId}/schedule?ids=${payload.delscheduleId}`
-      );
-      console.log(res)
+      console.log(res);
     } catch (error) {
       console.log(error);
     }

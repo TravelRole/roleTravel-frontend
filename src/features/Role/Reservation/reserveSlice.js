@@ -5,14 +5,14 @@ import tokenApi from "../../../lib/customAPI";
 //날짜에 맞는 예약리스트 가져오기
 export const getReserveList = createAsyncThunk(
   "reservation/getReserveList",
-  async (roomId, date) => {
+  async (payload) => {
     try {
       const res = await tokenApi.get(
-        `api/room/${roomId}/board/book/?date=${date}`
+        `api/room/${payload.roomId}/board/book/?date=${payload.date}`
       );
       return res.data;
     } catch (error) {
-      console.log("서버에러입니다");
+      console.log(error);
     }
   }
 );
@@ -29,12 +29,15 @@ export const addReserveList = createAsyncThunk(
   }
 );
 
-//예약 완료
+//예약 완료로 패치
 export const bookedReserveList = createAsyncThunk(
   "reservation/delSchedule",
-  async (roomId, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      await tokenApi.delete(`api/room/${roomId}/board/booked`);
+      await tokenApi.patch(
+        `api/room/${payload.roomId}/board/booked`,
+        payload.bookInfo
+      );
     } catch (error) {
       console.log(error);
     }
