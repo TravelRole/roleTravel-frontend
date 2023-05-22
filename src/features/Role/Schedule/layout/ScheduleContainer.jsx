@@ -214,7 +214,6 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
 
   const [day, setDay] = useState("1");
   const [date, setDate] = useState(firstDayDate);
-  const [value, setValue] = useState("1");
 
   useEffect(() => {
     setDate(firstDayDate);
@@ -225,7 +224,7 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
   const { scheduleList } = useSelector((state) => state.schedule);
   console.log(scheduleList);
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setDay(newValue);
   };
   return (
     <>
@@ -253,7 +252,6 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
                     }
                     value={`${idx}`}
                     onClick={() => {
-                      setDay(`${idx}`);
                       setDate(date);
                       if (date) dispatch(getSchedule({ roomId, date }));
                     }}
