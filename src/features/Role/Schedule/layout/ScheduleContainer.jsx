@@ -212,6 +212,7 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
   const { roomId } = useParams();
   const dispatch = useDispatch();
 
+  const [day, setDay] = useState("1");
   const [date, setDate] = useState(firstDayDate);
   const [value, setValue] = useState("1");
 
@@ -229,7 +230,7 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
   return (
     <>
       <Box>
-        <TabContext value={value}>
+        <TabContext value={day}>
           <StyledBox sx={{ borderBottom: 2, borderColor: "#D8E2F4" }}>
             <StyledScheduleTabs
               indicatorColor="linear-gradient(270deg, #3884fd 0%, #9fa9ff 100%)"
@@ -252,6 +253,7 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
                     }
                     value={`${idx}`}
                     onClick={() => {
+                      setDay(`${idx}`);
                       setDate(date);
                       if (date) dispatch(getSchedule({ roomId, date }));
                     }}
@@ -261,7 +263,7 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
             </StyledScheduleTabs>
           </StyledBox>
           <ScheduleWrapper>
-            <StyledTabPanel value="1">
+            <StyledTabPanel value={day}>
               <ColumnHeader>
                 <PlaceNameColumn>장소</PlaceNameColumn>
                 <DetailColumn>시간</DetailColumn>
@@ -272,7 +274,7 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
                 <NoteDetailColumn>비고</NoteDetailColumn>
               </ColumnHeader>
               <ScheduleDetails>
-                {scheduleList &&
+                {scheduleList ? (
                   scheduleList.map((schedule) => {
                     const extractedTime = schedule.time.slice(0, 5);
                     return (
@@ -307,13 +309,12 @@ const ScheduleContainer = ({ travelDayList, firstDayDate }) => {
                         </NoteDetailColumn>
                       </ScheduleRow>
                     );
-                  })}
+                  })
+                ) : (
+                  <ScheduleBlankPanel />
+                )}
               </ScheduleDetails>
             </StyledTabPanel>
-            <StyledTabPanel value="2">
-              <ScheduleBlankPanel />
-            </StyledTabPanel>
-            <StyledTabPanel value="3">Item Three</StyledTabPanel>
           </ScheduleWrapper>
         </TabContext>
       </Box>
