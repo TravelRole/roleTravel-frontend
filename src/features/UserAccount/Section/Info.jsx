@@ -6,7 +6,7 @@ import Button from "../../../components/Button";
 import { switched } from './validation';
 import useAddSlash from '../../../lib/useAddSlash';
 import { useDispatch, useSelector } from "react-redux";
-import { updatedInfo } from "../LoggedUserSlice";
+import { getLoggedInfo, updatedInfo } from "../LoggedUserSlice";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -55,6 +55,8 @@ const Info = () => {
             onClose: () => navigate('/:userId')
           });
         }, 1);
+        console.log(res)
+        dispatch(getLoggedInfo())
       } else {
         toast.error('수정에 실패하였습니다.');
       }

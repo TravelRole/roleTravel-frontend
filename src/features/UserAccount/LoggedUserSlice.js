@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 const initialState = {
   changePassword: null,
   loggedInfo: null,
-  profile: null,
   presignedUrl: null,
   error: false,
 };
@@ -66,7 +65,6 @@ const loggedUserSlice = createSlice({
     builder
       .addCase(getLoggedInfo.fulfilled, (state, action) => {
         state.loggedInfo = action.payload;
-        state.profile = action.payload.profile;
       })
       .addCase(getLoggedInfo.rejected, (state, action) => {
         state.error = action.payload;

@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 const UserAccount = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loggedInfo, profile } = useSelector((state) => state.loggedInUser);
+  const { loggedInfo } = useSelector((state) => state.loggedInUser);
   const [clicked, setClicked] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [image, setImage] = useState("");
@@ -35,8 +35,8 @@ const UserAccount = () => {
   }, [dispatch, navigate]);
 
   useEffect(() => {
-    setImage(profile)
-  }, [profile])
+    setImage(loggedInfo?.profile);
+  }, [loggedInfo]);
 
   const clickHandler = () => {
     setIsOpen(true);
