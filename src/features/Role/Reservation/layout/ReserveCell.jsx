@@ -189,7 +189,7 @@ const ReserveCellLayout = ({
     paymentMethod: paymentMethod,
     bookEtc: bookEtc,
     price: price,
-    time:time,
+    time: time,
   };
 
   const bookingReserve = (e) => {
@@ -263,7 +263,11 @@ const ReserveCellLayout = ({
           </li>
           <li>
             <span>결제수단</span>
-            {paymentMethod ? paymentMethod : "결제수단을 선택해주세요"}
+            {paymentMethod
+              ? paymentMethod === "CARD"
+                ? "카드"
+                : "현금"
+              : "결제수단을 선택해주세요"}
           </li>
           <li className="note">
             <span>비고</span>

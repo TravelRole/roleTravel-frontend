@@ -87,22 +87,23 @@ const CardOrCashBox = styled.div`
 `;
 
 const EditReserveModal = ({ setIsOpenModal, editReserve, date }) => {
+  const dispatch = useDispatch();
   const { roomId } = useParams();
+
+  const { paymentMethod, price, bookEtc } = editReserve;
   const [payment, setPayment] = useState("CARD");
-  const [note, setNote] = useState();
-  const [fee, setFee] = useState();
+  const [note, setNote] = useState("비고를 입력하세요");
+  const [fee, setFee] = useState("");
 
   const formatValue = (value = 0) => {
-    // 숫자 값을 쉼표로 구분하여 문자열로 변환
-    if (value.length) setFee("");
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   useEffect(() => {
-    if (editReserve.paymentMethod) setPayment(editReserve.paymentMethod);
-    if (editReserve.price) setFee(editReserve.price);
-    if (editReserve.bookEtc) setNote(editReserve.bookEtc);
-  }, []);
+    if (paymentMethod) setPayment(paymentMethod);
+    if (price) setFee(price);
+    if (bookEtc) setNote(bookEtc);
+  }, [paymentMethod, price, bookEtc]);
 
   const noteMax = 30;
 
@@ -128,10 +129,7 @@ const EditReserveModal = ({ setIsOpenModal, editReserve, date }) => {
     }
   };
 
-  const dispatch = useDispatch();
-
-  const EditReserve = (e) => {
-    e.preventDefault();
+  const EditReserve = () => {
     const requestEditInfo = { ...editReserve };
     requestEditInfo.paymentMethod = payment;
     requestEditInfo.price = fee;

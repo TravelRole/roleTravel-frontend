@@ -21,6 +21,7 @@ const TeamSpaceBox = styled.div`
 const SpaceContainer = styled.div`
   overflow-x: hidden;
   height: 100vh;
+  min-width: 140rem;
   flex: 2;
   display: flex;
   flex-direction: column;

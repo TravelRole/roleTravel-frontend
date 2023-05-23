@@ -270,6 +270,10 @@ const ScheduleContainer = ({ travelDayList, firstDayDate, date, setDate }) => {
     setDelscheduleId([]);
   };
 
+  const formatValue = (value = 0) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   return (
     <>
       <Box>
@@ -347,7 +351,9 @@ const ScheduleContainer = ({ travelDayList, firstDayDate, date, setDate }) => {
                             : "필요"}
                         </DetailColumn>
                         <DetailColumn>{categoryCon}</DetailColumn>
-                        <DetailFeeColumn>{schedule.price}</DetailFeeColumn>
+                        <DetailFeeColumn>
+                          {formatValue(schedule.price)}
+                        </DetailFeeColumn>
                         <DetailLinkColumn>
                           <span>
                             <a
