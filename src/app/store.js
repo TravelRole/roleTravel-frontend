@@ -14,6 +14,7 @@ import allPlanReducer from "../features/Role/AllPlan/allPlanSlice";
 import commentReducer from "../features/Role/AllPlan/commentSlice";
 import scheduleReducer from "../features/Role/Schedule/scheduleSlice";
 import reserveReucer from "../features/Role/Reservation/reserveSlice";
+import accountReucer from "../features/Role/Account/accountSlice";
 
 export const store = configureStore({
   reducer: {
@@ -31,6 +32,7 @@ export const store = configureStore({
     allPlan: allPlanReducer,
     comment: commentReducer,
     schedule: scheduleReducer,
-    reserveList : reserveReucer
+    reserveList : reserveReucer,
+    accountList : accountReucer
   },
 });
