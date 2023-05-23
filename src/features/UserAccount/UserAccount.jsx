@@ -8,7 +8,7 @@ import {
   Section,
   Profile,
   Avatar,
-  EditIcon
+  EditIcon,
 } from "./Section/Styles";
 import { useDispatch, useSelector } from "react-redux";
 import { getLoggedInfo } from "./LoggedUserSlice";
@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 const UserAccount = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loggedInfo } = useSelector((state) => state.loggedInUser);
+  const { loggedInfo, profile } = useSelector((state) => state.loggedInUser);
   const [clicked, setClicked] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [image, setImage] = useState("");
@@ -33,6 +33,10 @@ const UserAccount = () => {
       dispatch(getLoggedInfo());
     }
   }, [dispatch, navigate]);
+
+  useEffect(() => {
+    setImage(profile)
+  }, [profile])
 
   const clickHandler = () => {
     setIsOpen(true);
@@ -59,18 +63,7 @@ const UserAccount = () => {
         <Section>
           <Profile>
             <div>
-              {loggedInfo && loggedInfo.profile ? (
-                <Avatar
-                  src={loggedInfo.profile}
-                  alt="avatar"
-                />
-              ) : (
-                <Avatar
-                  src={""}
-                  style={{ backgroundColor: "pink" }}
-                  width="100%"
-                />
-              )}
+              <Avatar src={image} alt="avatar" />
               <EditIcon onClick={clickHandler}>
                 <Icons.HiOutlinePencilAlt
                   color="black"
@@ -78,7 +71,7 @@ const UserAccount = () => {
                     postiion: "absolute",
                     width: "1.568rem",
                     height: "1.568rem",
-                    marginTop: "-0.8rem"
+                    marginTop: "-0.8rem",
                   }}
                 />
               </EditIcon>

@@ -19,8 +19,6 @@ const Info = () => {
   const [inputs, setInputs] = useState({ email: "", date: "", nickname: "", platform: '' });
   const [errors, setErrors] = useState({ date: "", nickname: "" });
 
-  console.log(loggedInfo)
-
   useEffect(() => {
     setInputs({
       email: loggedInfo?.email ? loggedInfo?.email : '',
@@ -60,7 +58,6 @@ const Info = () => {
       } else {
         toast.error('수정에 실패하였습니다.');
       }
-      console.log(res.meta.requestStatus)
     })
   };
 

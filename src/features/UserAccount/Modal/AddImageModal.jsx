@@ -8,19 +8,22 @@ import {
   ButtonFab,
   Image,
   Title,
-  Explanation
+  Explanation,
 } from "./Styles";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import tokenApi from "../../../lib/customAPI";
-import { changeProfileImage, deleteProfileImage } from "../LoggedUserSlice";
+import {
+  changeProfileImage,
+  deleteProfileImage,
+  getLoggedInfo,
+} from "../LoggedUserSlice";
 import defaultImage from "../../../assets/images/random1.png";
 
 const AddImageModal = ({ setIsOpen, image, setImage }) => {
   const dispatch = useDispatch();
   const imageRef = useRef();
-  const [imageName, setImageName] = useState("");
-  const { loggedInfo } = useSelector((state) => state.loggedInUser);
+  const { loggedInfo, profile } = useSelector((state) => state.loggedInUser);
 
   useEffect(() => {
     setImage(loggedInfo.profile);
@@ -29,7 +32,6 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
 
   const imageHandler = () => {
     const file = imageRef.current.files[0];
-    setImageName(file.name);
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
@@ -39,19 +41,21 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
 
   const submitHandler = async () => {
     let header;
-    if (imageRef.current.files[0] !== undefined) header = imageRef.current.files[0].type;
-    else header = 'image/*'
+    if (imageRef.current.files[0] !== undefined)
+      header = imageRef.current.files[0].type;
+    else header = "image/*";
 
     try {
       await tokenApi.get("api/users/image/presigned-url").then((res) => {
         const address = res.data;
         axios
           .put(address, imageRef.current.files[0], {
-            headers: { "Content-Type": `${header}` }
+            headers: { "Content-Type": `${header}` },
           })
           .then((res) => {
-            console.log("Success", res.data);
-            dispatch(changeProfileImage());
+            dispatch(changeProfileImage()).then((res) => {
+              dispatch(getLoggedInfo());
+            });
             setIsOpen(false);
           })
           .catch((err) => console.log(err));
@@ -62,9 +66,10 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
   };
 
   const deleteImageHandler = () => {
-    dispatch(deleteProfileImage);
-    setImageName("");
-    setImage("");
+    dispatch(deleteProfileImage).then((res) => {
+      dispatch(getLoggedInfo());
+      setImage("");
+    });
   };
 
   return (
@@ -84,16 +89,13 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
         </Section>
         <Section height="34.2rem">
           <h1>프로필 사진을 등록해 주세요.</h1>
-          <Image
-            src={image ? image : defaultImage}
-            alt="프로필 이미지"
-          />
+          <Image src={image ? image : defaultImage} alt="프로필 이미지" />
           <div
             style={{
               display: "flex",
               justifyContent: "center",
               gap: "1rem",
-              marginBottom: "1.5rem"
+              marginBottom: "1.5rem",
             }}
           >
             <div>
@@ -112,22 +114,19 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
                     size="20"
                     style={{
                       marginRight: "1.3rem",
-                      color: "black"
+                      color: "black",
                     }}
                   />
                   사진 업로드
                 </ButtonFab>
               </label>
             </div>
-            <ButtonFab
-              backgroundColor="#fff"
-              onClick={deleteImageHandler}
-            >
+            <ButtonFab backgroundColor="#fff" onClick={deleteImageHandler}>
               <Icons.TbTrash
                 size="19"
                 style={{
                   marginRight: "1.3rem",
-                  color: "#ff4a4a"
+                  color: "#ff4a4a",
                 }}
               />
               사진 지우기
@@ -141,7 +140,12 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
         <Section height="8.5rem">
           <Button
             backgroundColor="#c4c4c4"
-            style={{ color: 'white', fontSize: "1.6rem", fontWeight: '600', width: '10.7rem'}}
+            style={{
+              color: "white",
+              fontSize: "1.6rem",
+              fontWeight: "600",
+              width: "10.7rem",
+            }}
             onClick={submitHandler}
           >
             등록 완료
