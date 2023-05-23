@@ -170,7 +170,7 @@ function Reservation() {
 
   useEffect(() => {
     if (date) dispatch(getReserveList({ roomId, date }));
-  }, [dispatch, roomId, date]);
+  }, [dispatch, roomId, date, isOpenModal]);
 
   const { reservationList } = useSelector((state) => state.reserveList);
 
@@ -276,6 +276,7 @@ function Reservation() {
             <EditReserveModal
               setIsOpenModal={setIsOpenModal}
               editReserve={editReserve}
+              date={date}
             />
           </Modal>
         ) : null}

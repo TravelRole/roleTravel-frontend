@@ -157,8 +157,12 @@ const CellReserveDetail = styled.div`
   }
 `;
 
-const ReserveCellLayout = ({ element, date, setIsOpenModal , setEditReserve}) => {
-
+const ReserveCellLayout = ({
+  element,
+  date,
+  setIsOpenModal,
+  setEditReserve,
+}) => {
   const { roomId } = useParams();
   const {
     accountingEtc,
@@ -182,10 +186,13 @@ const ReserveCellLayout = ({ element, date, setIsOpenModal , setEditReserve}) =>
   const editBookInfo = {
     bookInfoId: bookInfoId,
     accountingInfoId: accountingId,
-  }
+    paymentMethod: paymentMethod,
+    bookEtc: bookEtc,
+    price: price,
+    time:time,
+  };
 
   const bookingReserve = (e) => {
-
     let bookState = null;
     if (!e.target.checked) {
       bookState = true;
@@ -199,12 +206,17 @@ const ReserveCellLayout = ({ element, date, setIsOpenModal , setEditReserve}) =>
       paymentTime: date,
       isBooked: bookState,
     };
-    
+
     dispatch(bookedReserveList({ roomId, bookInfo })).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         dispatch(getReserveList({ roomId, date }));
       }
     });
+  };
+
+  const formatValue = (value = 0) => {
+    // 숫자 값을 쉼표로 구분하여 문자열로 변환
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   return (
@@ -217,10 +229,12 @@ const ReserveCellLayout = ({ element, date, setIsOpenModal , setEditReserve}) =>
         />
         <label htmlFor="placeName">{placeName}</label>
         <div>{categoryName}</div>
-        <button onClick={() => {
-          setIsOpenModal(true)
-          setEditReserve(editBookInfo)
-          }}>
+        <button
+          onClick={() => {
+            setIsOpenModal(true);
+            setEditReserve(editBookInfo);
+          }}
+        >
           <span>수정하기</span> <Icons.FaChevronRight />{" "}
         </button>
       </CellTitle>
@@ -245,7 +259,7 @@ const ReserveCellLayout = ({ element, date, setIsOpenModal , setEditReserve}) =>
         <ul>
           <li>
             <span>금액</span>
-            {price ? price : "금액을 추가해주세요"}
+            {price ? formatValue(price) : "금액을 추가해주세요"}
           </li>
           <li>
             <span>결제수단</span>

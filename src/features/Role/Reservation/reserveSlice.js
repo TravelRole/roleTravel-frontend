@@ -22,7 +22,6 @@ export const editReserveInfo = createAsyncThunk(
   "reservation/editReserveInfo",
   async (payload, thunkAPI) => {
     try {
-      console.log(payload)
       await tokenApi.patch(`api/room/${payload.roomId}/board/book` , payload.requestEditInfo );
     } catch (error) {
       console.log(error);
