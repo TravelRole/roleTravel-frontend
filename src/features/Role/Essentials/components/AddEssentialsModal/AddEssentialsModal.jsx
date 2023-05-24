@@ -6,20 +6,22 @@ import {
   Footer,
   Title,
   AddEssentialSpan,
-  Button
+  Button,
 } from "./Styles";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createEssentials } from "../../EssentialsSlice";
+import { createEssentials, getEssentials } from "../../EssentialsSlice";
 import Category from "./layout/Category";
 import Form from "./layout/Form";
 import { convertCategoryName } from "./validation";
+import { useSelector } from "react-redux";
 
-const AddEssentialsModal = ({ setIsOpen, data, setData }) => {
+const AddEssentialsModal = ({ setIsOpen, setData }) => {
   const dispatch = useDispatch();
   const [clickedCategory, setClickedCategory] = useState("");
   const [newEssential, setNewEssential] = useState("");
   const [newList, setNewList] = useState([]);
+  const { essentials } = useSelector((state) => state.essentials)
 
   const submitHandler = () => {
     if (newList.length === 0) return;
@@ -30,11 +32,14 @@ const AddEssentialsModal = ({ setIsOpen, data, setData }) => {
           Number(window.location.href.split("/")[3]),
           {
             category: convertCategory,
-            items: newList
-          }
+            items: newList,
+          },
         ])
-      );
-      setIsOpen(false);
+      ).then((res) => {
+        dispatch(getEssentials(window.location.href.split("/")[3]));
+        setData(essentials)
+        setIsOpen(false);
+      });
     }
   };
 
@@ -44,11 +49,7 @@ const AddEssentialsModal = ({ setIsOpen, data, setData }) => {
       <ModalWrapper>
         <Header>
           <Title>PACKING LIST</Title>
-          <AddEssentialSpan
-            color="#333333"
-            fontSize="2.4rem"
-            fontWeight="500"
-          >
+          <AddEssentialSpan color="#333333" fontSize="2.4rem" fontWeight="500">
             준비물 내역 추가
           </AddEssentialSpan>
         </Header>
@@ -69,10 +70,7 @@ const AddEssentialsModal = ({ setIsOpen, data, setData }) => {
         </Body>
         <Footer>
           <Button onClick={() => setIsOpen(false)}>취소</Button>
-          <Button
-            color="blue"
-            onClick={submitHandler}
-          >
+          <Button color="blue" onClick={submitHandler}>
             확인
           </Button>
         </Footer>

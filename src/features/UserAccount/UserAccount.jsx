@@ -8,7 +8,7 @@ import {
   Section,
   Profile,
   Avatar,
-  EditIcon
+  EditIcon,
 } from "./Section/Styles";
 import { useDispatch, useSelector } from "react-redux";
 import { getLoggedInfo } from "./LoggedUserSlice";
@@ -33,6 +33,10 @@ const UserAccount = () => {
       dispatch(getLoggedInfo());
     }
   }, [dispatch, navigate]);
+
+  useEffect(() => {
+    setImage(loggedInfo?.profile);
+  }, [loggedInfo]);
 
   const clickHandler = () => {
     setIsOpen(true);
@@ -59,26 +63,15 @@ const UserAccount = () => {
         <Section>
           <Profile>
             <div>
-              {loggedInfo && loggedInfo.profile ? (
-                <Avatar
-                  src={loggedInfo.profile}
-                  alt="avatar"
-                />
-              ) : (
-                <Avatar
-                  src={""}
-                  style={{ backgroundColor: "pink" }}
-                  width="100%"
-                />
-              )}
+              <Avatar src={image} alt="avatar" />
               <EditIcon onClick={clickHandler}>
                 <Icons.HiOutlinePencilAlt
                   color="black"
                   style={{
                     postiion: "absolute",
-                    width: "15.68px",
-                    height: "15.68px",
-                    marginTop: "-8px"
+                    width: "1.568rem",
+                    height: "1.568rem",
+                    marginTop: "-0.8rem",
                   }}
                 />
               </EditIcon>

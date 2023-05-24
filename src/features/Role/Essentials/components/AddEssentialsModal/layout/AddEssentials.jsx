@@ -52,9 +52,9 @@ const AddEssentials = ({
         fontWeight="400"
         fontSize="1.3rem"
         style={{
-          marginTop: "-5px",
-          marginLeft: "16px",
-          marginBottom: "30px"
+          marginTop: "-0.5rem",
+          marginLeft: "1.6rem",
+          marginBottom: "3rem"
         }}
       >
         * 최대 15자까지 입력 가능합니다.

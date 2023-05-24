@@ -68,9 +68,9 @@ const ChangePassword = () => {
 
   return (
     <Container>
-      <Content marginTop="0px">
+      <Content marginTop="0rem">
         <h1>비밀번호 변경</h1>
-        <div width="76px">
+        <div width="7.6rem">
           <p>비밀번호는 8~16자 영문, 숫자, 특수문자를 사용할 수 있습니다.</p>
           <p>비밀번호는 <span style={{ color: '#3884FD', fontSize: '1.7rem'}}>주기적(최소 6개월)</span>으로 변경해 주시기 바랍니다.</p>
         </div>

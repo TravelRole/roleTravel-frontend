@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import Icons from "../../../../assets/icon/icon";
 import { Dot, EssentialsItem, EssentialsSpan } from "../Styles";
-import { useDispatch } from "react-redux";
-import { patchChecks } from "../EssentialsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getEssentials, patchChecks } from "../EssentialsSlice";
 
-const Checkbox = ({ item }) => {
+const Checkbox = ({ item, setData }) => {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
+  const { essentials, isLoading } = useSelector((state) => state.essentials)
 
   useEffect(() => {
     setChecked(item.isChecked)
@@ -22,7 +23,10 @@ const Checkbox = ({ item }) => {
           ids: [item.id]
         }
       ])
-    );
+    ).then((res) => {
+      dispatch(getEssentials(Number(window.location.href.split("/")[3])))
+      if (isLoading) setData(essentials)
+    })
   };
 
   return (
@@ -31,7 +35,7 @@ const Checkbox = ({ item }) => {
         display: "flex",
         justifyContent: "left",
         alignItems: "center",
-        marginTop: "16px"
+        marginTop: "1.6rem"
       }}
     >
       <EssentialsItem>
@@ -50,8 +54,8 @@ const Checkbox = ({ item }) => {
           <Dot
             style={{
               background: "#fff",
-              border: "1px solid #dadada",
-              marginRight: "2px",
+              border: "0.1rem solid #dadada",
+              marginRight: "0.2rem",
               cursor: "pointer"
             }}
             onClick={() => toggle()}
@@ -61,7 +65,7 @@ const Checkbox = ({ item }) => {
           color="#8b8b8b"
           fontWeight="500"
           fontSize="1.4rem"
-          style={{ marginLeft: "10px" }}
+          style={{ marginLeft: "1rem" }}
         >
           {item.itemName}
         </EssentialsSpan>

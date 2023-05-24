@@ -11,11 +11,12 @@ import { materials } from "../../materials";
 import Cards from "./Cards";
 import { useState } from "react";
 import { convertCategoryName } from "../AddEssentialsModal/validation";
-import { createEssentials } from "../../EssentialsSlice";
-import { useDispatch } from "react-redux";
+import { createEssentials, getEssentials } from "../../EssentialsSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
+const AddEssentialsModal = ({ setIsOpen, setData }) => {
   const dispatch = useDispatch();
+  const { essentials } = useSelector((state) => state.essentials)
   const [list, setList] = useState({
     "필수 준비물": [],
     "의류": [],
@@ -32,7 +33,7 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
       Object.keys(list).map(name => {
         if (list[name]?.length > 0) {
           const convert = convertCategoryName(name)
-          dispatch(
+          return dispatch(
             createEssentials([
               Number(window.location.href.split("/")[3]),
               {
@@ -40,7 +41,10 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
                 items: list[name]
               }
             ])
-          );
+          ).then((res) => {
+            dispatch(getEssentials(Number(window.location.href.split("/")[3])))
+            setData(essentials)
+          })
         }
       })
       setIsOpen(false);
@@ -51,7 +55,7 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
     <>
       <Blur></Blur>
       <ContentWrapper>
-        <Section height="72px">
+        <Section height="7.2rem">
           <Title>ROLE</Title>
           <EssentialsModalSpan
             color="#333333"
@@ -61,12 +65,12 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
             준비물 챙기기
           </EssentialsModalSpan>
         </Section>
-        <Section height="42px">
+        <Section height="4.2rem">
           <EssentialsModalSpan
             color="#707070"
             fontSize="1.6rem"
             fontWeight="500"
-            style={{ lineHeight: "19px", marginBottom: "3px" }}
+            style={{ lineHeight: "1.9rem", marginBottom: "0.3rem" }}
           >
             여행역할에서 선정한 여행 시 가져가면 좋은 준비물 리스트에요 :)
           </EssentialsModalSpan>
@@ -74,7 +78,7 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
             color="#707070"
             fontSize="1.6rem"
             fontWeight="500"
-            style={{ lineHeight: "19px" }}
+            style={{ lineHeight: "1.9rem" }}
           >
             마음에 드는 준비물을 <Emphasis>클릭</Emphasis>해서{" "}
             <Emphasis>리스트에 추가</Emphasis>해 보세요
@@ -90,7 +94,6 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
                 item={materials[el]}
                 list={list}
                 setList={setList}
-                data={data}
               />
             ))}
         </Section>
@@ -104,15 +107,14 @@ const AddEssentialsModal = ({ data, setData, setIsOpen }) => {
                 item={materials[el]}
                 list={list}
                 setList={setList}
-                data={data}
               />
             ))}
         </Section>
-        <Section height="80px">
+        <Section height="8rem">
           <ModalButton
             color="#333333"
             background="#fff"
-            border="1px solid #c4c4c4"
+            border="0.1rem solid #c4c4c4"
             onClick={() => setIsOpen(false)}
           >
             취소
