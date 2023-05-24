@@ -112,6 +112,9 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           fontSize: "1.3rem",
+          color: "#49454f",
+          fontWeight: "300",
+          fontFamily: "Pretendard",
         },
       },
     },

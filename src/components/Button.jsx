@@ -22,7 +22,14 @@ ${(props) =>
     props.size === "small" &&
     css`
       width: 100%;
-      max-width: 13rem;
+      max-width: 9rem;
+      font-size: 1.6rem;
+    `}
+    ${(props) =>
+    props.size === "x-small" &&
+    css`
+      width: 100%;
+      max-width: 8rem;
       font-size: 1.6rem;
     `}
 `;
@@ -62,13 +69,18 @@ const colorStyles = css`
 `;
 
 const StyledButton = styled.button`
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   outline: none;
   width: ${(props) => props.width};
   margin: ${(props) => props.margin};
   border-radius: 0.8rem;
   cursor: pointer;
-  padding: 1.5rem 0;
+  padding: ${(props) =>
+    props.size === "x-small" || props.size === "small"
+      ? "1.1rem 0"
+      : "1.3rem 0"};
   ${colorStyles};
   ${sizeStyles};
 
