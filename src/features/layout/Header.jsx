@@ -177,7 +177,7 @@ const Header = () => {
               </dd>
             </dl>
             <ul>
-              <li onClick={() => navigate("/setUser")}>
+              <li onClick={() => navigate("/useraccount")}>
                 <span>
                   <HiUser />
                 </span>
