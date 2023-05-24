@@ -2,15 +2,12 @@ import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../../components/Button";
-import travelImage from "../../../assets/images/travelImage.jpeg";
 import userImage from "../../../assets/images/userIcon.png";
 import { HiOutlineLocationMarker } from "react-icons/hi";
-import random1 from "../../../assets/images/random1.png";
-import random2 from "../../../assets/images/random2.png";
-import random3 from "../../../assets/images/random3.png";
-import random4 from "../../../assets/images/random4.png";
 import { useDispatch } from "react-redux";
 import { getAllPlanList, getRoomData } from "../../Role/AllPlan/allPlanSlice";
+import randomImageData from "../../../assets/images/randomImageData";
+import { getSidebarData } from "../../layout/Sidebar/sidebarSlice";
 const TravelCardWrap = styled.div`
   min-width: 35rem;
   min-height: 48rem;
@@ -119,8 +116,6 @@ const TravelCardBody = styled.dl`
   }
 `;
 
-const randomImageData = [random1, random2, random3, random4];
-
 const TravelCard = ({
   roomId,
   roomName,
@@ -134,8 +129,10 @@ const TravelCard = ({
   const dispatch = useDispatch();
   const handleInRoom = useCallback(() => {
     dispatch(getRoomData(roomId)).then((res) => {
-      dispatch(getAllPlanList(roomId)).then((res) => {
-        navigate(`/${roomId}/allplan`);
+      dispatch(getSidebarData(roomId)).then((res) => {
+        dispatch(getAllPlanList(roomId)).then((res) => {
+          navigate(`/${roomId}/allplan`);
+        });
       });
     });
   }, [dispatch, navigate, roomId]);

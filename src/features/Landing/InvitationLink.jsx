@@ -3,13 +3,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { checkInvitationCode, setUserRole } from "./userSlice";
 import styled from "styled-components";
-import accountingImg from "../../assets/images/accountingImg.png";
-import scheduleImg from "../../assets/images/scheduleImg.png";
-import reservationImg from "../../assets/images/reservationImg.png";
-import noneRoleImg from "../../assets/images/noneRoleImg.png";
 import InvitationLinkCard from "./layout/InvitationLinkCard";
 import Button from "../../components/Button";
-import { toast } from "react-toastify";
 
 const SelectRoleBg = styled.div`
   position: fixed;
@@ -39,26 +34,28 @@ const SelectRoleModalWrap = styled.div`
 const SelectRoleModalHeader = styled.div`
   border-bottom: 0.1rem solid #e6e6e6;
   dl {
-    padding: 2.6rem 2.4rem;
+    padding: 2.2rem 2.4rem 1.8rem 2.4rem;
     dt {
       font-size: 1.6rem;
       color: #ffc759;
+      font-weight: 600;
       font-family: "Unbounded", cursive;
-      margin-bottom: 1.4rem;
+      margin-bottom: 0.4rem;
     }
     dd {
       font-size: 2.4rem;
+      color: #333;
     }
   }
 `;
 
 const SelectRoleModalBody = styled.div`
   border-bottom: 0.1rem solid #e6e6e6;
+  padding: 1.6rem 2.4rem 3rem 2.4rem;
   ul {
     display: flex;
-    flex-wrap: wrap;
-    padding: 1.6rem 2.4rem;
-    gap: 0.7rem;
+    flex-direction: column;
+    gap: 1rem;
   }
 `;
 
@@ -74,54 +71,22 @@ const InvitationLinkLiData = [
   {
     role: "RESERVATION",
     title: "예약",
-    content: (
-      <dd>
-        예약 리스트를
-        <br />
-        관리해보세요!
-      </dd>
-    ),
-    img: reservationImg,
+    content: "예약 리스트를 관리해보세요!",
   },
   {
     role: "SCHEDULE",
     title: "일정",
-    content: (
-      <dd>
-        효율적인
-        <br />
-        여행코스를
-        <br />
-        만들어보세요!
-      </dd>
-    ),
-    img: scheduleImg,
+    content: "효율적인 여행코스를 만들어보세요!",
   },
   {
     role: "ACCOUNTING",
     title: "회계",
-    content: (
-      <dd>
-        빈틈없는
-        <br />
-        장부관리는
-        <br />
-        나에게!
-      </dd>
-    ),
-    img: accountingImg,
+    content: "빈틈없는 장부관리는 나에게!",
   },
   {
     role: "NONE",
     title: "역할없음",
-    content: (
-      <dd>
-        함께할 준비가
-        <br />
-        되셨나요?
-      </dd>
-    ),
-    img: noneRoleImg,
+    content: "언제든 함께할 준비가 되셨나요?",
   },
 ];
 

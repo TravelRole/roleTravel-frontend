@@ -12,7 +12,6 @@ import Traveling from "./layout/Traveling";
 import EndTravel from "./layout/EndTravel";
 import TravelListBg from "../../assets/images/travelListBg.png";
 import { getTravelList } from "./travelSlice";
-import { getUserInfo } from "../Landing/userSlice";
 import { ClipLoader } from "react-spinners";
 
 const SpaceListWrap = styled.main`
@@ -24,9 +23,9 @@ const SpaceListWrap = styled.main`
 `;
 
 const SpaceListContainer = styled.div`
-  height: calc(100vh - 10rem);
+  height: 100vh;
   padding-top: 9rem;
-  margin: 0 auto;
+  margin-top: 10rem;
 `;
 
 const SpaceHeader = styled.div`

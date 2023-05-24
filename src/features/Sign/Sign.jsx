@@ -7,7 +7,10 @@ import authBg from "../../assets/images/authBg.png";
 
 const SignWrap = styled.div`
   width: 100%;
-  height: calc(100vh - 10rem);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-image: url(${authBg});
   background-size: cover cover;
   background-repeat: no-repeat;

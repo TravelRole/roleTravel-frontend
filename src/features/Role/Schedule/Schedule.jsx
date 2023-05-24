@@ -7,16 +7,19 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import axios from "axios";
-import tokenApi from "../../../lib/customAPI";
 import { useParams } from "react-router-dom";
 import { useRef } from "react";
 import Icons from "../../../assets/icon/icon";
 import { toast } from "react-toastify";
 import SearchBlankPanel from "./layout/SearchBlankPanel";
-import ScheduleBox from "./layout/ScheduleContainer";
-import { getWantPlace } from "./WantPlaceSlice";
-import { useDispatch } from "react-redux";
+import ScheduleContainer from "./layout/ScheduleContainer";
+import { addWantPlace, delWantPlace, getWantPlace } from "./wantPlaceSlice";
+import { useDispatch, useSelector } from "react-redux";
+import Modal from "../../../components/Modal";
+import AddScheduleModal from "./layout/AddScheduleModal";
+import SearchPlaceCard from "./components/SearchPlaceCard";
+import WantPlaceCard from "./components/WantPlaceCard";
+import { getTravelDay } from "./travelDaySlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -169,62 +172,8 @@ const SearchResultContainer = styled.div`
   }
 `;
 
-const StyledPlaceCard = styled.article`
-  position: relative;
-  cursor: pointer;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  width: 100%;
-  height: 13rem;
-
-  padding: 2rem;
-  background: ${(props) => (props.selected ? "#EEF1F8" : "#ffffff")};
-  border-radius: 0.8rem;
-
-  header {
-    margin-bottom: 1rem;
-    font-weight: 600;
-    font-size: 1.7rem;
-    color: #333333;
-  }
-  p:nth-child(2) {
-    margin-bottom: 0.4rem;
-    font-weight: 500;
-    font-size: 1.4rem;
-    color: #707070;
-  }
-  p:nth-child(3) {
-    margin-bottom: 0.8rem;
-    font-weight: 400;
-    font-size: 1.4rem;
-    color: #c4c4c4;
-  }
-  span {
-    font-weight: 400;
-    font-size: 1.4rem;
-    color: #3884fd;
-  }
-  button {
-    height: 2.6rem;
-    position: absolute;
-    right: 2rem;
-    bottom: 2rem;
-    padding: 0.2rem 1rem;
-    font-size: 1.2rem;
-    color: ${(props) => (props.selected ? " #3884FD;" : "#8B8B8B")};
-    border: none;
-    background: #fafafa;
-    border: ${(props) =>
-      props.selected ? "1px solid #3884FD" : "1px solid #DADADA"};
-    border-radius: 0.8rem;
-  }
-`;
-
 /** 스케쥴 컨테이너 */
-const ScheduleContainer = styled.div`
+const ScheduleSection = styled.div`
   padding-top: 1.5rem;
   height: fit-content;
 `;
@@ -249,10 +198,70 @@ function Schedule({ setReserveList }) {
   const { roomId } = useParams();
 
   const dispatch = useDispatch();
-   useEffect(() => {
-    dispatch(getWantPlace());
-   }, [roomId , dispatch]);
 
+  /** 찜장소 추가+삭제하기 */
+
+  const handleWantPlace = (e, place, isExist) => {
+    const {
+      place_name,
+      road_address_name,
+      address_name,
+      phone,
+      y,
+      x,
+      id,
+      place_url,
+    } = place;
+    const wantPlaceData = {
+      roomId: roomId,
+      placeName: place_name,
+      placeAddress: road_address_name,
+      phoneNumber: phone,
+      latitude: y,
+      longitude: x,
+      category: "그냥 일단 빈값처리",
+      lotNumberAddress: address_name,
+      mapPlaceId: id,
+      link: place_url,
+    };
+
+    const delpayload = {
+      roomId: roomId,
+      placeId: isExist[0]?.placeId,
+    };
+    const isChecked = e.target.checked;
+
+    if (isChecked) {
+      //추가 로직
+      dispatch(addWantPlace(wantPlaceData)).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          dispatch(getWantPlace(roomId));
+          return;
+        }
+      });
+    } else {
+      //삭제로직
+      dispatch(delWantPlace(delpayload)).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          dispatch(getWantPlace(roomId));
+          return;
+        }
+      });
+    }
+  };
+
+  /** 찜장소 추가+삭제하기 */
+
+  /** 찜장소 가져오기 */
+  useEffect(() => {
+    dispatch(getWantPlace(roomId));
+    dispatch(getTravelDay(roomId));
+  }, [roomId, dispatch]);
+
+  const { wantPlaceList } = useSelector((state) => state.wantPlace);
+  const { travelDayList } = useSelector((state) => state.travelDay);
+
+  /** 찜장소 가져오기 */
   const [searchPlaceList, setSearchPlaceList] = useState([]);
 
   const { kakao } = window;
@@ -302,6 +311,15 @@ function Schedule({ setReserveList }) {
   };
 
   const [info, setInfo] = useState();
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [modalData, setModalData] = useState({});
+
+  const firstDay = travelDayList[0]?.date;
+  const [date, setDate] = useState();
+
+  useEffect(() => {
+    setDate(firstDay);
+  }, [firstDay]);
 
   return (
     <>
@@ -324,9 +342,11 @@ function Schedule({ setReserveList }) {
                   position={position}
                   onClick={() => setInfo(marker)}
                 >
-                  {info && info.place_name === marker.place_name && (
-                    <div style={{ color: "#000" }}>{marker.place_name}</div>
-                  )}
+                  {info &&
+                    (marker.id === info.id ||
+                      marker.id === String(info.mapPlaceId)) && (
+                      <div style={{ color: "#000" }}>{marker.place_name}</div>
+                    )}
                 </MapMarker>
               );
             })}
@@ -373,28 +393,23 @@ function Schedule({ setReserveList }) {
                 <SearchResultContainer>
                   {searchPlaceList.length ? (
                     <ul>
-                      {searchPlaceList.map((place, i) => {
+                      {searchPlaceList.map((place) => {
+                        const isExist = wantPlaceList.wantPlaces.filter(
+                          (placeInfo) => {
+                            return placeInfo.placeName === place.place_name;
+                          }
+                        );
                         return (
-                          <li key={i}>
-                            <StyledPlaceCard
-                              selected={
-                                info && info.address_name === place.address_name
-                              }
-                              onClick={() => {
-                                setInfo(place);
-                                setlat(place.y);
-                                setlng(place.x);
-                              }}
-                            >
-                              <header>{place.place_name}</header>
-                              <p>{place.road_address_name}</p>
-                              <p>{place.address_name}</p>
-                              <span>
-                                {place.phone ? place.phone : "전화번호 없음"}
-                              </span>
-                              <button>일정에 추가</button>
-                            </StyledPlaceCard>
-                          </li>
+                          <SearchPlaceCard
+                            key={place.id}
+                            place={place}
+                            isExist={isExist}
+                            handleWantPlace={handleWantPlace}
+                            locationFn={{ setlat, setlng }}
+                            Info={{ setInfo, info }}
+                            setIsOpenModal={setIsOpenModal}
+                            setModalData={setModalData}
+                          />
                         );
                       })}
                     </ul>
@@ -404,15 +419,57 @@ function Schedule({ setReserveList }) {
                 </SearchResultContainer>
               </StyledTabPanel>
               <StyledTabPanel value={"wish"}>
-                <SearchBlankPanel filter={"want"} />
+                <SearchResultContainer>
+                  {true ? (
+                    <ul>
+                      {wantPlaceList?.wantPlaces?.map((place) => {
+                        const isExist = wantPlaceList.wantPlaces.filter(
+                          (placeInfo) => {
+                            return placeInfo.placeName === place.placeName;
+                          }
+                        );
+
+                        return (
+                          <WantPlaceCard
+                            key={place.mapPlaceId}
+                            place={place}
+                            isExist={isExist}
+                            handleWantPlace={handleWantPlace}
+                            locationFn={{ setlat, setlng }}
+                            Info={{ setInfo, info }}
+                            setIsOpenModal={setIsOpenModal}
+                            setModalData={setModalData}
+                          />
+                        );
+                      })}
+                    </ul>
+                  ) : (
+                    <SearchBlankPanel filter={"want"} />
+                  )}
+                </SearchResultContainer>
               </StyledTabPanel>
             </StyledTabContext>
           </SearchAndWantBox>
         </MapWrapper>
 
-        <ScheduleContainer>
-          <ScheduleBox />
-        </ScheduleContainer>
+        <ScheduleSection>
+          <ScheduleContainer
+            travelDayList={travelDayList}
+            firstDayDate={travelDayList && travelDayList[0]?.date}
+            date={date}
+            setDate={setDate}
+          />
+        </ScheduleSection>
+        {isOpenModal ? (
+          <Modal width="52rem" setIsOpenModal={setIsOpenModal}>
+            <AddScheduleModal
+              setIsOpenModal={setIsOpenModal}
+              modalData={modalData}
+              travelDayList={travelDayList}
+              date={date}
+            />
+          </Modal>
+        ) : null}
       </Wrapper>
     </>
   );

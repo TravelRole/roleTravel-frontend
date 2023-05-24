@@ -1,24 +1,33 @@
 import { useEffect, useState } from "react";
 import Icons from "../../../../assets/icon/icon";
 import { Dot, EssentialsItem, EssentialsSpan } from "../Styles";
+import { useDispatch, useSelector } from "react-redux";
+import { getEssentials, patchChecks } from "../EssentialsSlice";
 
 const Checkbox = ({ item, setData }) => {
+  const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
+  const { essentials, isLoading } = useSelector((state) => state.essentials)
 
-  // useEffect(() => {
-  //   setChecked(item.isChecked)
-  // }, [])
-  
-  // useEffect(() => {
-  //   if (checked) {
-  //     willDelete.push(item);
-  //   } else {
-  //     // if (willDelete == )
-  //     // setWillDelete(willDelete.filter(el => el.itemName !== item.itemName))
-  //   }
-  // }, [checked]);
+  useEffect(() => {
+    setChecked(item.isChecked)
+  }, [])
 
-  const toggle = () => setChecked(!checked);
+  const toggle = () => {
+    setChecked(!checked);
+    dispatch(
+      patchChecks([
+        Number(window.location.href.split("/")[3]),
+        {
+          check: !checked,
+          ids: [item.id]
+        }
+      ])
+    ).then((res) => {
+      dispatch(getEssentials(Number(window.location.href.split("/")[3])))
+      if (isLoading) setData(essentials)
+    })
+  };
 
   return (
     <div
@@ -26,7 +35,7 @@ const Checkbox = ({ item, setData }) => {
         display: "flex",
         justifyContent: "left",
         alignItems: "center",
-        marginTop: "16px"
+        marginTop: "1.6rem"
       }}
     >
       <EssentialsItem>
@@ -37,7 +46,7 @@ const Checkbox = ({ item, setData }) => {
               fill: "#eef1f8",
               color: "#3884fd",
               cursor: "pointer",
-              strokeWidth: '1.7'
+              strokeWidth: "1.7"
             }}
             onClick={() => toggle()}
           />
@@ -45,8 +54,8 @@ const Checkbox = ({ item, setData }) => {
           <Dot
             style={{
               background: "#fff",
-              border: "1px solid #dadada",
-              marginRight: "2px",
+              border: "0.1rem solid #dadada",
+              marginRight: "0.2rem",
               cursor: "pointer"
             }}
             onClick={() => toggle()}
@@ -55,8 +64,8 @@ const Checkbox = ({ item, setData }) => {
         <EssentialsSpan
           color="#8b8b8b"
           fontWeight="500"
-          fontSize="14px"
-          style={{ marginLeft: "10px" }}
+          fontSize="1.4rem"
+          style={{ marginLeft: "1rem" }}
         >
           {item.itemName}
         </EssentialsSpan>
