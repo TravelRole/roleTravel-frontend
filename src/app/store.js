@@ -13,8 +13,9 @@ import travelDayReducer from "../features/Role/Schedule/travelDaySlice";
 import allPlanReducer from "../features/Role/AllPlan/allPlanSlice";
 import commentReducer from "../features/Role/AllPlan/commentSlice";
 import scheduleReducer from "../features/Role/Schedule/scheduleSlice";
-import reserveReucer from "../features/Role/Reservation/reserveSlice";
-import accountReucer from "../features/Role/Account/accountSlice";
+import reserveReducer from "../features/Role/Reservation/reserveSlice";
+import accountReducer from "../features/Role/Account/accountSlice";
+import ammountReducer from "../features/Role/Account/amountSlice";
 
 export const store = configureStore({
   reducer: {
@@ -32,7 +33,8 @@ export const store = configureStore({
     allPlan: allPlanReducer,
     comment: commentReducer,
     schedule: scheduleReducer,
-    reserveList : reserveReucer,
-    accountList : accountReucer
+    reserveList : reserveReducer,
+    accountList : accountReducer,
+    amountTotal : ammountReducer
   },
 });

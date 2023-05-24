@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import Icons from "../../../../assets/icon/icon";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getAllAmount } from "../amountSlice";
 
 const AmountWrapper = styled.div`
   display: flex;
@@ -65,11 +69,20 @@ const AmountBox = styled.div`
 `;
 
 function AmountContainer() {
+  const { roomId } = useParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllAmount(roomId));
+  }, [roomId, dispatch]);
+
+  const { amountTotal } = useSelector((state) => state.amountTotal);
+  console.log(amountTotal)
   return (
     <AmountWrapper>
       <AmountBox>
         <header>공통 경비</header>
-        <p>1,500,000원</p>
+        <p>{amountTotal.expenses}원</p>
         <span>수정하기를 클릭해 공동 경비를 입력해보세요!</span>
         <button>
           <span>수정하기</span> <Icons.FaChevronRight />{" "}

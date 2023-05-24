@@ -3,14 +3,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import tokenApi from "../../../lib/customAPI";
 
 //날짜에 맞는 회계내역 조회
-export const getAccountList = createAsyncThunk(
-  "account/getAccountList",
-  async (payload) => {
-    console.log(payload)
+export const getAllAmount = createAsyncThunk(
+  "amount/getAllAmount",
+  async (roomId) => {
     try {
-      const res = await tokenApi.get(
-        `api/room/${payload.roomId}/accounting?date=${payload.date}&paymentMethod=${payload.feeMethod&&payload.feeMethod}}`
-      );
+      const res = await tokenApi.get(`/api/room/${roomId}/expenses`);
       return res.data;
     } catch (error) {
       console.log(error);
@@ -23,7 +20,10 @@ export const editReserveInfo = createAsyncThunk(
   "reservation/editReserveInfo",
   async (payload, thunkAPI) => {
     try {
-      await tokenApi.patch(`api/room/${payload.roomId}/board/book` , payload.requestEditInfo );
+      await tokenApi.patch(
+        `api/room/${payload.roomId}/board/book`,
+        payload.requestEditInfo
+      );
     } catch (error) {
       console.log(error);
     }
@@ -46,45 +46,45 @@ export const bookedReserveList = createAsyncThunk(
 );
 
 const initialState = {
-  isAccountLoading: false,
-  accountList: [],
+  isAmountLoading: false,
+  amountTotal: 0,
 };
 
-const accountSlice = createSlice({
-  name: "account",
+const amountSlice = createSlice({
+  name: "amount",
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(editReserveInfo.pending, (state) => {
-        state.isAccountLoading = true;
+        state.isAmountLoading = true;
       })
       .addCase(editReserveInfo.fulfilled, (state, action) => {
-        state.isAccountLoading = false;
+        state.isAmountLoading = false;
       })
       .addCase(editReserveInfo.rejected, (state, action) => {
-        state.isAccountLoading = false;
+        state.isAmountLoading = false;
       })
       .addCase(bookedReserveList.pending, (state) => {
-        state.isAccountLoading = true;
+        state.isAmountLoading = true;
       })
       .addCase(bookedReserveList.fulfilled, (state, action) => {
-        state.isAccountLoading = false;
+        state.isAmountLoading = false;
       })
       .addCase(bookedReserveList.rejected, (state, action) => {
-        state.isAccountLoading = false;
+        state.isAmountLoading = false;
       })
-      .addCase(getAccountList.pending, (state) => {
-        state.isAccountLoading = true;
+      .addCase(getAllAmount.pending, (state) => {
+        state.isAmountLoading = true;
       })
-      .addCase(getAccountList.fulfilled, (state, action) => {
-        state.isAccountLoading = false;
-        state.accountList = action.payload;
+      .addCase(getAllAmount.fulfilled, (state, action) => {
+        state.isAmountLoading = false;
+        state.amountTotal = action.payload;
       })
-      .addCase(getAccountList.rejected, (state, action) => {
-        state.isAccountLoading = false;
+      .addCase(getAllAmount.rejected, (state, action) => {
+        state.isAmountLoading = false;
       });
   },
 });
 
-export default accountSlice.reducer;
+export default amountSlice.reducer;

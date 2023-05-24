@@ -152,7 +152,7 @@ const DayDateBox = styled.div`
   }
 `;
 
-const AddEditAccountModal = () => {
+const AddEditAccountModal = ({setIsOpenModal}) => {
   const dispatch = useDispatch();
   const { roomId } = useParams();
 
@@ -308,7 +308,9 @@ const AddEditAccountModal = () => {
               type="button"
               color="stroke"
               size="small"
-              onClick={() => {}}
+              onClick={() => {
+                setIsOpenModal(false)
+              }}
             >
               취소
             </Button>
