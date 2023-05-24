@@ -143,7 +143,9 @@ const AllPlanMembers = () => {
           </button>
           <button
             className="members-right"
-            disabled={members?.length === currentSlide + 1}
+            disabled={
+              members?.length === currentSlide + 1 || members?.length < 5
+            }
             onClick={handleSlider}
           >
             <Icons.HiOutlineChevronRight />
@@ -151,20 +153,32 @@ const AllPlanMembers = () => {
         </div>
       </AllPlanMembersHeader>
       <AllPlanMembersContainer>
-        <AllPlanMembersSliderWrap currentLength={members?.length}>
+        <AllPlanMembersSliderWrap
+          currentLength={
+            roomData?.roles.length < 4
+              ? roomData?.roles.length
+              : members?.length
+          }
+        >
           <AllPlanMembersSlider
             style={{
               transform: `translateX(-${currentSlide * 37}rem)`,
             }}
           >
             {roomData?.roles &&
-              members?.map((member, index) => (
-                <AllPlanMembersSlide key={index}>
-                  {member.map((data, index) => (
-                    <AllPlanMemberCard key={index} {...data} />
-                  ))}
-                </AllPlanMembersSlide>
-              ))}
+              (roomData?.roles.length < 4
+                ? roomData?.roles.map((member, index) => (
+                    <AllPlanMembersSlide key={index}>
+                      <AllPlanMemberCard {...member} />
+                    </AllPlanMembersSlide>
+                  ))
+                : members?.map((member, index) => (
+                    <AllPlanMembersSlide key={index}>
+                      {member.map((data, index) => (
+                        <AllPlanMemberCard key={index} {...data} />
+                      ))}
+                    </AllPlanMembersSlide>
+                  )))}
           </AllPlanMembersSlider>
         </AllPlanMembersSliderWrap>
       </AllPlanMembersContainer>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styled from "styled-components";
 import {
@@ -11,6 +11,9 @@ import {
 
 import Button from "../../../../components/Button";
 import Icons from "../../../../assets/icon/icon";
+import { useDispatch } from "react-redux";
+import { editReserveInfo, getReserveList } from "../reserveSlice";
+import { useParams } from "react-router-dom";
 
 const EditReserveModalWrapper = styled.div``;
 
@@ -83,18 +86,26 @@ const CardOrCashBox = styled.div`
   }
 `;
 
-const EditReserveModal = ({ setIsOpenModal }) => {
-  const [payment, setPayment] = useState("card");
-  const [note, setNote] = useState("");
+const EditReserveModal = ({ setIsOpenModal, editReserve, date }) => {
+  const dispatch = useDispatch();
+  const { roomId } = useParams();
+
+  const { paymentMethod, price, bookEtc } = editReserve;
+  const [payment, setPayment] = useState("CARD");
+  const [note, setNote] = useState("비고를 입력하세요");
   const [fee, setFee] = useState("");
 
-  const noteMax = 30;
-
-  const formatValue = (value) => {
-    // 숫자 값을 쉼표로 구분하여 문자열로 변환
-    if (value.length) setFee("");
+  const formatValue = (value = 0) => {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
+
+  useEffect(() => {
+    if (paymentMethod) setPayment(paymentMethod);
+    if (price) setFee(price);
+    if (bookEtc) setNote(bookEtc);
+  }, [paymentMethod, price, bookEtc]);
+
+  const noteMax = 30;
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;
@@ -118,9 +129,15 @@ const EditReserveModal = ({ setIsOpenModal }) => {
     }
   };
 
-  const EditReserve = (e) => {
-    e.preventDefault();
-    console.log(payment, fee, note);
+  const EditReserve = () => {
+    const requestEditInfo = { ...editReserve };
+    requestEditInfo.paymentMethod = payment;
+    requestEditInfo.price = fee;
+    requestEditInfo.bookEtc = note;
+
+    dispatch(editReserveInfo({ roomId, requestEditInfo }));
+    dispatch(getReserveList({ roomId, date }));
+    setIsOpenModal(false);
   };
 
   return (
@@ -138,15 +155,15 @@ const EditReserveModal = ({ setIsOpenModal }) => {
             <CardOrCashBox>
               <ul>
                 <li
-                  onClick={() => setPayment("card")}
-                  className={payment === "card" ? "active" : null}
+                  onClick={() => setPayment("CARD")}
+                  className={payment === "CARD" ? "active" : null}
                 >
                   카드
                   <Icons.AiOutlineCreditCard size={33} />
                 </li>
                 <li
-                  onClick={() => setPayment("cash")}
-                  className={payment === "cash" ? "active" : null}
+                  onClick={() => setPayment("CREDIT")}
+                  className={payment === "CREDIT" ? "active" : null}
                 >
                   현금
                   <Icons.BiCoinStack size={33} />
@@ -172,15 +189,15 @@ const EditReserveModal = ({ setIsOpenModal }) => {
               </InputLabel>
               <OutlinedInput
                 id="outlined-adornment-note"
-                value={note}
+                label="비고를 입력하세요."
                 name="note"
+                value={note}
                 onChange={onChangeInput}
                 endAdornment={
                   <InputAdornment position="end">
-                    ({note.length}/{noteMax})
+                    ({note?.length}/{noteMax})
                   </InputAdornment>
                 }
-                label="비고를 입력하세요."
               />
               <FormHelperText id="Edit-Reserve-Note-text">
                 * 최대 30자까지 입력 가능합니다.

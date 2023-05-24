@@ -3,10 +3,9 @@ import { Divider, EditContent, EssentialsSpan } from "../Styles";
 import { useState } from "react";
 import AddEssentialsModal from "./AddEssentialsModal/AddEssentialsModal";
 import CheckDeleteModal from "./CheckDeleteModal/CheckDeleteModal";
+import { useSelector } from "react-redux";
 
 const EditNav = ({
-  data,
-  setData,
   condition,
   setCondition,
   page,
@@ -15,6 +14,8 @@ const EditNav = ({
   deleteList,
   setDeleteList,
   setDeleted,
+  data,
+  setData,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
@@ -27,29 +28,20 @@ const EditNav = ({
           deleteList={deleteList}
           setDeleteList={setDeleteList}
           setDeleted={setDeleted}
-        />
-      )}
-      {isOpen && (
-        <AddEssentialsModal
-          setIsOpen={setIsOpen}
-          data={data}
           setData={setData}
         />
       )}
+      {isOpen && <AddEssentialsModal setIsOpen={setIsOpen} setData={setData} />}
       <EditContent>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <EssentialsSpan
-            fontSize="2.4rem"
-            fontWeight="600"
-            color="#333333"
-          >
+          <EssentialsSpan fontSize="2.4rem" fontWeight="600" color="#333333">
             카테고리
           </EssentialsSpan>
           <EssentialsSpan
             color="#707070"
             fontWeight="600"
             fontSize="2rem"
-            style={{ marginLeft: "4px" }}
+            style={{ marginLeft: "0.4rem" }}
           >
             ({Object.keys(data).length})
           </EssentialsSpan>
@@ -83,8 +75,8 @@ const EditNav = ({
                 fontWeight="500"
                 style={{
                   textDecorationLine: "underline",
-                  marginLeft: "30px",
-                  cursor: "pointer"
+                  marginLeft: "3rem",
+                  cursor: "pointer",
                 }}
                 onClick={() => setDeleteIsOpen(true)}
               >
@@ -98,8 +90,8 @@ const EditNav = ({
               fontWeight="500"
               style={{
                 textDecorationLine: "underline",
-                marginLeft: "30px",
-                cursor: "pointer"
+                marginLeft: "3rem",
+                cursor: "pointer",
               }}
               onClick={() => {
                 setCondition("add");
@@ -109,7 +101,7 @@ const EditNav = ({
               추가하기
             </EssentialsSpan>
           )}
-          <Divider style={{ marginLeft: "20px", marginRight: "20px" }} />
+          <Divider style={{ marginLeft: "2rem", marginRight: "2rem" }} />
           <div style={{ display: "flex", alignItems: "center" }}>
             <Icons.TfiAngleLeft
               size="14"
@@ -122,8 +114,8 @@ const EditNav = ({
               color="#8490A4"
               style={{
                 strokeWidth: "1",
-                marginLeft: "12px",
-                cursor: "pointer"
+                marginLeft: "1.2rem",
+                cursor: "pointer",
               }}
               onClick={
                 page <= Object.keys(data).length - defaultPages

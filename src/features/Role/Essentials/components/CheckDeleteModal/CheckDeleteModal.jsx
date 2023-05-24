@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Emphasis } from "../EssentialsListModal/Style";
 import {
   Blur,
@@ -7,13 +7,14 @@ import {
   ModalWrapper,
   Section,
   Span,
-  Title
+  Title,
 } from "./Style";
 
-import { deleteEssentials } from "../../EssentialsSlice";
+import { deleteEssentials, getEssentials } from "../../EssentialsSlice";
 
-const CheckDeleteModal = ({ setIsOpen, deleteList, setDeleteList }) => {
+const CheckDeleteModal = ({ setIsOpen, deleteList, setDeleteList, setData }) => {
   const dispatch = useDispatch();
+  const { essentials } = useSelector((state) => state.essentials)
 
   const deleteHandler = () => {
     if (deleteList.length === 0) return;
@@ -22,11 +23,16 @@ const CheckDeleteModal = ({ setIsOpen, deleteList, setDeleteList }) => {
         deleteEssentials([
           Number(window.location.href.split("/")[3]),
           {
-            ids: deleteList
-          }
+            ids: deleteList,
+          },
         ])
+      ).then((res) => {
+        dispatch(getEssentials(Number(window.location.href.split("/")[3])))
+        setData(essentials);
+      } 
       );
-      setDeleteList([])
+
+      setDeleteList([]);
       setIsOpen(false);
     }
   };
@@ -44,18 +50,10 @@ const CheckDeleteModal = ({ setIsOpen, deleteList, setDeleteList }) => {
           <Span>삭제 이후에는 내용 복구가 불가능합니다.</Span>
         </Section>
         <Section>
-          <Button
-            color="stroke"
-            size="medium"
-            onClick={() => setIsOpen(false)}
-          >
+          <Button color="stroke" size="medium" onClick={() => setIsOpen(false)}>
             취소
           </Button>
-          <Button
-            color="blue"
-            size="medium"
-            onClick={() => deleteHandler()}
-          >
+          <Button color="blue" size="medium" onClick={() => deleteHandler()}>
             삭제하기
           </Button>
         </Section>

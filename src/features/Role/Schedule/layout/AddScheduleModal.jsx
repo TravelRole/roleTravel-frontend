@@ -12,6 +12,10 @@ import {
 import Button from "../../../../components/Button";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import { useDispatch } from "react-redux";
+import { addSchedule, getSchedule } from "../scheduleSlice";
+import { useParams } from "react-router-dom";
+import changeLanCategory from "../utils/changeLanCategory";
 
 const AddScheduleModalWrapper = styled.div``;
 
@@ -114,62 +118,117 @@ const CategoryOptions = styled.div`
     flex-direction: row;
     gap: 1rem;
     margin-top: 1rem;
-
-    li {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-
-      div {
-        width: 7rem;
-        height: 7rem;
-        border: 1px solid #dadada;
-        border-radius: 0.8rem;
-        margin-bottom: 0.8rem;
-      }
-    }
-
-    .active {
-      color: #3884fd;
-      border: 0.1rem solid #3884fd;
-      box-shadow: 0 0.1rem 0.4rem 0.1rem #d9e6ff;
-    }
   }
 `;
 
-const dayOption = [
-  { label: "1일차", day: 1 },
-  { label: "2일차", day: 2 },
-  { label: "3일차", day: 3 },
-  { label: "4일차", day: 4 },
-];
+const CategoryWrap = styled.li`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 
-const reserveOption = ["예약필요", "예약완료"];
+  div {
+    width: 7rem;
+    height: 7rem;
+    background-color: ${(props) => (props.selected ? "#F4F6FB" : "#FFFFFF")};
+    border: 1px solid ${(props) => (props.selected ? "#3884fd" : "#dadada")};
+    border-radius: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+  span {
+    color: ${(props) => (props.selected ? "#3884fd" : "#dadada")};
+  }
+`;
 
-const categoryOptions = ["교통", "숙박", "음식", "관광", "쇼핑", "기타"];
+const AddScheduleModal = ({
+  setIsOpenModal,
+  modalData,
+  travelDayList,
+  date,
+}) => {
+  const { roomId } = useParams();
+  let {
+    id,
+    place_name,
+    road_address_name,
+    address_name,
+    phone,
+    place_url,
+    x,
+    y,
+    mapPlaceId,
+    placeName,
+    placeAddress,
+    lotNumberAddress,
+    phoneNumber,
+    latitude,
+    longitude,
+    link,
+  } = modalData;
 
-const AddScheduleModal = ({ setIsOpenModal }) => {
-  const [category, setCategory] = useState("traffic");
+  if (!mapPlaceId) {
+    mapPlaceId = id;
+    placeName = place_name;
+    placeAddress = road_address_name;
+    latitude = x;
+    longitude = y;
+    link = place_url;
+  }
+
+  const dayOption = travelDayList?.map((dayData) => {
+    return {
+      label: `${dayData.idx}일차`,
+      date: dayData.date,
+    };
+  });
+  const reserveOption = [
+    { label: "불필요", value: false },
+    { label: "필요", value: true },
+  ];
+  const categoryOptions = ["교통", "숙박", "음식", "관광", "쇼핑", "기타"];
+  const [day, setDay] = useState(null);
+  const [reserve, setReserve] = useState(false);
+  const [category, setCategory] = useState("교통");
   const [note, setNote] = useState("");
-  const [fee, setFee] = useState("");
+
+  // 일정추가 submit 이벤트
+  const dispatch = useDispatch();
+  const addScheduleData = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const time = formData.get("time");
+
+    const categoryCon = changeLanCategory(category);
+
+    const schedulePayload = {
+      placeName: placeName,
+      placeAddress: placeAddress,
+      scheduleDate: `${day} ${time}`,
+      link: link,
+      isBookRequired: reserve,
+      category: categoryCon,
+      latitude: latitude,
+      longitude: longitude,
+      etc: note,
+      mapPlaceId: mapPlaceId,
+    };
+
+    dispatch(addSchedule({ roomId, schedulePayload })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        if (date === day) {
+          dispatch(getSchedule({ roomId, date: day }));
+        }
+        setIsOpenModal(false);
+        return;
+      }
+    });
+  };
 
   const noteMax = 30;
-
   const onChangeInput = (e) => {
     const { name, value } = e.target;
-
     switch (name) {
-      case "fee": {
-        const inputfeeValue = value;
-        const parts = inputfeeValue.split(",");
-        const newFeeValue = isNaN(parseInt(parts.join(""), 10))
-          ? ""
-          : parseInt(parts.join(""), 10);
-        setFee(newFeeValue);
-        break;
-      }
       case "note": {
         if (value.length <= noteMax) setNote(value);
         break;
@@ -188,31 +247,39 @@ const AddScheduleModal = ({ setIsOpenModal }) => {
         </dl>
       </EditReserveHeader>
       <EditReserveModalBody>
-        <form>
+        <form onSubmit={addScheduleData}>
           <div className="form-content">
             <p className="modal-body-text">
               <span>장소</span>
-              <span>장소 이름 텍스트가 들어갑니다.</span>
+              <span>{placeName}</span>
             </p>
             <div className="dayTimeOption">
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
+                name="date"
                 options={dayOption}
                 sx={{ width: "50%" }}
                 renderInput={(params) => <TextField {...params} label="일자" />}
+                onChange={(e, value) => {
+                  setDay(value.date);
+                }}
               />
-              <input type="time" className="timeInput" />
+              <input name="time" type="time" className="timeInput" />
             </div>
             <div className="reserveOption">
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
+                name="reserve"
                 options={reserveOption}
                 sx={{ width: "100%" }}
                 renderInput={(params) => (
-                  <TextField {...params} label="예약여부"  />
+                  <TextField {...params} label="예약여부" />
                 )}
+                onChange={(e, value) => {
+                  setReserve(value.value);
+                }}
               />
             </div>
 
@@ -221,10 +288,10 @@ const AddScheduleModal = ({ setIsOpenModal }) => {
               <ul>
                 {categoryOptions.map((item) => {
                   return (
-                    <li key={item}>
-                      <div></div>
+                    <CategoryWrap selected={category === item} key={item}>
+                      <div onClick={() => setCategory(item)}></div>
                       <span>{item}</span>
-                    </li>
+                    </CategoryWrap>
                   );
                 })}
               </ul>

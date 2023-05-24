@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
@@ -7,6 +7,10 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { useState } from "react";
 import ScheduleBlankPanel from "./ScheduleBlankPanel";
+import { useDispatch, useSelector } from "react-redux";
+import { delSchedule, getSchedule } from "../scheduleSlice";
+import { useParams } from "react-router-dom";
+import changeLanCategory from "../utils/changeLanCategory";
 
 const StyledBox = styled(Box)`
   padding-left: 6rem;
@@ -58,8 +62,27 @@ const StyledTabPanel = styled(TabPanel)`
   padding: 0 !important;
 `;
 
+const EditButtonSection = styled.section`
+  width: 100%;
+  height: 5.8rem;
+  display: flex;
+  justify-content: flex-end;
+  button {
+    padding: 0;
+    margin: 1.8rem 0;
+    font-family: "Pretendard";
+    color: #8490a4;
+    font-weight: 500;
+    background-color: transparent;
+    border: none;
+    border-bottom: 0.1rem solid #8490a4;
+
+    cursor: pointer;
+  }
+`;
+
 const ScheduleWrapper = styled.div`
-  padding: 3rem 6rem 0 6rem !important;
+  padding: 0 6rem 5rem 6rem !important;
 `;
 const ColumnHeader = styled.div`
   display: flex;
@@ -95,19 +118,17 @@ const PlaceNameColumn = styled(Column)`
   input {
     appearance: none;
     border-radius: 50%;
-    background-color: #d9d9d9;
-    background-image: url("data:image/svg+xml,%3Csvg width='14' height='9' viewBox='0 0 14 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.78247 4.27374L5.4121 7.89268L12.2177 1.10718' stroke='%23F5F5F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='23' height='23' viewBox='0 0 23 23' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11.5' cy='11.5' r='11' stroke='%23DADADA'/%3E%3C/svg%3E%0A");
     background-size: 80% 80%;
     background-position: 50%;
     background-repeat: no-repeat;
-    width: 2.1rem;
-    height: 2.1rem;
+    width: 2.3rem;
+    height: 2.3rem;
     margin: 0 1.5rem;
     cursor: pointer;
 
     &:checked {
-      background-color: #3884fd;
-      background-image: url("data:image/svg+xml,%3Csvg width='14' height='9' viewBox='0 0 14 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.78247 4.27374L5.4121 7.89268L12.2177 1.10718' stroke='%23F5F5F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg width='23' height='23' viewBox='0 0 23 23' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11.5' cy='11.5' r='11' fill='%23EEF1F8' style='mix-blend-mode:multiply'/%3E%3Ccircle cx='11.5' cy='11.5' r='11' stroke='%233884FD'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M17.6947 7.29279C17.8822 7.48031 17.9875 7.73462 17.9875 7.99979C17.9875 8.26495 17.8822 8.51926 17.6947 8.70679L9.69471 16.7068C9.50718 16.8943 9.25288 16.9996 8.98771 16.9996C8.72255 16.9996 8.46824 16.8943 8.28071 16.7068L4.28071 12.7068C4.09855 12.5182 3.99776 12.2656 4.00004 12.0034C4.00232 11.7412 4.10749 11.4904 4.29289 11.305C4.4783 11.1196 4.72911 11.0144 4.99131 11.0121C5.25351 11.0098 5.50611 11.1106 5.69471 11.2928L8.98771 14.5858L16.2807 7.29279C16.4682 7.10532 16.7225 7 16.9877 7C17.2529 7 17.5072 7.10532 17.6947 7.29279Z' fill='%233884FD'/%3E%3C/svg%3E ");
       background-size: 80% 80%;
       background-position: 50%;
       background-repeat: no-repeat;
@@ -207,50 +228,93 @@ const ScheduleRow = styled.div`
   border-radius: 0.8rem;
 `;
 
-const ReservationDay = [
-  { CountDay: 1, Date: "4.17(월)" },
-  { CountDay: 2, Date: "4.18(화)" },
-  { CountDay: 3, Date: "4.19(수)" },
-  { CountDay: 4, Date: "4.20(목)" },
-  { CountDay: 5, Date: "4.21(금)" },
-  { CountDay: 6, Date: "4.22(토)" },
-  { CountDay: 7, Date: "4.23(일)" },
-];
+const ScheduleContainer = ({ travelDayList, firstDayDate, date, setDate }) => {
+  const { roomId } = useParams();
+  const dispatch = useDispatch();
 
-const ScheduleBox = () => {
-  const [value, setValue] = useState("1");
+  const [day, setDay] = useState("1");
+
+  const [delscheduleId, setDelscheduleId] = useState([]);
+
+  useEffect(() => {
+    if (date) dispatch(getSchedule({ roomId, date }));
+  }, [dispatch, date, roomId, firstDayDate, setDate]);
+
+  const { scheduleList } = useSelector((state) => state.schedule);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setDelscheduleId([]);
+    setDay(newValue);
   };
+
+  const delScheduleState = (id) => {
+    let copyDelSet = [...delscheduleId];
+    let newDelSet = [];
+    if (copyDelSet && copyDelSet.includes(id)) {
+      newDelSet = copyDelSet.filter((idx) => idx !== id);
+      setDelscheduleId(newDelSet);
+    } else {
+      // newDelSet = copyDelSet.push(id); //얜왜안됌?
+      copyDelSet.push(id);
+      newDelSet = copyDelSet;
+      setDelscheduleId(newDelSet);
+    }
+  };
+
+  const delScheduleFn = () => {
+    dispatch(delSchedule({ roomId, delscheduleId })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        dispatch(getSchedule({ roomId, date }));
+      }
+    });
+    setDelscheduleId([]);
+  };
+
+  const formatValue = (value = 0) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   return (
     <>
       <Box>
-        <TabContext value={value}>
+        <TabContext value={day}>
           <StyledBox sx={{ borderBottom: 2, borderColor: "#D8E2F4" }}>
             <StyledScheduleTabs
               indicatorColor="linear-gradient(270deg, #3884fd 0%, #9fa9ff 100%)"
               onChange={handleChange}
               aria-label="lab API tabs example"
             >
-              {ReservationDay.map((item, i) => {
+              {travelDayList.map(({ idx, date, day }) => {
+                const transformedDate =
+                  date.split("-")[1] + "." + date.split("-")[2];
                 return (
                   <StyleTab
-                    key={i}
+                    key={date}
                     label={
                       <DateBox>
-                        <Day>{item.CountDay}일차</Day>
-                        <Date>{item.Date}</Date>
+                        <Day>{idx}일차</Day>
+                        <Date>
+                          {transformedDate}({day})
+                        </Date>
                       </DateBox>
                     }
-                    value={`${i + 1}`}
+                    value={`${idx}`}
+                    onClick={() => {
+                      setDate(date);
+                      if (date) dispatch(getSchedule({ roomId, date }));
+                    }}
                   />
                 );
               })}
             </StyledScheduleTabs>
           </StyledBox>
           <ScheduleWrapper>
-            <StyledTabPanel value="1">
+            <StyledTabPanel value={day}>
+              <EditButtonSection>
+                {delscheduleId?.length ? (
+                  <button onClick={delScheduleFn}>선택삭제</button>
+                ) : null}
+              </EditButtonSection>
               <ColumnHeader>
                 <PlaceNameColumn>장소</PlaceNameColumn>
                 <DetailColumn>시간</DetailColumn>
@@ -261,99 +325,57 @@ const ScheduleBox = () => {
                 <NoteDetailColumn>비고</NoteDetailColumn>
               </ColumnHeader>
               <ScheduleDetails>
-                <ScheduleRow>
-                  <PlaceNameColumn>
-                    <input type="checkbox" />
-                    연돈이게최대몇자까지 들어갈까더가능
-                  </PlaceNameColumn>
-                  <DetailColumn>10:00</DetailColumn>
-                  <DetailColumn>필요</DetailColumn>
-                  <DetailColumn>식당</DetailColumn>
-                  <DetailFeeColumn>1,231,230원</DetailFeeColumn>
-                  <DetailLinkColumn>
-                    <span>
-                      {" "}
-                      <a
-                        href={"https://www.ncloud.com/charge/price"}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {" "}
-                        https://www.naver.com/kr.ja{" "}
-                      </a>{" "}
-                    </span>
-                  </DetailLinkColumn>
-                  <NoteDetailColumn>
-                    <span>
-                      {" "}
-                      제일깔끔하고 괜찮아보여서 선정했어요. 바보 이거 길어지{" "}
-                    </span>
-                  </NoteDetailColumn>
-                </ScheduleRow>
-                
-                <ScheduleRow>
-                  <PlaceNameColumn>
-                    <input type="checkbox" />
-                    연돈이게최대몇자까지 들어갈까더가능
-                  </PlaceNameColumn>
-                  <DetailColumn>10:00</DetailColumn>
-                  <DetailColumn>필요</DetailColumn>
-                  <DetailColumn>식당</DetailColumn>
-                  <DetailFeeColumn>1,231,230원</DetailFeeColumn>
-                  <DetailLinkColumn>
-                    <span>
-                      {" "}
-                      <a
-                        href={"https://www.ncloud.com/charge/price"}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {" "}
-                        https://www.naver.com/kr.ja{" "}
-                      </a>{" "}
-                    </span>
-                  </DetailLinkColumn>
-                  <NoteDetailColumn>
-                    <span>
-                      {" "}
-                      제일깔끔하고 괜찮아보여서 선정했어요. 바보 이거 길어지{" "}
-                    </span>
-                  </NoteDetailColumn>
-                </ScheduleRow>
-
-                <ScheduleRow>
-                  <PlaceNameColumn>
-                    <input type="checkbox" />
-                    연돈이게최대몇자까지 들어갈까더가능
-                  </PlaceNameColumn>
-                  <DetailColumn>10:00</DetailColumn>
-                  <DetailColumn>필요</DetailColumn>
-                  <DetailColumn>식당</DetailColumn>
-                  <DetailFeeColumn>1,231,230원</DetailFeeColumn>
-                  <DetailLinkColumn>
-                    <span>
-                      {" "}
-                      <a
-                        href={"https://www.ncloud.com/charge/price"}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {" "}
-                        https://www.naver.com/kr.ja{" "}
-                      </a>{" "}
-                    </span>
-                  </DetailLinkColumn>
-                  <NoteDetailColumn>
-                    <span>
-                      {" "}
-                      제일깔끔하고 괜찮아보여서 선정했어요. 바보 이거 길어지{" "}
-                    </span>
-                  </NoteDetailColumn>
-                </ScheduleRow>
+                {scheduleList ? (
+                  scheduleList.map((schedule) => {
+                    const extractedTime = schedule.time.slice(0, 5);
+                    const categoryCon = changeLanCategory(schedule.category);
+                    return (
+                      <ScheduleRow key={schedule.mapPlaceId}>
+                        <PlaceNameColumn>
+                          {schedule.isBooked !== null ? (
+                            <input type="checkbox" disabled={true} />
+                          ) : (
+                            <input
+                              type="checkbox"
+                              onChange={() => delScheduleState(schedule.id)}
+                            />
+                          )}
+                          {schedule.placeName}
+                        </PlaceNameColumn>
+                        <DetailColumn>{extractedTime}</DetailColumn>
+                        <DetailColumn>
+                          {schedule.isBooked === null
+                            ? "불필요"
+                            : schedule.isBooked === true
+                            ? "예약완료"
+                            : "필요"}
+                        </DetailColumn>
+                        <DetailColumn>{categoryCon}</DetailColumn>
+                        <DetailFeeColumn>
+                          {formatValue(schedule.price)}
+                        </DetailFeeColumn>
+                        <DetailLinkColumn>
+                          <span>
+                            <a
+                              href={schedule.link}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {schedule.link}
+                            </a>
+                          </span>
+                        </DetailLinkColumn>
+                        <NoteDetailColumn>
+                          <span> {schedule.etc} </span>
+                        </NoteDetailColumn>
+                      </ScheduleRow>
+                    );
+                  })
+                ) : (
+                  <ScheduleBlankPanel />
+                )}
               </ScheduleDetails>
             </StyledTabPanel>
-            <StyledTabPanel value="2"><ScheduleBlankPanel /></StyledTabPanel>
-            <StyledTabPanel value="3">Item Three</StyledTabPanel>
           </ScheduleWrapper>
         </TabContext>
       </Box>
@@ -361,4 +383,4 @@ const ScheduleBox = () => {
   );
 };
 
-export default ScheduleBox;
+export default ScheduleContainer;

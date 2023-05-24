@@ -13,6 +13,7 @@ import { getUserInfo } from "../Landing/userSlice";
 import Modal from "../../components/Modal";
 import RoomDeleteModal from "./Sidebar/DeleteMenuModal/RoomDeleteModal";
 import RoomEditModal from "./Sidebar/EditMenuModal/RoomEditModal";
+import InvitationModal from "./Sidebar/Invitation/InvitationModal";
 
 const TeamSpaceBox = styled.div`
   display: flex;
@@ -21,6 +22,7 @@ const TeamSpaceBox = styled.div`
 const SpaceContainer = styled.div`
   overflow-x: hidden;
   height: 100vh;
+  min-width: 140rem;
   flex: 2;
   display: flex;
   flex-direction: column;
@@ -29,19 +31,19 @@ const SpaceContainer = styled.div`
 `;
 
 function TeamSpace({ Auth }) {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [openRoomEditModal, setOpenRoomEditModal] = useState(false);
   const [openRoomDeleteModal, setOpenRoomDeleteModal] = useState(false);
+  const [openInvitationModal, setOpenInvitationModal] = useState(false);
   const [reserveList, setReserveList] = useState([]);
   const { role } = useParams();
 
-  // useEffect(() => {
-  //   // if (Auth) {
-  //   //   console.log(Auth);
-  //   //   navigate(`/login`);
-  //   //   return;
-  //   // }
-  // }, [dispatch, roomId]);
+  useEffect(() => {
+    if (!localStorage.getItem("accessToken")) {
+      navigate(`/login`);
+      return;
+    }
+  }, [navigate]);
 
   return (
     <>
@@ -49,6 +51,7 @@ function TeamSpace({ Auth }) {
         <Sidebar
           setOpenRoomDeleteModal={setOpenRoomDeleteModal}
           setOpenRoomEditModal={setOpenRoomEditModal}
+          setOpenInvitationModal={setOpenInvitationModal}
         />
         <SpaceContainer>
           {
@@ -63,12 +66,17 @@ function TeamSpace({ Auth }) {
         </SpaceContainer>
         {openRoomEditModal && (
           <Modal width="51.8rem" setIsOpenModal={setOpenRoomEditModal}>
-            <RoomEditModal />
+            <RoomEditModal setOpenRoomEditModal={setOpenRoomEditModal} />
           </Modal>
         )}
         {openRoomDeleteModal && (
           <Modal width="51.8rem" setIsOpenModal={setOpenRoomDeleteModal}>
             <RoomDeleteModal />
+          </Modal>
+        )}
+        {openInvitationModal && (
+          <Modal width="72.8rem" setIsOpenModal={setOpenInvitationModal}>
+            <InvitationModal />
           </Modal>
         )}
       </TeamSpaceBox>

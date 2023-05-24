@@ -28,7 +28,6 @@ const NoticeWrapper = styled.div`
 `;
 
 const SmallBlank = ({ classify }) => {
-  console.log(classify);
   return (
     <BlankWrapper>
       <Icons.AiOutlineCheckCircle />

@@ -8,19 +8,22 @@ import {
   ButtonFab,
   Image,
   Title,
-  Explanation
+  Explanation,
 } from "./Styles";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import tokenApi from "../../../lib/customAPI";
-import { changeProfileImage, deleteProfileImage } from "../LoggedUserSlice";
+import {
+  changeProfileImage,
+  deleteProfileImage,
+  getLoggedInfo,
+} from "../LoggedUserSlice";
 import defaultImage from "../../../assets/images/random1.png";
 
 const AddImageModal = ({ setIsOpen, image, setImage }) => {
   const dispatch = useDispatch();
   const imageRef = useRef();
-  const [imageName, setImageName] = useState("");
-  const { loggedInfo } = useSelector((state) => state.loggedInUser);
+  const { loggedInfo, profile } = useSelector((state) => state.loggedInUser);
 
   useEffect(() => {
     setImage(loggedInfo.profile);
@@ -29,7 +32,6 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
 
   const imageHandler = () => {
     const file = imageRef.current.files[0];
-    setImageName(file.name);
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
@@ -39,19 +41,21 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
 
   const submitHandler = async () => {
     let header;
-    if (imageRef.current.files[0] !== undefined) header = imageRef.current.files[0].type;
-    else header = 'image/*'
+    if (imageRef.current.files[0] !== undefined)
+      header = imageRef.current.files[0].type;
+    else header = "image/*";
 
     try {
       await tokenApi.get("api/users/image/presigned-url").then((res) => {
         const address = res.data;
         axios
           .put(address, imageRef.current.files[0], {
-            headers: { "Content-Type": `${header}` }
+            headers: { "Content-Type": `${header}` },
           })
           .then((res) => {
-            console.log("Success", res.data);
-            dispatch(changeProfileImage());
+            dispatch(changeProfileImage()).then((res) => {
+              dispatch(getLoggedInfo());
+            });
             setIsOpen(false);
           })
           .catch((err) => console.log(err));
@@ -62,16 +66,17 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
   };
 
   const deleteImageHandler = () => {
-    dispatch(deleteProfileImage);
-    setImageName("");
-    setImage("");
+    dispatch(deleteProfileImage).then((res) => {
+      dispatch(getLoggedInfo());
+      setImage("");
+    });
   };
 
   return (
     <>
       <Blur></Blur>
       <ContentWrapper>
-        <Section height="72px">
+        <Section height="7.2rem">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Title>PROFILE</Title>
             <Icons.MdOutlineClose
@@ -82,18 +87,15 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
           </div>
           <h1>프로필 사진 등록</h1>
         </Section>
-        <Section height="342px">
+        <Section height="34.2rem">
           <h1>프로필 사진을 등록해 주세요.</h1>
-          <Image
-            src={image ? image : defaultImage}
-            alt="프로필 이미지"
-          />
+          <Image src={image ? image : defaultImage} alt="프로필 이미지" />
           <div
             style={{
               display: "flex",
               justifyContent: "center",
-              gap: "10px",
-              marginBottom: "15px"
+              gap: "1rem",
+              marginBottom: "1.5rem",
             }}
           >
             <div>
@@ -111,23 +113,20 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
                   <Icons.HiUpload
                     size="20"
                     style={{
-                      marginRight: "13px",
-                      color: "black"
+                      marginRight: "1.3rem",
+                      color: "black",
                     }}
                   />
                   사진 업로드
                 </ButtonFab>
               </label>
             </div>
-            <ButtonFab
-              backgroundColor="#fff"
-              onClick={deleteImageHandler}
-            >
+            <ButtonFab backgroundColor="#fff" onClick={deleteImageHandler}>
               <Icons.TbTrash
                 size="19"
                 style={{
-                  marginRight: "13px",
-                  color: "#ff4a4a"
+                  marginRight: "1.3rem",
+                  color: "#ff4a4a",
                 }}
               />
               사진 지우기
@@ -138,10 +137,15 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
             <p>* jpg, jpeg, png 파일만 업로드 가능합니다.</p>
           </Explanation>
         </Section>
-        <Section height="85px">
+        <Section height="8.5rem">
           <Button
             backgroundColor="#c4c4c4"
-            style={{ color: 'white', fontSize: "16px", fontWeight: '600', width: '107px'}}
+            style={{
+              color: "white",
+              fontSize: "1.6rem",
+              fontWeight: "600",
+              width: "10.7rem",
+            }}
             onClick={submitHandler}
           >
             등록 완료

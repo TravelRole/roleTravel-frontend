@@ -16,8 +16,14 @@ const HeaderWrap = styled.header`
   display: flex;
   align-items: center;
   height: 10rem;
-
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
   h1 {
+    cursor: pointer;
     img {
       width: 20%;
       min-width: 10rem;
@@ -129,7 +135,7 @@ const Header = () => {
   }, [dispatch, location.pathname]);
 
   if (
-    location.pathname === "/landing" ||
+    location.pathname === "/" ||
     location.pathname === "/login" ||
     location.pathname === "/sign" ||
     location.pathname === "/searchIdPw"
@@ -137,7 +143,7 @@ const Header = () => {
     return (
       <HeaderWrap>
         <Container flex alignCenter>
-          <h1>
+          <h1 onClick={() => navigate("/")}>
             <img src={logo} alt="여행역할 로고" />
           </h1>
         </Container>
@@ -171,7 +177,7 @@ const Header = () => {
               </dd>
             </dl>
             <ul>
-              <li onClick={() => navigate("/setUser")}>
+              <li onClick={() => navigate("/useraccount")}>
                 <span>
                   <HiUser />
                 </span>

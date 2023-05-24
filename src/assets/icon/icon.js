@@ -21,7 +21,8 @@ import {
   HiOutlineCalendar,
   HiUpload,
   HiCheckCircle,
-  HiOutlinePlusSm
+  HiOutlinePlusSm,
+  HiCheck,
 } from "react-icons/hi";
 
 import {
@@ -90,7 +91,8 @@ const Icons = {
   HiUpload,
   TbTrash,
   HiCheckCircle,
-  HiOutlinePlusSm
+  HiOutlinePlusSm,
+  HiCheck,
 };
 
 export default Icons;

@@ -1,51 +1,50 @@
 import React, { useCallback } from "react";
+import Icons from "../../../assets/icon/icon";
 import styled from "styled-components";
 
 const InvitationLinkLi = styled.li`
   width: 100%;
-  max-width: 20rem;
-  height: 22rem;
-  position: relative;
-  background-image: ${({ select }) =>
-    select
-      ? `linear-gradient(
-      158.89deg,
-      #3884fd 13.46%,
-      #6ca4fc 85.46%
-    )`
-      : `linear-gradient(
-    163.47deg,
-    #f2f5fb 22.06%,
-    #eff2fa 36.99%,
-    #e6eaf4 68.41%
-  )`};
-  background-repeat: no-repeat;
+  padding: 1.4rem 1.8rem;
+  border: ${({ select }) =>
+    select ? ".1rem solid #384ffd" : ".1rem solid #DADADA"};
   border-radius: 0.8rem;
+  background-color: ${({ select }) => (select ? "#F4F6FB" : "#fff")};
   cursor: pointer;
-
-  i {
-    position: absolute;
-    right: 1.4rem;
-    bottom: 2rem;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   dl {
-    padding: 1.6rem;
     dt {
       font-size: 2.2rem;
-      color: ${({ select }) => (select ? `#fff` : `#000`)};
-      font-weight: 500;
-      margin-bottom: 1.2rem;
+      color: ${({ select }) => (select ? `#3884fd` : `#141414`)};
+      font-weight: 400;
+      margin-bottom: 0.8rem;
     }
     dd {
       font-size: 1.6rem;
-      line-height: 2.2rem;
       font-weight: 400;
-      color: ${({ select }) => (select ? `#fff` : `#838999`)};
+      color: ${({ select }) => (select ? `#3884fd` : `#8B8B8B`)};
+    }
+  }
+
+  p {
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    border: ${({ select }) => (select ? "none" : ".1rem solid #d9d9d9")};
+    background-color: ${({ select }) => (select ? "#3884fd" : "#fff")};
+    span {
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      svg {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 `;
@@ -72,13 +71,17 @@ const InvitationLinkCard = ({
 
   return (
     <InvitationLinkLi onClick={onClickRole} select={isSelected}>
-      <i>
-        <img src={img} alt={title} />
-      </i>
       <dl>
         <dt>{title}</dt>
-        {content}
+        <dd>{content}</dd>
       </dl>
+      <p>
+        {isSelected && (
+          <span>
+            <Icons.HiCheck />
+          </span>
+        )}
+      </p>
     </InvitationLinkLi>
   );
 };

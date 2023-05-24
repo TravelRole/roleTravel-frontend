@@ -5,36 +5,39 @@ import tokenApi from "../../../lib/customAPI";
 //날짜에 맞는 예약리스트 가져오기
 export const getReserveList = createAsyncThunk(
   "reservation/getReserveList",
-  async (roomId, date) => {
+  async (payload) => {
     try {
       const res = await tokenApi.get(
-        `api/room/${roomId}/board/book/?date=${date}`
+        `api/room/${payload.roomId}/board/book/?date=${payload.date}`
       );
       return res.data;
-    } catch (error) {
-      console.log("서버에러입니다");
-    }
-  }
-);
-
-//예약정보 수정
-export const addReserveList = createAsyncThunk(
-  "reservation/addReserveList",
-  async (roomId, thunkAPI) => {
-    try {
-      await tokenApi.patch(`api/room/${roomId}/board/book`);
     } catch (error) {
       console.log(error);
     }
   }
 );
 
-//예약 완료
+//예약정보 수정
+export const editReserveInfo = createAsyncThunk(
+  "reservation/editReserveInfo",
+  async (payload, thunkAPI) => {
+    try {
+      await tokenApi.patch(`api/room/${payload.roomId}/board/book` , payload.requestEditInfo );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+//예약 완료로 패치
 export const bookedReserveList = createAsyncThunk(
   "reservation/delSchedule",
-  async (roomId, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      await tokenApi.delete(`api/room/${roomId}/board/booked`);
+      await tokenApi.patch(
+        `api/room/${payload.roomId}/board/booked`,
+        payload.bookInfo
+      );
     } catch (error) {
       console.log(error);
     }
@@ -52,13 +55,13 @@ const reservationSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(addReserveList.pending, (state) => {
+      .addCase(editReserveInfo.pending, (state) => {
         state.isReservationLoading = true;
       })
-      .addCase(addReserveList.fulfilled, (state, action) => {
+      .addCase(editReserveInfo.fulfilled, (state, action) => {
         state.isReservationLoading = false;
       })
-      .addCase(addReserveList.rejected, (state, action) => {
+      .addCase(editReserveInfo.rejected, (state, action) => {
         state.isReservationLoading = false;
       })
       .addCase(bookedReserveList.pending, (state) => {
@@ -75,7 +78,7 @@ const reservationSlice = createSlice({
       })
       .addCase(getReserveList.fulfilled, (state, action) => {
         state.isWantPlaceLoading = false;
-        state.isReservationLoading = action.payload;
+        state.reservationList = action.payload;
       })
       .addCase(getReserveList.rejected, (state, action) => {
         state.isReservationLoading = false;
