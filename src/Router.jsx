@@ -18,7 +18,7 @@ import InvitationLink from "./features/Landing/InvitationLink";
 const routers = [
   {
     id: 0,
-    path: "/landing",
+    path: "/",
     label: "Home",
     element: <Landing />,
     withAuth: false,

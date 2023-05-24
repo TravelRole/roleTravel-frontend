@@ -488,6 +488,14 @@ const Landing = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      navigate("/spaceList");
+      return;
+    }
+  }, [navigate]);
+
   return (
     <LandingWrap>
       <Header />

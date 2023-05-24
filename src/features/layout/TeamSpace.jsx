@@ -30,20 +30,19 @@ const SpaceContainer = styled.div`
 `;
 
 function TeamSpace({ Auth }) {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [openRoomEditModal, setOpenRoomEditModal] = useState(false);
   const [openRoomDeleteModal, setOpenRoomDeleteModal] = useState(false);
   const [openInvitationModal, setOpenInvitationModal] = useState(false);
   const [reserveList, setReserveList] = useState([]);
   const { role } = useParams();
 
-  // useEffect(() => {
-  //   // if (Auth) {
-  //   //   console.log(Auth);
-  //   //   navigate(`/login`);
-  //   //   return;
-  //   // }
-  // }, [dispatch, roomId]);
+  useEffect(() => {
+    if (!localStorage.getItem("accessToken")) {
+      navigate(`/login`);
+      return;
+    }
+  }, [navigate]);
 
   return (
     <>
