@@ -198,7 +198,7 @@ const CommentContent = ({ openComment }) => {
         <CommentsWrap>
           {commentList.length > 0 ? (
             commentList.map((data, index) => (
-              <ParentComment key={index} selectPage={selectPage} {...data} />
+              <ParentComment key={data.id} selectPage={selectPage} {...data} />
             ))
           ) : (
             <NotCommentWrap>

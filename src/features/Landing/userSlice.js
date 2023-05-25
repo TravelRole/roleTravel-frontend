@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import tokenApi from "../../lib/customAPI";
-import dog from "../../assets/images/dog.jpeg";
+import userProfile from "../../assets/images/userProfile.png";
 
 const initialState = {
   user: null,
@@ -16,7 +16,7 @@ export const getUserInfo = createAsyncThunk("user/userInfo", async () => {
     userId: userId,
     name: name,
     email: email,
-    profile: profile === null ? dog : profile,
+    profile: profile === null ? userProfile : profile,
   };
   return userInfo;
 });

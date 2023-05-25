@@ -155,8 +155,6 @@ const AllPlanContent = () => {
   const { startDate, endDate } = roomData ?? {};
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  console.log(data)
-
   const handleSlider = useCallback(
     (e) => {
       const { className } = e.currentTarget;

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import dog from "../../../../../assets/images/dog.jpeg";
+import userProfile from "../../../../../assets/images/userProfile.png";
 import React from "react";
 
 const AllPlanMemberCardWrap = styled.div`
@@ -56,7 +56,7 @@ const AllPlanMemberCard = ({ name, email, profile, roles }) => {
     <AllPlanMemberCardWrap>
       <div>
         <i>
-          <img src={profile === null ? dog : profile} alt={name} />
+          <img src={profile === null ? userProfile : profile} alt={name} />
         </i>
         <dl>
           <dt>{name}</dt>
