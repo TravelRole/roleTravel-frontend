@@ -261,6 +261,8 @@ function Schedule({ setReserveList }) {
   const { wantPlaceList } = useSelector((state) => state.wantPlace);
   const { travelDayList } = useSelector((state) => state.travelDay);
 
+  const isScheduler = wantPlaceList.isScheduler
+
   /** 찜장소 가져오기 */
   const [searchPlaceList, setSearchPlaceList] = useState([]);
 
@@ -409,6 +411,7 @@ function Schedule({ setReserveList }) {
                             Info={{ setInfo, info }}
                             setIsOpenModal={setIsOpenModal}
                             setModalData={setModalData}
+                            isScheduler={isScheduler}
                           />
                         );
                       })}
@@ -439,6 +442,7 @@ function Schedule({ setReserveList }) {
                             Info={{ setInfo, info }}
                             setIsOpenModal={setIsOpenModal}
                             setModalData={setModalData}
+                            isScheduler={isScheduler}
                           />
                         );
                       })}
