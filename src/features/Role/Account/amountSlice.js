@@ -28,21 +28,6 @@ export const editAllAmount = createAsyncThunk(
   }
 );
 
-//예약 완료로 패치
-export const bookedReserveList = createAsyncThunk(
-  "reservation/delSchedule",
-  async (payload, thunkAPI) => {
-    try {
-      await tokenApi.patch(
-        `api/room/${payload.roomId}/board/booked`,
-        payload.bookInfo
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  }
-);
-
 const initialState = {
   isAmountLoading: false,
   amountTotal: 0,
@@ -61,15 +46,6 @@ const amountSlice = createSlice({
         state.isAmountLoading = false;
       })
       .addCase(editAllAmount.rejected, (state, action) => {
-        state.isAmountLoading = false;
-      })
-      .addCase(bookedReserveList.pending, (state) => {
-        state.isAmountLoading = true;
-      })
-      .addCase(bookedReserveList.fulfilled, (state, action) => {
-        state.isAmountLoading = false;
-      })
-      .addCase(bookedReserveList.rejected, (state, action) => {
         state.isAmountLoading = false;
       })
       .addCase(getAllAmount.pending, (state) => {
