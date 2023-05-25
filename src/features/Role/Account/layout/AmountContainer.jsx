@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Icons from "../../../../assets/icon/icon";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getAllAmount } from "../amountSlice";
+import { editAllAmount, getAllAmount } from "../amountSlice";
 
 const AmountWrapper = styled.div`
   display: flex;
@@ -32,10 +32,13 @@ const AmountBox = styled.div`
     font-weight: 600;
     font-size: 1.6rem;
   }
+
+  input,
   p {
     color: #141414;
     font-size: 3rem;
     font-weight: 600;
+    background-color: transparent;
   }
 
   span {
@@ -46,6 +49,7 @@ const AmountBox = styled.div`
 
   button {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     border: none;
@@ -66,27 +70,92 @@ const AmountBox = styled.div`
       margin: 0;
     }
   }
+
+  section {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    position: absolute;
+    right: 0;
+    padding: 0 2.4rem 0 0;
+    div {
+      border-bottom: 1px solid #a7a7a7;
+      cursor: pointer;
+    }
+  }
 `;
 
 function AmountContainer() {
   const { roomId } = useParams();
   const dispatch = useDispatch();
 
+  const allAmountInput = useRef();
   useEffect(() => {
     dispatch(getAllAmount(roomId));
   }, [roomId, dispatch]);
 
   const { amountTotal } = useSelector((state) => state.amountTotal);
-  console.log(amountTotal)
+  console.log(amountTotal);
+
+  const [shareAmount, setShareAmount] = useState();
+  const [canEditShare, setCanEditShare] = useState(false);
+
+  useEffect(() => {
+    setShareAmount(amountTotal.expenses);
+  }, [amountTotal.expenses]);
+
   return (
     <AmountWrapper>
       <AmountBox>
         <header>공통 경비</header>
-        <p>{amountTotal.expenses}원</p>
+
+        <input
+          ref={allAmountInput}
+          value={canEditShare ? shareAmount : amountTotal.expenses}
+          disabled={canEditShare ? false : true}
+          onChange={(e) => {
+            setShareAmount(e.target.value);
+          }}
+        />
+
         <span>수정하기를 클릭해 공동 경비를 입력해보세요!</span>
-        <button>
-          <span>수정하기</span> <Icons.FaChevronRight />{" "}
-        </button>
+        {canEditShare ? (
+          <section>
+            <div
+              onClick={() => {
+                setCanEditShare((pre) => !pre);
+              }}
+            >
+              <span>취소</span>
+            </div>
+            <div
+              onClick={() => {
+                dispatch(editAllAmount({ roomId, shareAmount }))
+                  .then((res) => {
+                    if (res.meta.requestStatus === "fulfilled") {
+                      dispatch(getAllAmount(roomId));
+                    }
+                  })
+                  .then(() => {
+                    setCanEditShare((pre) => !pre);
+                  });
+              }}
+            >
+              <span>확인</span>
+            </div>
+          </section>
+        ) : (
+          <button
+            onClick={() => {
+              setCanEditShare((pre) => !pre);
+              setTimeout(() => {
+                allAmountInput.current.focus();
+              }, 1);
+            }}
+          >
+            <span>수정하기</span> <Icons.FaChevronRight />{" "}
+          </button>
+        )}
       </AmountBox>
       <AmountBox>
         <header>남은 경비</header>

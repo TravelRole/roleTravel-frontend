@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import tokenApi from "../../../lib/customAPI";
 
-//날짜에 맞는 회계내역 조회
+//공동경비 조회
 export const getAllAmount = createAsyncThunk(
   "amount/getAllAmount",
   async (roomId) => {
@@ -15,15 +15,13 @@ export const getAllAmount = createAsyncThunk(
   }
 );
 
-//예약정보 수정
-export const editReserveInfo = createAsyncThunk(
-  "reservation/editReserveInfo",
+//공동경비 수정
+export const editAllAmount = createAsyncThunk(
+  "amount/editAllAmount",
   async (payload, thunkAPI) => {
+    console.log(payload)
     try {
-      await tokenApi.patch(
-        `api/room/${payload.roomId}/board/book`,
-        payload.requestEditInfo
-      );
+      await tokenApi.put(`/api/room/${payload.roomId}/expenses` ,{expenses : payload.shareAmount});
     } catch (error) {
       console.log(error);
     }
@@ -56,13 +54,13 @@ const amountSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(editReserveInfo.pending, (state) => {
+      .addCase(editAllAmount.pending, (state) => {
         state.isAmountLoading = true;
       })
-      .addCase(editReserveInfo.fulfilled, (state, action) => {
+      .addCase(editAllAmount.fulfilled, (state, action) => {
         state.isAmountLoading = false;
       })
-      .addCase(editReserveInfo.rejected, (state, action) => {
+      .addCase(editAllAmount.rejected, (state, action) => {
         state.isAmountLoading = false;
       })
       .addCase(bookedReserveList.pending, (state) => {

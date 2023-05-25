@@ -317,9 +317,9 @@ function Account() {
   }, [feeMethod]);
   const { accountList } = useSelector((state) => state.accountList);
 
-  // console.log(accountList);
+  console.log(accountList);
 
-  const [isOpenModal, setIsOpenModal] = useState(true);
+  const [isOpenModal, setIsOpenModal] = useState(false);
   return (
     <>
       <Wrapper>
