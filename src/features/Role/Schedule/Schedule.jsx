@@ -420,7 +420,7 @@ function Schedule({ setReserveList }) {
               </StyledTabPanel>
               <StyledTabPanel value={"wish"}>
                 <SearchResultContainer>
-                  {true ? (
+                  {wantPlaceList?.wantPlaces?.length ? (
                     <ul>
                       {wantPlaceList?.wantPlaces?.map((place) => {
                         const isExist = wantPlaceList.wantPlaces.filter(
