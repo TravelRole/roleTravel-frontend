@@ -1,11 +1,17 @@
 import styled from "styled-components";
-import React, { useState } from "react";
-import Icons from "../../../assets/icon/icon";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import AmountContainer from "./layout/AmountContainer";
+import { useDispatch, useSelector } from "react-redux";
+import { getTravelDay } from "../Schedule/travelDaySlice";
+import { useParams } from "react-router-dom";
+import { getAccountList } from "./accountSlice";
+import Modal from "../../../components/Modal";
+import AddEditAccountModal from "./layout/AddEditAccountModal";
 
 const Wrapper = styled.div`
   display: flex;
@@ -37,68 +43,6 @@ const PageHeader = styled.header`
   padding: 7.8rem 0 3rem 6rem;
   font-size: 3rem;
   font-weight: 600;
-`;
-
-const AmountContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 2.5rem;
-  padding: 0 6rem;
-  padding-bottom: 6rem;
-`;
-const AmountBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  width: 100%;
-  height: 14.4rem;
-  padding: 2.5rem;
-  position: relative;
-
-  background-color: white;
-  border-radius: 1.6rem;
-
-  header {
-    color: #8b8b8b;
-    font-weight: 600;
-    font-size: 1.6rem;
-  }
-  p {
-    color: #141414;
-    font-size: 3rem;
-    font-weight: 600;
-  }
-
-  span {
-    color: #a7a7a7;
-    font-size: 1.4rem;
-    font-weight: 500;
-  }
-
-  button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    background-color: white;
-    position: absolute;
-    right: 0;
-    padding: 0 2.4rem 0 0;
-    cursor: pointer;
-
-    span,
-    svg {
-      font-size: 1.6rem;
-      font-weight: 500;
-      margin-right: 0.8rem;
-      color: #a7a7a7;
-    }
-    svg {
-      margin: 0;
-    }
-  }
 `;
 
 const AmonutDetailContainer = styled.div``;
@@ -148,142 +92,6 @@ const AmountDetailBox = styled.div`
   height: 50rem;
 `;
 
-function Account() {
-  const [feeMethod, setFeeMethod] = useState("all");
-
-  const [value, setValue] = useState("1");
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  return (
-    <>
-      <Wrapper>
-        <PageHeader>회계 목록</PageHeader>
-        <AmountContainer>
-          <AmountBox>
-            <header>공통 경비</header>
-            <p>1,500,000원</p>
-            <span>수정하기를 클릭해 공동 경비를 입력해보세요!</span>
-            <button>
-              <span>수정하기</span> <Icons.FaChevronRight />{" "}
-            </button>
-          </AmountBox>
-          <AmountBox>
-            <header>남은 경비</header>
-            <p>340,000원</p>
-            <span>잔액을 파악해 경비를 효율적으로 관리해 보세요!</span>
-          </AmountBox>
-          <AmountBox>
-            <header>여행 총 지출 금액</header>
-            <p>1,160,000원</p>
-            <span>일자별 지출 금액을 모두 합산한 금액입니다.</span>
-          </AmountBox>
-        </AmountContainer>
-        <AmonutDetailContainer>
-          <AmountDetailHeader>
-            <header>일자별 지출 금액</header>
-            <FilterSection>
-              <div
-                className={feeMethod === "all" ? "active" : null}
-                onClick={() => setFeeMethod("all")}
-              >
-                전체
-              </div>
-              <div
-                className={feeMethod === "card" ? "active" : null}
-                onClick={() => setFeeMethod("card")}
-              >
-                카드
-              </div>
-              <div
-                className={feeMethod === "cash" ? "active" : null}
-                onClick={() => setFeeMethod("cash")}
-              >
-                현금
-              </div>
-            </FilterSection>
-          </AmountDetailHeader>
-          <AmountDetailBox>
-            <Box>
-              <TabContext value={value}>
-                <StyledBox sx={{ borderBottom: 2, borderColor: "#D8E2F4" }}>
-                  <StyledScheduleTabs
-                    indicatorColor="linear-gradient(270deg, #3884fd 0%, #9fa9ff 100%)"
-                    onChange={handleChange}
-                    aria-label="lab API tabs example"
-                  >
-                    {ReservationDay.map((item, i) => {
-                      return (
-                        <StyleTab
-                          key={i}
-                          label={
-                            <DateBox>
-                              <Day>{item.CountDay}일차</Day>
-                              <Date>{item.Date}</Date>
-                            </DateBox>
-                          }
-                          value={`${i + 1}`}
-                        />
-                      );
-                    })}
-                  </StyledScheduleTabs>
-                </StyledBox>
-                <ScheduleWrapper>
-                  <StyledTabPanel value="1">
-                    <ColumnHeader>
-                      <PlaceNameColumn>지출 내역</PlaceNameColumn>
-                      <DetailColumn>결제수단</DetailColumn>
-                      <DetailColumn>카테고리</DetailColumn>
-                      <DetailColumn>금액 </DetailColumn>
-                      <DetailFeeColumn>예약 비고</DetailFeeColumn>
-                      <NoteDetailColumn>회계 비고</NoteDetailColumn>
-                    </ColumnHeader>
-                    <ScheduleDetails>
-                      <ScheduleRow>
-                        <PlaceNameColumn>
-                          <input type="checkbox" />
-                          연돈이게최대몇자까지
-                        </PlaceNameColumn>
-                        <DetailColumn>10:00</DetailColumn>
-                        <DetailColumn>필요</DetailColumn>
-                        <DetailColumn>식당</DetailColumn>
-                        <DetailFeeColumn>
-                          예약비고 텍스트가 이곳에 들어갑니다
-                        </DetailFeeColumn>
-                        <NoteDetailColumn>
-                          회계비고 텍스트가 이곳에 들어갑니다
-                        </NoteDetailColumn>
-                      </ScheduleRow>
-                      <AllAcountRow>
-                        <span>총 지출 금액</span>
-                        <span>1,231,230원</span>
-                      </AllAcountRow>
-                    </ScheduleDetails>
-                  </StyledTabPanel>
-                  <StyledTabPanel value="2">two</StyledTabPanel>
-                  <StyledTabPanel value="3">Item Three</StyledTabPanel>
-                </ScheduleWrapper>
-              </TabContext>
-            </Box>
-          </AmountDetailBox>
-        </AmonutDetailContainer>
-      </Wrapper>
-    </>
-  );
-}
-export default Account;
-
-const ReservationDay = [
-  { CountDay: 1, Date: "4.17(월)" },
-  { CountDay: 2, Date: "4.18(화)" },
-  { CountDay: 3, Date: "4.19(수)" },
-  { CountDay: 4, Date: "4.20(목)" },
-  { CountDay: 5, Date: "4.21(금)" },
-  { CountDay: 6, Date: "4.22(토)" },
-  { CountDay: 7, Date: "4.23(일)" },
-];
-
 const StyledBox = styled(Box)`
   padding-left: 6rem;
 `;
@@ -307,9 +115,10 @@ const StyledScheduleTabs = styled(TabList)`
 const DateBox = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   text-align: left;
   width: 100%;
-  padding-bottom: 1.2rem;
+  padding-bottom: 1.5rem;
   padding-right: 7.5rem;
 `;
 
@@ -321,7 +130,7 @@ const Day = styled.div`
 
 const Date = styled.div`
   font-family: "Pretendard";
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: rgba(132, 144, 164, 1);
 `;
 
@@ -396,6 +205,29 @@ const DetailColumn = styled(Column)`
 
 const DetailFeeColumn = styled(DetailColumn)`
   width: 28%;
+
+  span {
+    height: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    font-size: 1.6rem;
+
+    &::-webkit-scrollbar-button {
+      width: 0;
+      height: 0;
+    }
+    &::-webkit-scrollbar {
+      height: 0.4rem;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background-color: #cdcdf4;
+    }
+  }
 `;
 
 const NoteColumn = styled(Column)`
@@ -458,3 +290,143 @@ const AllAcountRow = styled(ScheduleRow)`
     color: #333333;
   }
 `;
+
+function Account() {
+  const dispatch = useDispatch();
+  const { roomId } = useParams();
+  const [feeMethod, setFeeMethod] = useState(undefined);
+
+  const [value, setValue] = useState("1");
+
+  const { travelDayList } = useSelector((state) => state.travelDay);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const firstDay = travelDayList[0]?.date;
+  const [date, setDate] = useState();
+
+  useEffect(() => {
+    setDate(firstDay);
+    dispatch(getTravelDay(roomId));
+  }, [firstDay, dispatch, roomId]);
+
+  useEffect(() => {
+    dispatch(getAccountList({ roomId, date, feeMethod }));
+  }, [feeMethod]);
+  const { accountList } = useSelector((state) => state.accountList);
+
+  // console.log(accountList);
+
+  const [isOpenModal, setIsOpenModal] = useState(true);
+  return (
+    <>
+      <Wrapper>
+        <PageHeader>회계 목록</PageHeader>
+        <AmountContainer />
+        <AmonutDetailContainer>
+          <AmountDetailHeader>
+            <header>일자별 지출 금액</header>
+            <FilterSection>
+              <div
+                className={feeMethod === undefined ? "active" : null}
+                onClick={() => setFeeMethod(undefined)}
+              >
+                전체
+              </div>
+              <div
+                className={feeMethod === "card" ? "active" : null}
+                onClick={() => setFeeMethod("card")}
+              >
+                카드
+              </div>
+              <div
+                className={feeMethod === "credit" ? "active" : null}
+                onClick={() => setFeeMethod("credit")}
+              >
+                현금
+              </div>
+            </FilterSection>
+          </AmountDetailHeader>
+          <AmountDetailBox>
+            <Box>
+              <TabContext value={value}>
+                <StyledBox sx={{ borderBottom: 2, borderColor: "#D8E2F4" }}>
+                  <StyledScheduleTabs
+                    indicatorColor="linear-gradient(270deg, #3884fd 0%, #9fa9ff 100%)"
+                    onChange={handleChange}
+                    aria-label="lab API tabs example"
+                  >
+                    {travelDayList.map(({ idx, date, day }) => {
+                      const transformedDate =
+                        date.split("-")[1] + "." + date.split("-")[2];
+                      return (
+                        <StyleTab
+                          key={date}
+                          label={
+                            <DateBox>
+                              <Day>{idx}일차</Day>
+                              <Date>
+                                {transformedDate}({day})
+                              </Date>
+                            </DateBox>
+                          }
+                          value={`${idx}`}
+                          onClick={() => {
+                            setDate(date);
+                          }}
+                        />
+                      );
+                    })}
+                  </StyledScheduleTabs>
+                </StyledBox>
+                <ScheduleWrapper>
+                  <StyledTabPanel value={value}>
+                    <ColumnHeader>
+                      <PlaceNameColumn>지출 내역</PlaceNameColumn>
+                      <DetailColumn>결제수단</DetailColumn>
+                      <DetailColumn>카테고리</DetailColumn>
+                      <DetailColumn>금액 </DetailColumn>
+                      <DetailFeeColumn>예약 비고</DetailFeeColumn>
+                      <NoteDetailColumn>회계 비고</NoteDetailColumn>
+                    </ColumnHeader>
+                    <ScheduleDetails>
+                      <ScheduleRow>
+                        <PlaceNameColumn>
+                          <input type="checkbox" />
+                          연돈이게최대몇자까지
+                        </PlaceNameColumn>
+                        <DetailColumn>10:00</DetailColumn>
+                        <DetailColumn>필요</DetailColumn>
+                        <DetailColumn>식당</DetailColumn>
+                        <DetailFeeColumn>
+                          <span>예약비고 텍스트가 이곳에 들어갑니다 </span>
+                        </DetailFeeColumn>
+                        <NoteDetailColumn>
+                          <span>회계비고 텍스트가 이곳에 들어갑니다 </span>
+                        </NoteDetailColumn>
+                      </ScheduleRow>
+                      <AllAcountRow>
+                        <span>총 지출 금액</span>
+                        <span>1,231,230원</span>
+                      </AllAcountRow>
+                    </ScheduleDetails>
+                  </StyledTabPanel>
+                </ScheduleWrapper>
+              </TabContext>
+            </Box>
+          </AmountDetailBox>
+        </AmonutDetailContainer>
+        {isOpenModal ? (
+          <Modal width="52rem" setIsOpenModal={setIsOpenModal}>
+            <AddEditAccountModal
+              setIsOpenModal={setIsOpenModal}
+            />
+          </Modal>
+        ) : null}
+      </Wrapper>
+    </>
+  );
+}
+export default Account;

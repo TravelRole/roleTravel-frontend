@@ -25,12 +25,15 @@ import { getTravelList } from "../SpaceList/travelSlice";
 
 const LoginWrap = styled.div`
   width: 100%;
-  height: calc(100vh - 10rem);
+  height: 100vh;
   background-image: url(${authBg});
   background-size: cover cover;
   background-repeat: no-repeat;
   background-position: 100% 100%;
   padding-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const LoginContainer = styled.div`

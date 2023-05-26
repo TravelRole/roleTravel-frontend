@@ -1,7 +1,17 @@
 import { Content, Dot, EssentialsSpan, Section } from "../Styles";
 import Checkbox from "./CheckBox";
+import DeleteCheckBox from "./DeleteCheckBox";
 
-const Sections = ({ data, page, defaultPages, resize, setData }) => {
+const Sections = ({
+  page,
+  defaultPages,
+  resize,
+  condition,
+  deleteList,
+  setDeleteList,
+  data,
+  setData,
+}) => {
   return (
     <Content width={resize - 150}>
       {Object.keys(data)
@@ -10,24 +20,24 @@ const Sections = ({ data, page, defaultPages, resize, setData }) => {
           <Section key={index}>
             <EssentialsSpan
               color="#8490a4"
-              fontSize="18px"
+              fontSize="1.8rem"
               fontWeight="600"
-              style={{ height: "24px" }}
+              style={{ height: "2.4rem" }}
             >
               {el}
               {data[el].length > 0 && (
                 <EssentialsSpan
                   color="#505050"
-                  fontSize="14px"
+                  fontSize="1.4rem"
                   fontWeight="500"
                   style={{
                     background: "#fff",
-                    width: "32px",
-                    border: "1px solid #dadada",
-                    padding: "3px 10px",
-                    borderRadius: "99px",
-                    marginLeft: "8px",
-                    textAlign: "center"
+                    width: "3.2rem",
+                    border: "0.1rem solid #dadada",
+                    padding: "0.3rem 1rem",
+                    borderRadius: "9.9rem",
+                    marginLeft: "0.8rem",
+                    textAlign: "center",
                   }}
                 >
                   {data[el].length}
@@ -37,8 +47,8 @@ const Sections = ({ data, page, defaultPages, resize, setData }) => {
             <hr
               style={{
                 border: "none",
-                borderTop: "1px solid #cfcfcf",
-                marginTop: "16px"
+                borderTop: "0.1rem solid #cfcfcf",
+                marginTop: "1.6rem",
               }}
             />
 
@@ -48,29 +58,35 @@ const Sections = ({ data, page, defaultPages, resize, setData }) => {
                   display: "flex",
                   justifyContent: "left",
                   alignItems: "flex-start",
-                  paddingTop: "3px",
-                  marginTop: "16px",
-                  width: "228px",
-                  height: "46px"
+                  paddingTop: "0.3rem",
+                  marginTop: "1.6rem",
+                  width: "22.8rem",
+                  height: "4.6rem",
                 }}
               >
                 <Dot />
                 <EssentialsSpan
                   color="#c5ccd6"
-                  fontSize="18px"
+                  fontSize="1.8rem"
                   fontWeight="600"
-                  style={{ marginLeft: "6px" }}
+                  style={{ marginLeft: "0.6rem" }}
                 >
                   항목이 비어있어요!
                 </EssentialsSpan>
               </div>
-            ) : (
+            ) : condition === "remove" ? (
               data[el].map((dat, index) => (
-                <Checkbox
+                <DeleteCheckBox
                   key={index}
                   item={dat}
+                  deleteList={deleteList}
+                  setDeleteList={setDeleteList}
                   setData={setData}
                 />
+              ))
+            ) : (
+              data[el].map((dat, index) => (
+                <Checkbox key={index} item={dat} setData={setData} />
               ))
             )}
           </Section>

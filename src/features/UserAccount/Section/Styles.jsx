@@ -8,59 +8,59 @@ export const Content = styled.div`
   width: 100%;
 
   &:nth-child(1) {
-    margin-bottom: 60px;
+    margin-bottom: 6rem;
 
     h1 {
       font-style: normal;
       font-weight: 500;
       font-size: 3.2rem;
-      line-height: 43px;
+      line-height: 4.3rem;
       letter-spacing: -0.02em;
-      margin-bottom: 10px;
+      margin-bottom: 1rem;
       color: #101010;
     }
 
     div {
       width: 100%;
-      padding: 13px 18px;
+      padding: 1.3rem 1.8rem;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       background: #f8f8f8;
-      border-radius: 8px;
+      border-radius: 0.8rem;
       height: ${(props) => props.height};
-      margin-bottom: 20px;
+      margin-bottom: 2rem;
 
       p {
         color: #585858;
         font-weight: 400;
         font-size: 1.7rem;
-        line-height: 25px;
+        line-height: 2.5rem;
 
         &:nth-child(1) {
-          margin-bottom: 4px;
+          margin-bottom: 0.4rem;
         }
       }
     }
   }
 
   &:nth-child(2) {
-    margin-bottom: 30px;
+    margin-bottom: 3rem;
   }
 
   &:nth-child(3) {
     display: flex;
     justify-content: left;
-    gap: 20px;
+    gap: 2rem;
   }
 `;
 
 export const ContentWrap = styled.div`
   width: 100%;
-  height: 550px;
-  margin-left: 20px;
-  margin-rigth: 20px;
-  margin-top: 120px;
+  height: 55rem;
+  margin-left: 2rem;
+  margin-rigth: 2rem;
+  margin-top: 12rem;
   display: flex;
   justify-content: center;
 `;
@@ -78,7 +78,7 @@ export const Section = styled.div`
 
   &:nth-child(2) {
     width: 100%;
-    height: 463px;
+    height: 46.3rem;
   }
 
   &:nth-child(3) {
@@ -87,7 +87,7 @@ export const Section = styled.div`
 `;
 
 export const Profile = styled.div`
-  width: 215px;
+  width: 21.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -106,27 +106,27 @@ export const Avatar = styled.img`
   object-fit: cover;
   overflow: hidden;
   border-radius: 100%;
-  width: 120px;
-  height: 120px;
+  width: 12rem;
+  height: 12rem;
   margin-bottom: 2rem;
 `;
 
 export const Nav = styled.div`
   box-sizing: border-box;
   width: 100%;
-  height: 60px;
-  border-bottom: 1px solid #e1e1e1;
+  height: 6rem;
+  border-bottom: 0.1rem solid #e1e1e1;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 34px;
-  padding-bottom: 10px;
+  gap: 3.4rem;
+  padding-bottom: 1rem;
 `;
 
 export const Tab = styled.span`
   font-weight: 400;
   font-size: 2rem;
-  line-height: 24px;
+  line-height: 2.4rem;
   letter-spacing: -0.02em;
   color: ${(props) => props.color};
   cursor: pointer;
@@ -137,10 +137,10 @@ export const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 35px;
+  margin-bottom: 3.5rem;
 
   &:nth-child(3) {
-    margin-bottom: 0px;
+    margin-bottom: 0rem;
   }
 `;
 
@@ -152,21 +152,21 @@ export const Button = styled.button`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 0.5rem;
 
-  width: 130px;
-  height: 45px;
-  border-radius: 8px;
+  width: 13rem;
+  height: 4.5rem;
+  border-radius: 0.8rem;
   border: ${(props) => props.border};
 `;
 
 export const EditIcon = styled.div`
   background: white;
-  width: 34.49px;
-  height: 34.49px;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
-  margin-top: -60px;
-  margin-left: 85px;
+  width: 3.449rem;
+  height: 3.449rem;
+  box-shadow: 0rem 0.1rem 0.2rem rgba(0, 0, 0, 0.25);
+  margin-top: -6rem;
+  margin-left: 8.5rem;
   position: absolute;
   border-radius: 100%;
   color: black;

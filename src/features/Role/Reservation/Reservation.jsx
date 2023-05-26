@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
@@ -10,6 +10,10 @@ import BlankPanel from "./layout/BlankPanel";
 import SmallBlank from "./layout/SmallBlank";
 import Modal from "../../../components/Modal";
 import EditReserveModal from "./layout/EditReserveModal";
+import { useDispatch, useSelector } from "react-redux";
+import { getReserveList } from "./reserveSlice";
+import { useParams } from "react-router-dom";
+import { getTravelDay } from "../Schedule/travelDaySlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -69,8 +73,9 @@ const DateBox = styled.div`
   display: flex;
   flex-direction: column;
   text-align: left;
+  gap: 0.5rem;
   width: 100%;
-  padding-bottom: 1.2rem;
+  padding-bottom: 1.5rem;
   padding-right: 7.5rem;
 `;
 
@@ -82,7 +87,7 @@ const Day = styled.div`
 
 const Date = styled.div`
   font-family: "Pretendard";
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: rgba(132, 144, 164, 1);
 `;
 
@@ -108,6 +113,7 @@ const InsidePanel = styled.div`
 `;
 
 const ReserveListColumn = styled.div`
+  min-width: 61rem;
   padding: 2.5rem;
   background-color: #eef1f8;
   border-radius: 1.6rem;
@@ -137,37 +143,48 @@ const ReserveListColumn = styled.div`
   }
 `;
 
-const ReservationDay = [
-  { CountDay: 1, Date: "4.17(월)" },
-  { CountDay: 2, Date: "4.18(화)" },
-  { CountDay: 3, Date: "4.19(수)" },
-  { CountDay: 4, Date: "4.20(목)" },
-  { CountDay: 5, Date: "4.21(금)" },
-  { CountDay: 6, Date: "4.22(토)" },
-  { CountDay: 7, Date: "4.23(일)" },
-];
-
-function Reservation({ reserveList }) {
+function Reservation() {
+  const { roomId } = useParams();
   const [value, setValue] = useState("1");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const isUndefined = reserveList[value];
+  const dispatch = useDispatch();
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const { travelDayList } = useSelector((state) => state.travelDay);
+
+  const firstDay = travelDayList[0]?.date;
+  const [date, setDate] = useState();
+  const [editReserve, setEditReserve] = useState();
+
+  useEffect(() => {
+    setDate(firstDay);
+  }, [firstDay]);
+
+  useEffect(() => {
+    dispatch(getTravelDay(roomId));
+  }, [dispatch, roomId]);
+
+  useEffect(() => {
+    if (date) dispatch(getReserveList({ roomId, date }));
+  }, [dispatch, roomId, date, isOpenModal]);
+
+  const { reservationList } = useSelector((state) => state.reserveList);
+
+  const isUndefined = reservationList.length;
 
   //예약이 필요한 객체들만 분류
   const needResrve =
-    reserveList[value] &&
-    reserveList[value].filter((item) => item.reserve === "예약필요");
+    reservationList &&
+    reservationList.filter((item) => item.isBooked === false);
 
   //예약이 완료된 객체들만 분류
   const doneResrve =
-    reserveList[value] &&
-    reserveList[value].filter((item) => item.reserve === "예약완료");
+    reservationList && reservationList.filter((item) => item.isBooked === true);
 
-
-  const [isOpenModal, setIsOpenModal] = useState(true);
   return (
     <>
       <Wrapper>
@@ -180,24 +197,31 @@ function Reservation({ reserveList }) {
                 onChange={handleChange}
                 aria-label="lab API tabs example"
               >
-                {ReservationDay.map((item, i) => {
+                {travelDayList.map(({ idx, date, day }) => {
+                  const transformedDate =
+                    date.split("-")[1] + "." + date.split("-")[2];
                   return (
                     <StyleTab
-                      key={i}
+                      key={date}
                       label={
                         <DateBox>
-                          <Day>{item.CountDay}일차</Day>
-                          <Date>{item.Date}</Date>
+                          <Day>{idx}일차</Day>
+                          <Date>
+                            {transformedDate}({day})
+                          </Date>
                         </DateBox>
                       }
-                      value={`${i + 1}`}
+                      value={`${idx}`}
+                      onClick={() => {
+                        setDate(date);
+                        if (date) dispatch(getReserveList({ roomId, date }));
+                      }}
                     />
                   );
                 })}
               </StyledTabs>
             </StyledBox>
             <ReserveWrapper>
-              {" "}
               <StyledTabPanel value={value}>
                 {isUndefined === undefined || isUndefined.length === 0 ? (
                   <BlankPanel />
@@ -205,26 +229,36 @@ function Reservation({ reserveList }) {
                   <InsidePanel>
                     <ReserveListColumn>
                       <header>
-                        예약 예정<span className="countList">4</span>
+                        예약 예정
+                        <span className="countList">{needResrve.length}</span>
                       </header>
                       {needResrve.length ? (
                         needResrve.map((element) => (
                           <ReserveCellLayout
+                            key={element.bookInfoId}
                             element={element}
+                            date={date}
+                            setIsOpenModal={setIsOpenModal}
+                            setEditReserve={setEditReserve}
                           ></ReserveCellLayout>
                         ))
                       ) : (
-                        <SmallBlank classify={"expected"}  />
+                        <SmallBlank classify={"expected"} />
                       )}
                     </ReserveListColumn>
                     <ReserveListColumn>
                       <header>
-                        최종 일정<span className="countList">4</span>
+                        최종 일정
+                        <span className="countList">{doneResrve.length}</span>
                       </header>
                       {doneResrve.length ? (
                         doneResrve.map((element) => (
                           <ReserveCellLayout
+                            key={element.bookInfoId}
                             element={element}
+                            date={date}
+                            setIsOpenModal={setIsOpenModal}
+                            setEditReserve={setEditReserve}
                           ></ReserveCellLayout>
                         ))
                       ) : (
@@ -238,10 +272,14 @@ function Reservation({ reserveList }) {
           </TabContext>
         </Box>
         {isOpenModal ? (
-        <Modal width="46rem" setIsOpenModal={setIsOpenModal}>
-          <EditReserveModal setIsOpenModal={setIsOpenModal} />
-        </Modal>
-      ) : null}
+          <Modal width="46rem" setIsOpenModal={setIsOpenModal}>
+            <EditReserveModal
+              setIsOpenModal={setIsOpenModal}
+              editReserve={editReserve}
+              date={date}
+            />
+          </Modal>
+        ) : null}
       </Wrapper>
     </>
   );

@@ -1,19 +1,15 @@
 import styled from "styled-components";
 import { Link, NavLink, useParams } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Icons from "../../../assets/icon/icon";
-import ProfileImg from "../../../assets/images/image1.jpg";
-import { useDispatch } from "react-redux";
-import { getInvitationCode } from "../invitationCodeSlice";
+import { useDispatch, useSelector } from "react-redux";
 import logo from "../../../assets/images/logo.png";
 import Menu from "../../../components/Menu";
 import RoomEditMenu from "./RoomEditMenu";
-import { getRoomData } from "../../Role/AllPlan/allPlanSlice";
-import { Modal } from "@mui/material";
-import RoomEditModal from "./EditMenuModal/RoomEditModal";
-import RoomDeleteModal from "./DeleteMenuModal/RoomDeleteModal";
+import { getSidebarData } from "./sidebarSlice";
+import randomImageData from "../../../assets/images/randomImageData";
 
-const SidebarContainer = styled.nav`
+const SidebarWrap = styled.nav`
   width: 24rem;
   height: 100vh;
   position: fixed;
@@ -23,14 +19,18 @@ const SidebarContainer = styled.nav`
   bottom: 0;
   background-color: #ffffff;
   box-shadow: 0 0.4rem 2rem 0px rgba(200, 214, 236, 0.7);
-  padding: 2rem 2rem;
-
+  padding: 2rem 3rem;
   overflow: scroll;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   &::-webkit-scrollbar {
     display: none;
   }
 `;
+
+const SidebarContainer = styled.div``;
 
 const SidebarHeader = styled.div`
   margin-bottom: 4.5rem;
@@ -120,7 +120,7 @@ const Category = styled.div`
   width: 100%;
   margin-bottom: 2.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #eeeded;
+  border-bottom: 0.2rem solid #eeeded;
   p {
     font-size: 1.4rem;
     color: #a9a9a9;
@@ -129,7 +129,7 @@ const Category = styled.div`
 
 const SideBarNavWrap = styled.div`
   display: flex;
-  gap: 3.5rem;
+  gap: 2rem;
   flex-direction: column;
   &.teamSpaceNav {
     margin-bottom: 6.6rem;
@@ -138,7 +138,7 @@ const SideBarNavWrap = styled.div`
   a {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
     color: #636363;
     font-size: 1.8rem;
     transition: all 0.3s;
@@ -225,13 +225,6 @@ const Out = styled.div`
   }
 `;
 
-const List = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.8rem;
-`;
-
 const SideBarTab = [
   {
     pathname: "모든 여행계획",
@@ -255,21 +248,23 @@ const SideBarTab = [
   },
 ];
 
-function Sidebar({ setOpenRoomEditModal, setOpenRoomDeleteModal }) {
+function Sidebar({
+  setOpenRoomEditModal,
+  setOpenRoomDeleteModal,
+  setOpenInvitationModal,
+}) {
   const { roomId } = useParams();
+  const { sidebarData } = useSelector((state) => state.sidebar);
+  const { roomName, roomImage, roles } = sidebarData ?? {};
   const [openRoomEditMenu, setOpenRoomEditMenu] = useState(false);
   const dispatch = useDispatch();
 
-  const handleInvitationCode = useCallback(() => {
-    dispatch(getInvitationCode(roomId));
-  }, [roomId, dispatch]);
-
   useEffect(() => {
-    dispatch(getRoomData(roomId));
+    dispatch(getSidebarData(roomId));
   }, [dispatch, roomId]);
 
   return (
-    <>
+    <SidebarWrap>
       <SidebarContainer>
         <SidebarHeader>
           <Link to={`/spaceList`}>
@@ -279,13 +274,16 @@ function Sidebar({ setOpenRoomEditModal, setOpenRoomDeleteModal }) {
 
         <SidebarProfile>
           <div className="profile_img">
-            <img src={ProfileImg} alt="noimages" />
-            <div
-              className="room-edit-btn"
-              onClick={() => setOpenRoomEditMenu((prev) => !prev)}
-            >
-              <Icons.HiOutlineCog />
-            </div>
+            <img src={randomImageData[roomImage]} alt={roomName} />
+            {roles?.includes("총무") && (
+              <div
+                className="room-edit-btn"
+                onClick={() => setOpenRoomEditMenu((prev) => !prev)}
+              >
+                <Icons.HiOutlineCog />
+              </div>
+            )}
+
             {openRoomEditMenu && (
               <Menu>
                 <RoomEditMenu
@@ -296,14 +294,20 @@ function Sidebar({ setOpenRoomEditModal, setOpenRoomDeleteModal }) {
             )}
           </div>
 
-          <h1>제주도 여행</h1>
+          <h1>{roomName}</h1>
 
-          <p onClick={handleInvitationCode}>
-            초대하기
-            <span>
-              <Icons.HiOutlineLink />
-            </span>
-          </p>
+          {roles?.includes("총무") && (
+            <p
+              onClick={() => {
+                setOpenInvitationModal(true);
+              }}
+            >
+              초대하기
+              <span>
+                <Icons.HiOutlineLink />
+              </span>
+            </p>
+          )}
         </SidebarProfile>
 
         <Category>
@@ -344,23 +348,16 @@ function Sidebar({ setOpenRoomEditModal, setOpenRoomDeleteModal }) {
             준비물
           </NavLink>
         </SideBarNavWrap>
-
-        <Out>
-          <Link>
-            <span>
-              <Icons.FaDoorOpen />
-            </span>
-            스페이스 삭제하기
-          </Link>
-          <Link>
-            <span>
-              <Icons.FaDoorOpen color="red" />
-            </span>
-            스페이스 탈퇴하기
-          </Link>
-        </Out>
       </SidebarContainer>
-    </>
+      <Out>
+        <Link>
+          <span>
+            <Icons.FaDoorOpen color="red" />
+          </span>
+          스페이스 탈퇴하기
+        </Link>
+      </Out>
+    </SidebarWrap>
   );
 }
 

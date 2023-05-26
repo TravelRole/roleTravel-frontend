@@ -6,7 +6,7 @@ import Button from "../../../components/Button";
 import { switched } from './validation';
 import useAddSlash from '../../../lib/useAddSlash';
 import { useDispatch, useSelector } from "react-redux";
-import { updatedInfo } from "../LoggedUserSlice";
+import { getLoggedInfo, updatedInfo } from "../LoggedUserSlice";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -18,8 +18,6 @@ const Info = () => {
     useSelector((state) => state.loggedInUser);
   const [inputs, setInputs] = useState({ email: "", date: "", nickname: "", platform: '' });
   const [errors, setErrors] = useState({ date: "", nickname: "" });
-
-  console.log(loggedInfo)
 
   useEffect(() => {
     setInputs({
@@ -57,18 +55,19 @@ const Info = () => {
             onClose: () => navigate('/:userId')
           });
         }, 1);
+        console.log(res)
+        dispatch(getLoggedInfo())
       } else {
         toast.error('수정에 실패하였습니다.');
       }
-      console.log(res.meta.requestStatus)
     })
   };
 
   return (
-    <Container marginTop="0px">
+    <Container marginTop="0rem">
       <Content>
         <h1>회원정보 수정</h1>
-        <div width="46px">
+        <div width="4.6remx">
           <p>회원님의 정보를 수정/확인 하실 수 있습니다.</p>
         </div>
       </Content>

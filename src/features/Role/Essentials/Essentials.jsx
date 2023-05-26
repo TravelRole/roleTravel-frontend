@@ -9,37 +9,30 @@ import { getEssentials } from "./EssentialsSlice";
 function Essentials() {
   const dispatch = useDispatch();
   const { essentials, isLoading } = useSelector((state) => state.essentials);
-  const [clicked, setClicked] = useState("");
+  const [condition, setCondition] = useState("");
   const [page, setPage] = useState(0);
   const [defaultPages, setDefaultPages] = useState(7);
   const [resize, setResize] = useState(window.innerWidth);
+  const [deleteList, setDeleteList] = useState([]);
   const [data, setData] = useState({
     "필수 준비물": [],
-    "해외 여행": [],
     의류: [],
-    "세면 용품, 화장품": [],
+    "세면 용품": [],
     상비약: [],
-    계절용품: [],
+    "계절 용품": [],
     "조리 용품": [],
-    "기타 용품": []
+    "기타 용품": [],
   });
 
   useEffect(() => {
-    dispatch(getEssentials(window.location.href.split('/')[3]));
-    console.log(essentials)
-  }, []);
+    dispatch(getEssentials(window.location.href.split("/")[3]))
+  }, [dispatch]);
 
-  if (!isLoading && essentials) {
-    Object.keys(essentials).map((el) => {
-      switch (el) {
-        case 'ESSENTIAL':
-          return (data["필수 준비물"] = essentials[el]);
-        case 'ETC':
-          return (data["기타 용품"] = essentials[el]);
-        default: return "";
-      }
-    });
-  }
+  useEffect(() => {
+    setData(essentials)
+  }, [essentials])
+
+  console.log(essentials)
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -63,21 +56,27 @@ function Essentials() {
   return (
     <>
       <Container style={{ width: resize - 300 }}>
-        <TitleContent />
+        <TitleContent setData={setData} />
         <EditNav
-          data={data}
-          clicked={clicked}
-          setClicked={setClicked}
+          condition={condition}
+          setCondition={setCondition}
           page={page}
           setPage={setPage}
           defaultPages={defaultPages}
+          deleteList={deleteList}
+          setDeleteList={setDeleteList}
+          data={data}
           setData={setData}
         />
         <Sections
-          data={data}
           page={page}
           defaultPages={defaultPages}
           resize={resize}
+          condition={condition}
+          setDeleteList={setDeleteList}
+          deleteList={deleteList}
+          data={data}
+          setData={setData}
         />
       </Container>
     </>
