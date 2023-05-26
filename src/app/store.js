@@ -17,6 +17,7 @@ import reserveReducer from "../features/Role/Reservation/reserveSlice";
 import accountReducer from "../features/Role/Account/accountSlice";
 import ammountReducer from "../features/Role/Account/amountSlice";
 import sidebarReducer from "../features/layout/Sidebar/sidebarSlice";
+import expensesReducer from "../features/Role/Account/expensesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -35,8 +36,9 @@ export const store = configureStore({
     comment: commentReducer,
     schedule: scheduleReducer,
     reserveList: reserveReducer,
-    accountList: accountReducer,
+    account: accountReducer,
     amountTotal: ammountReducer,
     sidebar: sidebarReducer,
+    expenses : expensesReducer
   },
 });

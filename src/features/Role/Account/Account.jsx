@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import { getAccountList } from "./accountSlice";
 import Modal from "../../../components/Modal";
 import AddEditAccountModal from "./layout/AddEditAccountModal";
+import { getAllexpenses } from "./expensesSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -314,10 +315,8 @@ function Account() {
 
   useEffect(() => {
     dispatch(getAccountList({ roomId, date, feeMethod }));
-  }, [feeMethod]);
-  const { accountList } = useSelector((state) => state.accountList);
-
-  console.log(accountList);
+  }, [feeMethod , date, roomId , dispatch]);
+  const { accountList } = useSelector((state) => state.account);
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   return (

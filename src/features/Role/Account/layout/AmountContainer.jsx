@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { editAllAmount, getAllAmount } from "../amountSlice";
+import { getAllexpenses } from "../expensesSlice";
 
 const AmountWrapper = styled.div`
   display: flex;
@@ -95,7 +96,6 @@ function AmountContainer() {
   }, [roomId, dispatch]);
 
   const { amountTotal } = useSelector((state) => state.amountTotal);
-  console.log(amountTotal);
 
   const [shareAmount, setShareAmount] = useState();
   const [canEditShare, setCanEditShare] = useState(false);
@@ -104,6 +104,12 @@ function AmountContainer() {
     setShareAmount(amountTotal.expenses);
   }, [amountTotal.expenses]);
 
+  useEffect(() => {
+    dispatch(getAllexpenses(roomId));
+  }, [dispatch , roomId]);
+  const { expensesTotal } = useSelector((state) => state.expenses);
+
+  console.log(expensesTotal);
   return (
     <AmountWrapper>
       <AmountBox>

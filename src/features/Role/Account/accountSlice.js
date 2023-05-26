@@ -6,7 +6,6 @@ import tokenApi from "../../../lib/customAPI";
 export const getAccountList = createAsyncThunk(
   "account/getAccountList",
   async (payload) => {
-    console.log(payload)
     try {
       const res = await tokenApi.get(
         `api/room/${payload.roomId}/accounting?date=${payload.date}&paymentMethod=${payload.feeMethod&&payload.feeMethod}}`
