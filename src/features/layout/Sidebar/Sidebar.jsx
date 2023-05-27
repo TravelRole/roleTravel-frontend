@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import Icons from "../../../assets/icon/icon";
 import { useDispatch, useSelector } from "react-redux";
 import logo from "../../../assets/images/logo.png";
-import Menu from "../../../components/Menu";
-import RoomEditMenu from "./RoomEditMenu";
 import { getSidebarData } from "./sidebarSlice";
 import randomImageData from "../../../assets/images/randomImageData";
 
@@ -200,27 +198,24 @@ const SideBarNavWrap = styled.div`
   }
 `;
 
-const Out = styled.div`
+const Out = styled.p`
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 7rem;
-  a {
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.4rem;
+  color: #9e9e9e;
+  cursor: pointer;
+
+  i {
+    width: 2.4rem;
+    height: 2.4rem;
+    color: red;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    font-size: 1.4rem;
-    color: #9e9e9e;
-    /* height: 2.4rem; */
-    span {
-      width: 2.4rem;
-      height: 2.4rem;
-      color: red;
-
-      svg {
-        width: 100%;
-        height: 100%;
-      }
+    justify-content: center;
+    svg {
+      width: 100%;
+      height: 100%;
     }
   }
 `;
@@ -256,7 +251,6 @@ function Sidebar({
   const { roomId } = useParams();
   const { sidebarData } = useSelector((state) => state.sidebar);
   const { roomName, roomImage, roles } = sidebarData ?? {};
-  const [openRoomEditMenu, setOpenRoomEditMenu] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -278,19 +272,10 @@ function Sidebar({
             {roles?.includes("총무") && (
               <div
                 className="room-edit-btn"
-                onClick={() => setOpenRoomEditMenu((prev) => !prev)}
+                onClick={() => setOpenRoomEditModal((prev) => !prev)}
               >
                 <Icons.HiOutlineCog />
               </div>
-            )}
-
-            {openRoomEditMenu && (
-              <Menu>
-                <RoomEditMenu
-                  setOpenRoomEditModal={setOpenRoomEditModal}
-                  setOpenRoomDeleteModal={setOpenRoomDeleteModal}
-                />
-              </Menu>
             )}
           </div>
 
@@ -349,13 +334,11 @@ function Sidebar({
           </NavLink>
         </SideBarNavWrap>
       </SidebarContainer>
-      <Out>
-        <Link>
-          <span>
-            <Icons.FaDoorOpen color="red" />
-          </span>
-          스페이스 탈퇴하기
-        </Link>
+      <Out onClick={() => setOpenRoomDeleteModal((prev) => !prev)}>
+        <i>
+          <Icons.FaDoorOpen color="red" />
+        </i>
+        스페이스 탈퇴하기
       </Out>
     </SidebarWrap>
   );

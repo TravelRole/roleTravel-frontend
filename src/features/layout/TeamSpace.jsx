@@ -7,13 +7,14 @@ import Essentials from "../Role/Essentials/Essentials";
 import Schedule from "../Role/Schedule/Schedule";
 import AllPlan from "../Role/AllPlan/AllPlan";
 import Sidebar from "./Sidebar/Sidebar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAllPlanList, getRoomData } from "../Role/AllPlan/allPlanSlice";
 import { getUserInfo } from "../Landing/userSlice";
 import Modal from "../../components/Modal";
 import RoomDeleteModal from "./Sidebar/DeleteMenuModal/RoomDeleteModal";
 import RoomEditModal from "./Sidebar/EditMenuModal/RoomEditModal";
 import InvitationModal from "./Sidebar/Invitation/InvitationModal";
+import MandateRoleModal from "./Sidebar/MandateRoleModal/MandateRoleModal";
 
 const TeamSpaceBox = styled.div`
   display: flex;
@@ -32,6 +33,8 @@ const SpaceContainer = styled.div`
 
 function TeamSpace({ Auth }) {
   const navigate = useNavigate();
+  const { sidebarData } = useSelector((state) => state.sidebar);
+  const { roomData } = useSelector((state) => state.allPlan);
   const [openRoomEditModal, setOpenRoomEditModal] = useState(false);
   const [openRoomDeleteModal, setOpenRoomDeleteModal] = useState(false);
   const [openInvitationModal, setOpenInvitationModal] = useState(false);
@@ -69,11 +72,20 @@ function TeamSpace({ Auth }) {
             <RoomEditModal setOpenRoomEditModal={setOpenRoomEditModal} />
           </Modal>
         )}
-        {openRoomDeleteModal && (
-          <Modal width="51.8rem" setIsOpenModal={setOpenRoomDeleteModal}>
-            <RoomDeleteModal />
-          </Modal>
-        )}
+        {openRoomDeleteModal &&
+          (sidebarData?.roles?.includes("총무") && roomData.roles.length > 1 ? (
+            <Modal width="41.8rem" setIsOpenModal={setOpenRoomDeleteModal}>
+              <MandateRoleModal
+                setOpenRoomDeleteModal={setOpenRoomDeleteModal}
+              />
+            </Modal>
+          ) : (
+            <Modal width="41.8rem" setIsOpenModal={setOpenRoomDeleteModal}>
+              <RoomDeleteModal
+                setOpenRoomDeleteModal={setOpenRoomDeleteModal}
+              />
+            </Modal>
+          ))}
         {openInvitationModal && (
           <Modal width="72.8rem" setIsOpenModal={setOpenInvitationModal}>
             <InvitationModal />
