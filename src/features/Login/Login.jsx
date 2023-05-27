@@ -19,21 +19,17 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import FormHelperText from "@mui/material/FormHelperText";
-import authBg from "../../assets/images/authBg.png";
 import Header from "../layout/Header";
 import { getTravelList } from "../SpaceList/travelSlice";
 
 const LoginWrap = styled.div`
   width: 100%;
   height: 100vh;
-  background-image: url(${authBg});
-  background-size: cover cover;
-  background-repeat: no-repeat;
-  background-position: 100% 100%;
   padding-top: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #f4f6fb;
 `;
 
 const LoginContainer = styled.div`

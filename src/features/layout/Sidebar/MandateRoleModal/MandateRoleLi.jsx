@@ -96,12 +96,7 @@ const MandateRoleLi = ({
     [setNewEmail]
   );
   return (
-    <MandateRoleLink
-      id={email}
-      onClick={onClickRole}
-      newEmail={newEmail}
-      email={email}
-    >
+    <MandateRoleLink newEmail={newEmail} email={email}>
       <MandateRoleLinkHeader newEmail={newEmail} email={email}>
         <img src={profile === null ? userProfile : profile} alt={name} />
         <dl>
@@ -119,10 +114,7 @@ const MandateRoleLi = ({
             )
           )}
         </ul>
-        <p>
-          <span>
-            <Icons.HiCheck />
-          </span>
+        <p id={email} onClick={onClickRole}>
           {newEmail === email && (
             <span>
               <Icons.HiCheck />

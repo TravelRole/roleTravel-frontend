@@ -5,6 +5,7 @@ import Button from "../../../../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import MandateRoleLi from "./MandateRoleLi";
 import { mandateRoleAndDelete } from "../sidebarSlice";
+import { toast } from "react-toastify";
 
 const MandateRoleModalWrap = styled.div``;
 
@@ -80,6 +81,18 @@ const MandateRoleModal = ({ setOpenRoomDeleteModal }) => {
       if (res.meta.requestStatus === "fulfilled") {
         window.alert("총무 위임에 성공했습니다. 팀 스페이스에서 탈퇴합니다.");
         navigate("/spaceList");
+      }
+      if (res.payload.response.status === 400) {
+        toast.error("총무 권한을 위임할 대상을 선택하세요.", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
     });
   }, [dispatch, navigate, newEmail, roomId]);
