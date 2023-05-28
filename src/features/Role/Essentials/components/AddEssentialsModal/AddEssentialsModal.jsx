@@ -1,6 +1,5 @@
 import {
   ModalWrapper,
-  Blur,
   Header,
   Body,
   Footer,
@@ -15,6 +14,7 @@ import Category from "./layout/Category";
 import Form from "./layout/Form";
 import { convertCategoryName } from "./validation";
 import { useSelector } from "react-redux";
+import Modal from "../../../../../components/Modal";
 
 const AddEssentialsModal = ({ setIsOpen, setData }) => {
   const dispatch = useDispatch();
@@ -44,8 +44,7 @@ const AddEssentialsModal = ({ setIsOpen, setData }) => {
   };
 
   return (
-    <>
-      <Blur></Blur>
+    <Modal setIsOpenModal={setIsOpen} width="38.2rem">
       <ModalWrapper>
         <Header>
           <Title>PACKING LIST</Title>
@@ -75,7 +74,7 @@ const AddEssentialsModal = ({ setIsOpen, setData }) => {
           </Button>
         </Footer>
       </ModalWrapper>
-    </>
+    </Modal>
   );
 };
 
