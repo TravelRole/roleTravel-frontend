@@ -55,7 +55,7 @@ function Essentials() {
 
   return (
     <>
-      <Container style={{ width: resize - 300 }}>
+      <Container style={{ width: resize - 100 }}>
         <TitleContent setData={setData} />
         <EditNav
           condition={condition}
