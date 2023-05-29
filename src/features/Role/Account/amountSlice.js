@@ -19,7 +19,6 @@ export const getAllAmount = createAsyncThunk(
 export const editAllAmount = createAsyncThunk(
   "amount/editAllAmount",
   async (payload, thunkAPI) => {
-    console.log(payload)
     try {
       await tokenApi.put(`/api/room/${payload.roomId}/expenses` ,{expenses : payload.shareAmount});
     } catch (error) {

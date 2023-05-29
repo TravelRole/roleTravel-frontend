@@ -36,6 +36,7 @@ const AmountBox = styled.div`
 
   input,
   p {
+    font-family: "Pretendard";
     color: #141414;
     font-size: 3rem;
     font-weight: 600;
@@ -106,10 +107,11 @@ function AmountContainer() {
 
   useEffect(() => {
     dispatch(getAllexpenses(roomId));
-  }, [dispatch , roomId]);
+  }, [dispatch, roomId]);
   const { expensesTotal } = useSelector((state) => state.expenses);
 
-  console.log(expensesTotal);
+  const {totalExpense} = expensesTotal
+
   return (
     <AmountWrapper>
       <AmountBox>
@@ -165,12 +167,17 @@ function AmountContainer() {
       </AmountBox>
       <AmountBox>
         <header>남은 경비</header>
-        <p>340,000원</p>
+        <p>{amountTotal.expenses - totalExpense}원</p>
         <span>잔액을 파악해 경비를 효율적으로 관리해 보세요!</span>
       </AmountBox>
       <AmountBox>
         <header>여행 총 지출 금액</header>
-        <p>1,160,000원</p>
+        <p>
+          {expensesTotal && totalExpense
+            ? totalExpense
+            : 0}
+          원
+        </p>
         <span>일자별 지출 금액을 모두 합산한 금액입니다.</span>
       </AmountBox>
     </AmountWrapper>
