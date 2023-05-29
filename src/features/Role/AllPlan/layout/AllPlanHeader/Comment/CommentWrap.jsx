@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Icons from "../../../../../../assets/icon/icon";
+import CustomIcons from "../../../../../../assets/icon/customIcons";
 import CommentContent from "./CommentContent";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getCommentList } from "../../../commentSlice";
 
@@ -38,15 +39,14 @@ const AllPlanCommentHeader = styled.div`
     font-weight: 500;
 
     span {
-      width: 3rem;
-      height: 3rem;
+      width: 2.9rem;
+      height: 2.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       svg {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        color: #3884fd;
-        font-size: 2.5rem;
+        width: 2.4rem;
+        height: 2rem;
       }
     }
   }
@@ -83,7 +83,7 @@ const CommentWrap = () => {
         >
           <p>
             <span>
-              <Icons.HiOutlineChat />
+              <CustomIcons.AllPlanCommentIcon />
             </span>
             의견 (Comment)
           </p>

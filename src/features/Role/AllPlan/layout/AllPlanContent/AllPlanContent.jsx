@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Icons from "../../../../../assets/icon/icon";
+import CustomIcons from "../../../../../assets/icon/customIcons";
 import AllPlanContentCard from "./AllPlanContentCard";
 
 const AllPlanContentWrap = styled.section``;
@@ -21,15 +22,15 @@ const AllPlanContentHeaderContent = styled.div`
     gap: 0.5rem;
     align-items: center;
     i {
-      width: 3rem;
-      height: 3rem;
+      width: 2.9rem;
+      height: 2.9rem;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #333;
       svg {
-        width: 100%;
-        height: 100%;
+        width: 2.4rem;
+        height: 2.4rem;
       }
     }
     dl {
@@ -175,7 +176,7 @@ const AllPlanContent = () => {
         <AllPlanContentHeaderContent>
           <div>
             <i>
-              <Icons.HiCalendar />
+              <CustomIcons.ScheduleBlueIcon />
             </i>
             <dl>
               <dt>전체 일정</dt>

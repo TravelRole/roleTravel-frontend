@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import logo from "../../../assets/images/logo.png";
 import { getSidebarData } from "./sidebarSlice";
 import randomImageData from "../../../assets/images/randomImageData";
+import CustomIcons from "../../../assets/icon/customIcons";
 
 const SidebarWrap = styled.nav`
   width: 24rem;
@@ -146,21 +147,25 @@ const SideBarNavWrap = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 3rem;
-      height: 3rem;
-      border-radius: 50%;
-      background-color: #f5f5f5;
+      width: 2.4rem;
+      height: 2.4rem;
 
       svg {
-        font-size: 1.8rem;
+        width: 100%;
+        height: 100%;
       }
     }
 
-    &:hover {
+    /* &:hover {
       color: #3884fd;
       font-weight: bold;
       span {
-        background-color: #e3f0ff;
+        svg {
+          path {
+            stroke: "#3884fd";
+          }
+          color: #3884fd;
+        }
       }
 
       &::after {
@@ -174,14 +179,11 @@ const SideBarNavWrap = styled.div`
         background-color: #ffc759;
         border-radius: 50%;
       }
-    }
+    } */
 
     &.active {
       color: #3884fd;
-      font-weight: bold;
-      span {
-        background-color: #e3f0ff;
-      }
+      font-weight: 500;
 
       &::after {
         content: "";
@@ -224,22 +226,26 @@ const SideBarTab = [
   {
     pathname: "모든 여행계획",
     path: "allplan",
-    icon: <Icons.SlPlane />,
+    defaultIcon: <CustomIcons.AllPlanGrayIcon />,
+    activeIcon: <CustomIcons.AllPlanBlueIcon />,
   },
   {
     pathname: "일정",
     path: "schedule",
-    icon: <Icons.RiCalendarCheckLine />,
+    defaultIcon: <CustomIcons.ScheduleGrayIcon />,
+    activeIcon: <CustomIcons.ScheduleBlueIcon />,
   },
   {
     pathname: "예약",
     path: "reservation",
-    icon: <Icons.HiOutlineTicket />,
+    defaultIcon: <CustomIcons.ReservationGrayIcon />,
+    activeIcon: <CustomIcons.ReservationBlueIcon />,
   },
   {
     pathname: "회계",
     path: "account",
-    icon: <Icons.HiOutlineCalculator />,
+    defaultIcon: <CustomIcons.AccountingGrayIcon />,
+    activeIcon: <CustomIcons.AccountingBlueIcon />,
   },
 ];
 
@@ -252,6 +258,15 @@ function Sidebar({
   const { sidebarData } = useSelector((state) => state.sidebar);
   const { roomName, roomImage, roles } = sidebarData ?? {};
   const dispatch = useDispatch();
+  const [isActive, setIsActive] = useState(0);
+
+  const handleNavLinkClick = (index) => {
+    setIsActive(index);
+  };
+
+  const onClickEssential = () => {
+    setIsActive(4);
+  };
 
   useEffect(() => {
     dispatch(getSidebarData(roomId));
@@ -274,7 +289,7 @@ function Sidebar({
                 className="room-edit-btn"
                 onClick={() => setOpenRoomEditModal((prev) => !prev)}
               >
-                <Icons.HiOutlineCog />
+                <CustomIcons.SettingIcon />
               </div>
             )}
           </div>
@@ -305,11 +320,12 @@ function Sidebar({
               <NavLink
                 key={index}
                 to={`/${roomId}/${item.path}`}
-                className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "active" : ""
-                }
+                className={({ isActive }) => (isActive ? "active" : "")}
+                onClick={() => handleNavLinkClick(index)}
               >
-                <span>{item.icon}</span>
+                <span>
+                  {isActive === index ? item.activeIcon : item.defaultIcon}
+                </span>
                 {item.pathname}
               </NavLink>
             );
@@ -326,9 +342,14 @@ function Sidebar({
             className={({ isActive, isPending }) =>
               isPending ? "pending" : isActive ? "active" : ""
             }
+            onClick={onClickEssential}
           >
             <span>
-              <Icons.SlBag />
+              {isActive === 4 ? (
+                <CustomIcons.EssentialBlueIcon />
+              ) : (
+                <CustomIcons.EssentialGrayIcon />
+              )}
             </span>
             준비물
           </NavLink>
@@ -336,7 +357,7 @@ function Sidebar({
       </SidebarContainer>
       <Out onClick={() => setOpenRoomDeleteModal((prev) => !prev)}>
         <i>
-          <Icons.FaDoorOpen color="red" />
+          <CustomIcons.SpaceExitIcon />
         </i>
         스페이스 탈퇴하기
       </Out>
