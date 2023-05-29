@@ -185,8 +185,6 @@ function Reservation() {
   const doneResrve =
     reservationList && reservationList.filter((item) => item.isBooked === true);
 
-    console.log(needResrve)
-
   return (
     <>
       <Wrapper>
