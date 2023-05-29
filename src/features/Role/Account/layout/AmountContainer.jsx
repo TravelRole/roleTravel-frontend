@@ -21,6 +21,7 @@ const AmountBox = styled.div`
   justify-content: space-between;
 
   width: 100%;
+  min-width: 31rem;
   height: 14.4rem;
   padding: 2.5rem;
   position: relative;
