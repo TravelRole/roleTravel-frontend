@@ -12,7 +12,7 @@ import { useParams } from "react-router-dom";
 import { getAccountList } from "./accountSlice";
 import Modal from "../../../components/Modal";
 import AddEditAccountModal from "./layout/AddEditAccountModal";
-import { getAllexpenses } from "./expensesSlice";
+import Icons from "../../../assets/icon/icon";
 
 const Wrapper = styled.div`
   display: flex;
@@ -144,7 +144,31 @@ const StyledTabPanel = styled(TabPanel)`
 `;
 
 const ScheduleWrapper = styled.div`
-  padding: 3rem 6rem 0 6rem !important;
+  padding: 0 6rem 0 6rem !important;
+`;
+
+const AddAccountSection = styled.section`
+  margin: 2.2rem 0;
+  width: 100%;
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #8490a4;
+    font-family: "Pretendard";
+    font-weight: 500;
+    font-size: 1.8rem;
+    background-color: transparent;
+    border: none;
+
+    cursor: pointer;
+
+    svg {
+      font-size: 1.5rem;
+      margin-left: 0.8rem;
+    }
+  }
 `;
 const ColumnHeader = styled.div`
   display: flex;
@@ -313,7 +337,7 @@ function Account() {
 
   useEffect(() => {
     dispatch(getAccountList({ roomId, date, feeMethod }));
-  }, [feeMethod , date, roomId , dispatch]);
+  }, [feeMethod, date, roomId, dispatch]);
   const { accountList } = useSelector((state) => state.account);
 
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -379,6 +403,16 @@ function Account() {
                   </StyledScheduleTabs>
                 </StyledBox>
                 <ScheduleWrapper>
+                  <AddAccountSection>
+                    <button
+                      onClick={() => {
+                        setIsOpenModal(true);
+                      }}
+                    >
+                      내역추가
+                      <Icons.FaChevronRight />
+                    </button>
+                  </AddAccountSection>
                   <StyledTabPanel value={value}>
                     <ColumnHeader>
                       <PlaceNameColumn>지출 내역</PlaceNameColumn>
@@ -417,9 +451,7 @@ function Account() {
         </AmonutDetailContainer>
         {isOpenModal ? (
           <Modal width="52rem" setIsOpenModal={setIsOpenModal}>
-            <AddEditAccountModal
-              setIsOpenModal={setIsOpenModal}
-            />
+            <AddEditAccountModal setIsOpenModal={setIsOpenModal} />
           </Modal>
         ) : null}
       </Wrapper>
