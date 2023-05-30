@@ -156,6 +156,8 @@ const AddAccountSection = styled.section`
   margin: 2.2rem 0;
   width: 100%;
 
+  position: relative;
+
   button {
     display: flex;
     justify-content: center;
@@ -178,8 +180,10 @@ const AddAccountSection = styled.section`
 
 const EditButtonSection = styled.section`
   display: flex;
-  width: fit-content;
   justify-content: flex-end;
+  gap: 3rem;
+
+  width: fit-content;
 
   button {
     padding: 0;
@@ -373,7 +377,7 @@ function Account() {
 
   useEffect(() => {
     if (date) dispatch(getAccountList({ roomId, date, feeMethod }));
-  }, [feeMethod, date, roomId, dispatch, firstDay, isOpenModal]);
+  }, [feeMethod, date, roomId, dispatch]);
 
   const { accountList } = useSelector((state) => state.account);
 
@@ -388,6 +392,8 @@ function Account() {
       }
     });
   };
+
+  const editPart = accountList?.expenses?.find((ele) => ele.id === delNum);
 
   return (
     <>
@@ -455,18 +461,26 @@ function Account() {
                 </StyledBox>
                 <ScheduleWrapper>
                   <AddAccountSection>
-                    <button
-                      onClick={() => {
-                        setIsOpenModal(true);
-                      }}
-                    >
-                      내역추가
-                      <Icons.FaChevronRight />
-                    </button>
+                    {delNum === undefined ? (
+                      <button
+                        onClick={() => {
+                          setIsOpenModal(true);
+                        }}
+                      >
+                        내역추가
+                        <Icons.FaChevronRight />
+                      </button>
+                    ) : <div></div>}
+
                     <EditButtonSection>
                       {delNum !== undefined ? (
-                        <button onClick={delAccList}>선택삭제</button>
-                      ) : null}
+                        <>
+                          <button onClick={delAccList}>선택삭제</button>
+                          <button onClick={() => setIsOpenModal(true)}>
+                            수정하기
+                          </button>
+                        </>
+                      ) : <div></div>}
                     </EditButtonSection>
                   </AddAccountSection>
                   <StyledTabPanel value={value}>
@@ -480,7 +494,6 @@ function Account() {
                     </ColumnHeader>
                     <ScheduleDetails>
                       {accountList.expenses?.map((data) => {
-                        console.log(data);
                         const {
                           id,
                           fromBook,
@@ -553,6 +566,8 @@ function Account() {
               date={date}
               days={days}
               day={day}
+              editPart={editPart}
+              feeMethod={feeMethod}
             />
           </Modal>
         ) : null}

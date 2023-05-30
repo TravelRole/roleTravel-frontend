@@ -29,6 +29,18 @@ export const addAccountList = createAsyncThunk(
   }
 );
 
+//회계지출 내역 수정
+export const editAccountList = createAsyncThunk(
+  "account/editAccountList",
+  async (payload, thunkAPI) => {
+    try {
+      await tokenApi.put(`api/room/${payload.roomId}/accounting/${payload.accountingId}` , payload.editaccountData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 //회계내역 삭제
 export const delAccountList = createAsyncThunk(
   "account/delAccountList",

@@ -13,7 +13,11 @@ import Button from "../../../../components/Button";
 import Icons from "../../../../assets/icon/icon";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { addAccountList } from "../accountSlice";
+import {
+  addAccountList,
+  editAccountList,
+  getAccountList,
+} from "../accountSlice";
 import changeLanCategory from "../../Schedule/utils/changeLanCategory";
 
 const EditReserveModalWrapper = styled.div``;
@@ -154,23 +158,54 @@ const DayDateBox = styled.div`
   }
 `;
 
-const AddEditAccountModal = ({ setIsOpenModal, date , days ,day}) => {
+const AddEditAccountModal = ({
+  setIsOpenModal,
+  date,
+  days,
+  day,
+  editPart,
+  feeMethod,
+}) => {
+  // const {  id, category, paymentMethod, paymentName, accountingEtc, price } =
+  //   editPart;
+
+  console.log(editPart);
+
+  useEffect(() => {
+    if (editPart) {
+      setPayment(editPart.paymentMethod);
+      setFee(editPart.price);
+      setCategory(changeLanCategory(editPart.category));
+      setExpend(editPart.paymentName);
+      setNote(editPart.accountingEtc);
+      setIsEdit(true);
+    }
+  }, [
+    editPart,
+    editPart?.paymentMethod,
+    editPart?.category,
+    editPart?.paymentName,
+    editPart?.accountingEtc,
+    editPart?.price,
+  ]);
+
   const dispatch = useDispatch();
   const { roomId } = useParams();
 
   const [payment, setPayment] = useState("CARD");
   const categoryOptions = ["교통", "숙박", "음식", "관광", "쇼핑", "기타"];
-  const [category, setCategory] = useState("교통");
+  const [ncategory, setCategory] = useState("교통");
   const [note, setNote] = useState("");
   const [expend, setExpend] = useState("");
   const [fee, setFee] = useState("");
+
+  const [isEdit, setIsEdit] = useState(false);
 
   const formatValue = (value = 0) => {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  const transformedDate =
-  date.split("-")[1] + "." + date.split("-")[2];
+  const transformedDate = date.split("-")[1] + "." + date.split("-")[2];
 
   const noteMax = 30;
 
@@ -202,21 +237,43 @@ const AddEditAccountModal = ({ setIsOpenModal, date , days ,day}) => {
 
   const addEditAccount = (e) => {
     e.preventDefault();
-    const accountData = {
-      paymentName: expend,
-      paymentMethod: payment,
-      paymentTime: date,
-      price: Number(fee),
-      category: changeLanCategory(category),
-      etc: note,
-    };
+    if (isEdit) {
+      const editaccountData = {
+        accountingId: editPart.id,
+        paymentName: expend,
+        paymentMethod: payment,
+        price: Number(fee),
+        category: changeLanCategory(ncategory),
+        etc: note,
+      };
+      dispatch(
+        editAccountList({ roomId, accountingId: editPart.id, editaccountData })
+      ).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          setIsEdit(false);
+          dispatch(getAccountList({ roomId, date, feeMethod }));
+          setIsOpenModal(false);
+          return;
+        }
+      });
+    } else {
+      const accountData = {
+        paymentName: expend,
+        paymentMethod: payment,
+        paymentTime: date,
+        price: Number(fee),
+        category: changeLanCategory(ncategory),
+        etc: note,
+      };
 
-    dispatch(addAccountList({ roomId, accountData })).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        setIsOpenModal(false);
-        return;
-      }
-    });
+      dispatch(addAccountList({ roomId, accountData })).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          dispatch(getAccountList({ roomId, date, feeMethod }));
+          setIsOpenModal(false);
+          return;
+        }
+      });
+    }
   };
 
   return (
@@ -234,7 +291,9 @@ const AddEditAccountModal = ({ setIsOpenModal, date , days ,day}) => {
             <DayDateBox>
               <dl>
                 <dt>{days}일차</dt>
-                <dd>{transformedDate}({day})</dd>
+                <dd>
+                  {transformedDate}({day})
+                </dd>
               </dl>
             </DayDateBox>
             <FormControl fullWidth variant="outlined">
@@ -295,7 +354,7 @@ const AddEditAccountModal = ({ setIsOpenModal, date , days ,day}) => {
               <ul>
                 {categoryOptions.map((item) => {
                   return (
-                    <CategoryWrap selected={category === item} key={item}>
+                    <CategoryWrap selected={ncategory === item} key={item}>
                       <div onClick={() => setCategory(item)}></div>
                       <span>{item}</span>
                     </CategoryWrap>
