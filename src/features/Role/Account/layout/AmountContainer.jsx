@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { editAllAmount, getAllAmount } from "../amountSlice";
 import { getAllexpenses } from "../expensesSlice";
+import { formatValue } from "../utils/moneyFormat";
 
 const AmountWrapper = styled.div`
   display: flex;
@@ -111,7 +112,7 @@ function AmountContainer() {
   }, [dispatch, roomId]);
   const { expensesTotal } = useSelector((state) => state.expenses);
 
-  const {totalExpense} = expensesTotal
+  const { totalExpense } = expensesTotal;
 
   return (
     <AmountWrapper>
@@ -168,17 +169,12 @@ function AmountContainer() {
       </AmountBox>
       <AmountBox>
         <header>남은 경비</header>
-        <p>{amountTotal.expenses - totalExpense}원</p>
+        <p>{formatValue(amountTotal.expenses - totalExpense)}원</p>
         <span>잔액을 파악해 경비를 효율적으로 관리해 보세요!</span>
       </AmountBox>
       <AmountBox>
         <header>여행 총 지출 금액</header>
-        <p>
-          {expensesTotal && totalExpense
-            ? totalExpense
-            : 0}
-          원
-        </p>
+        <p>{expensesTotal && totalExpense ? formatValue(totalExpense) : 0}원</p>
         <span>일자별 지출 금액을 모두 합산한 금액입니다.</span>
       </AmountBox>
     </AmountWrapper>

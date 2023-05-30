@@ -13,6 +13,8 @@ import { getAccountList } from "./accountSlice";
 import Modal from "../../../components/Modal";
 import AddEditAccountModal from "./layout/AddEditAccountModal";
 import Icons from "../../../assets/icon/icon";
+import changeLanCategory from "../Schedule/utils/changeLanCategory";
+import { formatValue } from "./utils/moneyFormat";
 
 const Wrapper = styled.div`
   display: flex;
@@ -327,20 +329,26 @@ function Account() {
     setValue(newValue);
   };
 
+  const firstDayObj = travelDayList[0];
   const firstDay = travelDayList[0]?.date;
-  const [date, setDate] = useState();
+  const [days, setDays] = useState(1); //몇일차
+  const [date, setDate] = useState(); // 날짜 yy-mm-dd
+  const [day, setDay] = useState(); // 요일
 
   useEffect(() => {
     setDate(firstDay);
+    setDay(firstDayObj.day);
     dispatch(getTravelDay(roomId));
-  }, [firstDay, dispatch, roomId]);
+  }, [firstDay, dispatch, roomId, firstDayObj.day]);
 
   useEffect(() => {
-    dispatch(getAccountList({ roomId, date, feeMethod }));
-  }, [feeMethod, date, roomId, dispatch]);
-  const { accountList } = useSelector((state) => state.account);
+    if (date) dispatch(getAccountList({ roomId, date, feeMethod }));
+  }, [feeMethod, date, roomId, dispatch, firstDay]);
 
+  const { accountList } = useSelector((state) => state.account);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  console.log(accountList)
+
   return (
     <>
       <Wrapper>
@@ -396,6 +404,8 @@ function Account() {
                           value={`${idx}`}
                           onClick={() => {
                             setDate(date);
+                            setDays(idx);
+                            setDay(day);
                           }}
                         />
                       );
@@ -423,24 +433,42 @@ function Account() {
                       <NoteDetailColumn>회계 비고</NoteDetailColumn>
                     </ColumnHeader>
                     <ScheduleDetails>
-                      <ScheduleRow>
-                        <PlaceNameColumn>
-                          <input type="checkbox" />
-                          연돈이게최대몇자까지
-                        </PlaceNameColumn>
-                        <DetailColumn>10:00</DetailColumn>
-                        <DetailColumn>필요</DetailColumn>
-                        <DetailColumn>식당</DetailColumn>
-                        <DetailFeeColumn>
-                          <span>예약비고 텍스트가 이곳에 들어갑니다 </span>
-                        </DetailFeeColumn>
-                        <NoteDetailColumn>
-                          <span>회계비고 텍스트가 이곳에 들어갑니다 </span>
-                        </NoteDetailColumn>
-                      </ScheduleRow>
+                      {accountList.expenses?.map((data) => {
+                        const {
+                          id,
+                          paymentName,
+                          paymentMethod,
+                          category,
+                          price,
+                          bookEtc,
+                          accountingEtc,
+                        } = data;
+                        return (
+                          <ScheduleRow key={id}>
+                            <PlaceNameColumn>
+                              <input type="checkbox" />
+                              {paymentName}
+                            </PlaceNameColumn>
+                            <DetailColumn>
+                              {paymentMethod === "CARD" ? "카드" : "현금"}
+                            </DetailColumn>
+                            <DetailColumn>
+                              {changeLanCategory(category)}
+                            </DetailColumn>
+                            <DetailColumn>{formatValue(price)}</DetailColumn>
+                            <DetailFeeColumn>
+                              <span>{bookEtc}</span>
+                            </DetailFeeColumn>
+                            <NoteDetailColumn>
+                              <span>{accountingEtc}</span>
+                            </NoteDetailColumn>
+                          </ScheduleRow>
+                        );
+                      })}
+
                       <AllAcountRow>
                         <span>총 지출 금액</span>
-                        <span>1,231,230원</span>
+                        <span>{formatValue(accountList.totalExpense)}원</span>
                       </AllAcountRow>
                     </ScheduleDetails>
                   </StyledTabPanel>
@@ -451,7 +479,12 @@ function Account() {
         </AmonutDetailContainer>
         {isOpenModal ? (
           <Modal width="52rem" setIsOpenModal={setIsOpenModal}>
-            <AddEditAccountModal setIsOpenModal={setIsOpenModal} />
+            <AddEditAccountModal
+              setIsOpenModal={setIsOpenModal}
+              date={date}
+              days={days}
+              day={day}
+            />
           </Modal>
         ) : null}
       </Wrapper>

@@ -30,12 +30,12 @@ const SpaceContainer = styled.div`
   background-color: #f6f8fc;
 `;
 
-function TeamSpace({ Auth }) {
+function TeamSpace() {
   const navigate = useNavigate();
   const [openRoomEditModal, setOpenRoomEditModal] = useState(false);
   const [openRoomDeleteModal, setOpenRoomDeleteModal] = useState(false);
   const [openInvitationModal, setOpenInvitationModal] = useState(false);
-  const [reserveList, setReserveList] = useState([]);
+  
   const { role } = useParams();
 
   useEffect(() => {
@@ -57,8 +57,8 @@ function TeamSpace({ Auth }) {
           {
             {
               allplan: <AllPlan />,
-              schedule: <Schedule setReserveList={setReserveList} />,
-              reservation: <Reservation reserveList={reserveList} />,
+              schedule: <Schedule />,
+              reservation: <Reservation/>,
               account: <Account />,
               essentials: <Essentials />,
             }[role]

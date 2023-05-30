@@ -178,9 +178,7 @@ const ScheduleSection = styled.div`
   height: fit-content;
 `;
 
-function Schedule({ setReserveList }) {
-  // 구현해놓은 모킹 페이지
-  // <Owner setReserveList={setReserveList} />
+function Schedule() {
 
   //카카오 맵 초기등록하기
   const [map, setMap] = useState();

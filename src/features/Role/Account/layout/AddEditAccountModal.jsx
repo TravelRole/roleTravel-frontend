@@ -13,6 +13,8 @@ import Button from "../../../../components/Button";
 import Icons from "../../../../assets/icon/icon";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { addAccountList } from "../accountSlice";
+import changeLanCategory from "../../Schedule/utils/changeLanCategory";
 
 const EditReserveModalWrapper = styled.div``;
 
@@ -152,11 +154,13 @@ const DayDateBox = styled.div`
   }
 `;
 
-const AddEditAccountModal = ({setIsOpenModal}) => {
+const AddEditAccountModal = ({ setIsOpenModal, date , days ,day}) => {
   const dispatch = useDispatch();
   const { roomId } = useParams();
 
   const [payment, setPayment] = useState("CARD");
+  const categoryOptions = ["교통", "숙박", "음식", "관광", "쇼핑", "기타"];
+  const [category, setCategory] = useState("교통");
   const [note, setNote] = useState("");
   const [expend, setExpend] = useState("");
   const [fee, setFee] = useState("");
@@ -164,6 +168,9 @@ const AddEditAccountModal = ({setIsOpenModal}) => {
   const formatValue = (value = 0) => {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
+
+  const transformedDate =
+  date.split("-")[1] + "." + date.split("-")[2];
 
   const noteMax = 30;
 
@@ -193,8 +200,19 @@ const AddEditAccountModal = ({setIsOpenModal}) => {
     }
   };
 
-  const categoryOptions = ["교통", "숙박", "음식", "관광", "쇼핑", "기타"];
-  const [category, setCategory] = useState("교통");
+  const addEditAccount = (e) => {
+    e.preventDefault();
+    const accountData = {
+      paymentName: expend,
+      paymentMethod: payment,
+      paymentTime: date,
+      price: Number(fee),
+      category: changeLanCategory(category),
+      etc: note,
+    };
+
+    dispatch(addAccountList({ roomId, accountData }));
+  };
 
   return (
     <EditReserveModalWrapper>
@@ -206,12 +224,12 @@ const AddEditAccountModal = ({setIsOpenModal}) => {
       </EditReserveHeader>
 
       <EditReserveModalBody>
-        <form>
+        <form onSubmit={addEditAccount}>
           <div className="form-content">
             <DayDateBox>
               <dl>
-                <dt>1일차</dt>
-                <dd>4/17(월)</dd>
+                <dt>{days}일차</dt>
+                <dd>{transformedDate}({day})</dd>
               </dl>
             </DayDateBox>
             <FormControl fullWidth variant="outlined">
@@ -309,7 +327,7 @@ const AddEditAccountModal = ({setIsOpenModal}) => {
               color="stroke"
               size="small"
               onClick={() => {
-                setIsOpenModal(false)
+                setIsOpenModal(false);
               }}
             >
               취소
