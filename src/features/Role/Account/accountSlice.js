@@ -29,14 +29,13 @@ export const addAccountList = createAsyncThunk(
   }
 );
 
-//예약 완료로 패치
-export const bookedReserveList = createAsyncThunk(
-  "reservation/delSchedule",
+//회계내역 삭제
+export const delAccountList = createAsyncThunk(
+  "account/delAccountList",
   async (payload, thunkAPI) => {
     try {
-      await tokenApi.patch(
-        `api/room/${payload.roomId}/board/booked`,
-        payload.bookInfo
+      await tokenApi.delete(
+        `api/room/${payload.roomId}/accounting/${payload.accountingId}`
       );
     } catch (error) {
       console.log(error);
@@ -64,13 +63,13 @@ const accountSlice = createSlice({
       .addCase(addAccountList.rejected, (state, action) => {
         state.isAccountLoading = false;
       })
-      .addCase(bookedReserveList.pending, (state) => {
+      .addCase(delAccountList.pending, (state) => {
         state.isAccountLoading = true;
       })
-      .addCase(bookedReserveList.fulfilled, (state, action) => {
+      .addCase(delAccountList.fulfilled, (state, action) => {
         state.isAccountLoading = false;
       })
-      .addCase(bookedReserveList.rejected, (state, action) => {
+      .addCase(delAccountList.rejected, (state, action) => {
         state.isAccountLoading = false;
       })
       .addCase(getAccountList.pending, (state) => {

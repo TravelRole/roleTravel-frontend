@@ -211,7 +211,12 @@ const AddEditAccountModal = ({ setIsOpenModal, date , days ,day}) => {
       etc: note,
     };
 
-    dispatch(addAccountList({ roomId, accountData }));
+    dispatch(addAccountList({ roomId, accountData })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setIsOpenModal(false);
+        return;
+      }
+    });
   };
 
   return (

@@ -9,7 +9,7 @@ import AmountContainer from "./layout/AmountContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { getTravelDay } from "../Schedule/travelDaySlice";
 import { useParams } from "react-router-dom";
-import { getAccountList } from "./accountSlice";
+import { delAccountList, getAccountList } from "./accountSlice";
 import Modal from "../../../components/Modal";
 import AddEditAccountModal from "./layout/AddEditAccountModal";
 import Icons from "../../../assets/icon/icon";
@@ -150,6 +150,9 @@ const ScheduleWrapper = styled.div`
 `;
 
 const AddAccountSection = styled.section`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   margin: 2.2rem 0;
   width: 100%;
 
@@ -170,6 +173,25 @@ const AddAccountSection = styled.section`
       font-size: 1.5rem;
       margin-left: 0.8rem;
     }
+  }
+`;
+
+const EditButtonSection = styled.section`
+  display: flex;
+  width: fit-content;
+  justify-content: flex-end;
+
+  button {
+    padding: 0;
+
+    font-family: "Pretendard";
+    color: #8490a4;
+    font-weight: 500;
+    background-color: transparent;
+    border: none;
+    border-bottom: 0.1rem solid #8490a4;
+
+    cursor: pointer;
   }
 `;
 const ColumnHeader = styled.div`
@@ -203,6 +225,13 @@ const PlaceNameColumn = styled(Column)`
   justify-content: flex-start;
   font-weight: 500;
   color: #333333;
+  div {
+    width: 2.3rem;
+    height: 2.3rem;
+    margin: 0 1.5rem;
+    border-radius: 50%;
+    background: #eef1f8;
+  }
   input {
     appearance: none;
     border-radius: 50%;
@@ -210,8 +239,8 @@ const PlaceNameColumn = styled(Column)`
     background-size: 80% 80%;
     background-position: 50%;
     background-repeat: no-repeat;
-    width: 2rem;
-    height: 2rem;
+    width: 2.3rem;
+    height: 2.3rem;
     margin: 0 1.5rem;
     cursor: pointer;
 
@@ -331,23 +360,34 @@ function Account() {
 
   const firstDayObj = travelDayList[0];
   const firstDay = travelDayList[0]?.date;
-  const [days, setDays] = useState(1); //몇일차
+  const [days, setDays] = useState(1); // 몇일차
   const [date, setDate] = useState(); // 날짜 yy-mm-dd
   const [day, setDay] = useState(); // 요일
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   useEffect(() => {
     setDate(firstDay);
-    setDay(firstDayObj.day);
+    setDay(firstDayObj?.day);
     dispatch(getTravelDay(roomId));
-  }, [firstDay, dispatch, roomId, firstDayObj.day]);
+  }, [firstDay, dispatch, roomId, firstDayObj?.day]);
 
   useEffect(() => {
     if (date) dispatch(getAccountList({ roomId, date, feeMethod }));
-  }, [feeMethod, date, roomId, dispatch, firstDay]);
+  }, [feeMethod, date, roomId, dispatch, firstDay, isOpenModal]);
 
   const { accountList } = useSelector((state) => state.account);
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  console.log(accountList)
+
+  const [delNum, setDelNum] = useState();
+
+  const delAccList = () => {
+    dispatch(delAccountList({ roomId, accountingId: delNum })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setDelNum(undefined);
+        dispatch(getAccountList({ roomId, date, feeMethod }));
+        return;
+      }
+    });
+  };
 
   return (
     <>
@@ -406,6 +446,7 @@ function Account() {
                             setDate(date);
                             setDays(idx);
                             setDay(day);
+                            setDelNum(undefined);
                           }}
                         />
                       );
@@ -422,6 +463,11 @@ function Account() {
                       내역추가
                       <Icons.FaChevronRight />
                     </button>
+                    <EditButtonSection>
+                      {delNum !== undefined ? (
+                        <button onClick={delAccList}>선택삭제</button>
+                      ) : null}
+                    </EditButtonSection>
                   </AddAccountSection>
                   <StyledTabPanel value={value}>
                     <ColumnHeader>
@@ -434,8 +480,10 @@ function Account() {
                     </ColumnHeader>
                     <ScheduleDetails>
                       {accountList.expenses?.map((data) => {
+                        console.log(data);
                         const {
                           id,
+                          fromBook,
                           paymentName,
                           paymentMethod,
                           category,
@@ -446,7 +494,28 @@ function Account() {
                         return (
                           <ScheduleRow key={id}>
                             <PlaceNameColumn>
-                              <input type="checkbox" />
+                              {fromBook ? (
+                                <div></div>
+                              ) : (
+                                <input
+                                  type="checkbox"
+                                  onChange={() => {
+                                    if (delNum === id) {
+                                      setDelNum(undefined);
+                                    } else {
+                                      setDelNum(id);
+                                    }
+                                  }}
+                                  disabled={
+                                    delNum === undefined
+                                      ? false
+                                      : delNum !== id
+                                      ? true
+                                      : false
+                                  }
+                                />
+                              )}
+
                               {paymentName}
                             </PlaceNameColumn>
                             <DetailColumn>
