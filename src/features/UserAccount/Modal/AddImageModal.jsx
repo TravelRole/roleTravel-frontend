@@ -19,6 +19,7 @@ import {
 } from "../LoggedUserSlice";
 import defaultImage from "../../../assets/images/random1.png";
 import Modal from "../../../components/Modal"
+import { getUserInfo } from "../../Landing/userSlice";
 
 const AddImageModal = ({ setIsOpen, image, setImage }) => {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
           .then((res) => {
             dispatch(changeProfileImage()).then((res) => {
               dispatch(getLoggedInfo());
+              dispatch(getUserInfo())
             });
             setIsOpen(false);
           })

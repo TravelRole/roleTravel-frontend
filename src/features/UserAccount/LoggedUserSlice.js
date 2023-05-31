@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import tokenApi from "../../lib/customAPI";
 import { toast } from "react-toastify";
+import dog from "../../assets/images/dog.jpeg";
 
 const initialState = {
   changePassword: null,
@@ -11,8 +12,17 @@ const initialState = {
 };
 
 export const getLoggedInfo = createAsyncThunk("api/users", async () => {
-  const res = await tokenApi.get("api/users")
-  return res.data;
+  const res = await tokenApi.get("api/users");
+  const { name, email, profile, birth, userId } = res?.data;
+  const loggedInfo = {
+    userId: userId,
+    name: name,
+    email: email,
+    birth: birth,
+    profile: profile === null ? dog : profile,
+  };
+  console.log('Profile', profile)
+  return loggedInfo;
 });
 
 export const updatedInfo = createAsyncThunk("api/users", async (updatedData, thunkAPI) => {
