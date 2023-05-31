@@ -11,8 +11,8 @@ const initialState = {
 };
 
 export const getLoggedInfo = createAsyncThunk("api/users", async () => {
-  const res = await tokenApi.get("api/users")
-  return res.data;
+  const res = await tokenApi.get("api/users");
+  return res?.data;
 });
 
 export const updatedInfo = createAsyncThunk("api/users", async (updatedData, thunkAPI) => {
