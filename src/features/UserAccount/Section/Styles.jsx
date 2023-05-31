@@ -120,6 +120,7 @@ export const Nav = styled.div`
   justify-content: center;
   align-items: center;
   gap: 3.4rem;
+  margin-top: 10rem;
   padding-bottom: 1rem;
 `;
 
