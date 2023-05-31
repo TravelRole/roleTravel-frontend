@@ -122,7 +122,7 @@ function AmountContainer() {
         <input
           ref={allAmountInput}
           value={
-            canEditShare || "" ? shareAmount || "" : amountTotal.expenses || ""
+            canEditShare || "" ? shareAmount || "" : amountTotal.expenses || 0
           }
           disabled={canEditShare ? false : true}
           onChange={(e) => {
