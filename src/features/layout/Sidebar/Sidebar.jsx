@@ -4,10 +4,9 @@ import { useEffect, useState } from "react";
 import Icons from "../../../assets/icon/icon";
 import { useDispatch, useSelector } from "react-redux";
 import logo from "../../../assets/images/logo.png";
-import Menu from "../../../components/Menu";
-import RoomEditMenu from "./RoomEditMenu";
 import { getSidebarData } from "./sidebarSlice";
 import randomImageData from "../../../assets/images/randomImageData";
+import CustomIcons from "../../../assets/icon/customIcons";
 
 const SidebarWrap = styled.nav`
   width: 24rem;
@@ -148,21 +147,25 @@ const SideBarNavWrap = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 3rem;
-      height: 3rem;
-      border-radius: 50%;
-      background-color: #f5f5f5;
+      width: 2.4rem;
+      height: 2.4rem;
 
       svg {
-        font-size: 1.8rem;
+        width: 100%;
+        height: 100%;
       }
     }
 
-    &:hover {
+    /* &:hover {
       color: #3884fd;
       font-weight: bold;
       span {
-        background-color: #e3f0ff;
+        svg {
+          path {
+            stroke: "#3884fd";
+          }
+          color: #3884fd;
+        }
       }
 
       &::after {
@@ -176,14 +179,11 @@ const SideBarNavWrap = styled.div`
         background-color: #ffc759;
         border-radius: 50%;
       }
-    }
+    } */
 
     &.active {
       color: #3884fd;
-      font-weight: bold;
-      span {
-        background-color: #e3f0ff;
-      }
+      font-weight: 500;
 
       &::after {
         content: "";
@@ -200,27 +200,24 @@ const SideBarNavWrap = styled.div`
   }
 `;
 
-const Out = styled.div`
+const Out = styled.p`
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 7rem;
-  a {
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.4rem;
+  color: #9e9e9e;
+  cursor: pointer;
+
+  i {
+    width: 2.4rem;
+    height: 2.4rem;
+    color: red;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    font-size: 1.4rem;
-    color: #9e9e9e;
-    /* height: 2.4rem; */
-    span {
-      width: 2.4rem;
-      height: 2.4rem;
-      color: red;
-
-      svg {
-        width: 100%;
-        height: 100%;
-      }
+    justify-content: center;
+    svg {
+      width: 100%;
+      height: 100%;
     }
   }
 `;
@@ -229,22 +226,26 @@ const SideBarTab = [
   {
     pathname: "모든 여행계획",
     path: "allplan",
-    icon: <Icons.SlPlane />,
+    defaultIcon: <CustomIcons.AllPlanGrayIcon />,
+    activeIcon: <CustomIcons.AllPlanBlueIcon />,
   },
   {
     pathname: "일정",
     path: "schedule",
-    icon: <Icons.RiCalendarCheckLine />,
+    defaultIcon: <CustomIcons.ScheduleGrayIcon />,
+    activeIcon: <CustomIcons.ScheduleBlueIcon />,
   },
   {
     pathname: "예약",
     path: "reservation",
-    icon: <Icons.HiOutlineTicket />,
+    defaultIcon: <CustomIcons.ReservationGrayIcon />,
+    activeIcon: <CustomIcons.ReservationBlueIcon />,
   },
   {
     pathname: "회계",
     path: "account",
-    icon: <Icons.HiOutlineCalculator />,
+    defaultIcon: <CustomIcons.AccountingGrayIcon />,
+    activeIcon: <CustomIcons.AccountingBlueIcon />,
   },
 ];
 
@@ -253,11 +254,16 @@ function Sidebar({
   setOpenRoomDeleteModal,
   setOpenInvitationModal,
 }) {
-  const { roomId } = useParams();
+  const { roomId, role } = useParams();
   const { sidebarData } = useSelector((state) => state.sidebar);
   const { roomName, roomImage, roles } = sidebarData ?? {};
-  const [openRoomEditMenu, setOpenRoomEditMenu] = useState(false);
   const dispatch = useDispatch();
+  const [isActive, setIsActive] = useState(role);
+
+  console.log(role);
+  const handleNavLinkClick = (e) => {
+    setIsActive(e.target.id);
+  };
 
   useEffect(() => {
     dispatch(getSidebarData(roomId));
@@ -278,19 +284,10 @@ function Sidebar({
             {roles?.includes("총무") && (
               <div
                 className="room-edit-btn"
-                onClick={() => setOpenRoomEditMenu((prev) => !prev)}
+                onClick={() => setOpenRoomEditModal((prev) => !prev)}
               >
-                <Icons.HiOutlineCog />
+                <CustomIcons.SettingIcon />
               </div>
-            )}
-
-            {openRoomEditMenu && (
-              <Menu>
-                <RoomEditMenu
-                  setOpenRoomEditModal={setOpenRoomEditModal}
-                  setOpenRoomDeleteModal={setOpenRoomDeleteModal}
-                />
-              </Menu>
             )}
           </div>
 
@@ -320,11 +317,13 @@ function Sidebar({
               <NavLink
                 key={index}
                 to={`/${roomId}/${item.path}`}
-                className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "active" : ""
-                }
+                id={item.path}
+                className={({ isActive }) => (isActive ? "active" : "")}
+                onClick={handleNavLinkClick}
               >
-                <span>{item.icon}</span>
+                <span>
+                  {isActive === item.path ? item.activeIcon : item.defaultIcon}
+                </span>
                 {item.pathname}
               </NavLink>
             );
@@ -341,21 +340,25 @@ function Sidebar({
             className={({ isActive, isPending }) =>
               isPending ? "pending" : isActive ? "active" : ""
             }
+            id="essentials"
+            onClick={handleNavLinkClick}
           >
             <span>
-              <Icons.SlBag />
+              {isActive === "essentials" ? (
+                <CustomIcons.EssentialBlueIcon />
+              ) : (
+                <CustomIcons.EssentialGrayIcon />
+              )}
             </span>
             준비물
           </NavLink>
         </SideBarNavWrap>
       </SidebarContainer>
-      <Out>
-        <Link>
-          <span>
-            <Icons.FaDoorOpen color="red" />
-          </span>
-          스페이스 탈퇴하기
-        </Link>
+      <Out onClick={() => setOpenRoomDeleteModal((prev) => !prev)}>
+        <i>
+          <CustomIcons.SpaceExitIcon />
+        </i>
+        스페이스 탈퇴하기
       </Out>
     </SidebarWrap>
   );

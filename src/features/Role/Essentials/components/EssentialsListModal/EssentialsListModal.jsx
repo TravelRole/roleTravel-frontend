@@ -1,5 +1,4 @@
 import {
-  Blur,
   ContentWrapper,
   Emphasis,
   EssentialsModalSpan,
@@ -13,6 +12,7 @@ import { useState } from "react";
 import { convertCategoryName } from "../AddEssentialsModal/validation";
 import { createEssentials, getEssentials } from "../../EssentialsSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Modal from "../../../../../components/Modal";
 
 const AddEssentialsModal = ({ setIsOpen, setData }) => {
   const dispatch = useDispatch();
@@ -52,8 +52,7 @@ const AddEssentialsModal = ({ setIsOpen, setData }) => {
   };
 
   return (
-    <>
-      <Blur></Blur>
+    <Modal width="77.4rem" setIsOpenModal={setIsOpen}>
       <ContentWrapper>
         <Section height="7.2rem">
           <Title>ROLE</Title>
@@ -129,7 +128,7 @@ const AddEssentialsModal = ({ setIsOpen, setData }) => {
           </ModalButton>
         </Section>
       </ContentWrapper>
-    </>
+    </Modal>
   );
 };
 

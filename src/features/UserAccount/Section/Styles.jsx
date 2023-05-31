@@ -59,7 +59,7 @@ export const ContentWrap = styled.div`
   width: 100%;
   height: 55rem;
   margin-left: 2rem;
-  margin-rigth: 2rem;
+  margin-right: 2rem;
   margin-top: 12rem;
   display: flex;
   justify-content: center;
@@ -120,6 +120,7 @@ export const Nav = styled.div`
   justify-content: center;
   align-items: center;
   gap: 3.4rem;
+  margin-top: 10rem;
   padding-bottom: 1rem;
 `;
 

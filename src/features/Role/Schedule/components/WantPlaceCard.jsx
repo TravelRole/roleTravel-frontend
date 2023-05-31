@@ -80,6 +80,7 @@ const WantPlaceCard = (props) => {
     Info,
     setModalData,
     setIsOpenModal,
+    isScheduler,
   } = props;
   const { setlat, setlng } = locationFn;
   const { info, setInfo } = Info;
@@ -106,14 +107,14 @@ const WantPlaceCard = (props) => {
         onChange={(e) => handleWantPlace(e, place, isExist)}
         checked={true}
       />
-      <button
+      {isScheduler ? <button
         onClick={() => {
           setModalData(place);
           setIsOpenModal(true);
         }}
       >
         일정에 추가
-      </button>
+      </button> : null}
     </StyledPlaceCard>
   );
 };

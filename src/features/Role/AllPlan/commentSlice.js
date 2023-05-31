@@ -54,7 +54,6 @@ export const addChildComment = createAsyncThunk(
           content,
         }
       );
-      console.log(res);
       return res;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

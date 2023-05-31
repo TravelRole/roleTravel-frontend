@@ -13,6 +13,12 @@ import Button from "../../../../components/Button";
 import Icons from "../../../../assets/icon/icon";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import {
+  addAccountList,
+  editAccountList,
+  getAccountList,
+} from "../accountSlice";
+import changeLanCategory from "../../Schedule/utils/changeLanCategory";
 
 const EditReserveModalWrapper = styled.div``;
 
@@ -152,18 +158,51 @@ const DayDateBox = styled.div`
   }
 `;
 
-const AddEditAccountModal = ({setIsOpenModal}) => {
+const AddEditAccountModal = ({
+  setIsOpenModal,
+  date,
+  days,
+  day,
+  editPart,
+  feeMethod,
+  setDelNum
+}) => {
+
+  useEffect(() => {
+    if (editPart) {
+      setPayment(editPart.paymentMethod);
+      setFee(editPart.price);
+      setCategory(changeLanCategory(editPart.category));
+      setExpend(editPart.paymentName);
+      setNote(editPart.accountingEtc);
+      setIsEdit(true);
+    }
+  }, [
+    editPart,
+    editPart?.paymentMethod,
+    editPart?.category,
+    editPart?.paymentName,
+    editPart?.accountingEtc,
+    editPart?.price,
+  ]);
+
   const dispatch = useDispatch();
   const { roomId } = useParams();
 
   const [payment, setPayment] = useState("CARD");
+  const categoryOptions = ["교통", "숙박", "음식", "관광", "쇼핑", "기타"];
+  const [ncategory, setCategory] = useState("교통");
   const [note, setNote] = useState("");
   const [expend, setExpend] = useState("");
   const [fee, setFee] = useState("");
 
+  const [isEdit, setIsEdit] = useState(false);
+
   const formatValue = (value = 0) => {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
+
+  const transformedDate = date.split("-")[1] + "." + date.split("-")[2];
 
   const noteMax = 30;
 
@@ -193,8 +232,52 @@ const AddEditAccountModal = ({setIsOpenModal}) => {
     }
   };
 
-  const categoryOptions = ["교통", "숙박", "음식", "관광", "쇼핑", "기타"];
-  const [category, setCategory] = useState("교통");
+  const addEditAccount = (e) => {
+
+    e.preventDefault();
+    if (isEdit) {
+      const editaccountData = {
+        accountingId: editPart?.id,
+        paymentName: expend,
+        paymentMethod: payment,
+        price: Number(fee),
+        category: changeLanCategory(ncategory),
+        accountingEtc: note,
+      };
+      dispatch(
+        editAccountList({ roomId, accountingId: editPart.id, editaccountData })
+      ).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          setIsEdit(false);
+          dispatch(getAccountList({ roomId, date, feeMethod }));
+          setDelNum(undefined)
+         
+          setIsOpenModal(false);
+          return;
+        }
+      });
+    } else {
+      const accountData = {
+        paymentName: expend,
+        paymentMethod: payment,
+        paymentTime: date,
+        price: Number(fee),
+        category: changeLanCategory(ncategory),
+        accountingEtc: note,
+      };
+
+      dispatch(addAccountList({ roomId, accountData })).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          setIsEdit(false);
+          dispatch(getAccountList({ roomId, date, feeMethod }));
+          setDelNum(undefined)
+      
+          setIsOpenModal(false);
+          return;
+        }
+      });
+    }
+  };
 
   return (
     <EditReserveModalWrapper>
@@ -206,12 +289,14 @@ const AddEditAccountModal = ({setIsOpenModal}) => {
       </EditReserveHeader>
 
       <EditReserveModalBody>
-        <form>
+        <form onSubmit={addEditAccount}>
           <div className="form-content">
             <DayDateBox>
               <dl>
-                <dt>1일차</dt>
-                <dd>4/17(월)</dd>
+                <dt>{days}일차</dt>
+                <dd>
+                  {transformedDate}({day})
+                </dd>
               </dl>
             </DayDateBox>
             <FormControl fullWidth variant="outlined">
@@ -272,7 +357,7 @@ const AddEditAccountModal = ({setIsOpenModal}) => {
               <ul>
                 {categoryOptions.map((item) => {
                   return (
-                    <CategoryWrap selected={category === item} key={item}>
+                    <CategoryWrap selected={ncategory === item} key={item}>
                       <div onClick={() => setCategory(item)}></div>
                       <span>{item}</span>
                     </CategoryWrap>
@@ -309,7 +394,7 @@ const AddEditAccountModal = ({setIsOpenModal}) => {
               color="stroke"
               size="small"
               onClick={() => {
-                setIsOpenModal(false)
+                setIsOpenModal(false);
               }}
             >
               취소

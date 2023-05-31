@@ -4,8 +4,9 @@ export const Container = styled.div`
   display: flex;
   height: 100%;
   flex-direction: column;
-  padding-left: 6rem;
+  padding-left: 3rem;
   padding-top: 8rem;
+  overflow: hidden;
 `;
 
 export const Title = styled.div`
@@ -14,7 +15,8 @@ export const Title = styled.div`
   align-items: center;
   margin-bottom: 4rem;
   margin-left: 2rem;
-  margin-right: 3rem;
+  margin-right: 18rem;
+  overflow: hidden;
 `;
 
 export const Tip = styled.div`
@@ -111,7 +113,8 @@ export const EditContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0rem 6.8rem 2rem 2rem;
+  margin: 0rem 18rem 2rem 2rem;
+  /* padding-right: 10rem; */
 `;
 
 export const EssentialsSpan = styled.span`

@@ -43,7 +43,11 @@ import {
 } from "react-icons/ai";
 
 import { TbPencilMinus, TbTrash } from "react-icons/tb";
-import { MdOutlineClose } from "react-icons/md";
+import {
+  MdOutlineClose,
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp,
+} from "react-icons/md";
 import { BiCoinStack } from "react-icons/bi";
 import { RxMagnifyingGlass } from "react-icons/rx";
 
@@ -93,6 +97,8 @@ const Icons = {
   HiCheckCircle,
   HiOutlinePlusSm,
   HiCheck,
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp,
 };
 
 export default Icons;

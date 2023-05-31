@@ -24,8 +24,7 @@ const SpaceListWrap = styled.main`
 
 const SpaceListContainer = styled.div`
   height: 100vh;
-  padding-top: 9rem;
-  margin-top: 10rem;
+  padding-top: 19rem;
 `;
 
 const SpaceHeader = styled.div`

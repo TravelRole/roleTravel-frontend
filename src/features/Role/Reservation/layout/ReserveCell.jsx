@@ -110,7 +110,7 @@ const CellDetail = styled.div`
     flex-direction: column;
     gap: 1.2rem;
     li {
-      font-weight: 500;
+      font-weight: 600;
       font-size: 1.5rem;
       color: #585858;
       a {
@@ -176,6 +176,7 @@ const ReserveCellLayout = ({
     placeName,
     price,
     time,
+    scheduleEtc
   } = element;
 
   const categoryName = changeLanCategory(category);
@@ -252,6 +253,7 @@ const ReserveCellLayout = ({
           </li>
           <li>
             <span>일정</span>
+            {scheduleEtc}
           </li>
         </ul>
       </CellDetail>
