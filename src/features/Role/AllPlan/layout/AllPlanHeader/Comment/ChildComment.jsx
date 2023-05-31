@@ -8,6 +8,7 @@ import {
   editComment,
   getCommentList,
 } from "../../../commentSlice";
+import userProfile from "../../../../../../assets/images/userProfile.png";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import "moment/locale/ko";
@@ -268,7 +269,14 @@ const ChildComment = ({
         ) : (
           <>
             <ChildCommentProfileImg>
-              <img src={fromUserInfo.profile} alt="프로필임시사진" />
+              <img
+                src={
+                  fromUserInfo.profile === null
+                    ? userProfile
+                    : fromUserInfo.profile
+                }
+                alt="프로필임시사진"
+              />
             </ChildCommentProfileImg>
             <ChildCommentMain>
               <ChildCommentMainTitle>
@@ -277,9 +285,9 @@ const ChildComment = ({
                   <dd>
                     {fromUserInfo.roles.map((role, index) =>
                       index === 0 || index === fromUserInfo.roles.length ? (
-                        <span>{role}&nbsp;</span>
+                        <span key={index}>{role}&nbsp;</span>
                       ) : (
-                        <span>&#183;&nbsp;{role}</span>
+                        <span key={index}>&#183;&nbsp;{role}</span>
                       )
                     )}
                   </dd>

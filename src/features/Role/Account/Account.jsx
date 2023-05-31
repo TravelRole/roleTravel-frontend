@@ -9,9 +9,12 @@ import AmountContainer from "./layout/AmountContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { getTravelDay } from "../Schedule/travelDaySlice";
 import { useParams } from "react-router-dom";
-import { getAccountList } from "./accountSlice";
+import { delAccountList, getAccountList } from "./accountSlice";
 import Modal from "../../../components/Modal";
 import AddEditAccountModal from "./layout/AddEditAccountModal";
+import Icons from "../../../assets/icon/icon";
+import changeLanCategory from "../Schedule/utils/changeLanCategory";
+import { formatValue } from "./utils/moneyFormat";
 
 const Wrapper = styled.div`
   display: flex;
@@ -143,7 +146,57 @@ const StyledTabPanel = styled(TabPanel)`
 `;
 
 const ScheduleWrapper = styled.div`
-  padding: 3rem 6rem 0 6rem !important;
+  padding: 0 6rem 0 6rem !important;
+`;
+
+const AddAccountSection = styled.section`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 2.2rem 0;
+  width: 100%;
+
+  position: relative;
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #8490a4;
+    font-family: "Pretendard";
+    font-weight: 500;
+    font-size: 1.8rem;
+    background-color: transparent;
+    border: none;
+
+    cursor: pointer;
+
+    svg {
+      font-size: 1.5rem;
+      margin-left: 0.8rem;
+    }
+  }
+`;
+
+const EditButtonSection = styled.section`
+  display: flex;
+  justify-content: flex-end;
+  gap: 3rem;
+
+  width: fit-content;
+
+  button {
+    padding: 0;
+
+    font-family: "Pretendard";
+    color: #8490a4;
+    font-weight: 500;
+    background-color: transparent;
+    border: none;
+    border-bottom: 0.1rem solid #8490a4;
+
+    cursor: pointer;
+  }
 `;
 const ColumnHeader = styled.div`
   display: flex;
@@ -176,22 +229,27 @@ const PlaceNameColumn = styled(Column)`
   justify-content: flex-start;
   font-weight: 500;
   color: #333333;
+  div {
+    width: 2.3rem;
+    height: 2.3rem;
+    margin: 0 1.5rem;
+    border-radius: 50%;
+    background: #eef1f8;
+  }
   input {
     appearance: none;
     border-radius: 50%;
-    background-color: #d9d9d9;
-    background-image: url("data:image/svg+xml,%3Csvg width='14' height='9' viewBox='0 0 14 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.78247 4.27374L5.4121 7.89268L12.2177 1.10718' stroke='%23F5F5F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='23' height='23' viewBox='0 0 23 23' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11.5' cy='11.5' r='11' stroke='%23DADADA'/%3E%3C/svg%3E%0A");
     background-size: 80% 80%;
     background-position: 50%;
     background-repeat: no-repeat;
-    width: 2.1rem;
-    height: 2.1rem;
+    width: 2.3rem;
+    height: 2.3rem;
     margin: 0 1.5rem;
     cursor: pointer;
 
     &:checked {
-      background-color: #3884fd;
-      background-image: url("data:image/svg+xml,%3Csvg width='14' height='9' viewBox='0 0 14 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.78247 4.27374L5.4121 7.89268L12.2177 1.10718' stroke='%23F5F5F5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg width='23' height='23' viewBox='0 0 23 23' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11.5' cy='11.5' r='11' fill='%23EEF1F8' style='mix-blend-mode:multiply'/%3E%3Ccircle cx='11.5' cy='11.5' r='11' stroke='%233884FD'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M17.6947 7.29279C17.8822 7.48031 17.9875 7.73462 17.9875 7.99979C17.9875 8.26495 17.8822 8.51926 17.6947 8.70679L9.69471 16.7068C9.50718 16.8943 9.25288 16.9996 8.98771 16.9996C8.72255 16.9996 8.46824 16.8943 8.28071 16.7068L4.28071 12.7068C4.09855 12.5182 3.99776 12.2656 4.00004 12.0034C4.00232 11.7412 4.10749 11.4904 4.29289 11.305C4.4783 11.1196 4.72911 11.0144 4.99131 11.0121C5.25351 11.0098 5.50611 11.1106 5.69471 11.2928L8.98771 14.5858L16.2807 7.29279C16.4682 7.10532 16.7225 7 16.9877 7C17.2529 7 17.5072 7.10532 17.6947 7.29279Z' fill='%233884FD'/%3E%3C/svg%3E ");
       background-size: 80% 80%;
       background-position: 50%;
       background-repeat: no-repeat;
@@ -304,22 +362,38 @@ function Account() {
     setValue(newValue);
   };
 
+  const firstDayObj = travelDayList[0];
   const firstDay = travelDayList[0]?.date;
-  const [date, setDate] = useState();
+  const [days, setDays] = useState(1); // 몇일차
+  const [date, setDate] = useState(); // 날짜 yy-mm-dd
+  const [day, setDay] = useState(); // 요일
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [delNum, setDelNum] = useState();
 
   useEffect(() => {
     setDate(firstDay);
+    setDay(firstDayObj?.day);
     dispatch(getTravelDay(roomId));
-  }, [firstDay, dispatch, roomId]);
+  }, [firstDay, dispatch, roomId, firstDayObj?.day]);
 
   useEffect(() => {
-    dispatch(getAccountList({ roomId, date, feeMethod }));
-  }, [feeMethod]);
-  const { accountList } = useSelector((state) => state.accountList);
+    if (date) dispatch(getAccountList({ roomId, date, feeMethod }));
+  }, [feeMethod, date, roomId, dispatch, isOpenModal]);
 
-  // console.log(accountList);
+  const { accountList } = useSelector((state) => state.account);
 
-  const [isOpenModal, setIsOpenModal] = useState(true);
+  const delAccList = () => {
+    dispatch(delAccountList({ roomId, accountingId: delNum })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setDelNum(undefined);
+        dispatch(getAccountList({ roomId, date, feeMethod }));
+        return;
+      }
+    });
+  };
+
+  const editPart = accountList?.expenses?.find((ele) => ele.id === delNum);
+
   return (
     <>
       <Wrapper>
@@ -375,6 +449,9 @@ function Account() {
                           value={`${idx}`}
                           onClick={() => {
                             setDate(date);
+                            setDays(idx);
+                            setDay(day);
+                            setDelNum(undefined);
                           }}
                         />
                       );
@@ -382,6 +459,33 @@ function Account() {
                   </StyledScheduleTabs>
                 </StyledBox>
                 <ScheduleWrapper>
+                  <AddAccountSection>
+                    {delNum === undefined ? (
+                      <button
+                        onClick={() => {
+                          setIsOpenModal(true);
+                        }}
+                      >
+                        내역추가
+                        <Icons.FaChevronRight />
+                      </button>
+                    ) : (
+                      <div></div>
+                    )}
+
+                    <EditButtonSection>
+                      {delNum !== undefined ? (
+                        <>
+                          <button onClick={delAccList}>선택삭제</button>
+                          <button onClick={() => setIsOpenModal(true)}>
+                            수정하기
+                          </button>
+                        </>
+                      ) : (
+                        <div></div>
+                      )}
+                    </EditButtonSection>
+                  </AddAccountSection>
                   <StyledTabPanel value={value}>
                     <ColumnHeader>
                       <PlaceNameColumn>지출 내역</PlaceNameColumn>
@@ -392,24 +496,75 @@ function Account() {
                       <NoteDetailColumn>회계 비고</NoteDetailColumn>
                     </ColumnHeader>
                     <ScheduleDetails>
-                      <ScheduleRow>
-                        <PlaceNameColumn>
-                          <input type="checkbox" />
-                          연돈이게최대몇자까지
-                        </PlaceNameColumn>
-                        <DetailColumn>10:00</DetailColumn>
-                        <DetailColumn>필요</DetailColumn>
-                        <DetailColumn>식당</DetailColumn>
-                        <DetailFeeColumn>
-                          <span>예약비고 텍스트가 이곳에 들어갑니다 </span>
-                        </DetailFeeColumn>
-                        <NoteDetailColumn>
-                          <span>회계비고 텍스트가 이곳에 들어갑니다 </span>
-                        </NoteDetailColumn>
-                      </ScheduleRow>
+                      {accountList.expenses?.map((data) => {
+                        const {
+                          id,
+                          fromBook,
+                          paymentName,
+                          paymentMethod,
+                          category,
+                          price,
+                          bookEtc,
+                          accountingEtc,
+                        } = data;
+                        return (
+                          <ScheduleRow
+                            key={
+                              id +
+                              fromBook +
+                              paymentName +
+                              paymentMethod +
+                              category +
+                              price +
+                              bookEtc +
+                              accountingEtc
+                            }
+                          >
+                            <PlaceNameColumn>
+                              {fromBook ? (
+                                <div></div>
+                              ) : (
+                                <input
+                                  type="checkbox"
+                                  onChange={() => {
+                                    if (delNum === id) {
+                                      setDelNum(undefined);
+                                    } else {
+                                      setDelNum(id);
+                                    }
+                                  }}
+                                  disabled={
+                                    delNum === undefined
+                                      ? false
+                                      : delNum !== id
+                                      ? true
+                                      : false
+                                  }
+                                />
+                              )}
+
+                              {paymentName}
+                            </PlaceNameColumn>
+                            <DetailColumn>
+                              {paymentMethod === "CARD" ? "카드" : "현금"}
+                            </DetailColumn>
+                            <DetailColumn>
+                              {changeLanCategory(category)}
+                            </DetailColumn>
+                            <DetailColumn>{formatValue(price)}</DetailColumn>
+                            <DetailFeeColumn>
+                              <span>{bookEtc}</span>
+                            </DetailFeeColumn>
+                            <NoteDetailColumn>
+                              <span>{accountingEtc}</span>
+                            </NoteDetailColumn>
+                          </ScheduleRow>
+                        );
+                      })}
+
                       <AllAcountRow>
                         <span>총 지출 금액</span>
-                        <span>1,231,230원</span>
+                        <span>{formatValue(accountList.totalExpense)}원</span>
                       </AllAcountRow>
                     </ScheduleDetails>
                   </StyledTabPanel>
@@ -422,6 +577,12 @@ function Account() {
           <Modal width="52rem" setIsOpenModal={setIsOpenModal}>
             <AddEditAccountModal
               setIsOpenModal={setIsOpenModal}
+              date={date}
+              days={days}
+              day={day}
+              editPart={editPart}
+              feeMethod={feeMethod}
+              setDelNum={setDelNum}
             />
           </Modal>
         ) : null}
