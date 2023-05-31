@@ -179,7 +179,6 @@ const ScheduleSection = styled.div`
 `;
 
 function Schedule() {
-
   //카카오 맵 초기등록하기
   const [map, setMap] = useState();
 
@@ -191,6 +190,7 @@ function Schedule() {
 
   const handleChange = (event, newValue) => {
     setFilter(newValue);
+    setInfo(undefined);
   };
 
   const { roomId } = useParams();
@@ -259,7 +259,7 @@ function Schedule() {
   const { wantPlaceList } = useSelector((state) => state.wantPlace);
   const { travelDayList } = useSelector((state) => state.travelDay);
 
-  const isScheduler = wantPlaceList.isScheduler
+  const isScheduler = wantPlaceList.isScheduler;
 
   /** 찜장소 가져오기 */
   const [searchPlaceList, setSearchPlaceList] = useState([]);
@@ -320,7 +320,6 @@ function Schedule() {
   useEffect(() => {
     setDate(firstDay);
   }, [firstDay]);
-
   return (
     <>
       <Wrapper>
@@ -343,13 +342,21 @@ function Schedule() {
                   onClick={() => setInfo(marker)}
                 >
                   {info &&
-                    (marker.id === info.id ||
+                    (marker.id === String(info.id) ||
                       marker.id === String(info.mapPlaceId)) && (
                       <div style={{ color: "#000" }}>{marker.place_name}</div>
                     )}
                 </MapMarker>
               );
             })}
+            {filter === "wish" && info && (
+              <MapMarker
+                key={`marker`}
+                position={{ lat: info?.latitude, lng: info?.longitude }}
+              >
+                <div style={{ color: "#000" }}>{info?.placeName}</div>
+              </MapMarker>
+            )}
           </Map>
           <SearchAndWantBox>
             <StyledTabContext value={filter}>
