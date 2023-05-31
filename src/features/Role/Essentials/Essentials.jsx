@@ -8,7 +8,7 @@ import { getEssentials } from "./EssentialsSlice";
 
 function Essentials() {
   const dispatch = useDispatch();
-  const { essentials, isLoading } = useSelector((state) => state.essentials);
+  const { essentials } = useSelector((state) => state.essentials);
   const [condition, setCondition] = useState("");
   const [page, setPage] = useState(0);
   const [defaultPages, setDefaultPages] = useState(7);
