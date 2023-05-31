@@ -1,9 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { FcGoogle } from "react-icons/fc";
 import SignForm from "./layout/SignForm";
 import Header from "../layout/Header";
-import authBg from "../../assets/images/authBg.png";
 
 const SignWrap = styled.div`
   width: 100%;
@@ -11,11 +9,8 @@ const SignWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url(${authBg});
-  background-size: cover cover;
-  background-repeat: no-repeat;
-  background-position: 100% 100%;
   padding-top: 2rem;
+  background-color: #f4f6fb;
 `;
 const SignHeader = styled.div`
   display: flex;

@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../../components/Button";
-import userImage from "../../../assets/images/userIcon.png";
+import userProfile from "../../../assets/images/userProfile.png";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { getAllPlanList, getRoomData } from "../../Role/AllPlan/allPlanSlice";
@@ -157,7 +157,9 @@ const TravelCard = ({
                 {members.slice(0, 3).map((member, index) => (
                   <li key={index}>
                     <img
-                      src={member.profile === null ? userImage : member.profile}
+                      src={
+                        member.profile === null ? userProfile : member.profile
+                      }
                       alt={member.name}
                     />
                   </li>
@@ -168,7 +170,7 @@ const TravelCard = ({
               members.map((member, index) => (
                 <li key={index}>
                   <img
-                    src={member.profile === null ? userImage : member.profile}
+                    src={member.profile === null ? userProfile : member.profile}
                     alt={member.name}
                   />
                 </li>

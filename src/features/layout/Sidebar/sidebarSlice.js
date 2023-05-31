@@ -36,6 +36,26 @@ export const getSidebarData = createAsyncThunk(
   }
 );
 
+export const mandateRoleAndDelete = createAsyncThunk(
+  "sidebar/mandateRoleAndDelete",
+  async (data, thunkAPI) => {
+    try {
+      const { roomId, email } = data;
+      await tokenApi.get(`api/room/${roomId}/role`).then(async (res) => {
+        if (res.data.includes("총무")) {
+          await tokenApi.delete(`api/room/${roomId}`, {
+            data: { email: email },
+          });
+        } else {
+          await tokenApi.delete(`api/room/${roomId}`);
+        }
+      });
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const sidebarSlice = createSlice({
   name: "sidebar",
   initialState: initialState,

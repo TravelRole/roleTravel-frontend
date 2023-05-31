@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
-import dog from "../../../../../../assets/images/dog.jpeg";
 import { HiDotsHorizontal, HiOutlineChat } from "react-icons/hi";
 import AddChildComment from "./AddChildComment";
 import ChildComment from "./ChildComment";
@@ -11,9 +10,9 @@ import {
   getCommentList,
 } from "../../../commentSlice";
 import { useParams } from "react-router-dom";
+import userProfile from "../../../../../../assets/images/userProfile.png";
 import moment from "moment";
 import "moment/locale/ko";
-import { getUserInfo } from "../../../../../Landing/userSlice";
 moment.locale("ko");
 
 const ParentCommentWrap = styled.div`
@@ -268,7 +267,14 @@ const ParentComment = ({
         ) : (
           <>
             <ParentCommentProfileImg>
-              <img src={fromUserInfo.profile} alt="프로필임시사진" />
+              <img
+                src={
+                  fromUserInfo.profile === null
+                    ? userProfile
+                    : fromUserInfo.profile
+                }
+                alt="프로필임시사진"
+              />
             </ParentCommentProfileImg>
             <ParentCommentMain>
               <ParentCommentMainTitle>
@@ -277,10 +283,10 @@ const ParentComment = ({
                   <dd>
                     {fromUserInfo.roles.map((role, index) =>
                       index === 0 || index === fromUserInfo.roles.length ? (
-                        <span>{role}&nbsp;</span>
+                        <span key={index}>{role}&nbsp;</span>
                       ) : (
                         <>
-                          <span>&#183;&nbsp;{role}</span>
+                          <span key={index}>&#183;&nbsp;{role}</span>
                         </>
                       )
                     )}
