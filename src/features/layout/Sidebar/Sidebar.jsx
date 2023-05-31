@@ -254,18 +254,15 @@ function Sidebar({
   setOpenRoomDeleteModal,
   setOpenInvitationModal,
 }) {
-  const { roomId } = useParams();
+  const { roomId, role } = useParams();
   const { sidebarData } = useSelector((state) => state.sidebar);
   const { roomName, roomImage, roles } = sidebarData ?? {};
   const dispatch = useDispatch();
-  const [isActive, setIsActive] = useState(0);
+  const [isActive, setIsActive] = useState(role);
 
-  const handleNavLinkClick = (index) => {
-    setIsActive(index);
-  };
-
-  const onClickEssential = () => {
-    setIsActive(4);
+  console.log(role);
+  const handleNavLinkClick = (e) => {
+    setIsActive(e.target.id);
   };
 
   useEffect(() => {
@@ -320,11 +317,12 @@ function Sidebar({
               <NavLink
                 key={index}
                 to={`/${roomId}/${item.path}`}
+                id={item.path}
                 className={({ isActive }) => (isActive ? "active" : "")}
-                onClick={() => handleNavLinkClick(index)}
+                onClick={handleNavLinkClick}
               >
                 <span>
-                  {isActive === index ? item.activeIcon : item.defaultIcon}
+                  {isActive === item.path ? item.activeIcon : item.defaultIcon}
                 </span>
                 {item.pathname}
               </NavLink>
@@ -342,10 +340,11 @@ function Sidebar({
             className={({ isActive, isPending }) =>
               isPending ? "pending" : isActive ? "active" : ""
             }
-            onClick={onClickEssential}
+            id="essentials"
+            onClick={handleNavLinkClick}
           >
             <span>
-              {isActive === 4 ? (
+              {isActive === "essentials" ? (
                 <CustomIcons.EssentialBlueIcon />
               ) : (
                 <CustomIcons.EssentialGrayIcon />
