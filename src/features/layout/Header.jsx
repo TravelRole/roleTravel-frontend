@@ -168,7 +168,7 @@ const Header = () => {
   return (
     <HeaderWrap>
       <Container flex alignCenter justifySpace>
-        <h1>
+        <h1 onClick={() => navigate("/spaceList")}>
           <img src={logo} alt="여행역할 로고" />
         </h1>
         <dl className="header-profile" onClick={onControlMenu}>
