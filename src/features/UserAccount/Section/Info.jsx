@@ -52,7 +52,6 @@ const Info = () => {
             closeOnClick: true,
             pauseOnHover: true,
             draggable: false,
-            onClose: () => navigate('/:userId')
           });
         }, 1);
         console.log(res)
