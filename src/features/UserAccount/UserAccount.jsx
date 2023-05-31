@@ -16,7 +16,7 @@ import Header from "../layout/Header";
 import Icons from "../../assets/icon/icon";
 import AddImageModal from "./Modal/AddImageModal";
 import { useNavigate } from "react-router-dom";
-import dog from "../../assets/images/dog.jpeg"
+import userProfile from "../../assets/images/userProfile.png"
 
 const UserAccount = () => {
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const UserAccount = () => {
   }, [dispatch, navigate]);
 
   useEffect(() => {
-    setImage(loggedInfo?.profile ? loggedInfo?.profile : dog);
+    setImage(loggedInfo?.profile ? loggedInfo?.profile : userProfile);
   }, [loggedInfo]);
 
   const clickHandler = () => {
