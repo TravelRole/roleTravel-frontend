@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { MdKeyboardArrowDown } from "react-icons/md";
+import Icons from "../../assets/icon/icon";
 import { Container } from "../../components/Container";
 import logo from "../../assets/images/logo.png";
 import { useDispatch } from "react-redux";
@@ -45,6 +45,14 @@ const HeaderWrap = styled.header`
         height: 100%;
       }
     }
+    dd {
+      width: 2rem;
+      height: 2rem;
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
 `;
 
@@ -61,11 +69,11 @@ const ProfileMenu = styled.div`
   dl.menu-profile {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 1rem;
+    margin-bottom: 2rem;
     dt {
-      width: 30px;
-      height: 30px;
+      width: 3rem;
+      height: 3rem;
       border-radius: 50%;
       overflow: hidden;
       img {
@@ -76,11 +84,12 @@ const ProfileMenu = styled.div`
     dd {
       display: flex;
       flex-direction: column;
-      gap: 5px;
-      font-weight: bold;
+      gap: 0.5rem;
+      font-weight: 500;
+      font-size: 1.4rem;
       span {
-        font-weight: lighter;
-        font-size: 14px;
+        font-weight: 400;
+        font-size: 1.4rem;
         color: #777;
       }
     }
@@ -95,11 +104,17 @@ const ProfileMenu = styled.div`
     li {
       cursor: pointer;
       display: flex;
-      gap: 20px;
+      gap: 2rem;
       align-items: center;
-      padding: 5px 0;
+      padding: 0.5rem 0;
+      font-size: 1.4rem;
       span {
-        font-size: 20px;
+        width: 2.4rem;
+        height: 2.4rem;
+        svg {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
   }
@@ -160,9 +175,12 @@ const Header = () => {
           <dt>
             <img src={user?.profile} alt="유저이미지" />
           </dt>
-          <dd>{user?.name}님</dd>
           <dd>
-            <MdKeyboardArrowDown />
+            {openMenu ? (
+              <Icons.MdKeyboardArrowUp />
+            ) : (
+              <Icons.MdKeyboardArrowDown />
+            )}
           </dd>
         </dl>
         {openMenu && (
@@ -179,7 +197,7 @@ const Header = () => {
             <ul>
               <li onClick={() => navigate("/useraccount")}>
                 <span>
-                  <HiUser />
+                  <Icons.HiUser />
                 </span>
                 계정 관리
               </li>
