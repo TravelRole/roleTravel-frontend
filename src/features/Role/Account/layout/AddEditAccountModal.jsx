@@ -165,11 +165,8 @@ const AddEditAccountModal = ({
   day,
   editPart,
   feeMethod,
+  setDelNum
 }) => {
-  // const {  id, category, paymentMethod, paymentName, accountingEtc, price } =
-  //   editPart;
-
-  console.log(editPart);
 
   useEffect(() => {
     if (editPart) {
@@ -236,15 +233,16 @@ const AddEditAccountModal = ({
   };
 
   const addEditAccount = (e) => {
+
     e.preventDefault();
     if (isEdit) {
       const editaccountData = {
-        accountingId: editPart.id,
+        accountingId: editPart?.id,
         paymentName: expend,
         paymentMethod: payment,
         price: Number(fee),
         category: changeLanCategory(ncategory),
-        etc: note,
+        accountingEtc: note,
       };
       dispatch(
         editAccountList({ roomId, accountingId: editPart.id, editaccountData })
@@ -252,6 +250,8 @@ const AddEditAccountModal = ({
         if (res.meta.requestStatus === "fulfilled") {
           setIsEdit(false);
           dispatch(getAccountList({ roomId, date, feeMethod }));
+          setDelNum(undefined)
+         
           setIsOpenModal(false);
           return;
         }
@@ -263,12 +263,15 @@ const AddEditAccountModal = ({
         paymentTime: date,
         price: Number(fee),
         category: changeLanCategory(ncategory),
-        etc: note,
+        accountingEtc: note,
       };
 
       dispatch(addAccountList({ roomId, accountData })).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
+          setIsEdit(false);
           dispatch(getAccountList({ roomId, date, feeMethod }));
+          setDelNum(undefined)
+      
           setIsOpenModal(false);
           return;
         }

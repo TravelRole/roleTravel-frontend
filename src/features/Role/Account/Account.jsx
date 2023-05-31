@@ -368,6 +368,7 @@ function Account() {
   const [date, setDate] = useState(); // 날짜 yy-mm-dd
   const [day, setDay] = useState(); // 요일
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [delNum, setDelNum] = useState();
 
   useEffect(() => {
     setDate(firstDay);
@@ -377,11 +378,9 @@ function Account() {
 
   useEffect(() => {
     if (date) dispatch(getAccountList({ roomId, date, feeMethod }));
-  }, [feeMethod, date, roomId, dispatch]);
+  }, [feeMethod, date, roomId, dispatch, isOpenModal]);
 
   const { accountList } = useSelector((state) => state.account);
-
-  const [delNum, setDelNum] = useState();
 
   const delAccList = () => {
     dispatch(delAccountList({ roomId, accountingId: delNum })).then((res) => {
@@ -470,7 +469,9 @@ function Account() {
                         내역추가
                         <Icons.FaChevronRight />
                       </button>
-                    ) : <div></div>}
+                    ) : (
+                      <div></div>
+                    )}
 
                     <EditButtonSection>
                       {delNum !== undefined ? (
@@ -480,7 +481,9 @@ function Account() {
                             수정하기
                           </button>
                         </>
-                      ) : <div></div>}
+                      ) : (
+                        <div></div>
+                      )}
                     </EditButtonSection>
                   </AddAccountSection>
                   <StyledTabPanel value={value}>
@@ -505,7 +508,18 @@ function Account() {
                           accountingEtc,
                         } = data;
                         return (
-                          <ScheduleRow key={id}>
+                          <ScheduleRow
+                            key={
+                              id +
+                              fromBook +
+                              paymentName +
+                              paymentMethod +
+                              category +
+                              price +
+                              bookEtc +
+                              accountingEtc
+                            }
+                          >
                             <PlaceNameColumn>
                               {fromBook ? (
                                 <div></div>
@@ -568,6 +582,7 @@ function Account() {
               day={day}
               editPart={editPart}
               feeMethod={feeMethod}
+              setDelNum={setDelNum}
             />
           </Modal>
         ) : null}
