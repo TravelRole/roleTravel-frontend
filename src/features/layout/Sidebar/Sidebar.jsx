@@ -259,8 +259,6 @@ function Sidebar({
   const { roomName, roomImage, roles } = sidebarData ?? {};
   const dispatch = useDispatch();
   const [isActive, setIsActive] = useState(role);
-
-  console.log(role);
   const handleNavLinkClick = (e) => {
     setIsActive(e.target.id);
   };

@@ -7,7 +7,7 @@ const changeLanCategory = (item) => {
       category = "TRAFFIC";
       break;
     case "숙박":
-      category = "ACCOMODATION";
+      category = "ACCOMMODATION";
       break;
     case "음식":
       category = "FOOD";
@@ -24,7 +24,7 @@ const changeLanCategory = (item) => {
     case "TRAFFIC":
       category = "교통";
       break;
-    case "ACCOMODATION":
+    case "ACCOMMODATION":
       category = "숙박";
       break;
     case "FOOD":
