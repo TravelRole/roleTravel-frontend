@@ -4,7 +4,7 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 import CommentWrap from "./Comment/CommentWrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../../../../Landing/userSlice";
-import { getRoomData } from "../../allPlanSlice";
+import CustomIcons from "../../../../../assets/icon/customIcons";
 
 const AllPlanHeaderWrap = styled.div`
   display: flex;
@@ -51,7 +51,7 @@ const AllPlanHeader = () => {
       <AllPlanHeaderLocation>
         <p>
           <span>
-            <HiOutlineLocationMarker />
+            <CustomIcons.AllPlanLocationIcon />
           </span>
           {roomData?.location}
         </p>

@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Icons from "../../../assets/icon/icon";
 import {
-  Blur,
   ContentWrapper,
   Section,
   Button,
@@ -19,11 +18,12 @@ import {
   getLoggedInfo,
 } from "../LoggedUserSlice";
 import defaultImage from "../../../assets/images/random1.png";
+import Modal from "../../../components/Modal"
 
 const AddImageModal = ({ setIsOpen, image, setImage }) => {
   const dispatch = useDispatch();
   const imageRef = useRef();
-  const { loggedInfo, profile } = useSelector((state) => state.loggedInUser);
+  const { loggedInfo } = useSelector((state) => state.loggedInUser);
 
   useEffect(() => {
     setImage(loggedInfo.profile);
@@ -73,8 +73,7 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
   };
 
   return (
-    <>
-      <Blur></Blur>
+    <Modal setIsOpenModal={setIsOpen} width="35.8rem">
       <ContentWrapper>
         <Section height="7.2rem">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -152,7 +151,7 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
           </Button>
         </Section>
       </ContentWrapper>
-    </>
+    </Modal>
   );
 };
 

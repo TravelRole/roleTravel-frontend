@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import dog from "../../../../assets/images/dog.jpeg";
+import userProfile from "../../../../assets/images/userProfile.png";
 import Icons from "../../../../assets/icon/icon";
 
 const RoomEditModalRoleContentWrap = styled.div`
@@ -202,7 +202,10 @@ const RoomEditModalRoleContent = ({ role, roles, index, setFormData }) => {
   return (
     <RoomEditModalRoleContentWrap>
       <div className="room-edit-users-info">
-        <img src={role.profile === null ? dog : role.profile} alt={role.name} />
+        <img
+          src={role.profile === null ? userProfile : role.profile}
+          alt={role.name}
+        />
 
         <dl>
           <dt>{role.name}</dt>

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import tokenApi from "../../../lib/customAPI";
 
-//날짜에 맞는 회계내역 조회
+//공동경비 조회
 export const getAllAmount = createAsyncThunk(
   "amount/getAllAmount",
   async (roomId) => {
@@ -15,30 +15,12 @@ export const getAllAmount = createAsyncThunk(
   }
 );
 
-//예약정보 수정
-export const editReserveInfo = createAsyncThunk(
-  "reservation/editReserveInfo",
+//공동경비 수정
+export const editAllAmount = createAsyncThunk(
+  "amount/editAllAmount",
   async (payload, thunkAPI) => {
     try {
-      await tokenApi.patch(
-        `api/room/${payload.roomId}/board/book`,
-        payload.requestEditInfo
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  }
-);
-
-//예약 완료로 패치
-export const bookedReserveList = createAsyncThunk(
-  "reservation/delSchedule",
-  async (payload, thunkAPI) => {
-    try {
-      await tokenApi.patch(
-        `api/room/${payload.roomId}/board/booked`,
-        payload.bookInfo
-      );
+      await tokenApi.put(`/api/room/${payload.roomId}/expenses` ,{expenses : payload.shareAmount});
     } catch (error) {
       console.log(error);
     }
@@ -56,22 +38,13 @@ const amountSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(editReserveInfo.pending, (state) => {
+      .addCase(editAllAmount.pending, (state) => {
         state.isAmountLoading = true;
       })
-      .addCase(editReserveInfo.fulfilled, (state, action) => {
+      .addCase(editAllAmount.fulfilled, (state, action) => {
         state.isAmountLoading = false;
       })
-      .addCase(editReserveInfo.rejected, (state, action) => {
-        state.isAmountLoading = false;
-      })
-      .addCase(bookedReserveList.pending, (state) => {
-        state.isAmountLoading = true;
-      })
-      .addCase(bookedReserveList.fulfilled, (state, action) => {
-        state.isAmountLoading = false;
-      })
-      .addCase(bookedReserveList.rejected, (state, action) => {
+      .addCase(editAllAmount.rejected, (state, action) => {
         state.isAmountLoading = false;
       })
       .addCase(getAllAmount.pending, (state) => {

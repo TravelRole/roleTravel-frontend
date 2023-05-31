@@ -1,19 +1,8 @@
 import { OutlinedInput } from "@mui/material";
 import styled from "styled-components";
 
-export const Blur = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
-`;
-
 export const ModalWrapper = styled.div`
-  width: 38.2rem;
+  width: 100%;
   box-shadow: 0rem 2rem 2rem rgba(0, 0, 0, 0.08), 0rem 0rem 2rem rgba(0, 0, 0, 0.12);
   border-radius: 1.6rem;
   position: fixed;
@@ -53,7 +42,6 @@ export const Body = styled.div`
   max-height: 39.2rem;
   padding-top: 1.6rem;
   padding-right: 2.5rem;
-  overflow: scroll;
 `;
 
 export const ButtonList = styled.div`

@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import Icons from "../../../../../assets/icon/icon";
+import CustomIcons from "../../../../../assets/icon/customIcons";
 import { useSelector } from "react-redux";
-import { BeatLoader } from "react-spinners";
 import AllPlanMemberCard from "./AllPlanMemberCard";
 
 const AllPlanMembersWrap = styled.section``;
@@ -14,18 +14,14 @@ const AllPlanMembersHeader = styled.div`
   dl.all-plan-title {
     display: flex;
     align-items: center;
-
-    gap: 0.2rem;
+    gap: 0.5rem;
     dt {
-      width: 3rem;
-      height: 3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 2.9rem;
+      height: 2.9rem;
       color: #333;
       svg {
-        width: 100%;
-        height: 100%;
+        width: 2.4rem;
+        height: 2.4rem;
       }
     }
     dd {
@@ -127,7 +123,7 @@ const AllPlanMembers = () => {
       <AllPlanMembersHeader>
         <dl className="all-plan-title">
           <dt>
-            <Icons.HiUser />
+            <CustomIcons.AllPlanMemberIcon />
           </dt>
           <dd>
             참여자 <span>({roomData?.roles?.length}명)</span>

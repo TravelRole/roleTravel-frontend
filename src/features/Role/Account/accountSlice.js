@@ -6,10 +6,9 @@ import tokenApi from "../../../lib/customAPI";
 export const getAccountList = createAsyncThunk(
   "account/getAccountList",
   async (payload) => {
-    console.log(payload)
     try {
       const res = await tokenApi.get(
-        `api/room/${payload.roomId}/accounting?date=${payload.date}&paymentMethod=${payload.feeMethod&&payload.feeMethod}}`
+        `api/room/${payload.roomId}/accounting?date=${payload.date}&paymentMethod=${payload.feeMethod&&payload.feeMethod}`
       );
       return res.data;
     } catch (error) {
@@ -18,26 +17,37 @@ export const getAccountList = createAsyncThunk(
   }
 );
 
-//예약정보 수정
-export const editReserveInfo = createAsyncThunk(
-  "reservation/editReserveInfo",
+//회계지출 내역 추가
+export const addAccountList = createAsyncThunk(
+  "account/addAccountList",
   async (payload, thunkAPI) => {
     try {
-      await tokenApi.patch(`api/room/${payload.roomId}/board/book` , payload.requestEditInfo );
+      await tokenApi.post(`api/room/${payload.roomId}/accounting` , payload.accountData);
     } catch (error) {
       console.log(error);
     }
   }
 );
 
-//예약 완료로 패치
-export const bookedReserveList = createAsyncThunk(
-  "reservation/delSchedule",
+//회계지출 내역 수정
+export const editAccountList = createAsyncThunk(
+  "account/editAccountList",
   async (payload, thunkAPI) => {
     try {
-      await tokenApi.patch(
-        `api/room/${payload.roomId}/board/booked`,
-        payload.bookInfo
+      await tokenApi.put(`api/room/${payload.roomId}/accounting/${payload.accountingId}` , payload.editaccountData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+//회계내역 삭제
+export const delAccountList = createAsyncThunk(
+  "account/delAccountList",
+  async (payload, thunkAPI) => {
+    try {
+      await tokenApi.delete(
+        `api/room/${payload.roomId}/accounting/${payload.accountingId}`
       );
     } catch (error) {
       console.log(error);
@@ -56,22 +66,22 @@ const accountSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(editReserveInfo.pending, (state) => {
+      .addCase(addAccountList.pending, (state) => {
         state.isAccountLoading = true;
       })
-      .addCase(editReserveInfo.fulfilled, (state, action) => {
+      .addCase(addAccountList.fulfilled, (state, action) => {
         state.isAccountLoading = false;
       })
-      .addCase(editReserveInfo.rejected, (state, action) => {
+      .addCase(addAccountList.rejected, (state, action) => {
         state.isAccountLoading = false;
       })
-      .addCase(bookedReserveList.pending, (state) => {
+      .addCase(delAccountList.pending, (state) => {
         state.isAccountLoading = true;
       })
-      .addCase(bookedReserveList.fulfilled, (state, action) => {
+      .addCase(delAccountList.fulfilled, (state, action) => {
         state.isAccountLoading = false;
       })
-      .addCase(bookedReserveList.rejected, (state, action) => {
+      .addCase(delAccountList.rejected, (state, action) => {
         state.isAccountLoading = false;
       })
       .addCase(getAccountList.pending, (state) => {

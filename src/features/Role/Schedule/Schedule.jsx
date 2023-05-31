@@ -178,10 +178,7 @@ const ScheduleSection = styled.div`
   height: fit-content;
 `;
 
-function Schedule({ setReserveList }) {
-  // 구현해놓은 모킹 페이지
-  // <Owner setReserveList={setReserveList} />
-
+function Schedule() {
   //카카오 맵 초기등록하기
   const [map, setMap] = useState();
 
@@ -193,6 +190,7 @@ function Schedule({ setReserveList }) {
 
   const handleChange = (event, newValue) => {
     setFilter(newValue);
+    setInfo(undefined);
   };
 
   const { roomId } = useParams();
@@ -261,6 +259,8 @@ function Schedule({ setReserveList }) {
   const { wantPlaceList } = useSelector((state) => state.wantPlace);
   const { travelDayList } = useSelector((state) => state.travelDay);
 
+  const isScheduler = wantPlaceList.isScheduler;
+
   /** 찜장소 가져오기 */
   const [searchPlaceList, setSearchPlaceList] = useState([]);
 
@@ -320,7 +320,6 @@ function Schedule({ setReserveList }) {
   useEffect(() => {
     setDate(firstDay);
   }, [firstDay]);
-
   return (
     <>
       <Wrapper>
@@ -343,13 +342,21 @@ function Schedule({ setReserveList }) {
                   onClick={() => setInfo(marker)}
                 >
                   {info &&
-                    (marker.id === info.id ||
+                    (marker.id === String(info.id) ||
                       marker.id === String(info.mapPlaceId)) && (
                       <div style={{ color: "#000" }}>{marker.place_name}</div>
                     )}
                 </MapMarker>
               );
             })}
+            {filter === "wish" && info && (
+              <MapMarker
+                key={`marker`}
+                position={{ lat: info?.latitude, lng: info?.longitude }}
+              >
+                <div style={{ color: "#000" }}>{info?.placeName}</div>
+              </MapMarker>
+            )}
           </Map>
           <SearchAndWantBox>
             <StyledTabContext value={filter}>
@@ -409,6 +416,7 @@ function Schedule({ setReserveList }) {
                             Info={{ setInfo, info }}
                             setIsOpenModal={setIsOpenModal}
                             setModalData={setModalData}
+                            isScheduler={isScheduler}
                           />
                         );
                       })}
@@ -420,7 +428,7 @@ function Schedule({ setReserveList }) {
               </StyledTabPanel>
               <StyledTabPanel value={"wish"}>
                 <SearchResultContainer>
-                  {true ? (
+                  {wantPlaceList?.wantPlaces?.length ? (
                     <ul>
                       {wantPlaceList?.wantPlaces?.map((place) => {
                         const isExist = wantPlaceList.wantPlaces.filter(
@@ -439,6 +447,7 @@ function Schedule({ setReserveList }) {
                             Info={{ setInfo, info }}
                             setIsOpenModal={setIsOpenModal}
                             setModalData={setModalData}
+                            isScheduler={isScheduler}
                           />
                         );
                       })}
