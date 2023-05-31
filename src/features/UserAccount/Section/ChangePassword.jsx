@@ -65,6 +65,7 @@ const ChangePassword = () => {
             draggable: false
           });
         }, 1);
+        setInputs({ newPassword: "", password: ""})
       } else {
         toast.error(
           "올바르지 않은 정보입니다. 다시 확인해주세요.\n비밀번호는 (8~16자의 영문, 숫자, 특수기호(!), (_) (-) 만 사용 가능합니다.)"
