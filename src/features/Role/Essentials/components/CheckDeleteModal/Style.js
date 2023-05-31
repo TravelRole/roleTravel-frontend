@@ -1,18 +1,7 @@
 import styled from "styled-components";
 
-export const Blur = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
-`;
-
 export const ModalWrapper = styled.div`
-  width: 41.8rem;
+  width: 100%;
   height: 23.3rem;
   box-shadow: 0rem 2rem 2rem rgba(0, 0, 0, 0.08), 0rem 0rem 0.2rem rgba(0, 0, 0, 0.12);
   border-radius: 1.6rem;

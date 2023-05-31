@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { CheckSpan, Dot, EssentialsModalSpan } from "./Style";
+import { CheckSpan, Dot } from "./Style";
 import Icons from "../../../../../assets/icon/icon";
 import { IconContext } from "react-icons";
-import { materials } from "../../materials";
 
 const Contents = ({
   category,
@@ -13,7 +12,6 @@ const Contents = ({
   setList
 }) => {
   const [clicked, setClicked] = useState(false);
-  const [id, setId] = useState(0);
 
   useEffect(() => {
     if (allChecked) {

@@ -12,7 +12,7 @@ export const Blur = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-  width: 35.8rem;
+  width: 100%;
   height: 54.1rem;
   position: fixed;
   top: 50%;

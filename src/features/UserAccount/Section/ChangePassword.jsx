@@ -4,15 +4,13 @@ import { Container, Content, InputContainer } from "./Styles";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { changePassword } from "../LoggedUserSlice";
 import { toast } from "react-toastify";
 
 const ChangePassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loggedInfo } =
-    useSelector((state) => state.loggedInUser);
   const [show, setShow] = useState({ password: false, newPassword: false})
   const [inputs, setInputs] = useState({ newPassword: '', password: ''});
   const [errors, setErrors] = useState({

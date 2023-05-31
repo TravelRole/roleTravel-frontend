@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Emphasis } from "../EssentialsListModal/Style";
 import {
-  Blur,
   Button,
   Error,
   ModalWrapper,
@@ -9,7 +8,7 @@ import {
   Span,
   Title,
 } from "./Style";
-
+import Modal from "../../../../../components/Modal";
 import { deleteEssentials, getEssentials } from "../../EssentialsSlice";
 
 const CheckDeleteModal = ({ setIsOpen, deleteList, setDeleteList, setData }) => {
@@ -38,8 +37,7 @@ const CheckDeleteModal = ({ setIsOpen, deleteList, setDeleteList, setData }) => 
   };
 
   return (
-    <>
-      <Blur></Blur>
+    <Modal width="41.8rem" setIsOpenModal={setIsOpen}>
       <ModalWrapper>
         <Section>
           <Error />
@@ -58,7 +56,7 @@ const CheckDeleteModal = ({ setIsOpen, deleteList, setDeleteList, setData }) => 
           </Button>
         </Section>
       </ModalWrapper>
-    </>
+    </Modal>
   );
 };
 
