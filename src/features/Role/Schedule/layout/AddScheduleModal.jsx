@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { addSchedule, getSchedule } from "../scheduleSlice";
 import { useParams } from "react-router-dom";
 import changeLanCategory from "../utils/changeLanCategory";
+import CustomIcons from "../../../../assets/icon/customIcons";
 
 const AddScheduleModalWrapper = styled.div``;
 
@@ -129,12 +130,27 @@ const CategoryWrap = styled.li`
   cursor: pointer;
 
   div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 7rem;
     height: 7rem;
     background-color: ${(props) => (props.selected ? "#F4F6FB" : "#FFFFFF")};
     border: 1px solid ${(props) => (props.selected ? "#3884fd" : "#dadada")};
     border-radius: 0.8rem;
     margin-bottom: 0.8rem;
+    i {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 5rem;
+      height: 5rem;
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
   span {
     color: ${(props) => (props.selected ? "#3884fd" : "#dadada")};
@@ -186,7 +202,38 @@ const AddScheduleModal = ({
     { label: "불필요", value: false },
     { label: "필요", value: true },
   ];
-  const categoryOptions = ["교통", "숙박", "음식", "관광", "쇼핑", "기타"];
+  const categoryOptions = [
+    {
+      category: "교통",
+      activeIcon: <CustomIcons.TransPortBlueIcon />,
+      defaultIcon: <CustomIcons.TransPortGrayIcon />,
+    },
+    {
+      category: "숙박",
+      activeIcon: <CustomIcons.StayBlueIcon />,
+      defaultIcon: <CustomIcons.StayGrayIcon />,
+    },
+    {
+      category: "음식",
+      activeIcon: <CustomIcons.FoodBlueIcon />,
+      defaultIcon: <CustomIcons.FoodGrayIcon />,
+    },
+    {
+      category: "관광",
+      activeIcon: <CustomIcons.TourBlueIcon />,
+      defaultIcon: <CustomIcons.TourGrayIcon />,
+    },
+    {
+      category: "쇼핑",
+      activeIcon: <CustomIcons.ShoppingBlueIcon />,
+      defaultIcon: <CustomIcons.ShoppingGrayIcon />,
+    },
+    {
+      category: "기타",
+      activeIcon: <CustomIcons.EtcBlueIcon />,
+      defaultIcon: <CustomIcons.EtcGrayIcon />,
+    },
+  ];
   const [day, setDay] = useState(null);
   const [reserve, setReserve] = useState(false);
   const [category, setCategory] = useState("교통");
@@ -203,7 +250,7 @@ const AddScheduleModal = ({
 
     const schedulePayload = {
       placeName: placeName,
-      lotNumberAddress : lotNumberAddress,
+      lotNumberAddress: lotNumberAddress,
       scheduleDate: `${day} ${time}`,
       link: link,
       isBookRequired: reserve,
@@ -288,9 +335,18 @@ const AddScheduleModal = ({
               <ul>
                 {categoryOptions.map((item) => {
                   return (
-                    <CategoryWrap selected={category === item} key={item}>
-                      <div onClick={() => setCategory(item)}></div>
-                      <span>{item}</span>
+                    <CategoryWrap
+                      selected={category === item.category}
+                      key={item.category}
+                    >
+                      <div onClick={() => setCategory(item.category)}>
+                        <i>
+                          {category === item.category
+                            ? item.activeIcon
+                            : item.defaultIcon}
+                        </i>
+                      </div>
+                      <span>{item.category}</span>
                     </CategoryWrap>
                   );
                 })}
