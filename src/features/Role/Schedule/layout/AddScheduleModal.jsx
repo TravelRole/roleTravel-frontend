@@ -203,7 +203,7 @@ const AddScheduleModal = ({
 
     const schedulePayload = {
       placeName: placeName,
-      placeAddress: placeAddress,
+      lotNumberAddress : lotNumberAddress,
       scheduleDate: `${day} ${time}`,
       link: link,
       isBookRequired: reserve,

@@ -92,7 +92,7 @@ const EditReserveModal = ({ setIsOpenModal, editReserve, date }) => {
 
   const { paymentMethod, price, bookEtc } = editReserve;
   const [payment, setPayment] = useState("CARD");
-  const [note, setNote] = useState("예약비고를 수정해보세요.");
+  const [note, setNote] = useState("예약탭 - 예약비고를 수정해보세요.");
   const [fee, setFee] = useState("");
 
   const formatValue = (value = 0) => {
