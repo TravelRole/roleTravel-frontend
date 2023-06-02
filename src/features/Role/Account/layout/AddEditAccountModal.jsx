@@ -19,6 +19,8 @@ import {
   getAccountList,
 } from "../accountSlice";
 import changeLanCategory from "../../Schedule/utils/changeLanCategory";
+import { getAllexpenses } from "../expensesSlice";
+import CustomIcons from "../../../../assets/icon/customIcons";
 
 const EditReserveModalWrapper = styled.div``;
 
@@ -83,6 +85,19 @@ const CardOrCashBox = styled.div`
       border: 1px solid #c4c4c4;
       border-radius: 0.8rem;
 
+      i {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 5rem;
+        height: 4.8rem;
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
       cursor: pointer;
     }
 
@@ -117,12 +132,28 @@ const CategoryWrap = styled.li`
   cursor: pointer;
 
   div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 7rem;
     height: 7rem;
     background-color: ${(props) => (props.selected ? "#F4F6FB" : "#FFFFFF")};
     border: 1px solid ${(props) => (props.selected ? "#3884fd" : "#dadada")};
     border-radius: 0.8rem;
     margin-bottom: 0.8rem;
+
+    i {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 5rem;
+      height: 5rem;
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
   span {
     color: ${(props) => (props.selected ? "#3884fd" : "#dadada")};
@@ -165,9 +196,8 @@ const AddEditAccountModal = ({
   day,
   editPart,
   feeMethod,
-  setDelNum
+  setDelNum,
 }) => {
-
   useEffect(() => {
     if (editPart) {
       setPayment(editPart.paymentMethod);
@@ -190,7 +220,38 @@ const AddEditAccountModal = ({
   const { roomId } = useParams();
 
   const [payment, setPayment] = useState("CARD");
-  const categoryOptions = ["교통", "숙박", "음식", "관광", "쇼핑", "기타"];
+  const categoryOptions = [
+    {
+      category: "교통",
+      activeIcon: <CustomIcons.TransPortBlueIcon />,
+      defaultIcon: <CustomIcons.TransPortGrayIcon />,
+    },
+    {
+      category: "숙박",
+      activeIcon: <CustomIcons.StayBlueIcon />,
+      defaultIcon: <CustomIcons.StayGrayIcon />,
+    },
+    {
+      category: "음식",
+      activeIcon: <CustomIcons.FoodBlueIcon />,
+      defaultIcon: <CustomIcons.FoodGrayIcon />,
+    },
+    {
+      category: "관광",
+      activeIcon: <CustomIcons.TourBlueIcon />,
+      defaultIcon: <CustomIcons.TourGrayIcon />,
+    },
+    {
+      category: "쇼핑",
+      activeIcon: <CustomIcons.ShoppingBlueIcon />,
+      defaultIcon: <CustomIcons.ShoppingGrayIcon />,
+    },
+    {
+      category: "기타",
+      activeIcon: <CustomIcons.EtcBlueIcon />,
+      defaultIcon: <CustomIcons.EtcGrayIcon />,
+    },
+  ];
   const [ncategory, setCategory] = useState("교통");
   const [note, setNote] = useState("");
   const [expend, setExpend] = useState("");
@@ -233,7 +294,6 @@ const AddEditAccountModal = ({
   };
 
   const addEditAccount = (e) => {
-
     e.preventDefault();
     if (isEdit) {
       const editaccountData = {
@@ -250,8 +310,8 @@ const AddEditAccountModal = ({
         if (res.meta.requestStatus === "fulfilled") {
           setIsEdit(false);
           dispatch(getAccountList({ roomId, date, feeMethod }));
-          setDelNum(undefined)
-         
+          dispatch(getAllexpenses(roomId));
+          setDelNum(undefined);
           setIsOpenModal(false);
           return;
         }
@@ -270,8 +330,8 @@ const AddEditAccountModal = ({
         if (res.meta.requestStatus === "fulfilled") {
           setIsEdit(false);
           dispatch(getAccountList({ roomId, date, feeMethod }));
-          setDelNum(undefined)
-      
+          dispatch(getAllexpenses(roomId));
+          setDelNum(undefined);
           setIsOpenModal(false);
           return;
         }
@@ -341,25 +401,46 @@ const AddEditAccountModal = ({
                   className={payment === "CARD" ? "active" : null}
                 >
                   카드
-                  <Icons.AiOutlineCreditCard size={33} />
+                  <i>
+                    {payment === "CARD" ? (
+                      <CustomIcons.CardBlueIcon />
+                    ) : (
+                      <CustomIcons.CardGrayIcon />
+                    )}
+                  </i>
                 </li>
                 <li
                   onClick={() => setPayment("CREDIT")}
                   className={payment === "CREDIT" ? "active" : null}
                 >
                   현금
-                  <Icons.BiCoinStack size={33} />
+                  <i>
+                    {payment === "CREDIT" ? (
+                      <CustomIcons.CashBlueIcon />
+                    ) : (
+                      <CustomIcons.CashGrayIcon />
+                    )}
+                  </i>
                 </li>
               </ul>
             </CardOrCashBox>
             <CategoryOptions>
               <span>카테고리</span>
               <ul>
-                {categoryOptions.map((item) => {
+              {categoryOptions.map((item) => {
                   return (
-                    <CategoryWrap selected={ncategory === item} key={item}>
-                      <div onClick={() => setCategory(item)}></div>
-                      <span>{item}</span>
+                    <CategoryWrap
+                      selected={ncategory === item.category}
+                      key={item.category}
+                    >
+                      <div onClick={() => setCategory(item.category)}>
+                        <i>
+                          {ncategory === item.category
+                            ? item.activeIcon
+                            : item.defaultIcon}
+                        </i>
+                      </div>
+                      <span>{item.category}</span>
                     </CategoryWrap>
                   );
                 })}
@@ -368,7 +449,7 @@ const AddEditAccountModal = ({
 
             <FormControl fullWidth variant="outlined">
               <InputLabel htmlFor="outlined-adornment-note">
-                비고를 입력하세요.
+                회계비고 입력란
               </InputLabel>
               <OutlinedInput
                 id="outlined-adornment-note"

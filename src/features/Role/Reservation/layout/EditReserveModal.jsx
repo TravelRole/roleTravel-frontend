@@ -14,6 +14,7 @@ import Icons from "../../../../assets/icon/icon";
 import { useDispatch } from "react-redux";
 import { editReserveInfo, getReserveList } from "../reserveSlice";
 import { useParams } from "react-router-dom";
+import CustomIcons from "../../../../assets/icon/customIcons";
 
 const EditReserveModalWrapper = styled.div``;
 
@@ -75,6 +76,19 @@ const CardOrCashBox = styled.div`
       border: 1px solid #c4c4c4;
       border-radius: 0.8rem;
 
+      i {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 5rem;
+        height: 4.8rem;
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
       cursor: pointer;
     }
 
@@ -92,7 +106,7 @@ const EditReserveModal = ({ setIsOpenModal, editReserve, date }) => {
 
   const { paymentMethod, price, bookEtc } = editReserve;
   const [payment, setPayment] = useState("CARD");
-  const [note, setNote] = useState("비고를 입력하세요");
+  const [note, setNote] = useState("예약탭 - 예약비고를 수정해보세요.");
   const [fee, setFee] = useState("");
 
   const formatValue = (value = 0) => {
@@ -159,14 +173,26 @@ const EditReserveModal = ({ setIsOpenModal, editReserve, date }) => {
                   className={payment === "CARD" ? "active" : null}
                 >
                   카드
-                  <Icons.AiOutlineCreditCard size={33} />
+                  <i>
+                    {payment === "CARD" ? (
+                      <CustomIcons.CardBlueIcon />
+                    ) : (
+                      <CustomIcons.CardGrayIcon />
+                    )}
+                  </i>
                 </li>
                 <li
                   onClick={() => setPayment("CREDIT")}
                   className={payment === "CREDIT" ? "active" : null}
                 >
                   현금
-                  <Icons.BiCoinStack size={33} />
+                  <i>
+                    {payment === "CREDIT" ? (
+                      <CustomIcons.CashBlueIcon />
+                    ) : (
+                      <CustomIcons.CashGrayIcon />
+                    )}
+                  </i>
                 </li>
               </ul>
             </CardOrCashBox>

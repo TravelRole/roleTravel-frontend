@@ -610,8 +610,8 @@ const AllPlanMemberIcon = createSvgIcon(
 
 const CardGrayIcon = createSvgIcon(
   <svg
-    width="60"
-    height="60"
+    width="30"
+    height="27"
     viewBox="0 0 60 60"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -670,8 +670,8 @@ const CardGrayIcon = createSvgIcon(
 
 const CardBlueIcon = createSvgIcon(
   <svg
-    width="62"
-    height="56"
+    width="30"
+    height="27"
     viewBox="0 0 62 56"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -723,8 +723,8 @@ const CardBlueIcon = createSvgIcon(
 
 const CashGrayIcon = createSvgIcon(
   <svg
-    width="60"
-    height="60"
+    width="30"
+    height="27"
     viewBox="0 0 60 60"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -786,8 +786,8 @@ const CashGrayIcon = createSvgIcon(
 
 const CashBlueIcon = createSvgIcon(
   <svg
-    width="60"
-    height="60"
+    width="30"
+    height="27"
     viewBox="0 0 60 60"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -866,8 +866,8 @@ const CashBlueIcon = createSvgIcon(
 
 const TransPortGrayIcon = createSvgIcon(
   <svg
-    width="50"
-    height="50"
+    width="23"
+    height="23"
     viewBox="0 0 50 50"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -986,8 +986,8 @@ const TransPortGrayIcon = createSvgIcon(
 
 const TransPortBlueIcon = createSvgIcon(
   <svg
-    width="50"
-    height="50"
+    width="23"
+    height="23"
     viewBox="0 0 50 50"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -1107,8 +1107,8 @@ const TransPortBlueIcon = createSvgIcon(
 
 const StayGrayIcon = createSvgIcon(
   <svg
-    width="50"
-    height="50"
+    width="23"
+    height="23"
     viewBox="0 0 50 50"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -1155,8 +1155,8 @@ const StayGrayIcon = createSvgIcon(
 
 const StayBlueIcon = createSvgIcon(
   <svg
-    width="50"
-    height="50"
+    width="23"
+    height="23"
     viewBox="0 0 50 50"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -1203,8 +1203,8 @@ const StayBlueIcon = createSvgIcon(
 
 const FoodGrayIcon = createSvgIcon(
   <svg
-    width="50"
-    height="50"
+    width="23"
+    height="23"
     viewBox="0 0 50 50"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -1320,8 +1320,8 @@ const FoodGrayIcon = createSvgIcon(
 
 const FoodBlueIcon = createSvgIcon(
   <svg
-    width="50"
-    height="50"
+    width="23"
+    height="23"
     viewBox="0 0 50 50"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -1437,8 +1437,8 @@ const FoodBlueIcon = createSvgIcon(
 
 const TourGrayIcon = createSvgIcon(
   <svg
-    width="50"
-    height="50"
+    width="23"
+    height="23"
     viewBox="0 0 50 50"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -1492,8 +1492,8 @@ const TourGrayIcon = createSvgIcon(
 
 const TourBlueIcon = createSvgIcon(
   <svg
-    width="50"
-    height="50"
+    width="23"
+    height="23"
     viewBox="0 0 50 50"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -1547,8 +1547,8 @@ const TourBlueIcon = createSvgIcon(
 
 const ShoppingGrayIcon = createSvgIcon(
   <svg
-    width="50"
-    height="50"
+    width="23"
+    height="23"
     viewBox="0 0 50 50"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -1591,8 +1591,8 @@ const ShoppingGrayIcon = createSvgIcon(
 
 const ShoppingBlueIcon = createSvgIcon(
   <svg
-    width="50"
-    height="50"
+    width="23"
+    height="23"
     viewBox="0 0 50 50"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -1635,8 +1635,8 @@ const ShoppingBlueIcon = createSvgIcon(
 
 const EtcGrayIcon = createSvgIcon(
   <svg
-    width="50"
-    height="50"
+    width="23"
+    height="23"
     viewBox="0 0 50 50"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -1671,8 +1671,8 @@ const EtcGrayIcon = createSvgIcon(
 
 const EtcBlueIcon = createSvgIcon(
   <svg
-    width="50"
-    height="50"
+    width="23"
+    height="23"
     viewBox="0 0 50 50"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
