@@ -274,6 +274,8 @@ const ScheduleContainer = ({ travelDayList, firstDayDate, date, setDate }) => {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
+  console.log(scheduleList)
+
   return (
     <>
       <Box>
@@ -325,21 +327,17 @@ const ScheduleContainer = ({ travelDayList, firstDayDate, date, setDate }) => {
                 <NoteDetailColumn>비고</NoteDetailColumn>
               </ColumnHeader>
               <ScheduleDetails>
-                {scheduleList ? (
+                {scheduleList && scheduleList.length ? (
                   scheduleList.map((schedule) => {
                     const extractedTime = schedule.time.slice(0, 5);
                     const categoryCon = changeLanCategory(schedule.category);
                     return (
                       <ScheduleRow key={schedule.mapPlaceId}>
                         <PlaceNameColumn>
-                          {schedule.isBooked !== null ? (
-                            <input type="checkbox" disabled={true} />
-                          ) : (
-                            <input
-                              type="checkbox"
-                              onChange={() => delScheduleState(schedule.id)}
-                            />
-                          )}
+                          <input
+                            type="checkbox"
+                            onChange={() => delScheduleState(schedule.id)}
+                          />
                           {schedule.placeName}
                         </PlaceNameColumn>
                         <DetailColumn>{extractedTime}</DetailColumn>

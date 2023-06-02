@@ -15,19 +15,6 @@ export const getAllexpenses = createAsyncThunk(
   }
 );
 
-//공동경비 수정
-export const editAllAmount = createAsyncThunk(
-  "amount/editAllAmount",
-  async (payload, thunkAPI) => {
-    console.log(payload)
-    try {
-      await tokenApi.put(`/api/room/${payload.roomId}/expenses` ,{expenses : payload.shareAmount});
-    } catch (error) {
-      console.log(error);
-    }
-  }
-);
-
 const initialState = {
   isexpensesLoading: false,
   expensesTotal: 0,
