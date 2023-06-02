@@ -19,6 +19,7 @@ import {
   getAccountList,
 } from "../accountSlice";
 import changeLanCategory from "../../Schedule/utils/changeLanCategory";
+import { getAllexpenses } from "../expensesSlice";
 
 const EditReserveModalWrapper = styled.div``;
 
@@ -165,9 +166,8 @@ const AddEditAccountModal = ({
   day,
   editPart,
   feeMethod,
-  setDelNum
+  setDelNum,
 }) => {
-
   useEffect(() => {
     if (editPart) {
       setPayment(editPart.paymentMethod);
@@ -233,7 +233,6 @@ const AddEditAccountModal = ({
   };
 
   const addEditAccount = (e) => {
-
     e.preventDefault();
     if (isEdit) {
       const editaccountData = {
@@ -250,8 +249,8 @@ const AddEditAccountModal = ({
         if (res.meta.requestStatus === "fulfilled") {
           setIsEdit(false);
           dispatch(getAccountList({ roomId, date, feeMethod }));
-          setDelNum(undefined)
-         
+          dispatch(getAllexpenses(roomId));
+          setDelNum(undefined);
           setIsOpenModal(false);
           return;
         }
@@ -270,8 +269,8 @@ const AddEditAccountModal = ({
         if (res.meta.requestStatus === "fulfilled") {
           setIsEdit(false);
           dispatch(getAccountList({ roomId, date, feeMethod }));
-          setDelNum(undefined)
-      
+          dispatch(getAllexpenses(roomId));
+          setDelNum(undefined);
           setIsOpenModal(false);
           return;
         }
@@ -368,7 +367,7 @@ const AddEditAccountModal = ({
 
             <FormControl fullWidth variant="outlined">
               <InputLabel htmlFor="outlined-adornment-note">
-                비고를 입력하세요.
+                회계비고 입력란
               </InputLabel>
               <OutlinedInput
                 id="outlined-adornment-note"
