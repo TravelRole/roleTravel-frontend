@@ -85,6 +85,19 @@ const CardOrCashBox = styled.div`
       border: 1px solid #c4c4c4;
       border-radius: 0.8rem;
 
+      i {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 5rem;
+        height: 4.8rem;
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
       cursor: pointer;
     }
 
@@ -388,14 +401,26 @@ const AddEditAccountModal = ({
                   className={payment === "CARD" ? "active" : null}
                 >
                   카드
-                  <Icons.AiOutlineCreditCard size={33} />
+                  <i>
+                    {payment === "CARD" ? (
+                      <CustomIcons.CardBlueIcon />
+                    ) : (
+                      <CustomIcons.CardGrayIcon />
+                    )}
+                  </i>
                 </li>
                 <li
                   onClick={() => setPayment("CREDIT")}
                   className={payment === "CREDIT" ? "active" : null}
                 >
                   현금
-                  <Icons.BiCoinStack size={33} />
+                  <i>
+                    {payment === "CREDIT" ? (
+                      <CustomIcons.CashBlueIcon />
+                    ) : (
+                      <CustomIcons.CashGrayIcon />
+                    )}
+                  </i>
                 </li>
               </ul>
             </CardOrCashBox>

@@ -610,8 +610,8 @@ const AllPlanMemberIcon = createSvgIcon(
 
 const CardGrayIcon = createSvgIcon(
   <svg
-    width="60"
-    height="60"
+    width="30"
+    height="27"
     viewBox="0 0 60 60"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -670,8 +670,8 @@ const CardGrayIcon = createSvgIcon(
 
 const CardBlueIcon = createSvgIcon(
   <svg
-    width="62"
-    height="56"
+    width="30"
+    height="27"
     viewBox="0 0 62 56"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -723,8 +723,8 @@ const CardBlueIcon = createSvgIcon(
 
 const CashGrayIcon = createSvgIcon(
   <svg
-    width="60"
-    height="60"
+    width="30"
+    height="27"
     viewBox="0 0 60 60"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -786,8 +786,8 @@ const CashGrayIcon = createSvgIcon(
 
 const CashBlueIcon = createSvgIcon(
   <svg
-    width="60"
-    height="60"
+    width="30"
+    height="27"
     viewBox="0 0 60 60"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
