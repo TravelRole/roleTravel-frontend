@@ -10,7 +10,7 @@ const BlankPanelContainer = styled.div`
   text-align: center;
   width: 100%;
   height: fit-content;
-  padding-bottom: 5rem;
+  padding: 2rem 0;
 
   .headMsg {
     font-weight: 600;

@@ -274,6 +274,8 @@ const ScheduleContainer = ({ travelDayList, firstDayDate, date, setDate }) => {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
+  console.log(scheduleList)
+
   return (
     <>
       <Box>
@@ -325,7 +327,7 @@ const ScheduleContainer = ({ travelDayList, firstDayDate, date, setDate }) => {
                 <NoteDetailColumn>비고</NoteDetailColumn>
               </ColumnHeader>
               <ScheduleDetails>
-                {scheduleList ? (
+                {scheduleList && scheduleList.length ? (
                   scheduleList.map((schedule) => {
                     const extractedTime = schedule.time.slice(0, 5);
                     const categoryCon = changeLanCategory(schedule.category);
