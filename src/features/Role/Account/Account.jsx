@@ -15,6 +15,7 @@ import AddEditAccountModal from "./layout/AddEditAccountModal";
 import Icons from "../../../assets/icon/icon";
 import changeLanCategory from "../Schedule/utils/changeLanCategory";
 import { formatValue } from "./utils/moneyFormat";
+import { getAllexpenses } from "./expensesSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -387,6 +388,7 @@ function Account() {
       if (res.meta.requestStatus === "fulfilled") {
         setDelNum(undefined);
         dispatch(getAccountList({ roomId, date, feeMethod }));
+        dispatch(getAllexpenses(roomId));
         return;
       }
     });
