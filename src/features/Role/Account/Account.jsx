@@ -382,6 +382,10 @@ function Account() {
   }, [feeMethod, date, roomId, dispatch, isOpenModal]);
 
   const { accountList } = useSelector((state) => state.account);
+  const { sidebarData } = useSelector((state) => state.sidebar);
+
+  const myRole = sidebarData?.roles;
+  const amIAdmimOrAccount = myRole.find((el) => el === "총무" || el === "회계");
 
   const delAccList = () => {
     dispatch(delAccountList({ roomId, accountingId: delNum })).then((res) => {
@@ -462,7 +466,7 @@ function Account() {
                 </StyledBox>
                 <ScheduleWrapper>
                   <AddAccountSection>
-                    {delNum === undefined ? (
+                    {amIAdmimOrAccount && delNum === undefined ? (
                       <button
                         onClick={() => {
                           setIsOpenModal(true);
@@ -476,7 +480,7 @@ function Account() {
                     )}
 
                     <EditButtonSection>
-                      {delNum !== undefined ? (
+                      {amIAdmimOrAccount && delNum !== undefined ? (
                         <>
                           <button onClick={delAccList}>선택삭제</button>
                           <button onClick={() => setIsOpenModal(true)}>
@@ -523,7 +527,7 @@ function Account() {
                             }
                           >
                             <PlaceNameColumn>
-                              {fromBook ? (
+                              {fromBook || amIAdmimOrAccount ? (
                                 <div></div>
                               ) : (
                                 <input
@@ -558,7 +562,11 @@ function Account() {
                               <span>{bookEtc}</span>
                             </DetailFeeColumn>
                             <NoteDetailColumn>
-                              <span>{fromBook ?"예약탭에서 넘어온 내역임으로 수정불가" :accountingEtc}</span>
+                              <span>
+                                {fromBook
+                                  ? "예약탭에서 넘어온 내역임으로 수정불가"
+                                  : accountingEtc}
+                              </span>
                             </NoteDetailColumn>
                           </ScheduleRow>
                         );
