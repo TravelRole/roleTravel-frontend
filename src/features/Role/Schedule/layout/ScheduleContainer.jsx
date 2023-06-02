@@ -332,14 +332,10 @@ const ScheduleContainer = ({ travelDayList, firstDayDate, date, setDate }) => {
                     return (
                       <ScheduleRow key={schedule.mapPlaceId}>
                         <PlaceNameColumn>
-                          {schedule.isBooked !== null ? (
-                            <input type="checkbox" disabled={true} />
-                          ) : (
-                            <input
-                              type="checkbox"
-                              onChange={() => delScheduleState(schedule.id)}
-                            />
-                          )}
+                          <input
+                            type="checkbox"
+                            onChange={() => delScheduleState(schedule.id)}
+                          />
                           {schedule.placeName}
                         </PlaceNameColumn>
                         <DetailColumn>{extractedTime}</DetailColumn>
