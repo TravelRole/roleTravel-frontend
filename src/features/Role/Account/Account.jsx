@@ -556,7 +556,7 @@ function Account() {
                               <span>{bookEtc}</span>
                             </DetailFeeColumn>
                             <NoteDetailColumn>
-                              <span>{accountingEtc}</span>
+                              <span>{fromBook ?"예약탭에서 넘어온 내역임으로 수정불가" :accountingEtc}</span>
                             </NoteDetailColumn>
                           </ScheduleRow>
                         );
