@@ -47,17 +47,6 @@ const EditNav = ({
           </EssentialsSpan>
         </div>
         <div style={{ display: "flex" }}>
-          {condition === "add" && (
-            <EssentialsSpan
-              color="#8490a4"
-              fontSize="1.8rem"
-              fontWeight="500"
-              style={{ textDecorationLine: "underline", cursor: "pointer" }}
-              onClick={() => setCondition("remove")}
-            >
-              삭제하기
-            </EssentialsSpan>
-          )}
           {condition === "remove" ? (
             <>
               <EssentialsSpan
@@ -84,22 +73,33 @@ const EditNav = ({
               </EssentialsSpan>
             </>
           ) : (
-            <EssentialsSpan
-              color="#8490a4"
-              fontSize="1.8rem"
-              fontWeight="500"
-              style={{
-                textDecorationLine: "underline",
-                marginLeft: "3rem",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                setCondition("add");
-                setIsOpen(true);
-              }}
-            >
-              추가하기
-            </EssentialsSpan>
+            <>
+              <EssentialsSpan
+                color="#8490a4"
+                fontSize="1.8rem"
+                fontWeight="500"
+                style={{ textDecorationLine: "underline", cursor: "pointer" }}
+                onClick={() => setCondition("remove")}
+              >
+                삭제하기
+              </EssentialsSpan>
+              <EssentialsSpan
+                color="#8490a4"
+                fontSize="1.8rem"
+                fontWeight="500"
+                style={{
+                  textDecorationLine: "underline",
+                  marginLeft: "3rem",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  setCondition("add");
+                  setIsOpen(true);
+                }}
+              >
+                추가하기
+              </EssentialsSpan>
+            </>
           )}
           <Divider style={{ marginLeft: "2rem", marginRight: "2rem" }} />
           <div style={{ display: "flex", alignItems: "center" }}>
