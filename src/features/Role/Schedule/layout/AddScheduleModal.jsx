@@ -186,7 +186,7 @@ const AddScheduleModal = ({
   if (!mapPlaceId) {
     mapPlaceId = id;
     placeName = place_name;
-    placeAddress = road_address_name;
+    lotNumberAddress = road_address_name;
     latitude = x;
     longitude = y;
     link = place_url;
