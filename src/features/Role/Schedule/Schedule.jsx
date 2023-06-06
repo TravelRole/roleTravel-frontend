@@ -21,6 +21,7 @@ import SearchPlaceCard from "./components/SearchPlaceCard";
 import WantPlaceCard from "./components/WantPlaceCard";
 import { getTravelDay } from "./travelDaySlice";
 import Heart from "../../../assets/images/heart.svg";
+import { getSchedule } from "./scheduleSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -378,6 +379,14 @@ function Schedule() {
   useEffect(() => {
     setDate(firstDay);
   }, [firstDay]);
+
+  useEffect(() => {
+    if (date) dispatch(getSchedule({ roomId, date }));
+  }, [dispatch, date, roomId]);
+
+  const { scheduleList } = useSelector((state) => state.schedule);
+
+  console.log(scheduleList);
   return (
     <>
       <Wrapper>
@@ -427,6 +436,29 @@ function Schedule() {
                 </LoveInfoWindow>
               </CustomOverlayMap>
             )}
+
+            {scheduleList && scheduleList.map((marker) => {
+              const position = {
+                lat: Number(marker.latitude),
+                lng: Number(marker.longitude),
+              };
+
+              console.log("clo")
+              return (
+                <CustomOverlayMap
+                  key={`marker-${position}-${position.lat},${position.lng}`}
+                  position={position}
+                  onClick={() => setInfo(marker)}
+                >
+                  {/* 커스텀 오버레이에 표시할 내용입니다 */}
+                  <InfoWindow
+                    onClick={() => setInfo(marker)}
+                  >
+                    <span>{marker.placeName}</span>
+                  </InfoWindow>
+                </CustomOverlayMap>
+              );
+            })}
           </Map>
           <SearchAndWantBox>
             <StyledTabContext value={filter}>

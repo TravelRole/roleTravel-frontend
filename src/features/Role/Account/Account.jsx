@@ -527,7 +527,7 @@ function Account() {
                             }
                           >
                             <PlaceNameColumn>
-                              {fromBook || amIAdmimOrAccount ? (
+                              {fromBook || !amIAdmimOrAccount ? (
                                 <div></div>
                               ) : (
                                 <input
