@@ -101,8 +101,6 @@ const StyledCircularProgressbar = styled(CircularProgressbar)`
   position: absolute;
   top: 3.5rem;
   right: 2.5rem;
-
-  
 `;
 
 const RedSpan = styled.span`
@@ -133,13 +131,6 @@ function AmountContainer() {
   const { expensesTotal } = useSelector((state) => state.expenses);
 
   const { totalExpense } = expensesTotal;
-
-  console.log(amountTotal.expenses, totalExpense);
-  console.log(
-    Math.round(
-      ((amountTotal.expenses - totalExpense) / amountTotal.expenses) * 100
-    )
-  );
 
   const percentage = Math.floor(
     ((amountTotal.expenses - totalExpense) / amountTotal.expenses) * 100
