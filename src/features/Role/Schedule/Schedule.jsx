@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Map, MapMarker } from "react-kakao-maps-sdk";
+import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
 import { useState } from "react";
 import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
@@ -20,6 +20,7 @@ import AddScheduleModal from "./layout/AddScheduleModal";
 import SearchPlaceCard from "./components/SearchPlaceCard";
 import WantPlaceCard from "./components/WantPlaceCard";
 import { getTravelDay } from "./travelDaySlice";
+import Heart from "../../../assets/images/heart.svg";
 
 const Wrapper = styled.div`
   display: flex;
@@ -176,6 +177,63 @@ const SearchResultContainer = styled.div`
 const ScheduleSection = styled.div`
   padding-top: 1.5rem;
   height: fit-content;
+`;
+
+const InfoWindow = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: white;
+  width: 10rem;
+  height: 2.5rem;
+
+  color: #3884fd;
+  font-family: "Pretendard";
+  border: solid 1.5px #3884fd;
+  border-radius: 0.5rem;
+  font-size: 1.6rem;
+
+  padding: 0.3rem 0.5rem;
+  position: relative;
+
+  z-index: ${(props) => (props.selected ? 5 : 0)};
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &::after {
+    border-color: white transparent;
+    border-style: solid;
+    border-width: 8px 8px 0 8px;
+    content: "";
+    display: block;
+    left: 10px;
+    position: absolute;
+    top: 2.2rem;
+    width: 0;
+    z-index: 1;
+  }
+  &::before {
+    border-color: #7689fd transparent;
+    border-style: solid;
+    border-width: 8px 8px 0 8px;
+    content: "";
+    display: block;
+    left: 10px;
+    position: absolute;
+    top: 2.4rem;
+    width: 0;
+    z-index: 0;
+  }
+`;
+
+const LoveInfoWindow = styled(InfoWindow)`
+  width: 12.4rem;
+  img {
+    width: 1.8rem;
+    margin-right: 0.2rem;
+  }
 `;
 
 function Schedule() {
@@ -336,26 +394,38 @@ function Schedule() {
                 lng: Number(marker.x),
               };
               return (
-                <MapMarker
+                <CustomOverlayMap
                   key={`marker-${position}-${position.lat},${position.lng}`}
                   position={position}
                   onClick={() => setInfo(marker)}
                 >
-                  {info &&
-                    (marker.id === String(info.id) ||
-                      marker.id === String(info.mapPlaceId)) && (
-                      <div style={{ color: "#000" }}>{marker.place_name}</div>
-                    )}
-                </MapMarker>
+                  {/* 커스텀 오버레이에 표시할 내용입니다 */}
+                  <InfoWindow
+                    selected={
+                      info &&
+                      (marker.id === String(info.id) ||
+                        marker.id === String(info.mapPlaceId))
+                        ? true
+                        : false
+                    }
+                    onClick={() => setInfo(marker)}
+                  >
+                    <span>{marker.place_name}</span>
+                  </InfoWindow>
+                </CustomOverlayMap>
               );
             })}
             {filter === "wish" && info && (
-              <MapMarker
+              <CustomOverlayMap
                 key={`marker`}
                 position={{ lat: info?.latitude, lng: info?.longitude }}
               >
-                <div style={{ color: "#000" }}>{info?.placeName}</div>
-              </MapMarker>
+                {/* 커스텀 오버레이에 표시할 내용입니다 */}
+                <LoveInfoWindow>
+                  <img src={Heart} alt="heart" />
+                  <span>{info?.placeName}</span>
+                </LoveInfoWindow>
+              </CustomOverlayMap>
             )}
           </Map>
           <SearchAndWantBox>
