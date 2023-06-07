@@ -197,11 +197,7 @@ const AllPlanContent = () => {
           </button>
           <button
             className="plan-right"
-            disabled={
-              data?.length === currentSlide + 1 ||
-              data?.length === 0 ||
-              data === null
-            }
+            disabled={data?.length < 6 || data?.length === 0 || data === null}
             onClick={handleSlider}
           >
             <Icons.HiOutlineChevronRight />
