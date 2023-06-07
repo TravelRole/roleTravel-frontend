@@ -386,7 +386,6 @@ function Schedule() {
 
   const { scheduleList } = useSelector((state) => state.schedule);
 
-  console.log(scheduleList);
   return (
     <>
       <Wrapper>
@@ -442,8 +441,6 @@ function Schedule() {
                 lat: Number(marker.latitude),
                 lng: Number(marker.longitude),
               };
-
-              console.log("clo")
               return (
                 <CustomOverlayMap
                   key={`marker-${position}-${position.lat},${position.lng}`}
