@@ -38,7 +38,6 @@ const AddImageModal = ({ setIsOpen }) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      // setProfile(reader.result);
       setProfile(reader.result, file);
       setCondition("newFile");
     };
@@ -56,8 +55,8 @@ const AddImageModal = ({ setIsOpen }) => {
         header = imageRef.current.files[0].type;
       else header = "image/*";
 
-      try {
-        await tokenApi.get("api/users/image/presigned-url").then((res) => {
+      dispatch(deleteProfileImage()).then((res) => {
+        tokenApi.get("api/users/image/presigned-url").then((res) => {
           const address = res.data;
           axios
             .put(address, imageRef.current.files[0], {
@@ -66,20 +65,19 @@ const AddImageModal = ({ setIsOpen }) => {
             .then((res) => {
               dispatch(changeProfileImage())
                 .then((res) => {
-                  dispatch(getLoggedInfo()).then((res) => dispatch(getUserInfo()))
+                  dispatch(getLoggedInfo()).then((res) =>
+                    dispatch(getUserInfo())
+                  );
                   setIsOpen(false);
-                  // setImage(profile); // 이미지 업데이트 함수 호출
                   window.location.reload();
                 })
                 .catch((err) => console.error(err));
             })
             .catch((err) => console.log(err));
         });
-      } catch (err) {
-        console.log(err);
-      }
+      });
     }
-    setCondition("")
+    setCondition("");
   };
 
   const deleteImageHandler = () => {
