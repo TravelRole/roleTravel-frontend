@@ -15,47 +15,65 @@ export const getLoggedInfo = createAsyncThunk("api/users", async () => {
   return res?.data;
 });
 
-export const updatedInfo = createAsyncThunk("api/users", async (updatedData, thunkAPI) => {
-    await tokenApi.put(`api/users`, updatedData)
-    .then((res) => {
-      return res.data
-    })
-    .catch((err) => {
-      if (err.response && err.response.status === 400) {
-        return thunkAPI.rejectWithValue('이름 또는 생년월일의 형식이 올바르지 않습니다.');
-      }
-    });
-});
+export const updatedInfo = createAsyncThunk(
+  "api/users",
+  async (updatedData, thunkAPI) => {
+    await tokenApi
+      .put(`api/users`, updatedData)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 400) {
+          return thunkAPI.rejectWithValue(
+            "이름 또는 생년월일의 형식이 올바르지 않습니다."
+          );
+        }
+      });
+  }
+);
 
-export const changePassword = createAsyncThunk("api/users/password", async (pwData, thunkAPI) => {
-    await tokenApi.put(`api/users/password`, pwData)
-    .then((res) => {
-      return res.data
-    })
-    .catch((err) => {
-      if (err.response && err.response.status === 400) {
-        return thunkAPI.rejectWithValue('비밀번호가 일치하지 않습니다.');
-      }
-    });
-});
+export const changePassword = createAsyncThunk(
+  "api/users/password",
+  async (pwData, thunkAPI) => {
+    await tokenApi
+      .put(`api/users/password`, pwData)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 400) {
+          return thunkAPI.rejectWithValue("비밀번호가 일치하지 않습니다.");
+        }
+      });
+  }
+);
 
-export const changeProfileImage = createAsyncThunk("api/users/image", async (imageData, thunkAPI) => {
-    await tokenApi.put(`api/users/image`, imageData)
-    .then((res) => {
-      return res.data
-    })
-    .catch((err) => {
-      throw err;
-    });
-});
+export const changeProfileImage = createAsyncThunk(
+  "api/users/image",
+  async () => {
+    await tokenApi
+      .put(`api/users/image`)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        throw err;
+      });
+  }
+);
 
-export const deleteProfileImage = createAsyncThunk("api/users/image", async () => {
-  await tokenApi.delete('api/users/image')
-    .then((res) => 'Deleted!')
-    .catch((err) => {
-      throw err;
-    })
-});
+export const deleteProfileImage = createAsyncThunk(
+  "api/users/image",
+  async () => {
+    await tokenApi
+      .delete("api/users/image")
+      .then((res) => "Deleted!")
+      .catch((err) => {
+        throw err;
+      });
+  }
+);
 
 const loggedUserSlice = createSlice({
   name: "loggedUser",
@@ -74,7 +92,7 @@ const loggedUserSlice = createSlice({
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,
-          progress: undefined,
+          progress: undefined
         });
       })
       .addCase(changePassword.fulfilled, (state, action) => {
@@ -82,8 +100,8 @@ const loggedUserSlice = createSlice({
       })
       .addCase(changePassword.rejected, (state, action) => {
         state.error = action.payload;
-      })
-    }
+      });
+  }
 });
 
 export default loggedUserSlice.reducer;

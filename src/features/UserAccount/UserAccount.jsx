@@ -8,7 +8,7 @@ import {
   Section,
   Profile,
   Avatar,
-  EditIcon,
+  EditIcon
 } from "./Section/Styles";
 import { useDispatch, useSelector } from "react-redux";
 import { getLoggedInfo } from "./LoggedUserSlice";
@@ -16,7 +16,7 @@ import Header from "../layout/Header";
 import Icons from "../../assets/icon/icon";
 import AddImageModal from "./Modal/AddImageModal";
 import { useNavigate } from "react-router-dom";
-import userProfile from "../../assets/images/userProfile.png"
+import userProfile from "../../assets/images/userProfile.png";
 
 const UserAccount = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,6 @@ const UserAccount = () => {
   const { loggedInfo } = useSelector((state) => state.loggedInUser);
   const [clicked, setClicked] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-  const [image, setImage] = useState("");
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
@@ -36,12 +35,8 @@ const UserAccount = () => {
   }, [dispatch, navigate]);
 
   useEffect(() => {
-    setImage(loggedInfo?.profile ? loggedInfo?.profile : userProfile);
-  }, [loggedInfo]);
-
-  const clickHandler = () => {
-    setIsOpen(true);
-  };
+    dispatch(getLoggedInfo())
+  }, [loggedInfo])
 
   return (
     <>
@@ -64,15 +59,18 @@ const UserAccount = () => {
         <Section>
           <Profile>
             <div>
-              <Avatar src={image} alt="avatar" />
-              <EditIcon onClick={clickHandler}>
+              <Avatar
+                src={loggedInfo?.profile || userProfile}
+                alt="avatar"
+              />
+              <EditIcon onClick={() => setIsOpen(true)}>
                 <Icons.HiOutlinePencilAlt
                   color="black"
                   style={{
                     postiion: "absolute",
                     width: "1.568rem",
                     height: "1.568rem",
-                    marginTop: "-0.8rem",
+                    marginTop: "-0.8rem"
                   }}
                 />
               </EditIcon>
@@ -85,15 +83,7 @@ const UserAccount = () => {
         <Section>{clicked ? <Info /> : <ChangePassword />}</Section>
         <Section></Section>
       </ContentWrap>
-      {isOpen ? (
-        <AddImageModal
-          setIsOpen={setIsOpen}
-          image={image}
-          setImage={setImage}
-        />
-      ) : (
-        ""
-      )}
+      {isOpen ? <AddImageModal setIsOpen={setIsOpen} /> : ""}
     </>
   );
 };
