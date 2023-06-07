@@ -142,7 +142,7 @@ const Header = () => {
   useEffect(() => {
     if (
       location.pathname === "/spaceList" ||
-      location.pathname === "/account/:userId"
+      location.pathname === "/useraccount"
     )
       if (localStorage.getItem("accessToken")) {
         dispatch(getUserInfo());

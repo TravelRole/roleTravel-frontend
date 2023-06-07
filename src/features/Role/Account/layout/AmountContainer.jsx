@@ -7,6 +7,10 @@ import { useEffect } from "react";
 import { editAllAmount, getAllAmount } from "../amountSlice";
 import { getAllexpenses } from "../expensesSlice";
 import { formatValue } from "../utils/moneyFormat";
+import {
+  CircularProgressbar,
+} from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 const AmountWrapper = styled.div`
   display: flex;
@@ -89,6 +93,19 @@ const AmountBox = styled.div`
   }
 `;
 
+const StyledCircularProgressbar = styled(CircularProgressbar)`
+  width: 5.5rem;
+  height: 5.5rem;
+
+  position: absolute;
+  top: 3.5rem;
+  right: 2.5rem;
+`;
+
+const RedSpan = styled.span`
+  color: ${(props) => (props.minus ? "#FF334C" : "#a7a7a7")} !important;
+`;
+
 function AmountContainer() {
   const { roomId } = useParams();
   const dispatch = useDispatch();
@@ -114,10 +131,14 @@ function AmountContainer() {
 
   const { totalExpense } = expensesTotal;
 
+  const percentage = Math.floor(
+    ((amountTotal.expenses - totalExpense) / amountTotal.expenses) * 100
+  );
+
   return (
     <AmountWrapper>
       <AmountBox>
-        <header>공통 경비</header>
+        <header>공동 경비</header>
 
         <input
           ref={allAmountInput}
@@ -171,8 +192,17 @@ function AmountContainer() {
       </AmountBox>
       <AmountBox>
         <header>남은 경비</header>
-        <p>{formatValue(amountTotal.expenses - totalExpense)}원</p>
-        <span>잔액을 파악해 경비를 효율적으로 관리해 보세요!</span>
+        <p>
+          {formatValue(amountTotal.expenses - totalExpense)}원
+          <StyledCircularProgressbar
+            value={percentage}
+            text={`${percentage}%`}
+          />
+        </p>
+
+        <RedSpan minus={percentage < 0 ? true : false}>
+          잔액을 파악해 경비를 효율적으로 관리해 보세요!
+        </RedSpan>
       </AmountBox>
       <AmountBox>
         <header>여행 총 지출 금액</header>

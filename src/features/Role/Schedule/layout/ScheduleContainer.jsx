@@ -273,9 +273,7 @@ const ScheduleContainer = ({ travelDayList, firstDayDate, date, setDate }) => {
   const formatValue = (value = 0) => {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
-
-  console.log(scheduleList)
-
+  
   return (
     <>
       <Box>
