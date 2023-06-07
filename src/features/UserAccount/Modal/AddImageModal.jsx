@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Icons from "../../../assets/icon/icon";
 import {
   ContentWrapper,
@@ -7,7 +7,7 @@ import {
   ButtonFab,
   Image,
   Title,
-  Explanation,
+  Explanation
 } from "./Styles";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -15,67 +15,83 @@ import tokenApi from "../../../lib/customAPI";
 import {
   changeProfileImage,
   deleteProfileImage,
-  getLoggedInfo,
+  getLoggedInfo
 } from "../LoggedUserSlice";
-import defaultImage from "../../../assets/images/random1.png";
-import Modal from "../../../components/Modal"
+import userProfile from "../../../assets/images/userProfile.png";
+import Modal from "../../../components/Modal";
 import { getUserInfo } from "../../Landing/userSlice";
 
-const AddImageModal = ({ setIsOpen, image, setImage }) => {
+const AddImageModal = ({ setIsOpen }) => {
   const dispatch = useDispatch();
   const imageRef = useRef();
+  const [profile, setProfile] = useState(null);
+  const [condition, setCondition] = useState("");
   const { loggedInfo } = useSelector((state) => state.loggedInUser);
 
   useEffect(() => {
-    setImage(loggedInfo.profile);
+    setProfile(loggedInfo?.profile || userProfile);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedInfo]);
+  }, [loggedInfo?.profile]);
 
   const imageHandler = () => {
     const file = imageRef.current.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setImage(reader.result);
+      // setProfile(reader.result);
+      setProfile(reader.result, file);
+      setCondition("newFile");
     };
   };
 
   const submitHandler = async () => {
-    let header;
-    if (imageRef.current.files[0] !== undefined)
-      header = imageRef.current.files[0].type;
-    else header = "image/*";
-
-    try {
-      await tokenApi.get("api/users/image/presigned-url").then((res) => {
-        const address = res.data;
-        axios
-          .put(address, imageRef.current.files[0], {
-            headers: { "Content-Type": `${header}` },
-          })
-          .then((res) => {
-            dispatch(changeProfileImage()).then((res) => {
-              dispatch(getLoggedInfo());
-              dispatch(getUserInfo())
-            });
-            setIsOpen(false);
-          })
-          .catch((err) => console.log(err));
+    if (condition === "delete") {
+      dispatch(deleteProfileImage()).then((res) => {
+        dispatch(getLoggedInfo());
+        setIsOpen(false);
       });
-    } catch (err) {
-      console.log(err);
+    } else {
+      let header;
+      if (imageRef.current.files[0] !== undefined)
+        header = imageRef.current.files[0].type;
+      else header = "image/*";
+
+      try {
+        await tokenApi.get("api/users/image/presigned-url").then((res) => {
+          const address = res.data;
+          axios
+            .put(address, imageRef.current.files[0], {
+              headers: { "Content-Type": `${header}` }
+            })
+            .then((res) => {
+              dispatch(changeProfileImage())
+                .then((res) => {
+                  dispatch(getLoggedInfo()).then((res) => dispatch(getUserInfo()))
+                  setIsOpen(false);
+                  // setImage(profile); // 이미지 업데이트 함수 호출
+                  window.location.reload();
+                })
+                .catch((err) => console.error(err));
+            })
+            .catch((err) => console.log(err));
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
+    setCondition("")
   };
 
   const deleteImageHandler = () => {
-    dispatch(deleteProfileImage).then((res) => {
-      dispatch(getLoggedInfo());
-      setImage("");
-    });
+    setProfile(userProfile);
+    setCondition("delete");
   };
 
   return (
-    <Modal setIsOpenModal={setIsOpen} width="35.8rem">
+    <Modal
+      setIsOpenModal={setIsOpen}
+      width="35.8rem"
+    >
       <ContentWrapper>
         <Section height="7.2rem">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -90,13 +106,16 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
         </Section>
         <Section height="34.2rem">
           <h1>프로필 사진을 등록해 주세요.</h1>
-          <Image src={image ? image : defaultImage} alt="프로필 이미지" />
+          <Image
+            src={profile}
+            alt="프로필 이미지"
+          />
           <div
             style={{
               display: "flex",
               justifyContent: "center",
               gap: "1rem",
-              marginBottom: "1.5rem",
+              marginBottom: "1.5rem"
             }}
           >
             <div>
@@ -115,19 +134,22 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
                     size="20"
                     style={{
                       marginRight: "1.3rem",
-                      color: "black",
+                      color: "black"
                     }}
                   />
                   사진 업로드
                 </ButtonFab>
               </label>
             </div>
-            <ButtonFab backgroundColor="#fff" onClick={deleteImageHandler}>
+            <ButtonFab
+              backgroundColor="#fff"
+              onClick={deleteImageHandler}
+            >
               <Icons.TbTrash
                 size="19"
                 style={{
                   marginRight: "1.3rem",
-                  color: "#ff4a4a",
+                  color: "#ff4a4a"
                 }}
               />
               사진 지우기
@@ -145,7 +167,7 @@ const AddImageModal = ({ setIsOpen, image, setImage }) => {
               color: "white",
               fontSize: "1.6rem",
               fontWeight: "600",
-              width: "10.7rem",
+              width: "10.7rem"
             }}
             onClick={submitHandler}
           >

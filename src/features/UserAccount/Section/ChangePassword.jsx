@@ -142,7 +142,7 @@ const ChangePassword = () => {
       <Content>
         <Button
           size="small"
-          onClick={() => navigate("/home")}
+          onClick={() => navigate("/")}
           color="stroke"
         >
           취소
