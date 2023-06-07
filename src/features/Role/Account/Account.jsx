@@ -385,7 +385,7 @@ function Account() {
   const { sidebarData } = useSelector((state) => state.sidebar);
 
   const myRole = sidebarData?.roles;
-  const amIAdmimOrAccount = myRole.find((el) => el === "총무" || el === "회계");
+  const amIAdmimOrAccount = myRole?.find((el) => el === "총무" || el === "회계");
 
   const delAccList = () => {
     dispatch(delAccountList({ roomId, accountingId: delNum })).then((res) => {
@@ -527,7 +527,7 @@ function Account() {
                             }
                           >
                             <PlaceNameColumn>
-                              {fromBook || amIAdmimOrAccount ? (
+                              {fromBook || !amIAdmimOrAccount ? (
                                 <div></div>
                               ) : (
                                 <input
