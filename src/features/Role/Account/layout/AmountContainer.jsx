@@ -9,7 +9,6 @@ import { getAllexpenses } from "../expensesSlice";
 import { formatValue } from "../utils/moneyFormat";
 import {
   CircularProgressbar,
-  CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
