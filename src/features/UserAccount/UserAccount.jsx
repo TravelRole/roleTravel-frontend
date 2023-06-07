@@ -34,9 +34,9 @@ const UserAccount = () => {
     }
   }, [dispatch, navigate]);
 
-  useEffect(() => {
-    dispatch(getLoggedInfo())
-  }, [loggedInfo])
+  // useEffect(() => {
+  //   dispatch(getLoggedInfo())
+  // }, [loggedInfo])
 
   return (
     <>

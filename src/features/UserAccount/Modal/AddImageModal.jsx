@@ -66,8 +66,7 @@ const AddImageModal = ({ setIsOpen }) => {
             .then((res) => {
               dispatch(changeProfileImage())
                 .then((res) => {
-                  dispatch(getLoggedInfo());
-                  dispatch(getUserInfo());
+                  dispatch(getLoggedInfo()).then((res) => dispatch(getUserInfo()))
                   setIsOpen(false);
                   // setImage(profile); // 이미지 업데이트 함수 호출
                   window.location.reload();
