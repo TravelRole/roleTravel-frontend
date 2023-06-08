@@ -191,7 +191,7 @@ const RoomEditModal = ({ setOpenRoomEditModal }) => {
             value={roomNameValue}
             endAdornment={
               <InputAdornment position="end">
-                {roomNameValue.length}/{MAX_NAME}
+                {roomNameValue?.length}/{MAX_NAME}
               </InputAdornment>
             }
           />
