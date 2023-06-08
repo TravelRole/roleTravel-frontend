@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
 import React from "react";
 import AllPlanContentSchedule from "./AllPlanContentSchedule";
+import { differenceInDays } from "date-fns";
+import { useSelector } from "react-redux";
 
 const AllPlanContentCardWrap = styled.div`
   padding: 2.5rem 2rem;
@@ -49,12 +51,15 @@ const AllPlanContentCard = ({
   travelExpense,
   schedules,
 }) => {
+  const { roomData } = useSelector((state) => state.allPlan);
+  const tripStartDate = new Date(roomData?.startDate);
+  const dayCount = differenceInDays(new Date(date), tripStartDate) + 1;
   return (
     <AllPlanContentCardWrap>
       <AllPlanContentCardHeader>
         <dl>
           <dt>
-            {day}일차
+            {dayCount}일차
             <span>
               {date} ({dayOfTheWeek})
             </span>
