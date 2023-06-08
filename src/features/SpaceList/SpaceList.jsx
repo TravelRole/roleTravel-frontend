@@ -12,7 +12,7 @@ import Traveling from "./layout/Traveling";
 import EndTravel from "./layout/EndTravel";
 import TravelListBg from "../../assets/images/travelListBg.png";
 import { getTravelList } from "./travelSlice";
-import { ClipLoader } from "react-spinners";
+import { BeatLoader } from "react-spinners";
 
 const SpaceListWrap = styled.main`
   background-image: url(${TravelListBg});
@@ -70,6 +70,12 @@ const Indicator = styled.div`
   background-image: linear-gradient(270deg, #3884fd 0%, #9fa9ff 100%);
   transform: ${({ activeIndex }) => `translateX(${activeIndex * 100}%)`};
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+`;
+
+const LoaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const HeaderNavData = [
@@ -156,8 +162,11 @@ function SpaceList() {
             </p>
           </SpaceHeader>
           {/* //header */}
+
           {isTravelLoading ? (
-            <ClipLoader color="#36d7b7" />
+            <LoaderContainer>
+              <BeatLoader color="#3884fd" margin="30" />
+            </LoaderContainer>
           ) : currentNav === 0 ? (
             <Traveling setIsOpenModal={setIsOpenModal} />
           ) : (

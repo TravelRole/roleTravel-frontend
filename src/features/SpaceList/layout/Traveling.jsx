@@ -9,7 +9,6 @@ import airPlan from "../../../assets/images/airplan.png";
 import addTravelImg from "../../../assets/images/addTravelImg.png";
 import { useSelector } from "react-redux";
 import TravelSlider from "./TravelSlider";
-import AddSpaceModal from "./AddSpaceModal";
 
 export const TravelListWrap = styled.section`
   width: 100%;
