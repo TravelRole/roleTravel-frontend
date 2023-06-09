@@ -283,10 +283,10 @@ const ParentComment = ({
                   <dd>
                     {fromUserInfo.roles.map((role, index) =>
                       index === 0 || index === fromUserInfo.roles.length ? (
-                        <span key={index}>{role}&nbsp;</span>
+                        <span key={index}>{role}</span>
                       ) : (
                         <>
-                          <span key={index}>&#183;&nbsp;{role}</span>
+                          <span key={index}>&#183;{role}</span>
                         </>
                       )
                     )}

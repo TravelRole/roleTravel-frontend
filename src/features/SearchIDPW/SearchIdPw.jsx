@@ -47,7 +47,7 @@ function a11yProps(index) {
 }
 
 const SearchIdPw = () => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -62,7 +62,7 @@ const SearchIdPw = () => {
           <dd>가입 시 입력한 정보를 입력해주세요.</dd>
         </dl>
         <Tabs
-          indicatorColor="secondary"
+          indicatorColor="primary"
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"

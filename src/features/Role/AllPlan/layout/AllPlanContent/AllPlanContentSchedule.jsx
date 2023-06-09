@@ -43,7 +43,13 @@ const AllPlanContentSchedule = ({ placeName, time, isBooked, scheduleEtc }) => {
       <AllPlanContentScheduleMain>
         <dl>
           <dt>{placeName}</dt>
-          <dd>{isBooked ? "예약 완료" : "예약 필요"}</dd>
+          <dd>
+            {isBooked === null
+              ? "예약 불필요"
+              : isBooked
+              ? "예약 완료"
+              : "예약 필요"}
+          </dd>
           <dd>{scheduleEtc}</dd>
         </dl>
       </AllPlanContentScheduleMain>
