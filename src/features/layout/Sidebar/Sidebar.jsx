@@ -128,10 +128,10 @@ const Category = styled.div`
 
 const SideBarNavWrap = styled.div`
   display: flex;
-  gap: 2rem;
+  gap: 2.5rem;
   flex-direction: column;
   &.teamSpaceNav {
-    margin-bottom: 6.6rem;
+    margin-bottom: 4rem;
   }
 
   a {
@@ -155,31 +155,6 @@ const SideBarNavWrap = styled.div`
         height: 100%;
       }
     }
-
-    /* &:hover {
-      color: #3884fd;
-      font-weight: bold;
-      span {
-        svg {
-          path {
-            stroke: "#3884fd";
-          }
-          color: #3884fd;
-        }
-      }
-
-      &::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        right: 0;
-        transform: translateY(-50%);
-        width: 0.5rem;
-        height: 0.5rem;
-        background-color: #ffc759;
-        border-radius: 50%;
-      }
-    } */
 
     &.active {
       color: #3884fd;
@@ -258,10 +233,6 @@ function Sidebar({
   const { sidebarData } = useSelector((state) => state.sidebar);
   const { roomName, roomImage, roles } = sidebarData ?? {};
   const dispatch = useDispatch();
-  const [isActive, setIsActive] = useState(role);
-  const handleNavLinkClick = (e) => {
-    setIsActive(e.target.id);
-  };
 
   useEffect(() => {
     dispatch(getSidebarData(roomId));
@@ -317,10 +288,9 @@ function Sidebar({
                 to={`/${roomId}/${item.path}`}
                 id={item.path}
                 className={({ isActive }) => (isActive ? "active" : "")}
-                onClick={handleNavLinkClick}
               >
                 <span>
-                  {isActive === item.path ? item.activeIcon : item.defaultIcon}
+                  {item.path === role ? item.activeIcon : item.defaultIcon}
                 </span>
                 {item.pathname}
               </NavLink>
@@ -339,10 +309,9 @@ function Sidebar({
               isPending ? "pending" : isActive ? "active" : ""
             }
             id="essentials"
-            onClick={handleNavLinkClick}
           >
             <span>
-              {isActive === "essentials" ? (
+              {role === "essentials" ? (
                 <CustomIcons.EssentialBlueIcon />
               ) : (
                 <CustomIcons.EssentialGrayIcon />

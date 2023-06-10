@@ -1,6 +1,4 @@
-import axios from "axios";
 import React, { useCallback, useRef, useState } from "react";
-import styled from "styled-components";
 import useAddSlash from "../../../lib/useAddSlash";
 import {
   FormControl,
@@ -9,7 +7,6 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  TextField,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { authApi } from "../../../lib/customAPI";
