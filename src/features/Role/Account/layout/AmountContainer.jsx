@@ -7,9 +7,7 @@ import { useEffect } from "react";
 import { editAllAmount, getAllAmount } from "../amountSlice";
 import { getAllexpenses } from "../expensesSlice";
 import { formatValue } from "../utils/moneyFormat";
-import {
-  CircularProgressbar,
-} from "react-circular-progressbar";
+import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 const AmountWrapper = styled.div`
@@ -138,7 +136,11 @@ function AmountContainer() {
   const { sidebarData } = useSelector((state) => state.sidebar);
 
   const myRole = sidebarData?.roles;
-  const amIAdmimOrAccount = myRole?.find((el) => el === "총무" || el === "회계");
+  const amIAdmimOrAccount = myRole?.find(
+    (el) => el === "총무" || el === "회계"
+  );
+
+  console.log(percentage)
 
   return (
     <AmountWrapper>
@@ -157,42 +159,44 @@ function AmountContainer() {
         />
 
         <span>수정하기를 클릭해 공동 경비를 입력해보세요!</span>
-        {amIAdmimOrAccount ? canEditShare ? (
-          <section>
-            <div
+        {amIAdmimOrAccount ? (
+          canEditShare ? (
+            <section>
+              <div
+                onClick={() => {
+                  setCanEditShare((pre) => !pre);
+                }}
+              >
+                <span>취소</span>
+              </div>
+              <div
+                onClick={() => {
+                  dispatch(editAllAmount({ roomId, shareAmount }))
+                    .then((res) => {
+                      if (res.meta.requestStatus === "fulfilled") {
+                        dispatch(getAllAmount(roomId));
+                      }
+                    })
+                    .then(() => {
+                      setCanEditShare((pre) => !pre);
+                    });
+                }}
+              >
+                <span>확인</span>
+              </div>
+            </section>
+          ) : (
+            <button
               onClick={() => {
                 setCanEditShare((pre) => !pre);
+                setTimeout(() => {
+                  allAmountInput.current.focus();
+                }, 1);
               }}
             >
-              <span>취소</span>
-            </div>
-            <div
-              onClick={() => {
-                dispatch(editAllAmount({ roomId, shareAmount }))
-                  .then((res) => {
-                    if (res.meta.requestStatus === "fulfilled") {
-                      dispatch(getAllAmount(roomId));
-                    }
-                  })
-                  .then(() => {
-                    setCanEditShare((pre) => !pre);
-                  });
-              }}
-            >
-              <span>확인</span>
-            </div>
-          </section>
-        ) : (
-          <button
-            onClick={() => {
-              setCanEditShare((pre) => !pre);
-              setTimeout(() => {
-                allAmountInput.current.focus();
-              }, 1);
-            }}
-          >
-            <span>수정하기</span> <Icons.FaChevronRight />{" "}
-          </button>
+              <span>수정하기</span> <Icons.FaChevronRight />{" "}
+            </button>
+          )
         ) : null}
       </AmountBox>
       <AmountBox>
@@ -201,7 +205,7 @@ function AmountContainer() {
           {formatValue(amountTotal.expenses - totalExpense)}원
           <StyledCircularProgressbar
             value={percentage}
-            text={`${percentage}%`}
+            text={`${isNaN(percentage) ? 0 : percentage}%`}
           />
         </p>
 
