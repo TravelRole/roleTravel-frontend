@@ -237,6 +237,25 @@ const LoveInfoWindow = styled(InfoWindow)`
   }
 `;
 
+const ScheduleInfoWindow = styled(InfoWindow)`
+  width: 10rem;
+  background-color: #3884fd;
+  color: white;
+
+  &::after {
+    border-color: #3884fd transparent;
+    border-style: solid;
+    border-width: 8px 8px 0 8px;
+    content: "";
+    display: block;
+    left: 10px;
+    position: absolute;
+    top: 2.2rem;
+    width: 0;
+    z-index: 1;
+  }
+`;
+
 function Schedule() {
   //카카오 맵 초기등록하기
   const [map, setMap] = useState();
@@ -436,26 +455,25 @@ function Schedule() {
               </CustomOverlayMap>
             )}
 
-            {scheduleList && scheduleList.map((marker) => {
-              const position = {
-                lat: Number(marker.latitude),
-                lng: Number(marker.longitude),
-              };
-              return (
-                <CustomOverlayMap
-                  key={`marker-${position}-${position.lat},${position.lng}`}
-                  position={position}
-                  onClick={() => setInfo(marker)}
-                >
-                  {/* 커스텀 오버레이에 표시할 내용입니다 */}
-                  <InfoWindow
+            {scheduleList &&
+              scheduleList.map((marker) => {
+                const position = {
+                  lat: Number(marker.latitude),
+                  lng: Number(marker.longitude),
+                };
+                return (
+                  <CustomOverlayMap
+                    key={`marker-${position}-${position.lat},${position.lng}`}
+                    position={position}
                     onClick={() => setInfo(marker)}
                   >
-                    <span>{marker.placeName}</span>
-                  </InfoWindow>
-                </CustomOverlayMap>
-              );
-            })}
+                    {/* 커스텀 오버레이에 표시할 내용입니다 */}
+                    <ScheduleInfoWindow onClick={() => setInfo(marker)}>
+                      <span>{marker.placeName}</span>
+                    </ScheduleInfoWindow>
+                  </CustomOverlayMap>
+                );
+              })}
           </Map>
           <SearchAndWantBox>
             <StyledTabContext value={filter}>
