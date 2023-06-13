@@ -84,13 +84,14 @@ const Sections = ({
                 />
               ))
             ) : (
-              <div key={index} style={{ marginTop: "1.6rem"}}>
-                {data[el].map((dat) => (
-                  <Checkbox
-                    item={dat}
-                    setData={setData}
-                  />
-                ))}
+              <div style={{ marginTop: "1.6rem" }}>
+                {data[el].map((dat, index) => (
+                    <Checkbox
+                      key={index}
+                      item={dat}
+                      setData={setData}
+                    />
+                  ))}
               </div>
             )}
           </Section>
