@@ -405,6 +405,7 @@ function Schedule() {
 
   const { scheduleList } = useSelector((state) => state.schedule);
 
+
   return (
     <>
       <Wrapper>
@@ -515,7 +516,7 @@ function Schedule() {
                   <Icons.RxMagnifyingGlass size={25} />
                 </SearchContainer>
                 <SearchResultContainer>
-                  {searchPlaceList.length ? (
+                  { searchPlaceList.length ? (
                     <ul>
                       {searchPlaceList.map((place) => {
                         const isExist = wantPlaceList.wantPlaces.filter(
