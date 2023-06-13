@@ -16,43 +16,47 @@ import Modal from "../../../../../components/Modal";
 
 const AddEssentialsModal = ({ setIsOpen, setData }) => {
   const dispatch = useDispatch();
-  const { essentials } = useSelector((state) => state.essentials)
+  const { essentials } = useSelector((state) => state.essentials);
   const [list, setList] = useState({
     "필수 준비물": [],
-    "의류": [],
+    의류: [],
     "세면 용품": [],
-    "상비약": [],
-    "계절용품": [],
+    상비약: [],
+    "계절 용품": [],
     "조리 용품": [],
-    "기타 용품": [],
+    "기타 용품": []
   });
 
   const addHandler = () => {
     if (Object.values(list).join("") === "") return;
     else {
-      Object.keys(list).map(name => {
+      Object.keys(list).forEach((name) => {
         if (list[name]?.length > 0) {
-          const convert = convertCategoryName(name)
+          let alreadyHave = essentials[name].map((el) => el.itemName);
+          const result = list[name].filter((el) => !alreadyHave.includes(el));
           return dispatch(
             createEssentials([
               Number(window.location.href.split("/")[3]),
               {
-                category: convert,
-                items: list[name]
+                category: convertCategoryName(name),
+                items: result
               }
             ])
           ).then((res) => {
-            dispatch(getEssentials(Number(window.location.href.split("/")[3])))
-            setData(essentials)
-          })
+            dispatch(getEssentials(Number(window.location.href.split("/")[3])));
+            setData(essentials);
+          });
         }
-      })
+      });
       setIsOpen(false);
     }
   };
 
   return (
-    <Modal width="77.4rem" setIsOpenModal={setIsOpen}>
+    <Modal
+      width="77.4rem"
+      setIsOpenModal={setIsOpen}
+    >
       <ContentWrapper>
         <Section height="7.2rem">
           <Title>ROLE</Title>
