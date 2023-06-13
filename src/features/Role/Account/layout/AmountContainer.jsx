@@ -135,6 +135,11 @@ function AmountContainer() {
     ((amountTotal.expenses - totalExpense) / amountTotal.expenses) * 100
   );
 
+  const { sidebarData } = useSelector((state) => state.sidebar);
+
+  const myRole = sidebarData?.roles;
+  const amIAdmimOrAccount = myRole?.find((el) => el === "총무" || el === "회계");
+
   return (
     <AmountWrapper>
       <AmountBox>
@@ -152,7 +157,7 @@ function AmountContainer() {
         />
 
         <span>수정하기를 클릭해 공동 경비를 입력해보세요!</span>
-        {canEditShare ? (
+        {amIAdmimOrAccount ? canEditShare ? (
           <section>
             <div
               onClick={() => {
@@ -188,7 +193,7 @@ function AmountContainer() {
           >
             <span>수정하기</span> <Icons.FaChevronRight />{" "}
           </button>
-        )}
+        ) : null}
       </AmountBox>
       <AmountBox>
         <header>남은 경비</header>
