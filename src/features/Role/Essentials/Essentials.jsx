@@ -32,8 +32,6 @@ function Essentials() {
     setData(essentials)
   }, [essentials])
 
-  console.log(essentials)
-
   useEffect(() => {
     window.addEventListener("resize", handleResize);
     return () => {
