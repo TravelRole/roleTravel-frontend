@@ -140,8 +140,6 @@ function AmountContainer() {
     (el) => el === "총무" || el === "회계"
   );
 
-  console.log(percentage)
-
   return (
     <AmountWrapper>
       <AmountBox>
