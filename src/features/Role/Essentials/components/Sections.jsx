@@ -10,7 +10,7 @@ const Sections = ({
   deleteList,
   setDeleteList,
   data,
-  setData,
+  setData
 }) => {
   return (
     <Content width={resize - 150}>
@@ -37,7 +37,7 @@ const Sections = ({
                     padding: "0.3rem 1rem",
                     borderRadius: "9.9rem",
                     marginLeft: "0.8rem",
-                    textAlign: "center",
+                    textAlign: "center"
                   }}
                 >
                   {data[el].length}
@@ -48,10 +48,9 @@ const Sections = ({
               style={{
                 border: "none",
                 borderTop: "0.1rem solid #cfcfcf",
-                marginTop: "1.6rem",
+                marginTop: "1.6rem"
               }}
             />
-
             {data[el].length === 0 ? (
               <div
                 style={{
@@ -61,7 +60,7 @@ const Sections = ({
                   paddingTop: "0.3rem",
                   marginTop: "1.6rem",
                   width: "22.8rem",
-                  height: "4.6rem",
+                  height: "4.6rem"
                 }}
               >
                 <Dot />
@@ -85,9 +84,15 @@ const Sections = ({
                 />
               ))
             ) : (
-              data[el].map((dat, index) => (
-                <Checkbox key={index} item={dat} setData={setData} />
-              ))
+              <div style={{ marginTop: "1.6rem" }}>
+                {data[el].map((dat, index) => (
+                    <Checkbox
+                      key={index}
+                      item={dat}
+                      setData={setData}
+                    />
+                  ))}
+              </div>
             )}
           </Section>
         ))}

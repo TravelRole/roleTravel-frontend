@@ -2,11 +2,9 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  height: 100%;
   flex-direction: column;
   padding-left: 3rem;
   padding-top: 8rem;
-  overflow: hidden;
 `;
 
 export const Title = styled.div`
@@ -65,12 +63,13 @@ export const Content = styled.div`
 
 export const Section = styled.div`
   width: 26rem;
-  height: 74.5rem;
+  min-height: 74.5rem;
   border-radius: 1.6rem;
   background: #eef1f8;
   padding-left: 1.6rem;
-  padding-right: 1.6remx;
+  padding-right: 1.6rem;
   padding-top: 2.4rem;
+  margin-bottom: 2.4rem;
 `;
 
 export const Wrapper = styled.div`
