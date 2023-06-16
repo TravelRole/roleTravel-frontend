@@ -242,7 +242,7 @@ const RoomEditModal = ({ setOpenRoomEditModal }) => {
             onChange={onChangeInput}
             endAdornment={
               <InputAdornment position="end">
-                {locationValue.length}/{MAX_LOCATION}
+                {locationValue?.length}/{MAX_LOCATION}
               </InputAdornment>
             }
           />
