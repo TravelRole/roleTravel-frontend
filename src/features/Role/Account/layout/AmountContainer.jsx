@@ -144,17 +144,20 @@ function AmountContainer() {
     <AmountWrapper>
       <AmountBox>
         <header>공동 경비</header>
-
-        <input
-          ref={allAmountInput}
-          value={
-            canEditShare || "" ? shareAmount || "" : amountTotal.expenses || 0
-          }
-          disabled={canEditShare ? false : true}
-          onChange={(e) => {
-            setShareAmount(e.target.value);
-          }}
-        />
+        {canEditShare ? (
+          <input
+            ref={allAmountInput}
+            value={
+              canEditShare || "" ? shareAmount || "" : amountTotal.expenses || 0
+            }
+            disabled={canEditShare ? false : true}
+            onChange={(e) => {
+              setShareAmount(e.target.value);
+            }}
+          />
+        ) : (
+          <p>{formatValue(amountTotal.expenses)}원</p>
+        )}
 
         <span>수정하기를 클릭해 공동 경비를 입력해보세요!</span>
         {amIAdmimOrAccount ? (
