@@ -35,7 +35,7 @@ const Checkbox = ({ item, setData }) => {
         display: "flex",
         justifyContent: "left",
         alignItems: "center",
-        marginTop: "1.6rem"
+        marginBottom: "1.6rem"
       }}
     >
       <EssentialsItem>

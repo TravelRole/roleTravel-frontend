@@ -15,6 +15,7 @@ import Form from "./layout/Form";
 import { convertCategoryName } from "./validation";
 import { useSelector } from "react-redux";
 import Modal from "../../../../../components/Modal";
+import { toast } from "react-toastify";
 
 const AddEssentialsModal = ({ setIsOpen, setData }) => {
   const dispatch = useDispatch();
@@ -24,7 +25,10 @@ const AddEssentialsModal = ({ setIsOpen, setData }) => {
   const { essentials } = useSelector((state) => state.essentials)
 
   const submitHandler = () => {
-    if (newList.length === 0) return;
+    if (newList.length === 0) {
+      toast.error('+ 버튼을 눌러 준비물을 추가해주세요.')
+      return;
+    }
     else {
       const convertCategory = convertCategoryName(clickedCategory);
       dispatch(

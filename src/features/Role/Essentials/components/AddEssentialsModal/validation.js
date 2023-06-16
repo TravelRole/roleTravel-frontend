@@ -8,7 +8,7 @@ export const convertCategoryName = (name) => {
       return 'TOILETRIES'
     case '상비약':
       return 'MEDICINE'
-    case '계절용품':
+    case '계절 용품':
       return 'SEASONAL'
     case '조리 용품':
       return 'COOKWARE'
