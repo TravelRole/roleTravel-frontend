@@ -44,7 +44,7 @@ const UserAccount = () => {
         >
           회원정보 수정
         </Tab>
-        {loggedInfo?.provider !== "local" && (
+        {loggedInfo?.provider === "local" && (
           <Tab
             color={clicked ? "#A7A7A7" : "#3884FD"}
             onClick={() => setClicked(false)}
