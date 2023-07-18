@@ -172,23 +172,23 @@
     |-- 📁 node_modules
     |-- 📁 public
     |-- 📁 src
-            |-- 📁 app
-                  		|-- store.js
-          	|-- 📁 asset
-                  		|-- 📁 icon
-                  		|-- 📁 images
-          	|-- 📁 components (공통사용 컴포넌트)
-          	|-- 📁 features
-                      |-- 📁 Authorization
-                      |-- 📁 Landing
-                      |-- 📁 layout
-                      |-- 📁 Login
-                  		|-- 📁 NotFound
-                  		|-- 📁 Role
-                  		|-- 📁 SearchIDPW
-                      |-- 📁 Sign
-                  		|-- 📁 SpaceList
-                  		|-- 📁 UserAccount
+         |-- 📁 app
+              |-- store.js
+         |-- 📁 asset
+              |-- 📁 icon
+              |-- 📁 images
+         |-- 📁 components (공통사용 컴포넌트)
+         |-- 📁 features
+              |-- 📁 Authorization
+              |-- 📁 Landing
+              |-- 📁 layout
+              |-- 📁 Login
+              |-- 📁 NotFound
+              |-- 📁 Role
+              |-- 📁 SearchIDPW
+              |-- 📁 Sign
+              |-- 📁 SpaceList
+              |-- 📁 UserAccount
           	|-- 📁 lib
             |-- Router.jsx (라우터 파일) 
             |-- App.js
