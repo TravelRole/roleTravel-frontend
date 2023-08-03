@@ -199,6 +199,13 @@
     |-- package-lock.json
 ```
 
+<h2> ❤️ 설치 </h2>
+
+```
+npm install
+npm run start
+```
+
 <h2> ✍️ 아쉬웠던점 </h2>
 
 1. 초기세팅의 부재
